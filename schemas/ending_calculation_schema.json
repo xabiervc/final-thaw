@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FINAL THAW Ending Calculation Schema",
+  "description": "Validates that ending calculation logic uses the correct priority and conditions.",
+  "type": "object",
+  "required": ["ending_key", "counters", "evidence_choice"],
+  "properties": {
+    "ending_key": {
+      "type": "string",
+      "enum": ["fragile_thaw", "public_thaw", "guarded_thaw"],
+      "description": "The computed ending."
+    },
+    "counters": {
+      "type": "object",
+      "required": ["elena_safety", "prototype_integrity", "civilian_aid"],
+      "properties": {
+        "elena_safety": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "prototype_integrity": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "civilian_aid": { "type": "integer", "minimum": 0, "maximum": 10 }
+      }
+    },
+    "evidence_choice": {
+      "type": "string",
+      "enum": ["unset", "preserve", "erase"]
+    },
+    "reason": {
+      "type": "string",
+      "description": "Human-readable reason for the ending choice (for debugging)."
+    }
+  }
+}

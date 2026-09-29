@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FINAL THAW Story State Schema",
+  "description": "Validates that saved story state and narrative data are coherent before runtime or export.",
+  "type": "object",
+  "required": ["elena_safety", "prototype_integrity", "civilian_aid", "evidence_choice", "completed_phases"],
+  "properties": {
+    "elena_safety": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3,
+      "description": "Elena Safety counter (0-3)."
+    },
+    "prototype_integrity": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3,
+      "description": "Prototype Integrity counter (0-3)."
+    },
+    "civilian_aid": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 10,
+      "description": "Civilian Aid counter (0-10)."
+    },
+    "evidence_choice": {
+      "type": "string",
+      "enum": ["unset", "preserve", "erase"],
+      "description": "Final evidence choice."
+    },
+    "completed_phases": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 16
+      },
+      "uniqueItems": true,
+      "description": "List of completed phase numbers."
+    },
+    "story_flags": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      },
+      "description": "Optional boolean story flags (e.g., shelter_rescued, port_evacuees_helped)."
+    }
+  }
+}
