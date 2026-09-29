@@ -1,0 +1,29 @@
+{
+  "project": "FINAL THAW",
+  "canon_year": 2089,
+  "language": "en",
+  "primary_story_route": [
+    "monitoring_facility",
+    "abandoned_laboratory",
+    "highway",
+    "flooded_shelter",
+    "shelter_perimeter",
+    "damaged_vehicle",
+    "collapsing_dam",
+    "port",
+    "mountain_transit_hub",
+    "final_thaw_station",
+    "atmospheric_control_chamber"
+  ],
+  "protagonists": ["elena_vast", "marcus_reyes"],
+  "primary_antagonist": "helix_consortium",
+  "story_rules": {
+    "no_hidden_ending_state": true,
+    "no_random_story_outcomes": true,
+    "final_evidence_choice_phase": 13,
+    "phase_13_choice_overrides_phase_12_intention": true,
+    "climate_events_must_affect_gameplay_or_story": true,
+    "dialogue_should_be_skippable": true
+  },
+  "ending_priority": ["fragile_thaw", "public_thaw", "guarded_thaw"]
+}

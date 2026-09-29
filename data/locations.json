@@ -1,0 +1,84 @@
+{
+  "locations": [
+    {
+      "id": "monitoring_facility",
+      "act": 1,
+      "climate_condition": "flash flooding",
+      "story_function": "Opening proof that warning systems are failing alongside infrastructure.",
+      "gameplay_function": "Tutorial framing for environmental danger and navigation.",
+      "visual_palette": ["industrial grey", "deep floodwater blue", "emergency red"]
+    },
+    {
+      "id": "abandoned_laboratory",
+      "act": 1,
+      "climate_condition": "heat damage and unstable power",
+      "story_function": "Elena discovers Helix delayed viable Aster deployment.",
+      "gameplay_function": "Four compact environmental puzzle rooms.",
+      "visual_palette": ["worn grey", "toxic green", "failing fluorescent white"]
+    },
+    {
+      "id": "highway",
+      "act": 1,
+      "climate_condition": "wildfire haze and supply disruption",
+      "story_function": "Marcus sees emergency rationing turn into conflict and finds his reassignment evidence.",
+      "gameplay_function": "Linear combat route and arena tutorial.",
+      "visual_palette": ["cracked asphalt", "wildfire orange", "black smoke"]
+    },
+    {
+      "id": "flooded_shelter",
+      "act": 1,
+      "climate_condition": "groundwater flood and failed pumps",
+      "story_function": "Establishes Civilian Aid and makes Elena's priorities broader than Aster.",
+      "gameplay_function": "Water, pump, valve, and optional rescue puzzles.",
+      "visual_palette": ["wet concrete", "blue-green water", "dim emergency light"]
+    },
+    {
+      "id": "shelter_perimeter",
+      "act": 1,
+      "climate_condition": "scorched ground and toxic rain approach",
+      "story_function": "Marcus learns Elena is now a termination target.",
+      "gameplay_function": "Cover, marksmen, and riot commander mini-boss.",
+      "visual_palette": ["sandbags", "floodlight white", "charcoal", "warning yellow"]
+    },
+    {
+      "id": "collapsing_dam",
+      "act": 2,
+      "climate_condition": "extreme rainfall and water pressure",
+      "story_function": "Demonstrates Elena's expertise as direct survival work.",
+      "gameplay_function": "Water cycles, power routing, platforms, cranes, calibration.",
+      "visual_palette": ["concrete grey", "storm blue", "electrical cyan"]
+    },
+    {
+      "id": "port",
+      "act": 2,
+      "climate_condition": "storm surge and controlled evacuation",
+      "story_function": "Shows the human cost of Helix's selective survival model.",
+      "gameplay_function": "Mixed combat, shield units, civilian aid, crane boss.",
+      "visual_palette": ["rust", "container red", "storm teal", "fuel orange"]
+    },
+    {
+      "id": "mountain_transit_hub",
+      "act": 2,
+      "climate_condition": "mountain storm transition",
+      "story_function": "Elena and Marcus articulate their conflict over deployment and control.",
+      "gameplay_function": "First free switching, combined rooms, preliminary evidence choice.",
+      "visual_palette": ["dark steel", "cold blue", "security red"]
+    },
+    {
+      "id": "final_thaw_station",
+      "act": 3,
+      "climate_condition": "snow, blizzard, extreme wind",
+      "story_function": "Evidence of Helix sabotage and final political choice.",
+      "gameplay_function": "Longest recombination level; all systems and optional researcher aid.",
+      "visual_palette": ["snow white", "ice blue", "wildfire haze orange", "metal grey"]
+    },
+    {
+      "id": "atmospheric_control_chamber",
+      "act": 3,
+      "climate_condition": "sealed relay interior under exterior storm pressure",
+      "story_function": "Aster activation and confrontation with Helix command logic.",
+      "gameplay_function": "Final cooperative boss and calibration sequence.",
+      "visual_palette": ["reactor blue", "warning amber", "deep black"]
+    }
+  ]
+}

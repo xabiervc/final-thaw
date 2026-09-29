@@ -1,0 +1,41 @@
+{
+  "factions": [
+    {
+      "id": "helix_consortium",
+      "name": "Helix Consortium",
+      "type": "infrastructure and energy coalition",
+      "public_message": "Continuity, prioritisation, protected zones, managed recovery.",
+      "private_strategy": "Use emergency authority and control of logistics to reserve viable systems for controllable or profitable populations.",
+      "resources": ["power grids", "food logistics", "private security", "surveillance", "emergency contracts"],
+      "narrative_function": "Primary institutional antagonist. Its power comes from infrastructure and policy, not magical omniscience.",
+      "writing_rules": [
+        "Do not portray Helix as all-knowing.",
+        "Show internal procedure and material constraints.",
+        "Defeating one commander must not automatically end Helix's influence."
+      ]
+    },
+    {
+      "id": "earth_systems_restoration_network",
+      "name": "Earth Systems Restoration Network",
+      "type": "dispersed research and maintenance network",
+      "public_message": "Stabilise conditions long enough for communities to recover.",
+      "resources": ["Aster research", "field notes", "maintenance knowledge", "relay access fragments"],
+      "narrative_function": "Shows that Aster is collaborative work, not the miracle of one genius.",
+      "status": "Dispersed; members are missing, dead, trapped, or communicating through incomplete records."
+    },
+    {
+      "id": "shelter_residents",
+      "name": "Shelter Residents",
+      "type": "local survivor community",
+      "narrative_function": "Makes civilian aid concrete. Includes organisers, families, maintenance workers, and people who disagree about trust and risk.",
+      "writing_rules": ["Never portray as a faceless crowd.", "Give optional-rescue characters agency and practical knowledge."]
+    },
+    {
+      "id": "port_evacuees",
+      "name": "Port Evacuees and Workers",
+      "type": "displaced civilians, dock workers, smugglers, and evacuation staff",
+      "narrative_function": "Shows selective evacuation and creates optional aid decisions.",
+      "writing_rules": ["They do not exist merely to wait for Marcus.", "Their actions can reveal routes, protect others, or preserve evidence."]
+    }
+  ]
+}

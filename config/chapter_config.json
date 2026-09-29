@@ -1,0 +1,25 @@
+{
+  "acts": [
+    {
+      "id": "act_1",
+      "title": "Separation",
+      "phases": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      "dramatic_question": "Can cooperation begin before trust exists?",
+      "act_turn": "Elena and Marcus escape together into toxic rain. They share a route, not trust."
+    },
+    {
+      "id": "act_2",
+      "title": "Cooperation",
+      "phases": [9, 10, 11, 12],
+      "dramatic_question": "Is saving the system enough if the system remains unjust?",
+      "act_turn": "The player learns Helix built its recovery authority through deliberate sabotage."
+    },
+    {
+      "id": "act_3",
+      "title": "The Final Thaw",
+      "phases": [13, 14, 15, 16],
+      "dramatic_question": "What does real recovery require beyond technical survival?",
+      "act_turn": "Aster activates; the ending reflects integrity, aid, safety, and evidence."
+    }
+  ]
+}

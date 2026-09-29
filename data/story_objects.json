@@ -1,0 +1,32 @@
+{
+  "objects": [
+    {
+      "id": "aster_protocol",
+      "name": "Aster Protocol",
+      "type": "atmospheric stabilisation method and field prototype",
+      "function": "Reduces a cascading atmospheric feedback loop when activated through Final Thaw Station.",
+      "limits": [
+        "Does not restore the previous climate instantly.",
+        "Does not solve political distribution by itself.",
+        "Requires intact enough prototype and functional relay systems."
+      ],
+      "associated_counter": "prototype_integrity",
+      "writing_rule": "Never describe it as magic or a universal cure."
+    },
+    {
+      "id": "helix_evidence_archive",
+      "name": "Helix Evidence Archive",
+      "type": "records of sabotage and suppressed Aster test results",
+      "function": "Creates final preserve/erase choice and determines whether public accountability is possible.",
+      "final_choice_values": ["preserve", "erase"],
+      "writing_rule": "Evidence has a cost in time and exposure, but must never make game completion impossible."
+    },
+    {
+      "id": "final_thaw_station",
+      "name": "Final Thaw Station",
+      "type": "mountain atmospheric relay",
+      "function": "Only operational relay capable of scaling Aster deployment.",
+      "writing_rule": "A physical place with maintenance history, workers, systems, and vulnerabilities; not a generic sci-fi superweapon."
+    }
+  ]
+}

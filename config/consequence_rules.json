@@ -1,0 +1,69 @@
+{
+  "counters": {
+    "elena_safety": {
+      "default": 3,
+      "min": 0,
+      "max": 3,
+      "visible_to_player": true,
+      "changes_only_when": [
+        "a clearly telegraphed joint-mission threat reaches Elena",
+        "a scripted direct harm event occurs"
+      ],
+      "must_not_change_for": [
+        "normal puzzle retry",
+        "ordinary combat retry",
+        "hidden timer",
+        "unexplained narrative decision"
+      ]
+    },
+    "prototype_integrity": {
+      "default": 3,
+      "min": 0,
+      "max": 3,
+      "visible_to_player": true,
+      "changes_only_when": [
+        "a major prototype hazard is explicitly failed",
+        "a scripted damage event reaches the Aster prototype"
+      ],
+      "must_not_change_for": [
+        "ordinary experimentation",
+        "minor collision",
+        "hidden RNG"
+      ]
+    },
+    "civilian_aid": {
+      "default": 0,
+      "min": 0,
+      "max": 10,
+      "visible_to_player": true,
+      "increments_only_once_per_objective": true,
+      "sources": [
+        "flooded_shelter_optional_rescue",
+        "port_optional_evacuee_assistance",
+        "final_thaw_station_researcher_assistance"
+      ]
+    }
+  },
+  "choices": {
+    "evidence_choice": {
+      "values": ["unset", "preserve", "erase"],
+      "initial_value": "unset",
+      "phase_12": "preliminary intention only",
+      "phase_13": "final choice; overwrites phase 12 value"
+    }
+  },
+  "endings": {
+    "fragile_thaw": {
+      "priority": 1,
+      "condition": "elena_safety <= 1 OR prototype_integrity <= 1"
+    },
+    "public_thaw": {
+      "priority": 2,
+      "condition": "civilian_aid >= 4 AND prototype_integrity >= 2 AND evidence_choice == preserve"
+    },
+    "guarded_thaw": {
+      "priority": 3,
+      "condition": "otherwise"
+    }
+  }
+}
