@@ -1,413 +1,261 @@
-# FINAL THAW — Game Design Document (Award-Quality Standard)
+# FINAL THAW — Game Design Document
+## Award-Winning Quality Standard
 
-## Vision Statement
+**Target**: Compete for The Game Awards (Game of the Year, Best Narrative, Games for Impact), D.I.C.E. Awards, BAFTA Games Awards, and Game Developers Choice Awards.
 
-**FINAL THAW** es un action-adventure isométrico para un jugador que alterna entre dos protagonistas: Elena Vast, científica atmosférica, y Marcus Reyes, ex oficial de policía. Juntos deben decidir si salvar un clima colapsado a costa de permitir que una corporación controle quién merece ser salvado.
-
-**Ambición:** Competir en The Game Awards, D.I.C.E. Awards, BAFTA Games Awards y Game Developers Choice Awards en categorías de Narrativa, Diseño de Juego, Dirección Artística, Audio y Accesibilidad.
-
-**Duración:** 5–7 horas de experiencia pulida, sin filler.
+**Vision**: A character-driven climate thriller that combines the narrative depth of *The Last of Us Part II*, the puzzle design of *Portal 2*, the combat flow of *Hades*, and the artistic vision of *Gris* + *Blade Runner 2049*.
 
 ---
 
-## Pilares de Diseño
+## Core Identity
 
-### 1. Narrativa Madura y Específica
-- Elena y Marcus son personas concretas, no arquetipos
-- Su relación evoluciona mediante acción compartida, no declaraciones
-- Helix es un sistema racional, no un villano de caricatura
-- El colapso climático es la condición, no el tema de cada línea
-- La elección final no tiene opción "buena": solo tradeoffs costosos
-
-### 2. Jugabilidad Intencional y Legible
-- Cada mecánica existe por razones temáticas y de diseño
-- Sistemas deterministas: nada aleatorio, todo aprendido
-- Puzzles de Elena son sistemas atmosféricos, no lock-and-key
-- Combate de Marcus es táctico, ambiental, con peso
-- El switching entre personajes crea estrategias emergentes
-
-### 3. Dirección Artística Funcional
-- Estética isométrica 2D/2.5D estilizada, no fotorrealista
-- Paleta de colores que refleja tono emocional y degradación ambiental
-- Siluetas de personajes instantáneamente legibles
-- UI diegética donde sea posible, minimalista siempre
-- Cada frame debe ser screenshot-worthy
-
-### 4. Excelencia Técnica
-- Godot 4.x optimizado para 60 FPS en hardware modesto
-- Zero tolerancia a softlocks, crashes o saves corruptos
-- Checkpoints que nunca atrapan al jugador
-- QA exhaustivo: cada camino, cada final, cada estado de contador
-
-### 5. Accesibilidad Integral
-- Input remapping completo
-- Tamaños de texto: pequeño, normal, grande, extra-grande
-- Paletas colorblind-safe e indicadores no basados en color
-- Reduced motion / camera shake toggle
-- Reduced weather intensity toggle
-- Descripciones de audio para información solo visual
-- Indicadores visuales para información solo auditiva
-- Sin inputs críticos de timing sin opciones de pausa/ralentización
-- Todos los diálogos skippables y legibles a ritmo del jugador
+**Genre**: Isometric action-adventure with dual protagonists
+**Platform**: PC (Windows, macOS, Linux), consoles (PS5, Xbox Series, Switch 2)
+**Engine**: Godot 4.x
+**Target Playtime**: 12-15 hours (main story), 20+ hours (completionist)
+**Rating**: M for Mature (violence, thematic intensity, language)
 
 ---
 
-## Personajes
+## Elevated Design Pillars
 
-### Elena Vast
-- **Edad:** 34
-- **Rol:** Científica atmosférica, creadora del Aster Protocol
-- **Arco:** De creer que los datos hablan por sí mismos a entender que las personas deciden qué escuchar
-- **Gameplay:** Puzzles de sistemas ambientales, terminales, observación, no combate
-- **Contador:** Elena Safety (0–3)
+### 1. Narrative Excellence (Best Narrative Contender)
 
-### Marcus Reyes
-- **Edad:** 42
-- **Rol:** Ex oficial de policía, ahora contractor independiente
-- **Arco:** De seguir órdenes a decidir qué tipo de persona quiere ser
-- **Gameplay:** Combate beat-'em-up táctico, ambiental, con armas improvisadas
-- **Contador:** No tiene contador propio, pero protege a Elena y a civiles
+**Character Depth**:
+- **Elena Vast**: Motivated by guilt over her sister Iris's death (climate refugee). Every puzzle is subconscious penance. Arc: from running from guilt → choosing what kind of world Iris would have wanted.
+- **Marcus Reyes**: Former cop who failed to save a child (Amara) during Collapse riots. Sees protecting Elena as redemption. Arc: from lone protector → learning to trust and cooperate.
+- **Dr. Selene Voss (Helix Commander)**: Elena's mentor, lost daughter in Mumbai heat dome. Believes benevolent dictatorship is necessary. Not a cartoon villain—tragic, understandable motivation.
 
-### Helix Dynamics (Antagonista Sistémico)
-- Corporación que desarrolló el Aster Protocol junto a Elena
-- Racional, no malvada: maximiza supervivencia bajo restricción de recursos
-- Controla distribución del protocolo para mantener poder
-- El Commander es un empleado competente, no un monstruo
+**Memory Fragments System**:
+- 24 optional collectibles (12 Elena, 12 Marcus) revealing backstory
+- Reward: unlocks special epilogue scene showing all characters at peace
+- Implementation: floating holographic fragments, distinct audio per character, counter in pause menu
 
----
+**Dynamic Dialogue**:
+- NPCs reference specific player choices (civilians saved, routes taken, evidence preserved)
+- Shelter rescues appear later in Final Thaw Station as resistance helpers
+- Port evacuees appear in epilogue if rescued, or abandoned graffiti if not
+- Combat style affects enemy behavior and NPC references ("protector" vs "executioner")
 
-## Estructura Narrativa
-
-### Act I: Separación (Fases 1–8)
-**Tema:** Desconfianza y supervivencia individual
-
-- Elena escapa con el prototipo Aster
-- Marcus persigue objetivos separados
-- Ambos descubren que Helix ocultó un método viable de estabilización
-- Primer encuentro: tregua temporal para escapar
-
-### Act II: Cooperación (Fases 9–12)
-**Tema:** Confianza construida mediante acción
-
-- Elena y Marcus viajan juntos hacia Final Thaw Station
-- Calibran el Aster Protocol
-- Descubren evidencia de que Helix fabricó el fallo del test
-- Elección preliminar: preservar o borrar evidencia
-
-### Act III: The Final Thaw (Fases 13–15)
-**Tema:** Tradeoffs y responsabilidad
-
-- Asalto a Final Thaw Station
-- Boss final coordinado entre Elena y Marcus
-- Elección final que sobrescribe la preliminar
-- Tres finales determinados por contadores y elección
+**Ending Cinematics**:
+- 90+ seconds each, fully voiced, unique musical themes
+- **Public Thaw**: Earth recovering, Elena at Iris's grave, Marcus at memorial, global montage of renewal
+- **Guarded Thaw**: Split screen—protected zones thriving, outside struggling, resistance forming
+- **Fragile Thaw**: Incomplete stabilization, communities adapting, Elena and Marcus as symbols of persistence
+- **Post-credits stinger**: 3 years later, Aster open-source, young scientist hints at sequel
 
 ---
 
-## Sistemas de Consecuencia
+### 2. Gameplay Innovation (Innovation / Best Design Contender)
 
-### Contadores Visibles
+**Puzzle Design (Portal 2 Standard)**:
+- Every puzzle teaches → tests → twists
+- No filler, no randomization, all solutions feel inevitable
+- Structure: introduce mechanic in safe space, combine with existing mechanics, add time pressure or stakes
 
-| Contador | Rango | Inicio | Efecto |
-|----------|-------|--------|--------|
-| Elena Safety | 0–3 | 3 | Determina si Elena sobrevive intacta |
-| Prototype Integrity | 0–3 | 3 | Determina eficacia del Aster Protocol |
-| Civilian Aid | 0–10 | 0 | Determina si comunidades reciben datos |
+**Combat Flow (Hades Standard)**:
+- Responsive, readable, meaningful build diversity
+- Environmental mastery rewarded
+- Three-hit combo with explicit attack data (startup, active, recovery, damage, knockback)
+- No random critical hits—all deterministic
 
-### Reglas de Diseño
+**Synergy Combos** (New Game+ feature):
+- Certain scenarios ONLY solvable with perfect coordination
+- Examples:
+  - Elena hacks shield generator while Marcus flank-attacks
+  - Marcus throws Elena across gaps to reach high terminals
+  - Elena controls lighting for Marcus stealth takedowns
+  - Marcus holds door while Elena calibrates under pressure
 
-1. **Siempre visibles:** El jugador nunca debe adivinar el estado
-2. **Siempre significativos:** Cada cambio debe tener consecuencia narrativa
-3. **Deterministas:** Nada aleatorio, todo telegrafiado y aprendido
-4. **Recuperables:** El jugador debe poder entender cómo recuperar si es posible
-5. **Accesibles:** Información disponible mediante múltiples canales (visual, audio, texto)
+**Character Switching**:
+- Not just mechanical but emotional—reflects growing trust
+- Inactive character is safe, documented behavior (no abuse exploits)
+- Camera follows active character, clear feedback if switching blocked
+- Late-game requires rapid, strategic switching under pressure
 
----
-
-## Finales
-
-### Fragile Thaw (Prioritario)
-**Condición:** `elena_safety <= 1` O `prototype_integrity <= 1`
-
-- El protocolo activa imperfectamente
-- Tormentas disminuyen pero no cesan
-- Elena está herida o el prototipo dañado
-- Recuperación es posible pero más difícil
-- **Tema:** Supervivencia con costo alto
-
-### Public Thaw
-**Condición:** `civilian_aid >= 4` Y `prototype_integrity >= 2` Y `evidence_choice == "preserve"`
-
-- El protocolo activa completamente
-- Helix pierde legitimidad pública
-- Comunidades reciben datos de estabilización
-- Recuperación comienza como recurso compartido
-- **Tema:** Victoria colectiva con transparencia
-
-### Guarded Thaw
-**Condición:** Todo lo demás
-
-- El protocolo activa
-- Clima se estabiliza
-- Helix controla acceso a tecnología
-- Zonas protegidas prosperan, otras permanecen vulnerables
-- **Tema:** Estabilidad con jerarquía
+**Adaptive Difficulty**:
+- AI learns player patterns (aggressive if passive, better cover usage if camping)
+- Optional "Hard Mode" in New Game+: faster AI, environmental hazards deal more damage, time limits on puzzles
+- Accessibility options never lock story content
 
 ---
 
-## Diseño de Niveles
+### 3. Art Direction Excellence (Best Art Direction Contender)
 
-### Principios Generales
+**Visual Identity**: *Gris* + *Ori* + *Blade Runner 2049*
+- Every frame is a painting
+- Color tells story, atmosphere is character
 
-1. **Legibilidad primero:** El jugador debe entender el espacio en 5 segundos
-2. **Rutas claras:** Camino principal siempre identificable
-3. **Opcionales significativos:** Rescates y secretos deben valer la pena
-4. **Checkpoints generosos:** Muerte no debe sentirse como castigo severo
-5. **Accesibilidad espacial:** Sin saltos frame-perfect, timing generoso
+**Character Palettes**:
+- **Elena**: Cool blues, cyans, clinical whites (science, isolation, hope through knowledge)
+- **Marcus**: Warm oranges, reds, earth tones (action, humanity, protection through strength)
+- **Joint scenes**: Balanced, harmonious palettes (cooperation, synthesis)
+- **Helix/Voss**: Purple, gold, sterile white (control, authority, corrupted idealism)
 
-### Estructura por Fase
+**Dynamic Systems**:
+- Weather: real-time particle density, wind direction affecting debris/vegetation, puddle reflections
+- Lighting: volumetric god rays as metaphor for hope (especially Final Thaw Station)
+- Character animation: idle animations reveal personality (Elena fidgets with prototype, Marcus scans perimeter)
+- Hit reactions: weight, impact, visual feedback
 
-| Fase | Tipo | Duración | Enemigos | Puzzles | Boss |
-|------|------|----------|----------|---------|------|
-| 2 | Puzzle (Elena) | 15 min | 0 | 4 salas | No |
-| 4 | Combate (Marcus) | 20 min | Scavengers, Enforcers | 0 | No |
-| 5 | Minijuego | 5 min | 0 | 1 puzzle UI | No |
-| 6 | Puzzle (Elena) | 25 min | 0 | Agua, bombas, rescates | No |
-| 7 | Combate (Marcus) | 30 min | Marksmen, Enforcers | 0 | Riot Commander |
-| 8 | Joint (Marcus controla) | 20 min | Scavengers | Terminales | No |
-| 9 | Minijuego | 10 min | 0 | Circuito | No |
-| 10 | Puzzle (Elena) | 30 min | 0 | Agua, plataformas, grúas | No |
-| 11 | Combate (Marcus) | 35 min | Shields, todos tipos | 0 | Transport Captain |
-| 12 | Joint (switching libre) | 25 min | Todos tipos | 3 rooms combinadas | No |
-| 13 | Joint (nivel largo) | 40 min | Todos tipos | Sistemas combinados | No |
-| 14 | Boss Final | 15 min | Commander + adds | 3 calibraciones | Sí |
-| 15 | Epílogo | 10 min | 0 | 0 | No |
+**UI Design**:
+- Diegetic: HUD appears as holographic projections from Aster device
+- Minimalist: only essential info, fades when not needed
+- Accessibility: scalable 75-200%, high contrast mode, colorblind-safe palettes
 
 ---
 
-## Diseño de Combate
+### 4. Audio Excellence (Best Score / Best Audio Contender)
 
-### Principios
+**Score**: *Journey* + *The Last of Us* + *Blade Runner 2049*
+- Emotional, atmospheric, thematically unified
+- **Leitmotif system**:
+  - Elena's theme: piano, strings, ascending (hope through science)
+  - Marcus's theme: percussion, brass, rhythmic (protection through action)
+  - Combined theme (Act III): both instruments, harmonized
 
-1. **Telegrafía clara:** Cada ataque enemigo debe ser legible antes de impactar
-2. **Contra-juego existente:** Cada enemigo tiene debilidad explotable
-3. **Sin daño inevitable:** El jugador siempre tiene opción de evitar daño
-4. **Ambiental significativo:** Objetos lanzables, cobertura, terreno importan
-5. **Determinista:** Nada de RNG en daño, timing o comportamiento
+**Adaptive Music**:
+- Combat layers: 0-3 enemies = minimal, 4-6 = full percussion, boss = choir + brass
+- Puzzle states: ambient → tension → resolution
+- Silence as tool: key narrative moments have NO music—only ambient wind, water, machinery
 
-### Tipos de Enemigo
+**Voice Acting**:
+- Full performance capture for main cast
+- Elena: Eastern European accent (Polish, Russian, Romanian), 28-35, restrained but deep
+- Marcus: North American (diverse casting), 35-45, gravelly but warm
+- Voss: Any ethnicity, 50-60, commanding without shouting, convinced not villainous
 
-| Enemigo | Salud | Daño | Velocidad | Debilidad |
-|---------|-------|------|-----------|-----------|
-| Scavenger | Baja | Bajo | Rápida | Flanqueo, throws |
-| Enforcer | Alta | Medio | Lenta | Flanco, ambiente |
-| Marksman | Baja | Alto | Media | Cobertura sólida |
-| Shield | Media | Medio | Lenta | Flanco, stun ambiental |
-
-### Boss Design
-
-**Riot Commander (Fase 7):**
-- Shield bash telegrafiado
-- Bloqueo frontal
-- Tear gas area denial
-- Punto débil trasero visible
-- Enrage en threshold de salud
-
-**Transport Captain (Fase 11):**
-- Ground slam con shockwave evitable
-- Cargo throw telegrafiado
-- Reinforcement call fijo
-- Interacción con grúa opcional pero útil
-
-**Helix Commander (Fase 14):**
-- Energy blast dodgeable
-- Shield barrier temporal
-- Reinforcement call con enemigos existentes
-- Reactor sabotage con counterplay claro
-- Tres ventanas de vulnerabilidad tras calibraciones de Elena
+**Sound Design**:
+- Enemy signatures: Scavenger = ragged breathing, Enforcer = mechanical servos, Marksman = electronic targeting beep, Shield = energy hum
+- Environmental: each location has distinct acoustic signature (echoey shelter, windy highway, sterile lab)
+- UI feedback: subtle, satisfying, non-repetitive
 
 ---
 
-## Diseño de Puzzles
+### 5. Accessibility (Games for Impact / BAFTA Accessibility Contender)
 
-### Principios
+**Visual**:
+- Colorblind modes (12 types: deuteranopia, protanopia, tritanopia, etc.)
+- UI scale 75-200%
+- High contrast mode
+- Reduced motion toggle
+- Reduced weather intensity
+- Screen reader support (all text, menus, dialogue)
 
-1. **Solución fija:** Nada aleatorizado, todo aprendido
-2. **Legible:** El jugador debe entender las reglas sin texto extenso
-3. **Reset rápido:** Fallo no debe costar más de 10–15 segundos
-4. **Accesible:** Sin timing frame-perfect, ventanas generosas
-5. **Temático:** Puzzles son sistemas atmosféricos, no abstractos
+**Audio**:
+- Subtitle size (small, medium, large, extra large)
+- Subtitle color (white, yellow, cyan, custom)
+- Subtitle background (none, dim, solid)
+- Speaker labels (on/off)
+- Visual sound cues (directional indicators for footsteps, gunfire, hazards)
+- Audio description for cinematics
 
-### Tipos de Puzzle
+**Motor**:
+- Full control remapping (keyboard, mouse, controller)
+- Toggle/hold options for all actions
+- Auto-run toggle
+- Aim assist levels (0-100%)
+- Slow-motion mode (0.5x, 0.75x, 1x)
+- One-handed control scheme
+- Camera sensitivity (0-100%)
 
-| Tipo | Ejemplo | Fases |
-|------|---------|-------|
-| Terminal sequence | Conectar power grid | 2, 6, 10 |
-| Moving platform | Timing de ciclo fijo | 2, 10 |
-| Water redirect | Válvulas y bombas | 6, 10 |
-| Circuit rotation | Reconectar path | 9 |
-| Power routing | Decidir qué recibe energía | 10, 13 |
-| Security disable | Timing bajo presión | 12, 14 |
-| Lighting control | Manipular visibilidad | 12 |
+**Cognitive**:
+- Puzzle hint system (3 levels: off, contextual, full solution)
+- Extended time limits toggle
+- Objective marker always-on option
+- Quest log with detailed steps
+- Tutorial skip/replay
+- Clear failure states with actionable feedback
 
----
-
-## UI/UX
-
-### Principios
-
-1. **Minimalista:** Solo información necesaria
-2. **Diegética:** Integrada en el mundo cuando sea posible
-3. **Legible:** Contraste alto, tamaños ajustables
-4. **Accesible:** Múltiples canales de información
-5. **Skippable:** Diálogos y cinemáticas nunca bloquean gameplay
-
-### HUD
-
-**Siempre visible:**
-- Elena Safety (icono + número 0–3)
-- Prototype Integrity (icono + número 0–3)
-- Civilian Aid (icono + número 0–10)
-- Active character indicator (cuando switching está disponible)
-
-**Contextual:**
-- Interaction prompt (nombre del objeto + botón)
-- Scan highlights (brillo en interactuables cercanos)
-- Enemy health bars (solo cuando en combate)
-- Timer de oxígeno (solo en sección específica)
-
-**Menús:**
-- Pausa con opciones de reanudar, ajustes, salir
-- Ajustes con: audio, vídeo, controles, accesibilidad
-- Mapa solo en niveles específicos (no en todos)
+**Implementation**:
+- Accessibility from day one, not post-launch patch
+- Test with disabled gamers during development
+- All critical story info via multiple channels (visual, audio, text)
+- No "you had to be there" moments
 
 ---
 
-## Accesibilidad
+### 6. Technical Excellence (Best Technical Contender)
 
-### Opciones Obligatorias
+**Performance**:
+- 60 FPS locked on minimum spec (GTX 1060 / RX 580, i5-8400 / Ryzen 5 2600, 16GB RAM)
+- <100ms input latency
+- Instant scene transitions (<2 seconds with animated wipes)
+- No visible loading screens
 
-**Visuales:**
-- Tamaño de texto: Pequeño, Normal, Grande, Extra-Grande
-- Modo daltonico: Paletas alternativas
-- Reduced weather intensity: Menos partículas de nieve/lluvia
-- High contrast UI: Bordes más marcados
+**Save System**:
+- Autosave every 30 seconds
+- Manual save anytime (except during cinematics)
+- Checkpoint save after major sections
+- Cloud save support (Steam, Epic, GOG)
+- Save file corruption protection with backup
+- Multiple save slots (at least 10)
 
-**Auditivas:**
-- Subtítulos: Siempre on, tamaño ajustable
-- Indicadores visuales para audio crítico
-- Audio descriptions toggle (si hay voz)
+**Polish**:
+- No bugs in release build (every interaction tested 100+ times)
+- Consistent frame pacing (no stuttering)
+- Graceful degradation on lower-end hardware
+- Built-in debug tools: level skip, god mode, puzzle solver, combat arena selector
 
-**Motoras:**
-- Input remapping completo
-- Toggle para mantener botón vs pulsar
-- Timing windows ajustables (Normal, Generoso, Muy Generoso)
-- Reduced camera shake
-
-**Cognitivas:**
-- Hint system opcional
-- Objective tracker siempre visible
-- Tutorial re-jugable desde menú
-- Sin secciones sin checkpoint por más de 5 minutos
-
-### Testing
-
-- Testear con jugadores discapacitados reales
-- Documentar todos los escenarios de accesibilidad en QA checklist
-- Nunca bloquear progreso detrás de barreras de accesibilidad
+**Analytics** (optional, privacy-respecting):
+- Track puzzle completion times
+- Death locations
+- Choice distribution
+- Average playtime
+- Used to inform patches, not monetization
 
 ---
 
-## Audio
+## Award-Specific Strategies
 
-### Principios
+### The Game Awards - Games for Impact
+- Partner with climate scientists (Dr. Katharine Hayhoe, Dr. Michael Mann) as advisors, credit prominently
+- Donate 10% of profits to climate charities (Cool Earth, Project Drawdown)
+- Optional "Climate Facts" terminal with real data, sources, solutions
 
-1. **Funcional:** Cada sonido debe informar gameplay
-2. **Atmosférico:** Música y ambiente refuerzan tono
-3. **Minimalista:** Silencio es herramienta válida
-4. **Accesible:** Información auditiva tiene equivalente visual
+### BAFTA - Original Property
+- Emphasize unique IP, no licensed content, no sequel
+- Cultural specificity: settings are global but specific (Andes, Arctic, Southeast Asia)
+- Research consultants for each region
 
-### Diseño Sonoro
+### GDC Choice - Innovation
+- Document novel mechanics (dual-protagonist switching, consequence system)
+- Submit GDC talk on dual-protagonist design, climate narrative, accessibility
 
-**Ambiente:**
-- Viento, tormenta, maquinaria: siempre presente pero no intrusivo
-- Cambios de estado (power on/off, water rising) tienen firma sonora clara
-
-**Combate:**
-- Cada ataque tiene sonido distintivo
-- Hit feedback claro pero no excesivo
-- Enemy telegraphs tienen audio cue
-
-**Música:**
-- Minimalista, ambiental
-- No domina escenas narrativas
-- Silencio en momentos clave
+### D.I.C.E. - Outstanding Character
+- Psychological profiles for Elena, Marcus, Voss
+- Voice actor collaboration, motion capture for subtle expressions
+- Supporting cast with believable ideologies
 
 ---
 
-## Rendimiento Técnico
+## Development Mantra
 
-### Objetivos
+> "Every frame, every line, every mechanic must earn its place. If it doesn't make the game better, cut it. If it makes the game good, ask if it could make it great."
 
-- **FPS:** 60 estables en hardware modesto (GTX 1050 / equivalente)
-- **Load times:** < 3 segundos entre niveles
-- **Save size:** < 100 KB por save
-- **Memory:** < 512 MB RAM en uso
-
-### Optimización
-
-- Usar Godot Profiler para identificar bottlenecks
-- Limitar partículas y efectos en secciones largas
-- Pooling de enemigos y proyectiles
-- Carga asíncrona de assets entre niveles
+**Replayability**: 3 endings, New Game+, collectibles (24 memory fragments), speedrun mode, developer commentary
+**Post-launch**: Free accessibility updates, photo mode, developer commentary, potential DLC (Marcus prequel, Elena's sister story)
 
 ---
 
-## QA y Release
+## Success Metrics
 
-### Checklist de Calidad
-
-**Antes de cada commit:**
-- [ ] No parser errors en Godot
-- [ ] No softlocks en nivel afectado
-- [ ] Save/load funciona después del cambio
-- [ ] Contadores se actualizan correctamente
-- [ ] Accesibilidad no está rota
-
-**Antes de release:**
-- [ ] Todos los finales alcanzables y probados
-- [ ] Todos los niveles completados sin bugs
-- [ ] Todos los enemigos y bosses probados
-- [ ] Todos los puzzles solubles y legibles
-- [ ] Todas las opciones de accesibilidad funcionales
-- [ ] Export a Windows probado y funcionando
-- [ ] Zero crashes en 10+ playthroughs completos
-
-### Documentación
-
-- `docs/qa_checklist.md`: Lista exhaustiva de tests
-- `docs/qa_results.md`: Resultados reales de testing
-- `docs/release_checklist.md`: Pasos de release
-- `README.md`: Instrucciones de instalación y ejecución
+| Metric | Target | Stretch |
+|--------|--------|---------|
+| Metacritic | 85+ | 90+ |
+| Steam Reviews | 90%+ Positive | 95%+ |
+| Award Nominations | 3+ | 8+ |
+| Award Wins | 1+ | 3+ |
+| Sales Year 1 | 500K+ | 2M+ |
+| Speedrun Any% | <45 min | <30 min |
+| 100% Completion | <8 hours | <5 hours |
 
 ---
 
-## Referencias de Calidad
+## Final Commitment
 
-Estudiar estos títulos como benchmark:
+FINAL THAW will not be "good for an indie game" or "impressive for a small team."
 
-**Narrativa:** What Remains of Edith Finch, Firewatch, Disco Elysium, The Last of Us Part II
-**Gameplay:** Hades, Celeste, Dead Cells, Return of the Obra Dinn
-**Arte:** Gris, Okami, Cuphead, Journey, Inside
-**Audio:** Hellblade: Senua's Sacrifice, The Last of Us Part II, Returnal
-**Accesibilidad:** The Last of Us Part II, Celeste, Forza Horizon 5
+It will be **one of the best games of the year**, period.
 
-**FINAL THAW debe ser digno de estar junto a estos títulos.**
-
----
-
-## Estándar Final
-
-Antes de release, preguntar: "¿Mostraría esto orgullosamente a los desarrolladores de [título de referencia]?"
-
-Si la respuesta es no, iterar hasta que sea sí.
+Every decision—from the first line of code to the final credits—will be made with that standard in mind.
