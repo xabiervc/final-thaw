@@ -2,288 +2,171 @@
 
 ## Purpose
 
-This document declares:
-1. **Which documents are NORMATIVE** (must be followed for implementation).
-2. **Which documents are ARCHIVED** (historical reference only, do not use).
-3. **How to resolve conflicts** when two documents disagree.
-4. **Who can approve changes** to normative documents.
-5. **How to update traceability** when documents change.
-6. **Which version is frozen** for implementation start.
-7. **Which decisions are deliberately open** for prototyping (not structural).
+This document declares **WHICH DOCUMENT IS NORMATIVE** for each area, which documents are historical/informative, what happens if two documents disagree, who can approve changes, how to update traceability, and what decisions are closed vs. open for prototype validation.
+
+This eliminates ambiguity and prevents "document conflict" during implementation.
 
 ---
 
-## 1. Normative Documents (Must Follow)
+## Normative Documents (Source of Truth)
 
-These documents are **NORMATIVE**. They define the design. Implementation MUST follow these documents. If implementation deviates, it must be justified and approved.
-
-### Category 1: Vision & Identity
-
-| Document | Version | Frozen? | Owner |
-|----------|---------|---------|-------|
-| [`docs/VISION.md`](VISION.md) | 1.0 | ✅ Yes (frozen for implementation) | Lead Designer |
-| [`docs/non_negotiable_pillars.md`](non_negotiable_pillars.md) | 1.0 | ✅ Yes | Lead Designer |
-
-### Category 2: Core Gameplay
-
-| Document | Version | Frozen? | Owner |
-|----------|---------|---------|-------|
-| [`docs/CORE_LOOP.md`](CORE_LOOP.md) | 1.0 | ✅ Yes | Lead Designer |
-| [`docs/SYSTEMS_SPEC.md`](SYSTEMS_SPEC.md) | 1.0 | ✅ Yes | Lead Programmer |
-| [`docs/LEVEL_STRUCTURE.md`](LEVEL_STRUCTURE.md) | 1.0 | ✅ Yes | Level Designer |
-| [`docs/PROGRESSION_SPEC.md`](PROGRESSION_SPEC.md) | 1.0 | ✅ Yes | Lead Designer |
-
-### Category 3: Narrative
-
-| Document | Version | Frozen? | Owner |
-|----------|---------|---------|-------|
-| [`docs/narrative_complete.md`](narrative_complete.md) | 1.0 | ✅ Yes | Lead Writer |
-| [`docs/NARRATIVE_STATE_MAP.md`](NARRATIVE_STATE_MAP.md) | 1.0 | ✅ Yes | Lead Writer |
-| [`docs/SURVIVAL_SYSTEMS.md`](SURVIVAL_SYSTEMS.md) | 1.0 | ✅ Yes | Lead Designer |
-
-### Category 4: Accessibility
-
-| Document | Version | Frozen? | Owner |
-|----------|---------|---------|-------|
-| [`docs/ACCESSIBILITY_SPEC.md`](ACCESSIBILITY_SPEC.md) | 1.0 | ✅ Yes | Accessibility Lead |
-| [`docs/accessibility_requirements.md`](accessibility_requirements.md) | 1.0 | ✅ Yes | Accessibility Lead |
-
-### Category 5: Technical
-
-| Document | Version | Frozen? | Owner |
-|----------|---------|---------|-------|
-| [`docs/technical_quality.md`](technical_quality.md) | 1.0 | ✅ Yes | Lead Programmer |
-| [`docs/TECHNICAL_RISK_REGISTER.md`](TECHNICAL_RISK_REGISTER.md) | 1.0 | ✅ Yes | Lead Programmer |
-
-### Category 6: Production
-
-| Document | Version | Frozen? | Owner |
-|----------|---------|---------|-------|
-| [`docs/VERTICAL_SLICE_PLAN.md`](VERTICAL_SLICE_PLAN.md) | 1.0 | ✅ Yes | Producer |
-| [`docs/TRACEABILITY_MATRIX.md`](TRACEABILITY_MATRIX.md) | 1.0 | ✅ Yes | QA Lead |
+| Area | Normative Document | Version | Status |
+|------|-------------------|---------|--------|
+| **Vision & Identity** | `docs/VISION.md` | 1.0 | ✅ NORMATIVE (player fantasy, core emotion, pillars, ANTI-PILLARS, audience, differentiation, scope, duration) |
+| **Core Gameplay Loop** | `docs/CORE_LOOP.md` | 1.0 | ✅ NORMATIVE (minute-by-minute gameplay, decision frequency, metrics) |
+| **Systems Specification** | `docs/SYSTEMS_SPEC.md` | 1.0 | ✅ NORMATIVE (9 systems: temperature, resources, shelter, displacement, threats, health, inventory, time, consequences—with inputs, outputs, limits, priorities, interactions) |
+| **Level Structure** | `docs/LEVEL_STRUCTURE.md` | 1.0 | ✅ NORMATIVE (16 phases, 3 acts, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm) |
+| **Survival Systems** | `docs/SURVIVAL_SYSTEMS.md` | 1.0 | ✅ NORMATIVE (3 variables: elena_safety, prototype_integrity, civilian_aid—with thresholds for endings) |
+| **Exploration Flow** | `docs/EXPLORATION_FLOW.md` | 1.0 | ✅ NORMATIVE (phase structure, exploration metrics, rewards) |
+| **Narrative States** | `docs/NARRATIVE_STATE_MAP.md` | 1.0 | ✅ NORMATIVE (global states, story flags, state transitions) |
+| **Progression** | `docs/PROGRESSION_SPEC.md` | 1.0 | ✅ NORMATIVE (campaign order, skill progression, NG+ unlocks) |
+| **Accessibility** | `docs/ACCESSIBILITY_SPEC.md` | 1.0 | ✅ NORMATIVE (38 testable requirements, 12 categories—ALL must PASS for shippable) |
+| **Vertical Slice** | `docs/VERTICAL_SLICE_PLAN.md` | 1.0 | ✅ NORMATIVE (25-minute Phase 6 spec, success criteria, metrics) |
+| **Technical Risks** | `docs/TECHNICAL_RISK_REGISTER.md` | 1.0 | ✅ NORMATIVE (8 risks with probability, impact, mitigation, owner, triggers) |
+| **Traceability** | `docs/TRACEABILITY_MATRIX.md` | 1.0 | ✅ NORMATIVE (pillar → mechanic → scene → variable → UI → test → acceptance) |
+| **Narrative (Full)** | `docs/narrative_complete.md` | 1.0 | ✅ NORMATIVE (full arc, characters, states, consequences) |
+| **Technical Quality** | `docs/technical_quality.md` | 1.0 | ✅ NORMATIVE (platforms, performance, memory, save, telemetry) |
+| **Accessibility (Full)** | `docs/accessibility_requirements.md` | 1.0 | ✅ NORMATIVE (35 KB, 38 requirements with tests) |
 
 ---
 
-## 2. Archived Documents (Do Not Use)
+## Historical/Informative Documents
 
-These documents are **ARCHIVED**. They are historical reference only. DO NOT use them for implementation. If a document is not listed as "Normative" above, it is archived by default.
-
-### Archived Quality Enhancement Documents
-
-| Document | Reason for Archival | Superseded By |
-|----------|---------------------|---------------|
-| `docs/quality_enhancements.md` | Working draft, content merged | `docs/CORE_LOOP.md` |
-| `docs/premium_quality_enhancements.md` | Working draft, content merged | `docs/CORE_LOOP.md` |
-| `docs/gameplay_technical_enhancements.md` | Working draft, content merged | `docs/CORE_LOOP.md` + `docs/SYSTEMS_SPEC.md` |
-| `docs/quality_vision.md` | Working draft, content merged | `docs/VISION.md` |
-| `docs/award_vision.md` | Working draft, content merged | `docs/VISION.md` |
-| `docs/quality_integration_summary.md` | Working draft, content merged | `docs/TRACEABILITY_MATRIX.md` |
-| `docs/narrative_enhancements.md` | Working draft, content merged | `docs/narrative_complete.md` |
-| `docs/narrative_design_complete.md` | Working draft, content merged | `docs/narrative_complete.md` |
-| `docs/narrative_documentation.md` | Working draft, content merged | `docs/narrative_complete.md` |
-| `docs/technical_excellence.md` | Working draft, content merged | `docs/technical_quality.md` |
-| `docs/accessibility_implementation.md` | Working draft, content merged | `docs/ACCESSIBILITY_SPEC.md` |
-
-### Archived Summary Documents
-
-| Document | Reason for Archival | Superseded By |
-|----------|---------------------|---------------|
-| `docs/phase_prompts_update_guide.md` | Working draft, content merged | `prompts/AWARD_LEVEL_README.md` |
-| `docs/ALL_PHASES_AWARD_LEVEL_SUMMARY.md` | Working draft, content merged | `prompts/AWARD_LEVEL_README.md` |
-| `docs/critic_response_executive_summary.md` | Working draft, content merged | `docs/COMPLETION_VERIFICATION.md` |
-| `docs/award_checklist.md` | Working draft, content merged | `docs/COMPLETION_VERIFICATION.md` |
-
-### Redundant Versions
-
-| Document | Reason for Archival | Superseded By |
-|----------|---------------------|---------------|
-| `docs/SOURCE_OF_TRUTH.md` | Redundant with `DESIGN_AUTHORITY.md` | `docs/DESIGN_AUTHORITY.md` (this document) |
-| `docs/COMPLETION_VERIFICATION.md` | Historical snapshot | `docs/COMPLETION_VERIFICATION.md` (kept for reference, not normative) |
-| `docs/PREPRODUCTION_INDEX.md` | Historical snapshot | `docs/CRITICAL_DOCS_INDEX.md` (active index) |
+| Document | Purpose | Status |
+|----------|---------|--------|
+| `docs/award_vision.md` | Early vision document (superseded by `VISION.md`) | ℹ️ INFORMATIVE (use `VISION.md` for normative vision) |
+| `docs/core_gameplay_loop.md` | Extended core loop spec (complements `CORE_LOOP.md`) | ℹ️ INFORMATIVE (use `CORE_LOOP.md` for normative loop) |
+| `docs/PREPRODUCTION_INDEX.md` | Full documentation index (superseded by `CRITICAL_DOCS_INDEX.md`) | ℹ️ INFORMATIVE (use `CRITICAL_DOCS_INDEX.md` for current index) |
+| `docs/SOURCE_OF_TRUTH.md` | Declares definitive versions (superseded by `DESIGN_AUTHORITY.md`) | ℹ️ INFORMATIVE (use `DESIGN_AUTHORITY.md` for normative authority) |
+| `GDD.md` | High-level game design (superseded by normative docs above) | ℹ️ INFORMATIVE (use specific normative docs for each area) |
 
 ---
 
-## 3. Conflict Resolution
+## Conflict Resolution
 
-### When Two Documents Disagree
+### What Happens If Two Documents Disagree?
 
-**Priority Order** (highest to lowest):
+**Rule 1**: Normative documents ALWAYS override historical/informative documents.
 
-1. **DESIGN_AUTHORITY.md** (this document) — Defines which documents are normative
-2. **VISION.md** — Core identity, pillars, anti-pillars
-3. **non_negotiable_pillars.md** — 4 pillars with design tests
-4. **CORE_LOOP.md** — Core gameplay loop
-5. **SYSTEMS_SPEC.md** — 9 survival systems
-6. **LEVEL_STRUCTURE.md** — Zone structure
-7. **PROGRESSION_SPEC.md** — Campaign progression
-8. **narrative_complete.md** — Full narrative
-9. **ACCESSIBILITY_SPEC.md** — 38 requirements
-10. **technical_quality.md** — Technical standards
-11. **VERTICAL_SLICE_PLAN.md** — Vertical slice spec
-12. **TRACEABILITY_MATRIX.md** — Pillar → test traceability
+**Example**: If `award_vision.md` says "duration: 10-12 hours" but `VISION.md` says "duration: 13-15 hours", use `VISION.md` (normative).
 
-**Rule**: If a lower-priority document conflicts with a higher-priority document, the HIGHER-PRIORITY document wins.
+**Rule 2**: If two normative documents disagree, the MORE SPECIFIC document wins.
 
-**Example**: If `LEVEL_STRUCTURE.md` says "Phase 6 has 5 zones" but `VERTICAL_SLICE_PLAN.md` says "Phase 6 has 8 zones", `LEVEL_STRUCTURE.md` wins (priority 6 > priority 11).
+**Example**: If `SYSTEMS_SPEC.md` says "health pack: +25 health" but `SURVIVAL_SYSTEMS.md` says "health pack: +30 health", use `SYSTEMS_SPEC.md` (more specific to systems).
 
-### How to Report a Conflict
+**Rule 3**: If two normative documents of equal specificity disagree, escalate to Lead Designer.
 
-1. **Open GitHub Issue** with title: `[CONFLICT] Document A vs. Document B: [brief description]`
-2. **Tag**: Lead Designer, Owner of Document A, Owner of Document B
-3. **Describe**: What is the conflict? Which documents disagree? What is the impact?
-4. **Wait for Resolution**: Lead Designer will review, consult owners, and update documents within 48 hours
-5. **Update Traceability**: If conflict resolution changes design, update `TRACEABILITY_MATRIX.md` accordingly
+**Example**: If `CORE_LOOP.md` and `LEVEL_STRUCTURE.md` both make conflicting claims about phase duration, Lead Designer decides.
 
 ---
 
-## 4. Change Approval Process
+## Change Approval Process
 
 ### Who Can Approve Changes?
 
-| Document Type | Approver | Backup Approver |
-|---------------|----------|-----------------|
-| Vision & Identity (VISION.md, pillars) | Lead Designer | Producer |
-| Core Gameplay (CORE_LOOP, SYSTEMS, LEVEL_STRUCTURE, PROGRESSION) | Lead Designer | Lead Programmer |
-| Narrative (narrative_complete, NARRATIVE_STATE_MAP, SURVIVAL_SYSTEMS) | Lead Writer | Lead Designer |
-| Accessibility (ACCESSIBILITY_SPEC, accessibility_requirements) | Accessibility Lead | Producer |
-| Technical (technical_quality, TECHNICAL_RISK_REGISTER) | Lead Programmer | Producer |
-| Production (VERTICAL_SLICE_PLAN, TRACEABILITY_MATRIX) | Producer | Lead Designer |
+| Change Type | Approver | Process |
+|-------------|----------|---------|
+| **Minor edit** (typo, clarification, no mechanical change) | Author of document | Edit directly, commit with message: `docs: [document] minor edit (typo/clarification)` |
+| **Mechanical change** (alters gameplay, systems, narrative, accessibility) | Lead Designer + affected discipline lead | 1. Create PR, 2. Tag Lead Designer + affected lead, 3. Wait for approval, 4. Merge, 5. Update traceability if needed |
+| **Normative change** (alters normative document: VISION, CORE_LOOP, SYSTEMS_SPEC, LEVEL_STRUCTURE, etc.) | Lead Designer + Producer | 1. Create PR, 2. Tag Lead Designer + Producer, 3. Wait for approval, 4. Merge, 5. Update traceability, 6. Update this document if normative list changes |
+| **Anti-pillar change** (adds/removes ANTI-PILLAR) | Lead Designer + Producer + entire team | 1. Create PR, 2. Tag Lead Designer + Producer, 3. Team discussion (48h minimum), 4. Unanimous approval required, 5. Merge, 6. Update traceability, 7. Update this document |
 
-### Change Process
+### How to Request a Change
 
-1. **Propose Change**: Open GitHub Issue with title: `[CHANGE] Document X: [brief description]`
-2. **Describe**: What is changing? Why? What is the impact on other documents, traceability, implementation?
-3. **Review**: Approver reviews change within 48 hours
-4. **Approve/Reject**: Approver approves (merge) or rejects (close with explanation)
-5. **Update Traceability**: If change affects traceability, update `TRACEABILITY_MATRIX.md` BEFORE merging
-6. **Announce**: Post change summary in team chat (Discord, Slack, etc.)
-
-### Frozen Documents (Cannot Change Without Producer Approval)
-
-**Frozen for Implementation**:
-- `VISION.md` (core identity cannot change mid-implementation)
-- `CORE_LOOP.md` (core gameplay cannot change mid-implementation)
-- `SYSTEMS_SPEC.md` (systems cannot change mid-implementation)
-- `LEVEL_STRUCTURE.md` (level structure cannot change mid-implementation)
-- `VERTICAL_SLICE_PLAN.md` (vertical slice scope cannot change mid-implementation)
-
-**To Unfreeze**: Producer must approve, Lead Designer must update all affected documents, QA Lead must update traceability.
+1. **Create issue**: `docs: [document] change request (brief description)`
+2. **Describe change**: What, why, impact on other documents, impact on traceability
+3. **Tag approvers**: Lead Designer + affected discipline lead
+4. **Wait for approval**: Do NOT merge until approved
+5. **Update traceability**: If change affects pillar → mechanic → scene → variable → UI → test → acceptance, update `TRACEABILITY_MATRIX.md`
+6. **Update this document**: If change adds/removes normative document, update `DESIGN_AUTHORITY.md`
 
 ---
 
-## 5. Traceability Updates
+## Traceability Updates
 
-### When to Update Traceability
+### When to Update Traceability?
 
-**Update `TRACEABILITY_MATRIX.md` when**:
-- A pillar changes (VISION.md, non_negotiable_pillars.md)
+Update `TRACEABILITY_MATRIX.md` when:
+- A pillar changes (VISION.md)
 - A mechanic changes (CORE_LOOP.md, SYSTEMS_SPEC.md)
 - A scene changes (LEVEL_STRUCTURE.md, narrative_complete.md)
-- A variable changes (SURVIVAL_SYSTEMS.md, NARRATIVE_STATE_MAP.md)
-- A UI element changes (ACCESSIBILITY_SPEC.md)
-- A test changes (TRACEABILITY_MATRIX.md itself)
-- An acceptance criterion changes (TRACEABILITY_MATRIX.md itself)
+- A variable changes (SURVIVAL_SYSTEMS.md, SYSTEMS_SPEC.md)
+- A UI element changes (ACCESSIBILITY_SPEC.md, technical_quality.md)
+- A test changes (test files, accessibility_requirements.md)
+- An acceptance criterion changes (VERTICAL_SLICE_PLAN.md, TECHNICAL_RISK_REGISTER.md)
 
-**Do NOT update traceability when**:
-- Fixing typos, grammar, formatting (no design impact)
-- Adding examples, clarifications (no design change)
-- Reorganizing sections (no content change)
-
-### How to Update Traceability
+### How to Update Traceability?
 
 1. **Open `TRACEABILITY_MATRIX.md`**
-2. **Find affected row** (pillar, mechanic, scene, variable, UI, test, acceptance)
-3. **Update row** to reflect change
-4. **Add changelog entry** at bottom of file: `YYYY-MM-DD: Updated [row] due to [change]`
-5. **Sign off**: QA Lead approves traceability update
+2. **Find affected row**: Pillar → Mechanic → Scene → Variable → UI → Test → Acceptance
+3. **Update row**: Change affected cells, keep format consistent
+4. **Update summary table**: Update totals at bottom (mechanics, scenes, variables, UI, tests, acceptance criteria)
+5. **Commit**: `docs: TRACEABILITY_MATRIX.md update (reason: [change description])`
+6. **Tag QA Lead**: Ensure tests still match acceptance criteria
 
 ---
 
-## 6. Frozen Version for Implementation
+## Decisions Closed vs. Open for Prototype Validation
 
-### Implementation Start Version
+### Decisions CLOSED (Cannot Change Without Normative Approval)
 
-**Frozen Version**: All normative documents at **v1.0** (as of September 30, 2026).
-
-**Frozen Documents** (cannot change without Producer approval):
-- `VISION.md` v1.0
-- `CORE_LOOP.md` v1.0
-- `SYSTEMS_SPEC.md` v1.0
-- `LEVEL_STRUCTURE.md` v1.0
-- `PROGRESSION_SPEC.md` v1.0
-- `narrative_complete.md` v1.0
-- `ACCESSIBILITY_SPEC.md` v1.0
-- `technical_quality.md` v1.0
-- `VERTICAL_SLICE_PLAN.md` v1.0
-- `TRACEABILITY_MATRIX.md` v1.0
-
-**Unfrozen Documents** (can change with Owner approval):
-- `TECHNICAL_RISK_REGISTER.md` (risks may evolve during implementation)
-- `SURVIVAL_SYSTEMS.md` (may add details as implementation progresses)
-- `NARRATIVE_STATE_MAP.md` (may add flags as implementation progresses)
-- `accessibility_requirements.md` (may add tests as implementation progresses)
+| Decision | Document | Rationale |
+|----------|----------|-----------|
+| **Player fantasy**: "I am the scientist and the soldier" | `VISION.md` | Core identity, changing this changes the game |
+| **Core emotion**: "Weighted hope" (not hopelessness, not despair) | `VISION.md` | Core emotional target, changing this changes the experience |
+| **4 Pillars**: Choices matter, environment masterable, dual-protagonist, failure teaches | `VISION.md` | Core design principles, changing these breaks the game |
+| **4 ANTI-PILLARS**: No survival porn, no white savior, no techno-utopianism, no randomness | `VISION.md` | Explicit boundaries, violating these breaks trust with players |
+| **3 Endings**: Public Thaw, Guarded Thaw, Fragile Thaw (with explicit thresholds) | `SURVIVAL_SYSTEMS.md` | Core narrative structure, changing this breaks the arc |
+| **9 Systems**: Temperature, resources, shelter, displacement, threats, health, inventory, time, consequences | `SYSTEMS_SPEC.md` | Core gameplay systems, changing these breaks mechanics |
+| **16 Phases, 3 Acts**: Fixed campaign structure | `LEVEL_STRUCTURE.md` | Core progression, changing this breaks pacing |
+| **38 Accessibility Requirements**: ALL must PASS for shippable | `ACCESSIBILITY_SPEC.md` | Non-negotiable commitment to accessibility |
+| **60 FPS, <2s loads, ≤5-8 GB memory**: Technical budgets | `technical_quality.md` | Non-negotiable performance targets |
 
 ---
 
-## 7. Deliberately Open Decisions (For Prototyping)
+### Decisions OPEN for Prototype Validation (Can Change Based on Playtest Data)
 
-### What Is NOT Frozen (Can Be Validated via Prototype)
+| Decision | Document | Hypothesis | Validation Method |
+|----------|----------|------------|-------------------|
+| **Health pack value**: +25 health (could be +20 or +30) | `SYSTEMS_SPEC.md` | +25 is generous but not OP | Playtest Phase 6, measure health usage, adjust if players never use or always full |
+| **Aster charges per level**: 3 (could be 2 or 4) | `SYSTEMS_SPEC.md` | 3 is enough for meaningful choices | Playtest Phase 9-10, measure charge usage, adjust if players always/never use |
+| **Oxygen timer**: 60s (could be 45s or 90s) | `SYSTEMS_SPEC.md` | 60s is generous (most finish in 30-40s) | Playtest Phase 6 oxygen section, measure completion times, adjust if >20% fail |
+| **Checkpoint spacing**: ≤5 min (could be ≤3 min or ≤7 min) | `LEVEL_STRUCTURE.md` | ≤5 min is fair (not too punishing, not too easy) | Playtest all phases, measure death frequency, adjust if players complain about repetition |
+| **Enemy damage**: 10-50 per hit (could be 5-40 or 15-60) | `SYSTEMS_SPEC.md` | 10-50 is challenging but fair | Playtest combat arenas, measure death frequency, adjust if players die too fast or too slow |
+| **Run speed**: 320 pixels/s (could be 280 or 360) | `SYSTEMS_SPEC.md` | 320 is agile but not too fast for puzzles | Playtest puzzle + combat sections, measure completion times, adjust if players feel too slow or too fast |
+| **Vertical slice duration**: 20-30 min (could be 15-25 or 25-35) | `VERTICAL_SLICE_PLAN.md` | 20-30 min is ideal for first impression | Playtest Phase 6 with 20+ players, measure completion times, adjust scope if >30 min or <15 min |
 
-**Gameplay Feel**:
-- Exact movement speed (300 px/s vs. 320 px/s) — validate via prototype
-- Exact combo timing (5-frame startup vs. 8-frame) — validate via prototype
-- Exact hazard damage (10 vs. 15) — validate via prototype
-- Exact health pack heal (+25 vs. +30) — validate via prototype
+**Key Principle**: Closed decisions are STRUCTURAL (vision, pillars, systems, campaign). Open decisions are BALANCE/TUNING (numbers, timings, values) that can be validated through playtesting.
 
-**Balance**:
-- Enemy health values (50 vs. 75 for Scavenger) — validate via playtest
-- Timer durations (60s vs. 90s for oxygen) — validate via playtest
-- Checkpoint spacing (3 min vs. 5 min) — validate via playtest
+---
 
-**Visual/Audio**:
-- Exact color values (hazard telegraph color) — validate via artist
-- Exact sound volumes (telegraph sound ramp-up) — validate via audio engineer
-- Exact camera shake amplitude (2px vs. 3px) — validate via playtest
+## MUST_FIX_BEFORE_IMPLEMENTATION
 
-**Performance**:
-- Exact FPS target (60 vs. 58 in complex scenes) — validate via profiling
-- Exact memory budget (5 GB vs. 6 GB peak) — validate via profiling
-- Exact load time (2s vs. 2.5s) — validate via profiling
+### Current List (Empty = All Structural Decisions Closed)
 
-### What IS Frozen (Cannot Change via Prototyping)
+**Status**: ✅ EMPTY. All structural decisions are closed. Only balance/tuning decisions remain open (to be validated through prototyping).
 
-**Core Identity**:
-- Player fantasy (scientist + protector, not superhero)
-- Core emotion (weighted hope, not power fantasy)
-- Pillars (Choices Matter, Environment Masterable, Dual-Protagonist, Failure Teaches)
-- Anti-pillars (no randomness, no illusion of choice, no interchangeable protagonists)
+**Justification**: 
+- Vision is defined (player fantasy, core emotion, pillars, ANTI-PILLARS, audience, differentiation, scope, duration)
+- Core loop is defined (minute-by-minute, decision frequency, metrics)
+- Systems are defined (9 systems with inputs, outputs, limits, priorities, interactions)
+- Level structure is defined (16 phases, 3 acts, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm)
+- Accessibility is defined (38 testable requirements, ALL must PASS)
+- Technical budgets are defined (60 FPS, <2s loads, ≤5-8 GB memory)
+- Traceability is complete (pillar → mechanic → scene → variable → UI → test → acceptance)
 
-**Systems**:
-- 9 survival systems (Temperature, Resources, Shelter, Displacement, Threats, Health, Inventory, Time, Consequences)
-- Consequence variables (Elena Safety, Prototype Integrity, Civilian Aid)
-- Ending eligibility thresholds (≤1 Safety/Integrity → Fragile, ≥4 Aid + preserve → Public)
-
-**Structure**:
-- 3 acts, 16 phases
-- 13-15 hours (novice), 8-10 hours (competent), 5-6 hours (expert)
-- 32 zones, 30 checkpoints, 6 shortcuts, 30 decision points
+**Remaining Uncertainties**: All remaining uncertainties are PROTOTYPABLE (balance, tuning, feel). No structural uncertainties remain.
 
 ---
 
 ## Sign-Off
 
-**Lead Designer**: [ ] I approve this Design Authority document. I will enforce normative documents, archive redundant versions, and approve/reject changes per this process.
-
-**Lead Programmer**: [ ] I approve this Design Authority document. I will implement per normative documents, report conflicts, and update traceability when systems change.
-
-**Lead Writer**: [ ] I approve this Design Authority document. I will write narrative per normative documents, report conflicts, and update traceability when narrative changes.
-
-**Accessibility Lead**: [ ] I approve this Design Authority document. I will test accessibility per normative documents, report conflicts, and update traceability when accessibility changes.
-
-**QA Lead**: [ ] I approve this Design Authority document. I will test per normative documents, update traceability when tests change, and verify all changes are traced.
-
-**Producer**: [ ] I approve this Design Authority document. I will enforce frozen documents, approve unfreezing only when necessary, and ensure change process is followed.
+**Lead Designer**: [ ] I approve this as the authoritative source for design decisions
+**Lead Programmer**: [ ] I understand which documents are normative and will implement accordingly
+**Lead Writer**: [ ] I understand which documents are normative and will write narrative accordingly
+**Accessibility Lead**: [ ] I understand 38 requirements are non-negotiable (ALL must PASS)
+**QA Lead**: [ ] I understand which documents define acceptance criteria for tests
+**Producer**: [ ] I approve this governance structure and will enforce it
 
 **Date**: September 30, 2026
-
-**Status**: ✅ DESIGN AUTHORITY COMPLETE. NORMATIVE DOCUMENTS DECLARED. ARCHIVED DOCUMENTS MARKED. CONFLICT RESOLUTION DEFINED. CHANGE APPROVAL PROCESS DEFINED. TRACEABILITY UPDATE PROCESS DEFINED. FROZEN VERSION DECLARED. DELIBERATELY OPEN DECISIONS DECLARED.
+**Status**: ✅ DESIGN AUTHORITY COMPLETE. NORMATIVE DOCUMENTS DECLARED. CONFLICT RESOLUTION DEFINED. CHANGE APPROVAL PROCESS CLEAR. TRACEABILITY UPDATES SPECIFIED. CLOSED VS. OPEN DECISIONS SEPARATED. MUST_FIX LIST EMPTY.
