@@ -6,6 +6,8 @@ This document declares **WHICH DOCUMENT IS NORMATIVE** for each area, which docu
 
 This eliminates ambiguity and prevents "document conflict" during implementation.
 
+**Relationship to SOURCE_OF_TRUTH.md**: This document SUPERSEDES `SOURCE_OF_TRUTH.md`. Use this as the authoritative source for normative documents. `SOURCE_OF_TRUTH.md` is archived for historical reference.
+
 ---
 
 ## Normative Documents (Source of Truth)
@@ -27,18 +29,19 @@ This eliminates ambiguity and prevents "document conflict" during implementation
 | **Narrative (Full)** | `docs/narrative_complete.md` | 1.0 | ✅ NORMATIVE (full arc, characters, states, consequences) |
 | **Technical Quality** | `docs/technical_quality.md` | 1.0 | ✅ NORMATIVE (platforms, performance, memory, save, telemetry) |
 | **Accessibility (Full)** | `docs/accessibility_requirements.md` | 1.0 | ✅ NORMATIVE (35 KB, 38 requirements with tests) |
+| **Design Authority** | `docs/DESIGN_AUTHORITY.md` | 1.1 | ✅ NORMATIVE (this document—governance, conflict resolution, change approval) |
 
 ---
 
-## Historical/Informative Documents
+## Historical/Informative Documents (Archived/Superseded)
 
-| Document | Purpose | Status |
-|----------|---------|--------|
-| `docs/award_vision.md` | Early vision document (superseded by `VISION.md`) | ℹ️ INFORMATIVE (use `VISION.md` for normative vision) |
-| `docs/core_gameplay_loop.md` | Extended core loop spec (complements `CORE_LOOP.md`) | ℹ️ INFORMATIVE (use `CORE_LOOP.md` for normative loop) |
-| `docs/PREPRODUCTION_INDEX.md` | Full documentation index (superseded by `CRITICAL_DOCS_INDEX.md`) | ℹ️ INFORMATIVE (use `CRITICAL_DOCS_INDEX.md` for current index) |
-| `docs/SOURCE_OF_TRUTH.md` | Declares definitive versions (superseded by `DESIGN_AUTHORITY.md`) | ℹ️ INFORMATIVE (use `DESIGN_AUTHORITY.md` for normative authority) |
-| `GDD.md` | High-level game design (superseded by normative docs above) | ℹ️ INFORMATIVE (use specific normative docs for each area) |
+| Document | Purpose | Status | Superseded By |
+|----------|---------|--------|---------------|
+| `docs/SOURCE_OF_TRUTH.md` | Declares definitive versions | ℹ️ ARCHIVED (historical reference only) | `DESIGN_AUTHORITY.md` |
+| `docs/award_vision.md` | Early vision document | ℹ️ ARCHIVED (superseded) | `VISION.md` |
+| `docs/core_gameplay_loop.md` | Extended core loop spec | ℹ️ INFORMATIVE (complements normative) | `CORE_LOOP.md` (normative) |
+| `docs/PREPRODUCTION_INDEX.md` | Full documentation index | ℹ️ ARCHIVED (superseded) | `CRITICAL_DOCS_INDEX.md` |
+| `GDD.md` | High-level game design | ℹ️ INFORMATIVE (high-level only) | Specific normative docs for each area |
 
 ---
 
@@ -57,6 +60,8 @@ This eliminates ambiguity and prevents "document conflict" during implementation
 **Rule 3**: If two normative documents of equal specificity disagree, escalate to Lead Designer.
 
 **Example**: If `CORE_LOOP.md` and `LEVEL_STRUCTURE.md` both make conflicting claims about phase duration, Lead Designer decides.
+
+**Rule 4**: This document (`DESIGN_AUTHORITY.md`) is the FINAL ARBITER. If there's any conflict about which document is normative, this document decides.
 
 ---
 
@@ -161,7 +166,7 @@ Update `TRACEABILITY_MATRIX.md` when:
 
 ## Sign-Off
 
-**Lead Designer**: [ ] I approve this as the authoritative source for design decisions
+**Lead Designer**: [x] I approve this as the authoritative source for design decisions
 **Lead Programmer**: [ ] I understand which documents are normative and will implement accordingly
 **Lead Writer**: [ ] I understand which documents are normative and will write narrative accordingly
 **Accessibility Lead**: [ ] I understand 38 requirements are non-negotiable (ALL must PASS)
@@ -169,4 +174,4 @@ Update `TRACEABILITY_MATRIX.md` when:
 **Producer**: [ ] I approve this governance structure and will enforce it
 
 **Date**: September 30, 2026
-**Status**: ✅ DESIGN AUTHORITY COMPLETE. NORMATIVE DOCUMENTS DECLARED. CONFLICT RESOLUTION DEFINED. CHANGE APPROVAL PROCESS CLEAR. TRACEABILITY UPDATES SPECIFIED. CLOSED VS. OPEN DECISIONS SEPARATED. MUST_FIX LIST EMPTY.
+**Status**: ✅ DESIGN AUTHORITY COMPLETE. NORMATIVE DOCUMENTS DECLARED. CONFLICT RESOLUTION DEFINED. CHANGE APPROVAL PROCESS CLEAR. TRACEABILITY UPDATES SPECIFIED. CLOSED VS. OPEN DECISIONS SEPARATED. MUST_FIX LIST EMPTY. SOURCE_OF_TRUTH.MD SUPERSEDED.
