@@ -1,553 +1,558 @@
-# FINAL THAW — Accessibility Requirements (Testable, Not Optional)
+# FINAL THAW — Accessibility Requirements (Testable Criteria)
 
-## Propósito
+## Purpose
 
-Este documento define requisitos de accesibilidad **COMPROBABLES**, no solo "opciones en menú." Cada requisito debe poder verificarse con test objetivo (pass/fail). Si no se puede testear, no es un requisito válido.
+This document defines ACCESSIBILITY REQUIREMENTS that are TESTABLE, not aspirational. Each requirement has a measurable pass/fail criterion. This is not a "nice to have" list—it is a quality gate. If a requirement fails, the game is NOT shippable.
 
 ---
 
-## 1. Tamaño Mínimo y Escalado de Texto
+## 1. Texto (Size, Escalado, Legibilidad)
 
-### Requisito
-- **Tamaño base**: 16px a 100% escala (legible a 3 metros en 1080p)
-- **Rango de escalado**: 75%, 100%, 125%, 150%, 175%, 200%
-- **A 200%**: Todo texto UI debe ser 32px mínimo
+### Requirement 1.1: Minimum Text Size
 
-### Cómo Testear
-```
-[PASS] Texto de menú principal mide 16px ±1px a 100% escala (usar Godot Debugger, medir píxeles)
-[PASS] Texto escala proporcionalmente: 100% = 16px, 200% = 32px (no 30px, no 34px)
-[PASS] Texto a 200% no se sale de contenedores UI (botones, paneles, labels)
-[PASS] Texto a 75% sigue siendo legible (no <12px)
-[FAIL] Texto se pixela al escalar (debe usar font rendering apropiado)
-[FAIL] Texto se corta en contenedores a 150%+ escala
-```
+**Criterion**: All UI text must be legible at 10 feet (3 meters) on 1080p display.
 
-### Implementación Técnica
-```gdscript
-# En todos los Label nodes
-font_size = base_font_size * (ui_scale / 100.0)
-rect_min_size = Vector2(0, font_size * 1.5)  # Espacio para altura de línea
-```
+**Measurement**:
+- Base font size: 16px minimum at 100% UI scale
+- X-Large subtitle mode: 32px minimum (200% scale)
+- Test: Display text on 24" 1080p monitor, sit 10 feet away. All text must be readable without squinting.
+
+**Pass/Fail**:
+- ✅ PASS: All text readable at 10 feet, 100% scale
+- ❌ FAIL: Any text requires moving closer or increasing scale
+
+---
+
+### Requirement 1.2: UI Scaling
+
+**Criterion**: Player must be able to scale all UI elements from 75% to 200% without breaking layout.
+
+**Measurement**:
+- Options menu: UI Scale slider (75%, 100%, 125%, 150%, 175%, 200%)
+- Test: Set to 200%. All text, icons, health bars must fit on screen without clipping.
+- Test: Set to 75%. All text must remain legible (not pixelated or too small).
+
+**Pass/Fail**:
+- ✅ PASS: All scales work, no clipping, no illegible text
+- ❌ FAIL: Any scale causes clipping, overlap, or illegibility
+
+---
+
+### Requirement 1.3: Font Choice
+
+**Criterion**: Font must be sans-serif, high legibility, support extended Latin character set (for localization).
+
+**Measurement**:
+- Default font: Noto Sans, Open Sans, or equivalent (sans-serif, x-height ≥50% of cap height)
+- Test: Display all characters A-Z, a-z, 0-9, áéíóú, ñ, ç, ü. All must be distinct.
+
+**Pass/Fail**:
+- ✅ PASS: All characters distinct, no ambiguity (e.g., I vs. l vs. 1)
+- ❌ FAIL: Any character pair ambiguous
 
 ---
 
 ## 2. Contraste y Modos de Color
 
-### Requisito
-- **Contraste mínimo**: 4.5:1 para texto normal, 3:1 para texto grande (>24px)
-- **Modo alto contraste**: Fondo negro (#000000), texto blanco (#FFFFFF) o amarillo (#FFFF00)
-- **Modos daltonismo**: 12 tipos (deuteranopia, protanopia, tritanopia, monocromacia, etc.)
+### Requirement 2.1: Minimum Contrast Ratio
 
-### Cómo Testear
-```
-[PASS] Texto negro (#000000) sobre blanco (#FFFFFF) = 21:1 contraste (medir con herramienta de contraste)
-[PASS] Texto blanco (#FFFFFF) sobre negro (#000000) = 21:1 contraste
-[PASS] Texto amarillo (#FFFF00) sobre negro (#000000) = 19.5:1 contraste
-[PASS] Modo deuteranopia: rojo y verde son distinguibles sin depender solo de color (usar patrones: rojo = líneas diagonales, verde = líneas horizontales)
-[PASS] Modo monocromacia: toda UI usa solo valor (brillo), no hue. Medir con herramienta de desaturación.
-[FAIL] Texto gris (#808080) sobre negro (#000000) = 1.9:1 contraste (ilegible)
-[FAIL] Información crítica transmitida solo por color (ej: "rojo = peligro" sin icono o patrón)
-```
+**Criterion**: All text must meet WCAG AA standard (4.5:1 contrast ratio).
 
-### Herramientas de Verificación
-- **WebAIM Contrast Checker**: https://webaim.org/resources/contrastchecker/
-- **Godot Plugin**: "Accessibility Tools" (disponible en Asset Library)
-- **Manual**: Desaturar screenshot a grayscale, verificar que información sigue siendo legible
+**Measurement**:
+- Tool: WebAIM Contrast Checker or equivalent
+- Test: Sample all text/background combinations (HUD, menus, subtitles, prompts)
+- Minimum: 4.5:1 for normal text, 3:1 for large text (24px+ or 19px+ bold)
+
+**Pass/Fail**:
+- ✅ PASS: All combinations meet or exceed 4.5:1
+- ❌ FAIL: Any combination below 4.5:1
+
+---
+
+### Requirement 2.2: High Contrast Mode
+
+**Criterion**: High Contrast Mode must make all game elements distinguishable using only luminance (no color reliance).
+
+**Measurement**:
+- Mode: Black background (#000000), white text (#FFFFFF), yellow highlights (#FFFF00)
+- Test: Enable High Contrast Mode. Play through Phase 2 (laboratory). All interactables, hazards, enemies, collectibles must be distinguishable.
+- Test: Colorblind tester (monochrome simulation) must be able to complete game.
+
+**Pass/Fail**:
+- ✅ PASS: All elements distinguishable in monochrome
+- ❌ FAIL: Any element relies on color alone
+
+---
+
+### Requirement 2.3: Colorblind Modes (12 Types)
+
+**Criterion**: All 12 colorblind types must be able to distinguish hazards, enemies, interactables, and collectibles.
+
+**Measurement**:
+- Modes: Deuteranopia, Protanopia, Tritanopia (each with mild/moderate/severe variants) + Achromatopsia (monochrome)
+- Test: Enable each mode. Play through Phase 6 (shelter). All hazards (steam, electricity, toxic water) must be distinguishable.
+- Alternative: All color-coded elements must have SHAPE or PATTERN distinction (e.g., red hazard = triangle, blue hazard = circle)
+
+**Pass/Fail**:
+- ✅ PASS: All 12 modes pass colorblind simulator test
+- ❌ FAIL: Any mode fails (color-only distinction)
 
 ---
 
 ## 3. Subtítulos Configurables
 
-### Requisito
-- **Tamaño**: Pequeño (14px), Mediano (18px), Grande (24px), Extra Grande (32px)
-- **Color de texto**: Blanco, Amarillo, Cian, Magenta (selector)
-- **Fondo**: Ninguno, Semi-transparente negro (#80000000), Sólido negro (#FF000000)
-- **Borde de texto**: Ninguno, Negro, Blanco (para contraste con fondo variable)
+### Requirement 3.1: Subtitle Size Options
 
-### Cómo Testear
-```
-[PASS] Subtítulos en tamaño Extra Grande (32px) son legibles desde 3 metros en 1080p
-[PASS] Subtítulos en color Magenta (#FF00FF) sobre fondo blanco con borde negro son distinguibles
-[PASS] Subtítulos con fondo sólido negro no muestran "ghosting" en escenas oscuras
-[PASS] Subtítulos sin fondo en escena clara (nieve, cielo) son legibles (texto blanco con borde negro)
-[FAIL] Subtítulos hardcoded en blanco sin opciones de color/fondo
-[FAIL] Subtítulos se superponen con UI (HUD, menús) sin opción de reposicionar
-```
+**Criterion**: Player must be able to choose subtitle size independently from UI scale.
 
-### Implementación Técnica
-```gdscript
-# En subtitle_label.gd
-@export var subtitle_size: int = 18  # 14, 18, 24, 32
-@export var subtitle_color: Color = Color.WHITE
-@export var subtitle_background: int = 1  # 0=none, 1=semi, 2=solid
-@export var subtitle_border: Color = Color.BLACK
+**Measurement**:
+- Options: Small (100%), Medium (150%), Large (200%), Extra Large (250%)
+- Test: Set UI scale to 100%, subtitles to Extra Large. Subtitles must be 40px+ (250% of base 16px).
 
-func _ready():
-    add_theme_font_size_override("font_size", subtitle_size)
-    add_theme_color_override("font_color", subtitle_color)
-    if subtitle_background == 1:
-        self.get("custom_styles/normal").bg_color = Color(0, 0, 0, 0.5)
-    elif subtitle_background == 2:
-        self.get("custom_styles/normal").bg_color = Color(0, 0, 0, 1.0)
-    add_theme_color_override("font_outline_color", subtitle_border)
-    add_theme_constant_override("outline_size", 2 if subtitle_border.a > 0 else 0)
-```
+**Pass/Fail**:
+- ✅ PASS: Subtitle size independent from UI scale, all 4 options work
+- ❌ FAIL: Subtitle size tied to UI scale or any option missing
+
+---
+
+### Requirement 3.2: Subtitle Background
+
+**Criterion**: Subtitles must have configurable background for readability.
+
+**Measurement**:
+- Options: None, Semi-transparent black (#80000000), Solid black (#FF000000)
+- Test: Enable Solid black. Display subtitles over bright background (white wall, explosion). Text must remain legible.
+
+**Pass/Fail**:
+- ✅ PASS: All 3 background options work, text legible in all cases
+- ❌ FAIL: Any background option fails legibility test
+
+---
+
+### Requirement 3.3: Subtitle Color
+
+**Criterion**: Player must be able to set subtitle text color.
+
+**Measurement**:
+- Options: White, Yellow, Cyan, Green, Custom (RGB picker)
+- Test: Set to Yellow. Display over yellow-tinted scene (fire, sunset). Text must remain distinguishable (outline or background required).
+
+**Pass/Fail**:
+- ✅ PASS: All color options work, text always distinguishable from background
+- ❌ FAIL: Any color option becomes illegible in specific scenes
 
 ---
 
 ## 4. Identificación de Hablantes
 
-### Requisito
-- **Etiquetas de hablante**: Siempre visibles (no opcionales)
-- **Color por personaje**: Elena = Cian (#00FFFF), Marcus = Naranja (#FFA500), Voss = Púrpura (#800080), NPCs = Blanco (#FFFFFF)
-- **Formato**: "[Nombre]: Diálogo" (ej: "[Elena]: Keep moving.")
+### Requirement 4.1: Speaker Labels
 
-### Cómo Testear
-```
-[PASS] Subtítulo muestra "[Elena]: Keep moving." con texto en cian (#00FFFF)
-[PASS] Subtítulo muestra "[Marcus]: I've got your back." con texto en naranja (#FFA500)
-[PASS] Subtítulo muestra "[Voss]: Every world is built on corpses." con texto en púrpura (#800080)
-[PASS] NPC sin nombre muestra "[???]: Who's there?" o "[Guard]: Halt!"
-[FAIL] Subtítulo solo muestra diálogo sin hablante: "Keep moving."
-[FAIL] Todos los hablantes usan mismo color (blanco)
-```
+**Criterion**: All dialogue must show speaker name, color-coded consistently.
 
-### Implementación Técnica
-```gdscript
-# En dialogue_system.gd
-var speaker_colors = {
-    "Elena": Color(0, 1, 1),      # Cian
-    "Marcus": Color(1, 0.65, 0),  # Naranja
-    "Voss": Color(0.5, 0, 0.5),   # Púrpura
-    "default": Color(1, 1, 1)     # Blanco
-}
+**Measurement**:
+- Format: "[Speaker Name]: Dialogue text"
+- Colors: Elena = Cyan (#4A90E2), Marcus = Orange (#E28C4A), Voss = Purple (#9B59B6), NPCs = White (#FFFFFF)
+- Test: Play through Phase 8 (first meeting). All dialogue must show speaker names.
 
-func show_subtitle(speaker: String, text: String):
-    var color = speaker_colors.get(speaker, speaker_colors["default"])
-    subtitle_label.text = "[%s]: %s" % [speaker, text]
-    subtitle_label.add_theme_color_override("font_color", color)
-```
+**Pass/Fail**:
+- ✅ PASS: All dialogue has speaker labels, colors consistent
+- ❌ FAIL: Any dialogue missing speaker name or color inconsistent
+
+---
+
+### Requirement 4.2: Off-Screen Indicators
+
+**Criterion**: If speaker is off-screen, subtitle must indicate direction.
+
+**Measurement**:
+- Format: "[← Marcus]: Dialogue" (left arrow if speaker is left of camera)
+- Test: Elena on-screen, Marcus off-screen left. His subtitle must show left arrow.
+
+**Pass/Fail**:
+- ✅ PASS: All off-screen dialogue has directional indicator
+- ❌ FAIL: Any off-screen dialogue missing indicator
 
 ---
 
 ## 5. Indicadores Visuales y Auditivos Redundantes
 
-### Requisito
-- **Cada sonido importante** debe tener indicador visual
-- **Cada señal visual** debe tener indicador auditivo (opcional si es decorativa)
-- **Direccionalidad**: Indicador visual debe mostrar dirección (izquierda/derecha/arriba/abajo)
+### Requirement 5.1: Visual Sound Cues
 
-### Cómo Testear
-```
-[PASS] Enemigo ataca por izquierda: sonido 3D + flecha UI en borde izquierdo de pantalla
-[PASS] Hazard erupta: sonido de erupción + partículas visibles + icono de advertencia en HUD
-[PASS] NPC habla: voz + subtítulo + icono de "hablando" sobre cabeza de NPC
-[PASS] Item coleccionable: brillo visual + chime auditivo + icono en minimap
-[FAIL] Enemigo ataca solo con sonido (sin indicador visual para sordos)
-[FAIL] Hazard solo con partículas (sin sonido para ciegos)
-[FAIL] Item solo con brillo (sin sonido, jugador ciego no lo encuentra)
-```
+**Criterion**: All critical audio cues must have visual indicator.
 
-### Implementación Técnica
-```gdscript
-# En sound_manager.gd
-func play_3d_sound(position: Vector2, sound: AudioStream):
-    # Calcular dirección relativa al jugador
-    var direction = (position - player.global_position).normalized()
-    
-    # Reproducir sonido
-    audio_player.play(sound)
-    
-    # Mostrar indicador visual en borde de pantalla
-    var screen_edge = get_screen_edge_from_direction(direction)
-    sound_indicator.show_at(screen_edge, 1.0)  # 1.0 segundos visible
+**Measurement**:
+- Critical sounds: Footsteps, gunfire, alarms, dialogue, explosions, hazard warnings
+- Visual: On-screen directional arrow (points to sound source), icon (footprint, bullet, siren, speech bubble, explosion, warning triangle)
+- Test: Mute audio. Play through Phase 4 (highway combat). Player must be able to detect all enemy attacks via visual cues alone.
 
-# En hazard.gd
-func activate():
-    # Visual
-    particles.emitting = true
-    warning_icon.visible = true
-    
-    # Auditivo
-    audio_player.play(eruption_sound)
-    
-    # HUD
-    hud.show_warning("HAZARD", position=global_position)
-```
+**Pass/Fail**:
+- ✅ PASS: All critical sounds have visual equivalent
+- ❌ FAIL: Any critical sound has no visual indicator
 
 ---
 
-## 6. Remapeo Completo de Controles
+### Requirement 5.2: Audio Description for Cinematics
 
-### Requisito
-- **Todos los inputs** deben ser remapeables (keyboard, mouse, controller)
-- **Múltiples bindings** por acción (ej: "Interact" = E, F, Enter, Controller X)
-- **Perfiles guardables**: Hasta 5 perfiles de controles
-- **Reset a defaults**: Botón para restaurar configuración por defecto
+**Criterion**: All cinematics must have optional audio description track.
 
-### Cómo Testear
-```
-[PASS] Jugador puede cambiar "move_up" de W a Flecha Arriba, guardar, y funciona
-[PASS] Jugador puede asignar MÚLTIPLES teclas a misma acción (ej: "Interact" = E + F + Enter)
-[PASS] Jugador puede guardar perfil como "Profile 2", cambiar controles, y volver a "Profile 1" sin pérdida
-[PASS] Botón "Reset to Defaults" restaura todos los controles a configuración original
-[FAIL] Algunas acciones no son remapeables (ej: "Pause" hardcoded en Escape)
-[FAIL] Remapear una acción borra otras bindings (ej: cambiar W borra A, S, D)
-[FAIL] No hay forma de guardar/restaurar perfiles
-```
+**Measurement**:
+- Option: "Audio Description" toggle in Accessibility menu
+- Content: Narrator describes visual action during dialogue pauses ("Elena turns to Marcus, her face illuminated by terminal glow.")
+- Test: Enable Audio Description. Watch Phase 15 (Public Thaw cinematic). All key visual information must be described.
 
-### Implementación Técnica
-```gdscript
-# En input_settings.gd
-var default_inputs = {
-    "move_up": [KEY_W, KEY_UP],
-    "move_down": [KEY_S, KEY_DOWN],
-    "move_left": [KEY_A, KEY_LEFT],
-    "move_right": [KEY_D, KEY_RIGHT],
-    "interact": [KEY_E, KEY_F, KEY_ENTER],
-    "scan": [KEY_Q, KEY_X],
-    "pause": [KEY_ESCAPE, KEY_P, KEY_START],
-}
+**Pass/Fail**:
+- ✅ PASS: All cinematics have audio description, describes all key visuals
+- ❌ FAIL: Any cinematic missing description or omits key visuals
 
-func save_profile(profile_name: String):
-    var config = ConfigFile.new()
-    for action in InputMap.get_actions():
-        var events = InputMap.action_get_events(action)
-        config.set_value(profile_name, action, events)
-    config.save("user://input_profiles/%s.cfg" % profile_name)
+---
 
-func load_profile(profile_name: String):
-    var config = ConfigFile.new()
-    config.load("user://input_profiles/%s.cfg" % profile_name)
-    for action in config.get_section_keys(profile_name):
-        var events = config.get_value(profile_name, action)
-        InputMap.action_erase_events(action)
-        for event in events:
-            InputMap.action_add_event(action, event)
-```
+### Requirement 5.3: Hazard Telegraphs (Multi-Modal)
+
+**Criterion**: All hazards must telegraph via visual AND audio channels.
+
+**Measurement**:
+- Example: Steam vent
+  - Visual: 1.0 second shadow on ground before eruption
+  - Audio: Hissing sound ramps up over 1.0 second
+  - Haptic: Controller vibration (if enabled)
+- Test: Mute audio, disable haptics. Player must still see telegraph.
+- Test: Blindfold test (developer only). Player must hear telegraph.
+
+**Pass/Fail**:
+- ✅ PASS: All hazards telegraph via 2+ channels (visual, audio, haptic)
+- ❌ FAIL: Any hazard telegraphs via only 1 channel
+
+---
+
+## 6. Remapeo Completo
+
+### Requirement 6.1: Full Control Remapping
+
+**Criterion**: Every input must be remappable to any key/button.
+
+**Measurement**:
+- Options menu: "Controls" tab with full key binding list
+- Test: Remap ALL inputs to custom layout. Play through Phase 2. All actions must work with new bindings.
+- Test: One-handed layout (pre-configured profile). All actions accessible without chorded inputs.
+
+**Pass/Fail**:
+- ✅ PASS: All inputs remappable, no hardcoded bindings
+- ❌ FAIL: Any input cannot be remapped or requires chorded inputs in one-handed mode
+
+---
+
+### Requirement 6.2: Multiple Profiles
+
+**Criterion**: Player must be able to save up to 5 control profiles.
+
+**Measurement**:
+- Options: "Save Profile" button (slots 1-5), "Load Profile" button, "Import/Export" (text code for sharing)
+- Test: Create 5 different profiles (one-handed, left-handed, custom, default, accessibility). Save and load each.
+
+**Pass/Fail**:
+- ✅ PASS: All 5 slots work, import/export functional
+- ❌ FAIL: Any slot fails or import/export broken
 
 ---
 
 ## 7. Alternativas a Pulsaciones Rápidas
 
-### Requisito
-- **Toggle vs. Hold**: Todas las acciones de "mantener" deben poder ser "toggle"
-- **Ventana de input**: Acciones de timing deben tener ventana mínima de 200ms (0.2s)
-- **Slow-motion**: Opción para reducir velocidad de juego a 0.5x o 0.75x
+### Requirement 7.1: Toggle vs. Hold
 
-### Cómo Testear
-```
-[PASS] Acción "Block" puede ser toggle (presiona una vez = bloquea infinitamente hasta presionar de nuevo) O hold (mantener = bloquea)
-[PASS] Acción "Dodge" puede ser toggle (dodge automático cada 2 segundos) O hold (tradicional)
-[PASS] Puzzle de timing (ej: cruzar hazard) tiene ventana de 200ms mínimo (medir con cronómetro)
-[PASS] Slow-motion 0.5x: ventana de timing se duplica (200ms → 400ms efectivo)
-[FAIL] Acción requiere mantener botón por >3 segundos sin alternativa toggle
-[FAIL] Puzzle requiere timing de <100ms (imposible para motor-impaired players)
-[FAIL] No hay slow-motion option
-```
+**Criterion**: All hold actions must have toggle alternative.
 
-### Implementación Técnica
-```gdscript
-# En player_controller.gd
-@export var toggle_block: bool = false  # Opción en settings
-var is_blocking: bool = false
+**Measurement**:
+- Actions: Sprint, block, aim, scan, crouch (if added)
+- Options: "Toggle Sprint" (on/off), "Toggle Block" (on/off), etc.
+- Test: Enable all toggles. Play through Phase 4 (combat). All actions must work without holding any button.
 
-func _input(event):
-    if event.is_action_pressed("block"):
-        if toggle_block:
-            is_blocking = !is_blocking  # Toggle
-        else:
-            is_blocking = true  # Hold
-    elif event.is_action_released("block") and !toggle_block:
-        is_blocking = false
+**Pass/Fail**:
+- ✅ PASS: All hold actions have toggle alternative
+- ❌ FAIL: Any action requires holding button with no toggle option
 
-# En hazard_puzzle.gd
-@export var timing_window: float = 0.2  # 200ms mínimo
-@export var slow_motion_multiplier: float = 1.0  # 1.0 = normal, 0.5 = half speed
+---
 
-func check_timing():
-    var effective_window = timing_window / slow_motion_multiplier
-    if player_input_time >= effective_window:
-        return SUCCESS  # Jugador acertó
-    else:
-        return FAILURE  # Jugador falló
-```
+### Requirement 7.2: Input Buffer
+
+**Criterion**: All time-sensitive inputs must have 500ms buffer window.
+
+**Measurement**:
+- Example: Dodge input during attack
+  - Window: 500ms before impact to 200ms after impact (700ms total)
+  - Test: Input dodge 600ms before impact. Must register.
+  - Test: Input dodge 300ms after impact. Must register.
+- Test tool: Debug overlay showing input timing window.
+
+**Pass/Fail**:
+- ✅ PASS: All inputs have ≥500ms buffer
+- ❌ FAIL: Any input requires <500ms precision
+
+---
+
+### Requirement 7.3: No Simultaneous Inputs
+
+**Criterion**: No action must require pressing 2+ buttons simultaneously.
+
+**Measurement**:
+- Test: All actions (combat, puzzles, switching) must be executable with single button presses.
+- Exception: Controller stick press (L3/R3) counts as single input, not chorded.
+
+**Pass/Fail**:
+- ✅ PASS: All actions executable with single inputs
+- ❌ FAIL: Any action requires simultaneous buttons
 
 ---
 
 ## 8. Velocidad de Juego Ajustable
 
-### Requisito
-- **Opciones**: 0.5x, 0.75x, 1.0x (normal), 1.25x (speedrun)
-- **Afecta todo**: Movimiento, puzzles, combat, cinemáticas, timers
-- **No afecta**: FPS target (siempre 60 FPS), input latency (siempre <50ms)
+### Requirement 8.1: Slow Motion Mode
 
-### Cómo Testear
-```
-[PASS] 0.5x: Movimiento de jugador es 50% más lento (medir distancia por segundo)
-[PASS] 0.5x: Timers de puzzles duran 2x más (60s → 120s)
-[PASS] 0.5x: Enemigos se mueven 50% más lento (medir velocidad)
-[PASS] 0.5x: Cinemáticas se reproducen 50% más lento (medir duración)
-[PASS] 1.25x: Todo es 25% más rápido, juego sigue a 60 FPS
-[FAIL] 0.5x: FPS cae a 30 (debe mantener 60)
-[FAIL] 0.5x: Input latency aumenta (debe mantener <50ms)
-[FAIL] 0.5x: Solo afecta movimiento, no puzzles/combat (debe afectar TODO)
-```
+**Criterion**: Player must be able to set global time scale.
 
-### Implementación Técnica
-```gdscript
-# En engine_settings.gd
-@export var time_scale: float = 1.0  # 0.5, 0.75, 1.0, 1.25
+**Measurement**:
+- Options: 0.5x, 0.75x, 1.0x (normal), 1.25x (speedrun)
+- Test: Set to 0.5x. All gameplay (movement, puzzles, combat, cinematics) must run at 50% speed.
+- Test: No gameplay penalty for using slow mode (no achievement lockout, no narrative changes).
 
-func _ready():
-    Engine.time_scale = time_scale
+**Pass/Fail**:
+- ✅ PASS: All speeds work, no penalties
+- ❌ FAIL: Any speed breaks gameplay or imposes penalties
 
-# En timer_puzzle.gd
-@export var base_duration: float = 60.0  # 60 segundos
+---
 
-func _ready():
-    var effective_duration = base_duration / Engine.time_scale
-    timer.start(effective_duration)
-```
+### Requirement 8.2: Puzzle Timer Extensions
+
+**Criterion**: All timed puzzles must have +50% time option.
+
+**Measurement**:
+- Options: "Extended Time" toggle (default: off, enabled: +50% time on all timers)
+- Test: Enable Extended Time. Play Phase 6 (oxygen section). Timer must be 90 seconds (not 60).
+
+**Pass/Fail**:
+- ✅ PASS: All timers extended by 50% when enabled
+- ❌ FAIL: Any timer not extended or extended incorrectly
 
 ---
 
 ## 9. Dificultad Separada por Componentes
 
-### Requisito
-- **No "Easy/Normal/Hard" genérico**
-- **Sliders independientes**:
-  - Combat Difficulty: 0-100% (daño recibido, daño infligido, enemy health)
-  - Puzzle Time: 0-100% (timers más largos/cortos)
-  - Hazard Damage: 0-100% (daño de hazards)
-  - Enemy Aggression: 0-100% (qué tan rápido atacan enemigos)
-  - Aim Assist: 0-100% (para cualquier targeting)
+### Requirement 9.1: Component Difficulty Sliders
 
-### Cómo Testear
-```
-[PASS] Combat Difficulty 0%: Jugador recibe 50% daño, inflige 200% daño, enemigos tienen 50% HP
-[PASS] Combat Difficulty 100%: Jugador recibe 200% daño, inflige 50% daño, enemigos tienen 200% HP
-[PASS] Puzzle Time 0%: Timers son 200% más largos (60s → 120s)
-[PASS] Puzzle Time 100%: Timers son 50% más cortos (60s → 30s)
-[PASS] Hazard Damage 0%: Hazards no hacen daño (solo visual)
-[PASS] Hazard Damage 100%: Hazards hacen 200% daño
-[PASS] Enemy Aggression 0%: Enemigos atacan cada 5 segundos
-[PASS] Enemy Aggression 100%: Enemigos atacan cada 1 segundo
-[PASS] Aim Assist 0%: No hay asistencia (reticle no se pega a enemigos)
-[PASS] Aim Assist 100%: Reticle se "pega" fuertemente a enemigos (casi auto-aim)
-[FAIL] Un solo slider "Difficulty" que cambia todo a la vez
-[FAIL] No hay forma de ajustar componentes individualmente
-```
+**Criterion**: Player must be able to adjust difficulty of combat, puzzles, timers independently.
 
-### Implementación Técnica
-```gdscript
-# En difficulty_settings.gd
-@export var combat_difficulty: float = 0.5  # 0.0-1.0
-@export var puzzle_time: float = 0.5  # 0.0-1.0
-@export var hazard_damage: float = 0.5  # 0.0-1.0
-@export var enemy_aggression: float = 0.5  # 0.0-1.0
-@export var aim_assist: float = 0.5  # 0.0-1.0
+**Measurement**:
+- Options: "Combat Difficulty" (0-100%), "Puzzle Hints" (Off/Contextual/Full), "Timer Pressure" (0-100%)
+- Test: Set Combat to 25%, Puzzles to 100%, Timers to 50%. Play Phase 4 (combat) and Phase 6 (puzzles). Enemies must deal 25% damage, puzzles unchanged, timers 50% longer.
 
-func get_damage_multiplier():
-    return 0.5 + (combat_difficulty * 1.5)  # 0.5x-2.0x
+**Pass/Fail**:
+- ✅ PASS: All sliders work independently
+- ❌ FAIL: Any slider affects other components or doesn't work
 
-func get_puzzle_timer_multiplier():
-    return 2.0 - (puzzle_time * 1.5)  # 2.0x-0.5x
+---
 
-func get_hazard_damage_multiplier():
-    return 2.0 - (hazard_damage * 2.0)  # 2.0x-0.0x
+### Requirement 9.2: Arena Skip Option
 
-func get_enemy_attack_speed():
-    return 5.0 - (enemy_aggression * 4.0)  # 5s-1s entre ataques
+**Criterion**: After 3 deaths in same combat arena, offer skip button.
 
-func get_aim_assist_strength():
-    return aim_assist * 0.8  # 0.0-0.8 (80% max assist)
-```
+**Measurement**:
+- Test: Die 3 times in Phase 4 Arena 2. "Skip This Arena" button must appear.
+- On skip: Narrative adapts ("You found another way around."), no Civilian Aid points, proceed to next arena.
+
+**Pass/Fail**:
+- ✅ PASS: Skip appears after 3 deaths, narrative adapts correctly
+- ❌ FAIL: Skip missing or narrative doesn't adapt
 
 ---
 
 ## 10. Guardado Frecuente y Reintentos Razonables
 
-### Requisito
-- **Autosave**: Cada 60 segundos de gameplay
-- **Checkpoint**: Al completar cada sala/arena/puzzle (3-5 minutos máximo)
-- **Manual save**: 10 slots, accesible desde pause menu (fuera de combat)
-- **Quick load**: Tecla rápida para cargar último checkpoint (ej: F9)
+### Requirement 10.1: Checkpoint Frequency
 
-### Cómo Testear
-```
-[PASS] Jugador juega 60 segundos, autosave se activa (verificar archivo user://autosave.json)
-[PASS] Jugador completa sala, checkpoint save se activa (verificar user://checkpoint.json)
-[PASS] Jugador presiona F5 en pause menu, puede guardar en slot 1-10
-[PASS] Jugador muere, reaparece en checkpoint (máximo 3-5 minutos atrás)
-[PASS] Jugador presiona F9, carga último checkpoint instantáneamente (<2 segundos)
-[FAIL] No hay autosave (jugador debe guardar manualmente cada 10 minutos)
-[FAIL] Checkpoint está a 15 minutos atrás (jugador pierde progreso significativo)
-[FAIL] Quick load tarda 10+ segundos (jugador se frustra)
-```
+**Criterion**: Checkpoints must be no more than 5 minutes apart (measured by average playtime).
 
-### Implementación Técnica
-```gdscript
-# En game_manager.gd
-var autosave_timer: float = 0.0
-var autosave_interval: float = 60.0  # 60 segundos
+**Measurement**:
+- Test: Play through each phase with timer running. Note time between checkpoints.
+- Maximum: 5 minutes (300 seconds) between any two checkpoints.
 
-func _process(delta):
-    autosave_timer += delta
-    if autosave_timer >= autosave_interval:
-        save_game("autosave")
-        autosave_timer = 0.0
+**Pass/Fail**:
+- ✅ PASS: All phases have checkpoints ≤5 minutes apart
+- ❌ FAIL: Any phase has >5 minutes between checkpoints
 
-func save_game(slot_name: String):
-    var save_data = {
-        "player_position": player.global_position,
-        "elena_safety": elena_safety,
-        "prototype_integrity": prototype_integrity,
-        "civilian_aid": civilian_aid,
-        "completed_phases": completed_phases,
-        # ... más datos
-    }
-    var file = FileAccess.open("user://savegame_%s.json" % slot_name, FileAccess.WRITE)
-    file.store_string(JSON.stringify(save_data))
-    file.close()
+---
 
-func load_game(slot_name: String):
-    var file = FileAccess.open("user://savegame_%s.json" % slot_name, FileAccess.READ)
-    var save_data = JSON.parse_string(file.get_as_text())
-    file.close()
-    
-    player.global_position = Vector2(save_data["player_position"])
-    elena_safety = save_data["elena_safety"]
-    # ... restaurar más datos
-```
+### Requirement 10.2: Manual Save Anytime
+
+**Criterion**: Player must be able to manual save at any time outside combat.
+
+**Measurement**:
+- Input: Pause menu → "Save Game" (any of 10 slots)
+- Test: During Phase 2 (puzzle, non-combat), pause and manual save. Reload. All state must persist.
+- Test: During Phase 4 (combat), pause. "Save Game" option must be grayed out with tooltip "Cannot save during combat."
+
+**Pass/Fail**:
+- ✅ PASS: Manual save works outside combat, correctly disabled during combat
+- ❌ FAIL: Manual save fails or works during combat (can cause softlocks)
+
+---
+
+### Requirement 10.3: Death Restart Time
+
+**Criterion**: Time from death to playable character must be <5 seconds.
+
+**Measurement**:
+- Test: Die in Phase 4 (combat). Time from death screen to character controllable at checkpoint.
+- Maximum: 5 seconds (includes fade-out, load, fade-in).
+
+**Pass/Fail**:
+- ✅ PASS: All deaths restart in <5 seconds
+- ❌ FAIL: Any death restart takes >5 seconds
 
 ---
 
 ## 11. Compatibilidad con Teclado, Mando y Asistencia
 
-### Requisito
-- **Teclado**: Todas las acciones accesibles con teclado (WASD + teclas adicionales)
-- **Mando**: Todas las acciones accesibles con mando (Xbox/PlayStation layout)
-- **One-handed**: Esquema preconfigurado para una mano (teclado o mando)
-- **Asistencia**: Opción para que segundo jugador controle acciones secundarias (ej: P2 controla menú, P1 controla movimiento)
+### Requirement 11.1: Full Keyboard Parity
 
-### Cómo Testear
-```
-[PASS] Juego completo con teclado: WASD (movimiento), E (interactuar), Q (scan), Space (dodge), etc.
-[PASS] Juego completo con mando: L-stick (movimiento), X (interactuar), LB (scan), B (dodge), etc.
-[PASS] One-handed keyboard: Teclas A, S, D, W, E, Space accesibles con una mano (mano derecha o izquierda)
-[PASS] One-handed controller: Todos los botones accesibles con una mano (izquierda o derecha)
-[PASS] Asistencia: P2 puede presionar Start para pausar, navegar menús mientras P1 controla personaje
-[FAIL] Acción requiere teclado Y mando simultáneamente (ej: "Presiona E + X")
-[FAIL] Menú solo navegable con mouse (no con teclado/mando)
-[FAIL] No hay esquema one-handed preconfigurado
-```
+**Criterion**: All actions possible on controller must be possible on keyboard.
 
-### Implementación Técnica
-```gdscript
-# En input_settings.gd
-var one_handed_keyboard = {
-    "move_up": [KEY_W],
-    "move_down": [KEY_S],
-    "move_left": [KEY_A],
-    "move_right": [KEY_D],
-    "interact": [KEY_E],
-    "scan": [KEY_Q],
-    "dodge": [KEY_SPACE],
-    "pause": [KEY_ESCAPE],
-}
+**Measurement**:
+- Test: Play through Phases 0-16 using keyboard only (no controller). All actions (movement, interaction, combat, switching, menus) must work.
+- Test: All menus navigable with Tab/Enter/Esc (no mouse required).
 
-var one_handed_controller = {
-    "move_up": [JOY_BUTTON_LEFT_STICK_UP],
-    "move_down": [JOY_BUTTON_LEFT_STICK_DOWN],
-    "move_left": [JOY_BUTTON_LEFT_STICK_LEFT],
-    "move_right": [JOY_BUTTON_LEFT_STICK_RIGHT],
-    "interact": [JOY_BUTTON_A],
-    "scan": [JOY_BUTTON_LEFT_SHOULDER],
-    "dodge": [JOY_BUTTON_B],
-    "pause": [JOY_BUTTON_START],
-}
+**Pass/Fail**:
+- ✅ PASS: All actions work on keyboard, menus navigable without mouse
+- ❌ FAIL: Any action requires controller or mouse
 
-func apply_one_handed_scheme(hand: String, device: String):
-    if device == "keyboard":
-        for action in one_handed_keyboard:
-            InputMap.action_erase_events(action)
-            for key in one_handed_keyboard[action]:
-                var event = InputEventKey.new()
-                event.keycode = key
-                InputMap.action_add_event(action, event)
-    elif device == "controller":
-        # Similar para controller
-```
+---
+
+### Requirement 11.2: Full Controller Parity
+
+**Criterion**: All actions possible on keyboard must be possible on controller.
+
+**Measurement**:
+- Test: Play through Phases 0-16 using controller only (no keyboard). All actions must work.
+- Test: All menus navigable with D-pad/A/B (no keyboard required).
+
+**Pass/Fail**:
+- ✅ PASS: All actions work on controller, menus navigable without keyboard
+- ❌ FAIL: Any action requires keyboard
+
+---
+
+### Requirement 11.3: Assistive Device Compatibility
+
+**Criterion**: Game must work with Xbox Adaptive Controller and equivalent devices.
+
+**Measurement**:
+- Test: Connect Xbox Adaptive Controller. Map all inputs to single buttons (no analog required).
+- Test: Play through Phase 2 (puzzle) and Phase 4 (combat). All actions must work with digital-only inputs.
+
+**Pass/Fail**:
+- ✅ PASS: All actions work with adaptive controller
+- ❌ FAIL: Any action requires analog input or force feedback
 
 ---
 
 ## 12. Pruebas con Usuarios con Distintas Discapacidades
 
-### Requisito
-- **Testear con al menos 10 usuarios** en cada categoría:
-  - Discapacidad motora (dificultad con inputs rápidos, precisión)
-  - Discapacidad visual (ceguera, baja visión, daltonismo)
-  - Discapacidad auditiva (sordera, hipoacusia)
-  - Discapacidad cognitiva (dificultad con puzzles complejos, timing)
-- **Métricas**: Tasa de completación, tiempo promedio, frustración reportada (escala 1-5)
-- **Iterar**: Si tasa de completación <80% en alguna categoría, REVISAR diseño
+### Requirement 12.1: Colorblind Testers
 
-### Cómo Testear
-```
-[PASS] 10 usuarios con discapacidad motora completan Phase 1-3 con esquema one-handed
-[PASS] Tasa de completación: 9/10 = 90% (>80% requerido)
-[PASS] Tiempo promedio: 25 minutos (similar a usuarios sin discapacidad: 22 minutos)
-[PASS] Frustración reportada: 2.1/5.0 (<3.0 requerido)
-[PASS] 10 usuarios con discapacidad visual completan con audio description + screen reader
-[PASS] 10 usuarios con discapacidad auditiva completan con subtítulos + indicadores visuales
-[PASS] 10 usuarios con discapacidad cognitiva completan con hints activados, timers extendidos
-[FAIL] Tasa de completación 5/10 = 50% (<80%, REVISAR)
-[FAIL] Frustración reportada 4.2/5.0 (>3.0, REVISAR)
-```
+**Criterion**: At least 3 colorblind testers must complete full game without assistance.
 
-### Protocolo de Test
+**Measurement**:
+- Testers: 1 deuteranopia, 1 protanopia, 1 tritanopia (verified via Ishihara test)
+- Test: Each plays through Phases 0-16. No developer hints allowed.
+- Metric: All must complete game without getting stuck due to color distinction.
 
-**Fase 1: Reclutamiento**
-- Contactar organizaciones de discapacidad (ej: AbleGamers, SpecialEffect)
-- Ofrecer compensación ($50-100 por sesión de 2 horas)
-- Obtener consentimiento informado (grabación de sesión, uso de feedback)
-
-**Fase 2: Sesión de Test**
-- Duración: 2 horas (1 hora gameplay, 1 hora entrevista)
-- Grabar pantalla, audio, expresiones faciales (con permiso)
-- Observar sin ayudar (dejar que usuario luche, tomar notas)
-- Medir: tiempo por sección, muertes, hints usados, pausas
-
-**Fase 3: Entrevista**
-- Preguntas abiertas: "¿Qué fue frustrante?", "¿Qué funcionó bien?"
-- Escala 1-5: "¿Qué tan difícil fue X?", "¿Qué tan claro fue Y?"
-- Sugerencias: "¿Qué cambiarías?"
-
-**Fase 4: Iteración**
-- Compilar feedback de 10 usuarios por categoría
-- Identificar patrones: "5 usuarios reportaron que puzzle X es imposible"
-- Priorizar: Arreglar problemas que afectan >50% de usuarios
-- Re-testear: Volver a testear con mismos usuarios después de arreglos
+**Pass/Fail**:
+- ✅ PASS: All 3 testers complete without color-related stuck points
+- ❌ FAIL: Any tester gets stuck due to color distinction
 
 ---
 
-## Summary: Checklist de Accesibilidad
+### Requirement 12.2: Motor-Impaired Testers
 
-Antes de lanzar, verificar:
+**Criterion**: At least 2 motor-impaired testers must complete full game with accessibility options enabled.
 
-- [ ] **Texto**: 16px mínimo, escala 75-200%, no se corta, no se pixela
-- [ ] **Contraste**: 4.5:1 mínimo, modo alto contraste funciona, 12 modos daltonismo
-- [ ] **Subtítulos**: 4 tamaños, 4 colores, 3 fondos, borde configurable
-- [ ] **Hablantes**: Etiquetas siempre visibles, color por personaje
-- [ ] **Indicadores**: Sonidos tienen visuales, visuales tienen sonidos, direccionalidad clara
-- [ ] **Controles**: Todo remapeable, múltiples bindings, 5 perfiles, reset a defaults
-- [ ] **Pulsaciones**: Toggle/hold para todo, ventana 200ms mínimo, slow-motion 0.5x/0.75x
-- [ ] **Velocidad**: 0.5x, 0.75x, 1.0x, 1.25x, afecta todo, mantiene 60 FPS
-- [ ] **Dificultad**: Sliders independientes (combat, puzzle, hazard, aggression, aim assist)
-- [ ] **Guardado**: Autosave 60s, checkpoint 3-5 min, manual 10 slots, quick load <2s
-- [ ] **Inputs**: Teclado completo, mando completo, one-handed, asistencia P2
-- [ ] **Tests**: 10 usuarios por categoría, >80% completación, <3.0 frustración
+**Measurement**:
+- Testers: 1 one-handed player, 1 limited dexterity player (verified via medical documentation or self-report)
+- Test: Each plays with one-handed profile + toggle inputs + extended timers. No developer hints.
+- Metric: Both must complete game without requiring inputs faster than 1 per second.
 
-**Si algún ítem falla: NO LANZAR. Iterar hasta que todos pasen.**
+**Pass/Fail**:
+- ✅ PASS: Both testers complete without requiring rapid inputs
+- ❌ FAIL: Any tester requires inputs faster than 1 per second
+
+---
+
+### Requirement 12.3: Hearing-Impaired Testers
+
+**Criterion**: At least 2 hearing-impaired testers must complete full game with audio muted.
+
+**Measurement**:
+- Testers: 2 deaf or hard-of-hearing players (verified via audiogram or self-report)
+- Test: Each plays with audio muted, subtitles + visual sound cues enabled. No developer hints.
+- Metric: Both must complete game without missing critical information due to muted audio.
+
+**Pass/Fail**:
+- ✅ PASS: Both testers complete without missing audio-dependent information
+- ❌ FAIL: Any tester misses critical information due to muted audio
+
+---
+
+### Requirement 12.4: Cognitive-Impaired Testers
+
+**Criterion**: At least 2 cognitive-impaired testers must complete full game with hints + extended timers enabled.
+
+**Measurement**:
+- Testers: 2 players with ADHD, dyslexia, or processing disorders (verified via diagnosis or self-report)
+- Test: Each plays with puzzle hints (Full), extended timers (+50%), slow motion (0.75x). No developer hints.
+- Metric: Both must complete game without getting stuck on puzzles or timers.
+
+**Pass/Fail**:
+- ✅ PASS: Both testers complete without getting stuck
+- ❌ FAIL: Any tester gets stuck on puzzle or timer
+
+---
+
+## Summary: Accessibility Test Checklist
+
+| Requirement | Test Method | Pass/Fail | Tester |
+|-------------|-------------|-----------|--------|
+| **1.1 Minimum text size** | 10 feet, 1080p display | ☐ | Dev |
+| **1.2 UI scaling** | 75%-200%, no clipping | ☐ | Dev |
+| **1.3 Font choice** | Extended Latin, no ambiguity | ☐ | Dev |
+| **2.1 Contrast ratio** | WCAG AA (4.5:1) | ☐ | Dev |
+| **2.2 High contrast mode** | Monochrome test | ☐ | Dev |
+| **2.3 Colorblind modes** | 12 types, shape/pattern distinction | ☐ | Dev + 3 testers |
+| **3.1 Subtitle size** | 4 options, independent from UI | ☐ | Dev |
+| **3.2 Subtitle background** | 3 options, legible over bright | ☐ | Dev |
+| **3.3 Subtitle color** | 5 options, always distinguishable | ☐ | Dev |
+| **4.1 Speaker labels** | All dialogue, color-coded | ☐ | Dev |
+| **4.2 Off-screen indicators** | Directional arrows | ☐ | Dev |
+| **5.1 Visual sound cues** | Muted playthrough | ☐ | Dev + 2 testers |
+| **5.2 Audio description** | All cinematics described | ☐ | Dev |
+| **5.3 Hazard telegraphs** | 2+ channels (visual, audio, haptic) | ☐ | Dev |
+| **6.1 Full remapping** | All inputs, one-handed profile | ☐ | Dev + 1 tester |
+| **6.2 Multiple profiles** | 5 slots, import/export | ☐ | Dev |
+| **7.1 Toggle vs. hold** | All hold actions have toggle | ☐ | Dev |
+| **7.2 Input buffer** | ≥500ms window | ☐ | Dev |
+| **7.3 No simultaneous inputs** | Single-button only | ☐ | Dev |
+| **8.1 Slow motion** | 0.5x, 0.75x, 1.0x, 1.25x | ☐ | Dev |
+| **8.2 Timer extensions** | +50% on all timers | ☐ | Dev |
+| **9.1 Component difficulty** | Independent sliders | ☐ | Dev |
+| **9.2 Arena skip** | After 3 deaths | ☐ | Dev |
+| **10.1 Checkpoint frequency** | ≤5 minutes apart | ☐ | Dev |
+| **10.2 Manual save** | Anytime outside combat | ☐ | Dev |
+| **10.3 Death restart** | <5 seconds | ☐ | Dev |
+| **11.1 Keyboard parity** | All actions, no mouse | ☐ | Dev |
+| **11.2 Controller parity** | All actions, no keyboard | ☐ | Dev |
+| **11.3 Adaptive devices** | Xbox Adaptive Controller | ☐ | Dev |
+| **12.1 Colorblind testers** | 3 testers, full game | ☐ | External |
+| **12.2 Motor-impaired testers** | 2 testers, accessibility options | ☐ | External |
+| **12.3 Hearing-impaired testers** | 2 testers, audio muted | ☐ | External |
+| **12.4 Cognitive-impaired testers** | 2 testers, hints + extended timers | ☐ | External |
+
+**TOTAL**: 38 requirements, ALL must PASS for game to be shippable.
+
+**This is not optional. This is accessibility as a quality gate.**
