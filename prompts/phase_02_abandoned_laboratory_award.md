@@ -1,256 +1,272 @@
 You are continuing FINAL THAW in Godot 4.x. Read CLAUDE.md and inspect existing reusable systems before editing. Phases 0-1 are complete with award-level technical foundation and Elena movement.
 
-**AWARD-LEVEL TARGET**: Puzzles must match *Portal 2* design philosophy: teach→test→twist→master structure, immediate feedback, no softlocks, visual clarity, and emotional payoff. Every puzzle teaches something new or twists an existing mechanic.
+**AWARD-LEVEL TARGET**: Puzzles must match *Portal 2* design philosophy: teach → test → twist → master. Every solution is fixed, readable, and feels inevitable in hindsight. No randomness, no softlocks, no frustration—only "aha!" moments.
 
 GOAL
 Create Elena's first complete puzzle chapter: abandoned laboratory with 4 sequential rooms. Use placeholder/stylised art only.
 
 ## STORY CONTEXT
+Elena escapes with Aster Protocol prototype. Discovers Helix withheld viable stabilisation method because it couldn't control distribution. Retrieves partial transmission for Final Thaw Station.
 
-Elena escapes with Aster Protocol prototype. In this laboratory, she discovers Helix withheld viable stabilisation method because it couldn't control distribution. She retrieves partial transmission for Final Thaw Station.
+## PUZZLE DESIGN PHILOSOPHY (Portal 2 Standard)
 
-**Character moment**: This is where Elena's guilt surfaces—she recognizes the science could have saved Iris. First memory fragment location.
+**Every puzzle must**:
+1. **Teach**: First instance is safe, obvious, no time pressure. Player learns mechanic.
+2. **Test**: Second instance requires application with mild challenge. Player demonstrates understanding.
+3. **Twist**: Third instance subverts expectation—mechanic combines with another or works differently. Player adapts.
+4. **Master**: Final instance requires full understanding, often under pressure. Player succeeds through mastery.
+
+**No**:
+- Randomized solutions (all fixed and readable)
+- Pixel-perfect timing (generous windows)
+- Softlocks (backup systems, emergency exits)
+- Exposition dumps (show through environment)
+
+---
 
 ## DELIVERABLES
 
-### 1. Narrative/Message Panel (Reusable, Skippable)
+### 1. Reusable Systems
 
-Create `scenes/ui/narrative_panel.tscn` with:
-- **Position**: Top-center or bottom-center (consistent throughout game)
-- **Background**: Semi-transparent black (#80000000), rounded corners
-- **Text**: White (#FFFFFF), minimum 18px, high contrast
-- **Behavior**: Appears on room entry, auto-fades after 5 seconds OR skip with any input
-- **Audio**: Subtle fade-in sound, optional text-to-speech for accessibility
-- **Signal**: `narrative_complete` emitted when player dismisses or timer expires
+#### Narrative Message Panel (`scenes/ui/narrative_panel.tscn`)
+- Lightweight, skippable UI overlay
+- Does NOT pause gameplay by default (toggleable in options)
+- Auto-dismiss after 10 seconds or press interact to skip
+- Text: High contrast, scalable (75%-200%), subtitle settings apply
+- Position: Bottom third of screen (doesn't obscure gameplay)
+- Example messages:
+  - "Power restored. The facility remembers me."
+  - "Arm position locked. Only one angle is safe."
+  - "Platform cycle: 10 seconds. Watch the pattern."
 
-**Example messages**:
-- Room 1 entry: "Helix Lab Sector 7. Power offline. I need to restore it to access the archives."
-- Room 1 complete: "Power restored. Terminal unlocked. What are you hiding, Helix?"
-- Room 4 complete: "Partial transmission received. Final Thaw Station... there's still hope."
+#### Checkpoint System (`scripts/components/checkpoint.gd`)
+- Attached to room exit doors
+- On reach: Call `GameManager.save_game()`, set `current_checkpoint_id`, emit `checkpoint_reached` signal
+- Visual: Glowing archway or terminal, clear "Checkpoint" label
+- Audio: Pleasant chime (major chord, 0.5 seconds)
+- Saves: Elena position, all puzzle states, story flags
 
-### 2. Room Completion/Checkpoint System
+#### Powered Terminal Component (`scenes/components/terminal_powered.tscn`)
+- Requires power connection to function
+- Visual: Screen glow (on/off), emission material
+- Interaction: Opens UI panel with puzzle interface
+- State: `is_powered: bool`, `is_active: bool`
+- Signal: `terminal_activated()` when successfully used
 
-**GameManager updates** (`game_manager.gd`):
-- Add `completed_rooms: Array` (stores room IDs like ["lab_1", "lab_2"])
-- Add `current_checkpoint_id: String` (last checkpoint reached)
-- Function `mark_room_complete(room_id: String)`: Adds to array, saves game
-- Function `is_room_complete(room_id: String) -> bool`: Returns true if already completed
-- Function `set_checkpoint(checkpoint_id: String)`: Sets current checkpoint, saves
+#### Door Component (`scenes/components/door Automated.tscn`)
+- Can be locked/unlocked, open/closed
+- Visual: Door slides/fades open, sound effect
+- State: `is_locked: bool`, `is_open: bool`, `requires_power: bool`
+- Interaction: If unlocked and not open, play open animation
+- Signal: `door_opened()`, `door_closed()`
 
-**Checkpoint Scene** (`scenes/components/checkpoint.tscn`):
-- Area2D with visible marker (glowing pedestal or hologram)
-- On player enter: Play chime, set checkpoint, save game, show toast "Checkpoint Reached"
-- Visual: Green glow when active, gray when already triggered
+#### Moving Platform Component (`scenes/components/moving_platform.tscn`)
+- Fixed path (Path2D) with timed cycle
+- Can be called to specific positions via button
+- Visual: Platform moves smoothly, no jerking
+- State: `current_position_index: int`, `is_moving: bool`
+- Safety: Emergency stop button, can halt mid-travel
+- Accessibility: Backup route (ladder, vent, destructible wall) always available
 
-### 3. Reusable Puzzle Components
+#### Hazard Zone Component (`scenes/components/hazard_zone.gd`)
+- Area2D with damage-over-time or instant trigger
+- Visual: Particle effect (steam, electricity, toxic gas), warning stripes
+- Audio: Hissing, crackling, or ominous drone
+- State: `is_active: bool`, `damage_per_second: float`
+- Telegraph: 1.0 second warning before activation (flashing lights, sound ramp-up)
+- Safe zones: Clearly marked areas where hazard doesn't reach
 
-#### Powered Terminal (`scenes/components/powered_terminal.tscn`)
-- **State**: `powered: bool` (default false), `solved: bool` (default false)
-- **Interaction**: Opens puzzle UI when interacted
-- **Visual**: Screen glow when powered, sparks when unpowered
-- **Puzzle**: Connection sequence (nodes A→B→C→D, must link in order)
-- **Feedback**: Green flash on correct connection, red on wrong (immediate, <100ms)
-- **Undo**: Back button removes last connection (max 3 undos)
-- **Hint**: Hold H for 2 seconds to highlight next correct node (3 charges per level)
-- **On solve**: Set `powered=true`, emit `terminal_solved` signal, unlock connected door
+#### Prototype Carrier Component (`scripts/components/prototype_carrier.gd`)
+- Elena carries visibly glowing prototype (emission material, pulse animation)
+- State: `has_prototype: bool` (saved in GameManager)
+- Visual: Blue glow (#4A90E2) on Elena's torso, 50% opacity, 1 second pulse
+- Mechanic: Must keep prototype powered; sustained hazard exposure lowers Prototype Integrity
+- Integrity loss: Only once per defined hazard event/checkpoint (not per frame)
+  - Example: Enter hazard zone without protection = -1 integrity, then invulnerable until next checkpoint
 
-#### Door (`scenes/components/powered_door.tscn`)
-- **State**: `locked: bool`, `powered: bool`, `open: bool`
-- **Interaction**: Opens if `powered=true` and `locked=false`, shows "Locked" or "No Power" otherwise
-- **Animation**: Slide up or fade out over 0.5 seconds (not instant)
-- **Audio**: Mechanical unlock sound, door slide sound
-- **Visual**: Red light when locked/unpowered, green when open
+---
 
-#### Moving Platform (`scenes/components/moving_platform.tscn`)
-- **Movement**: Fixed path (Path2D), constant speed or timed cycle
-- **Controls**: Optional button to call platform to current floor
-- **Safety**: Emergency stop if player still on platform after 10 seconds (returns to start)
-- **Visual**: Metallic platform with hazard stripes, directional arrows showing path
-- **Audio**: Motor hum while moving, clunk when docking
+## ROOM DESIGNS
 
-#### Hazard Zone (`scenes/components/hazard_zone.tscn`)
-- **Types**: Electrical (floor), toxic (puddles), steam (vents)
-- **Damage**: Reduces `prototype_integrity` by 1 only once per defined hazard event (not per frame)
-- **Telegraph**: Visual warning before activation (flashing lights, 1 second delay)
-- **Safe windows**: Clear patterns (e.g., electrical pulses every 3 seconds, safe for 1.5 seconds)
-- **Checkpoint reset**: On death, respawn at last checkpoint with no penalty beyond time loss
+### Room 1: Restore Power (Teach: Terminal Connections)
 
-#### Prototype Carrier (Elena state)
-- **GameManager flag**: `has_aster_prototype: bool` (default true for this level)
-- **Visual**: Glowing case attached to Elena sprite (cyan pulse)
-- **Mechanic**: Hazard exposure reduces `prototype_integrity` only at defined checkpoints (not continuously)
-- **Example**: 3 hazard zones, each reduces integrity by 1 if crossed without timing. Max loss = 3, min = 0
+**Layout**:
+- Size: 40x30 tiles (640x480px)
+- Elements: 1 powered terminal, 3 connection nodes, 1 locked exit door
+- Environment: Dark initially, lights turn on as power restored
 
-### 4. Four Puzzle Rooms
+**Puzzle Flow**:
+1. **Teach**: Terminal shows diagram: "Connect Node 1 → Node 2 → Node 3 → Door"
+   - Node 1 already connected to power (green)
+   - Player must connect Node 1 → Node 2 (drag line or rotate connector)
+   - Immediate feedback: Connection glows green when correct, red when wrong
+2. **Test**: Player connects Node 2 → Node 3
+   - Slightly longer distance, requires routing around obstacle
+   - Feedback: Same (green/red glow)
+3. **Twist**: Node 3 → Door requires passing through junction box
+   - Junction has 2 input/output pairs; must match correctly
+   - Wrong match: Sparks, reset junction (not full puzzle reset)
+4. **Master**: All connections made, door unlocks
+   - Narrative message: "Power restored. The facility remembers me."
+   - Checkpoint save, proceed to Room 2
 
-#### Lab Room 1: Restore Power (Teach)
-**Layout**: 10x10 meters, terminal at far end, door locked
-**Mechanic**: Connection sequence (A→B→C→D)
-**Teaching**: 
-- First connection highlighted (subtle arrow)
-- Immediate feedback (green/red)
-- Undo available (back button)
-**Solution**: Fixed sequence (e.g., top-left→top-right→bottom-right→bottom-left)
-**On complete**: Door unlocks, checkpoint activated, narrative panel: "Power restored. Terminal unlocked."
-**Memory fragment**: Hidden behind terminal (Elena Memory #1: "First Aster test success")
+**Acceptance**:
+- No time pressure, player can experiment
+- Wrong connections reset in <1 second (no long penalties)
+- Visual diagram always visible (no memorization required)
 
-#### Lab Room 2: Redirect Robotic Arm (Test)
-**Layout**: 12x10 meters, robotic arm blocks path, terminal controls it
-**Mechanic**: Terminal cycles arm through 4 fixed positions (0°, 90°, 180°, 270°)
-**Teaching**: Same terminal UI as Room 1, but different puzzle type
-**Test**: Player must observe arm positions, identify which one clears path
-**Solution**: Only 1 position works (e.g., 180°), others block or are dangerous
-**Feedback**: Arm moves visibly, collision updates immediately
-**On complete**: Arm retracts fully, path clears, narrative: "Arm retracted. Moving forward."
-**Memory fragment**: Under desk near terminal (Marcus Memory #1: "Badge day")
+---
 
-#### Lab Room 3: Moving Platform Traverse (Twist)
-**Layout**: 15x10 meters, gap in floor, platform cycles between 3 positions
-**Mechanic**: Platform moves on fixed 10-second cycle (Position A→B→C→A)
-**Twist**: Player can call platform to current position with button, but this resets cycle
-**Teaching**: Observe cycle, learn timing, plan route
-**Test**: Must reach far side without falling (falling = respawn at start, no integrity loss)
-**Accessibility**: Alternate route via ladder on right wall (longer but no timing required)
-**On complete**: Platform docks at exit, narrative: "Platform stable. Continuing."
-**Memory fragment**: On platform itself (Elena Memory #2: "Iris at weather station")
+### Room 2: Redirect Robotic Arm (Test: Position Cycling)
 
-#### Lab Room 4: Prototype Calibration Chamber (Master)
-**Layout**: 20x15 meters, 3 hazard zones in sequence, exit at far end
-**Mechanic**: Combine all prior skills:
-- Power routing ( Room 1) to disable hazards temporarily
-- Timing (Room 3) to cross when safe
-- Observation (Room 2) to identify safe windows
-**Master sequence**:
-1. Activate terminal to disable Hazard 1 for 5 seconds
-2. Cross Hazard 1 within window
-3. Wait for Hazard 2 safe cycle (3 seconds every 5 seconds)
-4. Cross Hazard 2
-5. Time Hazard 3 pulse (1 second every 3 seconds)
-6. Cross to exit
-**Integrity stakes**: Each hazard crossed unsafely = -1 prototype_integrity (max -3, min 0)
-**On complete**: 
-- If integrity preserved (3/3): Narrative: "Prototype intact. Full power. Transmission received."
-- If integrity damaged (1-2): Narrative: "Prototype damaged but functional. Transmission received."
-- If integrity destroyed (0/3): Narrative: "Prototype critical. Transmission received, but data corrupted."
-**Memory fragment**: In corner behind exit door (Voss Memory #1: "Mumbai heat dome")
+**Layout**:
+- Size: 50x40 tiles
+- Elements: 1 terminal controlling arm, robotic arm (sprite with rotation), 4 fixed positions, exit path blocked by arm
 
-### 5. Save System Integration
+**Puzzle Flow**:
+1. **Teach**: Terminal shows arm positions: 0°, 90°, 180°, 270°
+   - Current position: 0° (blocking path)
+   - Player cycles to 90°: Arm rotates over 2 seconds (telegraphed, safe)
+   - Path still blocked
+2. **Test**: Cycle to 180°: Arm moves out of path, but now blocks something else (optional collectible)
+   - Player learns: Each position has trade-offs
+3. **Twist**: Position 270° opens path BUT also activates platform (preparation for Room 3)
+   - Multi-purpose solution: Solves current puzzle, sets up future puzzle
+4. **Master**: Exit path clear, proceed
+   - Narrative message: "Arm position locked. Only one angle is safe."
 
-**Autosave triggers**:
-- On room entry (before puzzles)
-- On room completion (after checkpoint)
-- On integrity change (if damaged)
+**Acceptance**:
+- Arm movement is slow (2 seconds per 90°), no rush
+- Positions clearly labeled (0°, 90°, 180°, 270° or Position 1-4)
+- No frame-perfect timing to pass under arm
 
-**Manual save**: Available anytime outside combat (not applicable in this phase, but prepare for later)
+---
 
-**Save data**:
-- Current room ID
-- Completed rooms array
-- Prototype integrity value
-- Checkpoint ID
-- Memory fragments collected
+### Room 3: Moving Platform Traverse (Twist: Timed Movement)
 
-**Load behavior**:
-- Restore Elena position to start of current room
-- Restore all puzzle states (terminal connections, platform positions, hazard timers)
-- Restore integrity value
+**Layout**:
+- Size: 60x50 tiles
+- Elements: 1 moving platform, 2-3 platforms total, call buttons at each level, gap too wide to jump
 
-### 6. Visual Readability
+**Puzzle Flow**:
+1. **Teach**: Platform cycles automatically (10-second loop)
+   - Player waits, observes cycle
+   - Button to call platform to current level (optional, for accessibility)
+2. **Test**: Player must time boarding platform
+   - Platform arrives, wait 2 seconds, step on
+   - Platform moves to next level over 5 seconds (safe, no fall damage)
+3. **Twist**: Second platform requires calling it FIRST, then boarding
+   - If player just waits, platform never comes (stuck on other side)
+   - Solution: Press call button, wait 3 seconds, board
+4. **Master**: Reach exit, narrative message
+   - "Platform cycle: 10 seconds. Watch the pattern."
 
-**Floor markings**:
-- Grid lines every 1 meter (subtle, 10% opacity)
-- Hazard zones outlined in red (dashed, 50% opacity)
-- Safe paths highlighted in green (subtle glow)
+**Acceptance**:
+- No fall damage (platform has collision, can't fall off)
+- Emergency stop button halts platform (prevents softlock)
+- Backup route: Ladder or vent for players who can't time jumps
 
-**Lighting**:
-- Even illumination, no dark corners
-- Hazard zones have localized red lighting
-- Terminals glow cyan when active
+---
 
-**UI overlays**:
-- Integrity display in HUD: "Prototype: ★★★" (fills/empties dynamically)
-- Room progress: "Lab 1/4" in corner
-- Objective marker: Arrow pointing to next goal (toggleable in options)
+### Room 4: Prototype Calibration Chamber (Master: Hazard Navigation)
 
-### 7. Accessibility Features
+**Layout**:
+- Size: 80x60 tiles (largest room)
+- Elements: 3-4 hazard zones (steam vents, electrical patches, toxic puddles), prototype carrier active, exit at far end
 
-**Puzzle hints**:
-- Level 0 (Off): No hints
-- Level 1 (Contextual): Subtle highlight on correct interactable after 30 seconds inactive
-- Level 2 (Full): Arrow points to next objective, text hint appears
+**Puzzle Flow**:
+1. **Setup**: Elena receives prototype (glowing blue, `has_prototype: true`)
+   - Tutorial message: "Keep prototype powered. Avoid hazards."
+2. **Teach**: First hazard zone is small, clearly marked
+   - Player walks around it (no penalty)
+   - If player crosses: Warning flash, -1 Prototype Integrity (from 3 to 2), checkpoint saves
+3. **Test**: Multiple hazards in sequence
+   - Must navigate maze-like path
+   - Each hazard crossed = -1 integrity (clamped to minimum 0)
+4. **Twist**: One hazard is fake (looks dangerous but safe)
+   - Tests player observation, not just reflexes
+   - Safe hazard has subtle visual difference (different color, no particle movement)
+5. **Master**: Reach exit without losing integrity
+   - If integrity = 3: Bonus narrative ("Prototype stable. Perfect calibration.")
+   - If integrity < 3: Normal narrative ("Prototype damaged. Can still function.")
+   - Either way, proceed to Phase 3
 
-**Extended time**:
-- All timed puzzles have +50% duration option (toggle in pause menu)
-- No penalty, no achievement lockout
+**Acceptance**:
+- Hazards telegraphed 1.0 second before activation (flashing lights, sound)
+- Integrity loss once per hazard event (not per frame in hazard)
+- Checkpoint at room start, can retry without losing progress
 
-**Alternate routes**:
-- Room 3 has ladder route (longer but no timing)
-- Marked on minimap for players who enable "Objective marker always-on"
+---
 
-**Colorblind mode**:
-- Hazard zones use patterns (stripes, dots) in addition to color
-- Terminal connections use shapes (circle, square, triangle) not just colors
+## REUSABLE COMPONENTS TO CREATE
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| Terminal Powered | `scenes/components/terminal_powered.tscn` | Puzzle interface, requires power |
+| Door Automated | `scenes/components/door_automated.tscn` | Lock/unlock, open/close |
+| Moving Platform | `scenes/components/moving_platform.tscn` | Timed cycle, call buttons |
+| Hazard Zone | `scenes/components/hazard_zone.tscn` | Damage over time, telegraphed |
+| Checkpoint | `scenes/components/checkpoint.tscn` | Save point, visual/audio feedback |
+| Narrative Panel | `scenes/ui/narrative_panel.tscn` | Story messages, skippable |
+| Connection Node | `scenes/components/connection_node.tscn` | Power routing puzzle piece |
+| Robotic Arm | `scenes/components/robotic_arm.tscn` | Position cycling obstacle |
+| Prototype Carrier | `scripts/components/prototype_carrier.gd` | State management for prototype |
 
 ---
 
 ## ACCEPTANCE CRITERIA (MUST PASS)
 
-1. **Puzzle structure**: All 4 rooms follow teach→test→twist→master. Document which mechanic is taught/tested/twisted/mastered. PASS/FAIL
+1. **Puzzle flow**: All 4 rooms completable in sequence without developer console. Average playtime 10-15 minutes. PASS/FAIL with timer
 
-2. **Immediate feedback**: Wrong terminal connection shows red flash <100ms. Correct shows green. Test with all 4 rooms. PASS/FAIL
+2. **Fixed solutions**: No randomness in any puzzle. Reload room 10 times, solution identical each time. PASS/FAIL
 
-3. **Undo function**: Can reverse last 3 terminal actions. Test in Rooms 1 and 4. PASS/FAIL
+3. **No softlocks**: Every puzzle has reset button or backup route. Test: Intentionally break each puzzle, verify recovery. PASS/FAIL
 
-4. **Hint system**: Hold H for 2 seconds highlights next correct node. 3 charges per level, recharge on room entry. Test in all rooms. PASS/FAIL
+4. **Immediate feedback**: Wrong input shows error <0.5 seconds, resets <1 second. No long animations or penalties. PASS/FAIL
 
-5. **No softlocks**: Falling into gap respawns at room start. Wrong platform timing = retry, no death. Test all failure states. PASS/FAIL
+5. **Checkpoint system**: Save/load at each room exit preserves all state (Elena position, puzzle states, integrity). Test all 4 checkpoints. PASS/FAIL
 
-6. **Checkpoint system**: Save/load preserves room state, integrity, position. Test mid-room save, quit, reload. PASS/FAIL
+6. **Prototype integrity**: Loss only once per hazard event, clamped 0-3, saved correctly. Test: Cross hazard, save, reload, verify integrity unchanged. PASS/FAIL
 
-7. **Integrity tracking**: HUD shows prototype integrity (3 stars), decreases on hazard damage, persists on save/load. PASS/FAIL
+7. **Narrative messages**: Appear on room entry and completion, skippable, high contrast text. All 8 messages present. PASS/FAIL
 
-8. **Narrative panels**: Appear on room entry/completion, skippable with any input, auto-fade after 5 seconds. Test all 8 panels. PASS/FAIL
+8. **Accessibility**: Colorblind mode makes hazards distinguishable without color (patterns, shapes). Backup routes usable. PASS/FAIL
 
-9. **Memory fragments**: 4 placed (1 per room), collectible, tracked in GameManager, persist on save/load. PASS/FAIL
+9. **Performance**: 60 FPS locked in all rooms, even with all hazards active. Profiler shows <1ms per puzzle logic update. PASS/FAIL
 
-10. **Accessibility**: Colorblind mode makes hazards distinguishable without color. Extended time option works. Alternate route in Room 3 functional. PASS/FAIL
-
-11. **Performance**: 60 FPS locked in all rooms. No drops when hazards active, platforms moving, terminals open. PASS/FAIL
-
-12. **Visual clarity**: Player can always see path, hazards, interactables. No dark corners, no ambiguous collision. Test with new player (no spoilers). PASS/FAIL
+10. **Phase transition**: Room 4 exit triggers Phase 3 completion flag, shows "Return to Menu" or "Next Phase" placeholder. No crash, no softlock. PASS/FAIL
 
 ---
 
 ## DO NOT
 
 - Add combat or enemies (Phase 3+)
-- Randomize puzzle solutions (all fixed and readable)
-- Create long penalties (wrong input resets local mechanism only, <5 seconds)
-- Make puzzles time-critical without alternate routes
-- Reduce consequence counters for normal retry/death
-- Softlock player (always provide reset or escape)
+- Create final art—placeholders only
+- Add randomness to puzzles
+- Make hazards instant-death (always telegraphed, always avoidable)
+- Require frame-perfect timing (generous windows)
+- Lock critical path behind optional puzzles (optional = shortcuts or collectibles only)
 
 ---
 
 ## FINISH BY REPORTING
 
-1. **Changed files**: List all new/modified files with descriptions
-2. **Test results**: For each acceptance criterion, state PASS/FAIL with evidence
-3. **Known limitations**: Any unresolved issues, TODOs, technical debt
-4. **Performance metrics**: FPS in each room, load time between rooms, memory usage
+1. **Changed files**: List all new/modified files
+2. **Test results**: Each acceptance criterion PASS/FAIL with evidence
+3. **Known limitations**: Unresolved issues, TODOs
+4. **Performance metrics**: FPS in each room, puzzle logic time
 5. **Commit message**: Propose this exact message:
 
 ```
 Phase 2: abandoned laboratory puzzles complete
 
 Award-level puzzle design with:
-- 4 rooms following teach→test→twist→master structure
-- Immediate feedback (<100ms), undo function (3 actions), hint system (3 charges)
-- No softlocks (respawn on failure, alternate routes)
-- Checkpoint system with full state persistence
-- Prototype integrity tracking (hazard damage, saved)
-- 4 memory fragments placed (Elena x2, Marcus x1, Voss x1)
-- Full accessibility (colorblind, extended time, alternate routes)
+- 4 sequential rooms (teach-test-twist-master structure)
+- Reusable components (terminals, doors, platforms, hazards)
+- Checkpoint system with save/load at each exit
+- Prototype integrity system (loss once per hazard event)
+- Narrative messages on entry/completion (skippable)
+- Accessibility: backup routes, colorblind-safe hazards, no softlocks
 
-All 12 acceptance criteria PASS. 60 FPS maintained. Ready for Phase 3.
+All 10 acceptance criteria PASS. 60 FPS maintained. Ready for Phase 3.
 ```
