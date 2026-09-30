@@ -1,299 +1,435 @@
-You are continuing FINAL THAW in Godot 4.x. Read CLAUDE.md and inspect existing systems before editing. Phases 0-2 are complete with award-level foundation, Elena movement, and laboratory puzzles.
+You are continuing FINAL THAW in Godot 4.x. Read CLAUDE.md and inspect existing systems before editing. Phases 0–2 are complete with award-level foundation, Elena movement, and laboratory puzzles.
 
-**AWARD-LEVEL TARGET**: Combat must feel as responsive as *Hades* or *Devil May Cry*. Every attack has purpose, player expression matters, enemies are readable, and flow state is achievable. No cheap hits, no randomness, no input lag.
+**AWARD-LEVEL TARGET**: Combat must feel as responsive and readable as *Hades* or *Devil May Cry*. Every attack has purpose, every enemy telegraph is clear, every system supports player expression. 60 FPS locked even with 10+ enemies, particles, and camera shake.
 
 GOAL
 Implement Marcus Reyes and deterministic isometric beat-'em-up combat foundation.
 
 ## CONTEXT
+Marcus is a former police officer. His gameplay is direct action, protection, crowd control, environmental mastery. Combat must feel weighty but responsive—like a tired professional who moves efficiently, not a superhero.
 
-Marcus is a former police officer. His gameplay is direct action, protection, crowd control, environmental mastery. Combat must feel weighty but responsive—every hit has impact, every dodge matters.
+---
+
+## COMBAT DESIGN PHILOSOPHY (Hades + DMC Standard)
+
+**Every combat system must**:
+1. **Be readable**: Player always knows why they took damage (saw telegraph, missed dodge, etc.)
+2. **Allow expression**: Multiple viable playstyles (aggressive rushdown, defensive counter, environmental mastery, crowd control)
+3. **Reward mastery**: Skill ceiling high enough for speedrunners, floor low enough for casual players
+4. **Stay deterministic**: No random crits, no RNG damage, no guesswork—pure skill
+
+**No**:
+- Random critical hits
+- Unblockable attacks without clear telegraph
+- Enemies that hit from off-screen without warning
+- Damage fall-off based on RNG
+
+---
 
 ## DELIVERABLES
 
 ### 1. Marcus Character Scene (`scenes/characters/marcus_character.tscn`)
 
 **CharacterBody2D with**:
-- **Collision**: CapsuleShape2D (width: 56px, height: 104px) - slightly wider than Elena
-- **Sprite**: Placeholder (64x128px rectangle, orange color #E28A4A) with idle animation (subtle weight shift, 2 second loop)
-- **Ground shadow**: Ellipse (48x24px, #40000000), offset 12px below sprite
-- **Health component**: `scripts/components/health.gd` with `current_health: int`, `max_health: int = 100`
-- **State machine**: `scripts/characters/marcus_state_machine.gd` tracking: idle, move, light_attack, heavy_attack, combo, dodge, block, hitstun, grab, throw, defeated
-- **Camera2D**: Slightly lower than Elena's (more combat intensity), zoom: 1.1, drag margin: 0.25
-- **AudioStreamPlayer2D**: For combat sounds (grunts, hits, dodges)
+- **Collision**: CapsuleShape2D (width: 48px, height: 96px)
+- **Sprite**: Placeholder (64x128px rectangle, orange color #E28C4A) with idle animation (subtle breathing, 1.5 second loop)
+- **Ground shadow**: Ellipse (40x20px, semi-transparent black), offset 10px below sprite
+- **Camera2D**: Smooth follow, drag margin 0.2, zoom 1.0
+- **CombatState**: State machine child node (idle, move, attack, dodge, block, hitstun, defeated)
+- **Health component**: `max_health: int = 100`, `current_health: int`, `is_invulnerable: bool`
+- **Hitbox/Hurtbox**: Area2D children for attack detection
+- **AudioStreamPlayer2D**: For attack sounds, hit sounds, footstep sounds
 
 ### 2. Movement with Combat Enhancements
 
-**Constants** (`scripts/characters/marcus_controller.gd`):
+**Constants**:
 ```gdscript
-@export var ACCELERATION: float = 35.0  # Slightly higher than Elena (more aggressive)
+@export var ACCELERATION: float = 35.0  # Slightly higher than Elena for aggression
 @export var DECELERATION: float = 30.0
-@export var MAX_SPEED: float = 320.0  # 7% faster than Elena
-@export var SPRINT_MULTIPLIER: float = 1.4  # Hold sprint for 1.4x speed
-@export var DODGE_SPEED: float = 600.0  # 2x normal speed during dodge
-@export var DODGE_DURATION: float = 0.25  # 250ms dodge animation
-@export var DODGE_INVINCIBILITY_FRAMES: float = 0.15  # 150ms i-frames at start
+@export var MAX_SPEED: float = 320.0    # Slightly faster than Elena
+@export var SPRINT_MULTIPLIER: float = 1.4
+@export var DODGE_SPEED: float = 800.0  # Burst speed during dodge
 ```
 
-**Sprint**:
-- Hold `sprint` input (Shift or L3) for 1.4x speed
-- Stamina cost: 10 per second (stamina regenerates at 20 per second when not sprinting)
-- Visual: Motion blur trail, heavier breathing audio
+**Enhancements**:
+- **Sprint**: Hold `sprint` input → movement speed ×1.4, stamina drain (if stamina system added later)
+- **Dodge**: Tap `dodge` input → 0.3 second burst at DODGE_SPEED in movement direction
+  - Invincibility frames: 0.15 seconds (150ms) from dodge start
+  - Cooldown: 0.5 seconds (prevents spam)
+  - Visual: Motion blur trail, temporary transparency (50% opacity)
+- **Block**: Hold `block` input → 60% frontal damage reduction, stamina drain (optional)
+  - Frontal: 90-degree cone in facing direction
+  - Can't move while blocking (or very slow: 30% speed)
 
-**Dodge**:
-- Press `dodge` (Space or B) while moving
-- Dash 120px in movement direction over 250ms
-- Invincibility: First 150ms (60% of dodge)
-- Cooldown: 0.5 seconds (prevents spam, but short enough for flow)
-- Perfect dodge: If dodge input within 150ms of enemy attack windup → trigger slow-mo (2 seconds, 0.5x speed)
+### 3. Combat State Machine (`scripts/components/combat_state_machine.gd`)
 
-**Block**:
-- Hold `block` (Mouse Middle or LT) to reduce 60% frontal damage
-- Stamina cost: 15 per second while blocking
-- Guard break: After 3 seconds continuous block, 2 second vulnerability (take 100% damage)
-- Visual: Energy shield effect in front of Marcus (cyan tint)
+**States**:
+- `IDLE`: No input, standing still
+- `MOVE`: Moving, not attacking
+- `LIGHT_ATTACK`: Three-hit combo sequence
+- `HEAVY_ATTACK`: Slower, higher damage, launches enemy
+- `COMBO`: Chaining attacks together
+- `DODGE`: Invincible burst movement
+- `BLOCK`: Damage reduction, frontal cone
+- `HITSTUN`: Just took damage, brief stun (0.3 seconds)
+- `GRAB`: Grabbing enemy or object
+- `THROW`: Throwing grabbed object/enemy
+- `DEFEATED`: Health ≤ 0, death animation
 
-### 3. Combat State Machine
+**Transitions**:
+- IDLE → MOVE (on movement input)
+- IDLE/MOVE → LIGHT_ATTACK (on light attack input)
+- IDLE/MOVE → HEAVY_ATTACK (on heavy attack input)
+- ANY → DODGE (on dodge input, if not in hitstun/defeated)
+- ANY → BLOCK (on block hold)
+- HITSTUN → IDLE (after 0.3 seconds)
+- ANY → DEFEATED (when health ≤ 0)
 
-**States** (all in `marcus_state_machine.gd`):
-- **idle**: Standing still, no input
-- **move**: Moving (with or without sprint)
-- **light_attack**: Fast attack (200ms startup, 100ms active, 300ms recovery), 15 damage
-- **heavy_attack**: Slow attack (400ms startup, 200ms active, 500ms recovery), 35 damage, launches
-- **combo**: Chained attacks (Light→Light→Heavy = launch state)
-- **dodge**: Invincible dash (see above)
-- **block**: Damage reduction (see above)
-- **hitstun**: 0.5 seconds after taking damage, cannot act
-- **grab**: Grabbing enemy or object (500ms windup)
-- **throw**: Throwing grabbed object/enemy (instant, direction = facing)
-- **defeated**: Health <= 0, play death animation, respawn at checkpoint
+**Implementation**:
+```gdscript
+enum State { IDLE, MOVE, LIGHT_ATTACK, HEAVY_ATTACK, COMBO, DODGE, BLOCK, HITSTUN, GRAB, THROW, DEFEATED }
+
+var current_state: State = State.IDLE
+var combo_count: int = 0  # 0-2 for three-hit combo
+var combo_timer: float = 0.0  # Resets if no input within 1.0 second
+
+func _physics_process(delta):
+    match current_state:
+        State.IDLE: _process_idle(delta)
+        State.MOVE: _process_move(delta)
+        State.LIGHT_ATTACK: _process_light_attack(delta)
+        State.HEAVY_ATTACK: _process_heavy_attack(delta)
+        State.DODGE: _process_dodge(delta)
+        State.BLOCK: _process_block(delta)
+        State.HITSTUN: _process_hitstun(delta)
+        State.DEFEATED: _process_defeated(delta)
+```
+
+### 4. Three-Hit Combo System
+
+**Combo Data** (use Resource for data-driven design):
+```gdscript
+class_name AttackData extends Resource
+
+@export var startup_frames: int = 5      # Frames before active
+@export var active_frames: int = 8       # Frames that can hit
+@export var recovery_frames: int = 12    # Frames after active
+@export var damage: int = 10
+@export var knockback: float = 200.0
+@export var hitstun_duration: float = 0.3
+```
+
+**Combo Sequence**:
+- **Hit 1 (Light)**: Fast startup (5 frames), low damage (10), small knockback (200)
+- **Hit 2 (Light)**: Same as Hit 1, but can only be input if Hit 1 connected
+- **Hit 3 (Heavy)**: Slower startup (8 frames), high damage (25), launches enemy (knockback 500)
 
 **Input Buffering**:
-- Queue next attack input during current attack's active/recovery frames
-- Buffer window: 200ms (generous, allows flow combos)
-- Example: Press Light during Light recovery → auto-queue next Light or Heavy
+- Window: 0.5 seconds after each hit to input next attack
+- If no input: Reset to IDLE after recovery frames
+- If input during window: Queue next attack, execute immediately after recovery
 
-**Combo System**:
-- **3-hit base**: Light → Light → Heavy (launch)
-- **Aerial juggle**: After launch, can do Light attacks while enemy airborne (3 hits max)
-- **Combo reset**: If no attack input for 2 seconds, combo counter resets
-- **Visual**: Combo counter UI ("Combo x3", "Combo x5", etc.) in top-right
-
-### 4. Hitbox/Hurtbox System
-
-**Hitbox component** (`scripts/components/hitbox.gd`):
+**Implementation**:
 ```gdscript
-@export var damage: int = 15
-@export var knockback: float = 200.0
-@export var hitstun_duration: float = 0.5
-@export var element_type: String = "physical"  # physical, fire, electric, etc.
-
-func deal_damage(target: Node2D) -> void:
-    if target.has_method("take_damage"):
-        target.take_damage(damage, knockback, hitstun_duration, element_type)
+func _process_light_attack(delta):
+    attack_timer += delta
+    
+    if attack_timer < startup_time:
+        # Startup: Can't hit yet, can cancel into dodge
+        return
+    elif attack_timer < startup_time + active_time:
+        # Active: Check for hits
+        var hits = attack_area.get_overlapping_bodies()
+        for hit in hits:
+            if hit.is_in_group("enemies") and not hit in already_hit_this_attack:
+                hit.take_damage(damage, knockback, hitstun_duration)
+                already_hit_this_attack.append(hit)
+    else:
+        # Recovery: Can't cancel, must wait out
+        if attack_timer > total_attack_time:
+            current_state = State.IDLE
+            combo_count += 1
+            if combo_count > 2:
+                combo_count = 0  # Reset after three hits
 ```
 
-**Hurtbox component** (`scripts/components/hurtbox.gd`):
-- Detects overlapping hitboxes
-- Calls `take_damage()` on parent health component
-- Prevents double-hits: Track which hitboxes already hit this frame (use unique IDs)
+### 5. Hitbox/Hurtbox System (`scripts/components/hitbox.gd`, `scripts/components/hurtbox.gd`)
 
-**Health component** (`scripts/components/health.gd`):
+**Hitbox** (on attacker):
+- Area2D that detects overlaps with hurtboxes
+- Active only during attack's active frames
+- Prevents double-hits: Track `already_hit_this_attack` array
+- Signal: `hit_registered(target: Node2D, damage: int, knockback: float)`
+
+**Hurtbox** (on player/enemy):
+- Area2D that detects overlaps with hitboxes
+- On hit: Call `take_damage()` on parent character
+- Signal: `damage_taken(amount: int, source: Node2D)`
+
+**Implementation**:
 ```gdscript
-@export var current_health: int = 100
-@export var max_health: int = 100
+# hitbox.gd
+func _on_area_entered(area: Area2D):
+    if area.is_in_group("hurtboxes"):
+        var target = area.get_parent()
+        if target.is_in_group("enemies") or target.is_in_group("player"):
+            # Check if already hit this target in this attack
+            if not target in already_hit:
+                already_hit.append(target)
+                target.hurtbox.take_damage(damage, knockback, hitstun_duration)
+                emit_signal("hit_registered", target, damage, knockback)
 
-func take_damage(amount: int, knockback: float, hitstun: float, element: String) -> void:
-    current_health = max(0, current_health - amount)
-    # Apply knockback velocity to parent CharacterBody2D
-    # Trigger hitstun state in state machine
-    # Emit signal for UI update
+# hurtbox.gd
+func take_damage(amount: int, knockback: float, hitstun_duration: float):
+    if get_parent().is_invulnerable:
+        return
+    
+    get_parent().current_health -= amount
+    get_parent().emit_signal("health_changed", get_parent().current_health)
+    get_parent().apply_knockback(knockback)
+    get_parent().enter_hitstun(hitstun_duration)
 ```
 
-**Debug visualization**: Toggle with F4 to show hitboxes (green), hurtboxes (red), damage numbers (yellow)
+### 6. Health Component (`scripts/components/health.gd`)
 
-### 5. Enemy Scavenger (`scenes/enemies/enemy_scavenger.tscn`)
+**Properties**:
+- `max_health: int = 100`
+- `current_health: int = 100`
+- `is_invulnerable: bool = false` (for dodge I-frames, hitstun)
+- `on_health_changed`: Signal
+- `on_death`: Signal
+
+**Functions**:
+- `take_damage(amount: int, knockback: float, hitstun_duration: float)`
+- `heal(amount: int)` (for future power-ups)
+- `set_invulnerable(duration: float)` (for dodge I-frames)
+
+### 7. Enemy: Scavenger (`scenes/enemies/enemy_scavenger.tscn`)
 
 **CharacterBody2D with**:
-- **Sprite**: Placeholder (56x96px rectangle, gray #808080), smaller than Marcus
-- **Health**: 50 HP (dies in 4 light attacks or 2 heavy)
-- **State machine**: idle, approach, windup, strike, recovery, hitstun, defeated
+- **Sprite**: Placeholder (red rectangle #E24A4A, 64x128px)
+- **Health**: 50 HP (dies in 5 light attacks or 2 heavy)
+- **AI State Machine**: idle, approach, windup, strike, recovery, hitstun, defeated
 
-**AI Behavior** (`scripts/enemies/scavenger_ai.gd`):
+**AI Behavior**:
+- **Idle**: Patrol small area, detect player within 300px
+- **Approach**: Move toward player at 200px/s
+- **Windup**: 0.5 second telegraph (raise arms, red flash)
+- **Strike**: Lunge forward 100px, deal 15 damage if hits
+- **Recovery**: 0.3 second vulnerable window after strike
+- **Hitstun**: 0.3 seconds when hit, can't act
+- **Defeated**: Fall animation, ragdoll or fade out
+
+**Implementation**:
 ```gdscript
-# Deterministic state machine
-STATE_IDLE = 0
-STATE_APPROACH = 1
-STATE_WINDUP = 2
-STATE_STRIKE = 3
-STATE_RECOVERY = 4
-STATE_HITSTUN = 5
-STATE_DEFEATED = 6
+enum State { IDLE, APPROACH, WINDUP, STRIKE, RECOVERY, HITSTUN, DEFEATED }
 
-# Constants
-@export var DETECTION_RANGE: float = 400.0
-@export var ATTACK_RANGE: float = 80.0
-@export var WINDUP_DURATION: float = 0.5  # 500ms telegraph
-@export var RECOVERY_DURATION: float = 0.8  # 800ms punishable window
-@export var MOVE_SPEED: float = 180.0
+var state: State = State.IDLE
+var target: Node2D = null
+var attack_range: float = 60.0
+var detection_range: float = 300.0
 
-# Behavior loop:
-# 1. If player in detection range: approach
-# 2. If in attack range: windup (500ms telegraph with red flash)
-# 3. Strike (instant damage check)
-# 4. Recovery (800ms, player can punish)
-# 5. Repeat
+func _physics_process(delta):
+    match state:
+        State.IDLE:
+            _process_idle(delta)
+        State.APPROACH:
+            _process_approach(delta)
+        State.WINDUP:
+            _process_windup(delta)
+        State.STRIKE:
+            _process_strike(delta)
+        State.RECOVERY:
+            _process_recovery(delta)
+        State.HITSTUN:
+            _process_hitstun(delta)
+        State.DEFEATED:
+            _process_defeated(delta)
+
+func _process_idle(delta):
+    # Look for player
+    var players = get_tree().get_nodes_in_group("player")
+    for player in players:
+        if global_position.distance_to(player.global_position) < detection_range:
+            target = player
+            state = State.APPROACH
+            return
+
+func _process_approach(delta):
+    if target == null or target.is_in_group("defeated"):
+        state = State.IDLE
+        return
+    
+    var dist = global_position.distance_to(target.global_position)
+    if dist < attack_range:
+        state = State.WINDUP
+        return
+    
+    # Move toward target
+    var direction = (target.global_position - global_position).normalized()
+    velocity = direction * 200.0
+    move_and_slide()
 ```
 
-**Visual telegraphs**:
-- Windup: Enemy glows red, raises weapon (0.5s)
-- Strike: Fast lunge animation (instant damage)
-- Recovery: Stagger back, vulnerable (0.8s)
-- Hitstun: Flash white, knockback (0.5s)
+**Telegraph**:
+- Visual: Enemy flashes red 0.5 seconds before strike
+- Audio: Growl or weapon charge sound
+- Animation: Arms raise, body leans back
 
-**Health bar**: Above enemy, red, 50px wide, fades out after 2 seconds not damaged
+**Hit Reaction**:
+- Flash white 0.1 seconds on hit
+- Knockback: Push back 100-300px depending on attack
+- Hitstun: Can't act for 0.3 seconds
 
-### 6. Grab/Throwable Object System
+### 8. Grab/Throw System (`scripts/components/grab_system.gd`)
 
-**Grabbable objects** (`scenes/objects/grabbable_object.tscn`):
-- **Types**: Crate (25 damage), barrel (40 damage), debris (10 damage)
-- **Physics**: RigidBody2D, but grabbed = kinematic (follows Marcus)
-- **Interaction**: Hold `grab` (G or Y) near object to pick up
-- **Carry**: Object attaches to Marcus (offset +40px on facing side)
-- **Throw**: Press `attack_light` while holding → throw in facing direction
-- **Throw physics**: Velocity 500px/s, arc trajectory (gravity -800px/s²)
-- **Impact**: On collision, deal damage, then settle or break (if breakable)
+**Grab**:
+- Input: `grab` button (G or Controller Y)
+- Range: 80px in front of Marcus
+- Valid targets: Enemies in hitstun, throwable objects (crates, barrels)
+- State: `is_holding: bool`, `held_object: Node2D`
 
-**Enemy grab**:
-- Works on Scavengers only (not Enforcers or bosses)
-- Windup: 500ms (enemy can struggle, break free if Marcus takes damage)
-- Throw: Instant takedown (50 damage, usually kills Scavenger)
-- Stamina cost: 30 per grab
+**Carry**:
+- Held object follows Marcus with 0.2 second delay
+- Marcus moves at 70% speed while holding
+- Can't attack while holding (must throw first)
 
-### 7. Combat Arena Test Scene (`scenes/levels/marcus_combat_arena.tscn`)
+**Throw**:
+- Input: `attack_light` or `attack_heavy` while holding
+- Light throw: Toss forward 200px, 10 damage
+- Heavy throw: Toss forward 400px, 25 damage, small AoE on impact
+- Object settles or breaks after throw (configurable)
+
+**Implementation**:
+```gdscript
+func try_grab():
+    var candidates = grab_area.get_overlapping_bodies()
+    for candidate in candidates:
+        if candidate.is_in_group("enemies") and candidate.state == State.HITSTUN:
+            held_object = candidate
+            candidate.state = State.GRABBED
+            is_holding = true
+            return
+        elif candidate.is_in_group("throwable") and not candidate.is_held:
+            held_object = candidate
+            candidate.is_held = true
+            is_holding = true
+            return
+
+func throw(direction: Vector2, power: float):
+    if held_object == null:
+        return
+    
+    held_object.state = State.THROWN
+    held_object.velocity = direction * power
+    held_object.is_held = false
+    held_object = null
+    is_holding = false
+```
+
+### 9. Combat Arena Test Scene (`scenes/levels/marcus_combat_arena.tscn`)
 
 **Environment**:
-- Floor: 1920x1080px rectangle, dark gray (#404040)
+- Size: 80x60 tiles (1280x960px)
 - Walls: StaticBody2D with collision (invisible or debug texture)
-- Lighting: DirectionalLight2D, even illumination
-- **Throwables**: 5 objects placed (2 crates, 2 barrels, 1 debris pile)
+- Floor: Neutral gray, non-distracting
+- Lighting: Even, no dark corners
 
 **Enemies**:
-- 3-5 Scavengers with fixed spawn points
-- Spawn wave 1: 2 enemies at start
-- Spawn wave 2: +2 enemies when wave 1 defeated
-- Spawn wave 3: +1 enemy when wave 2 defeated (optional, test scaling)
+- 3-5 Scavengers, spawned at start
+- Spawn points: 5 positions around arena
+- Aggro: All target Marcus on spawn
 
-**Arena Controller** (`scripts/levels/arena_controller.gd`):
-- Track enemy waves
+**Throwable Objects**:
+- 5-10 crates/barrels scattered around arena
+- Can be grabbed, carried, thrown
+- Break on impact (particle effect, sound)
+
+**Encounter Controller**:
+- `is_active: bool` (true when enemies alive)
 - Lock exits while active (invisible walls)
-- Unlock on all enemies defeated
-- Show wave counter: "Wave 1/3" in corner
-- Score display: Time, damage dealt, environmental throws, clean-clear bonus
+- On all enemies defeated: Unlock exits, show "Clear" message, play victory sound
 
-### 8. Hit Feedback (Juice)
+**Score Display** (optional, feedback only):
+- Time to clear
+- Damage taken
+- Environmental throws
+- Combo rating (D-S based on performance)
+
+### 10. Hit Feedback (Juice)
 
 **Visual**:
-- **Hit flash**: Enemy turns white (#FFFFFF) for 100ms on hit
-- **Screen shake**: 2-3 pixels on heavy hits, 1 pixel on light (toggleable in options)
-- **Damage numbers**: Float up from hit location (yellow #FFFF00, 24px, fade out over 1 second)
-- **Blood/decal**: Optional splatter on kill (toggleable for gore sensitivity)
+- **Hit flash**: Enemy turns white for 0.1 seconds on hit
+- **Camera shake**: 2-3 pixel shake on heavy hits (toggleable in options)
+- **Damage numbers**: Pop up at hit location (optional, stylized font)
+- **Blood/decal splatter**: On enemy death (toggleable for gore sensitivity)
 
 **Audio**:
-- **Light attack**: Sharp crack (high pitch, short)
-- **Heavy attack**: Deep thud (low pitch, longer)
-- **Hit**: Meat impact + cloth tear (layered)
-- **Enemy vocal**: Grunt on hit, death cry on defeat
-- **Environmental**: Glass shatter, metal clang, wood splinter
+- **Attack sounds**: Light = sharp crack (0.1s), Heavy = deep thud (0.2s)
+- **Hit sounds**: Meaty impact, varies by enemy type
+- **Enemy vocalizations**: Grunt on hit (0.1s), death cry (0.3s)
 
-**Camera**:
-- **Shake on heavy hit**: 100ms, amplitude 3px (reduced motion option: 1px)
-- **Slow-mo on perfect dodge**: 0.5x speed for 2 seconds (reduced motion: instant, no slow)
-
-### 9. Accessibility in Combat
-
-**Aim assist** (for targeting):
-- Levels: Off, 25%, 50%, 75%, 100%
-- Sticky reticle slows when over enemy
-- Optional auto-lock on nearest (toggle)
-
-**Slow-motion mode**:
-- Global time scale: 0.5x, 0.75x, 1.0x (normal), 1.25x (speedrun)
-- Affects everything: movement, attacks, enemy AI
-- Always available, no penalty
-
-**Reduced motion**:
-- Disables camera shake, screen tilt, motion blur
-- Reduces particle density by 75%
-- Slows dodge slow-mo to instant (no time distortion)
-
-**High contrast enemies**:
-- Toggle: Enemies outlined in bright red (#FF0000)
-- Health bars always visible (not fade-out)
-- Telegraphs use patterns (stripes) in addition to color
+**Particles**:
+- **Hit sparks**: On metal enemies or deflected attacks
+- **Blood droplets**: On organic enemies (8-12 particles, fade over 2s)
+- **Dust clouds**: On heavy impacts or throws
 
 ---
 
 ## ACCEPTANCE CRITERIA (MUST PASS)
 
-1. **Movement feel**: Marcus accelerates over ~0.25 seconds to max speed, sprint feels faster (1.4x). No instant stops. Profiler: <0.15ms per frame for movement. PASS/FAIL
+1. **Combo system**: Three-hit combo executes correctly, input buffering works, combo resets after 1.0 second no input. Test 20+ combos. PASS/FAIL
 
-2. **Dodge timing**: 150ms i-frames at start, 250ms total duration. Perfect dodge (150ms window before attack) triggers 2s slow-mo. Test with timing tool. PASS/FAIL
+2. **Dodge**: 150ms invincibility window verified (use debug overlay). Dodge cancels attack startup. Cooldown prevents spam. PASS/FAIL
 
-3. **Block system**: 60% damage reduction frontal, 15 stamina/sec, guard break after 3s. Test with damage numbers visible. PASS/FAIL
+3. **Block**: 60% frontal damage reduction (test with known damage values). 90-degree cone accurate. Can't move while blocking (or 30% speed). PASS/FAIL
 
-4. **Combo system**: Light→Light→Heavy launches enemy. Aerial juggle works (3 hits max). Input buffer (200ms) allows smooth chains. Test with debug hitboxes. PASS/FAIL
+4. **Hitbox system**: No double-hits from single attack. Already_hit tracking works. Multiple enemies can be hit with AoE attacks. PASS/FAIL
 
-5. **Hitbox/hurtbox**: No double-hits from single attack. Damage numbers match expected (15 light, 35 heavy). Test with F4 hitbox overlay. PASS/FAIL
+5. **Enemy AI**: Scavenger approaches, winds up (0.5s telegraph), strikes, recovers (0.3s vulnerable). Hitstun 0.3 seconds. All states transition correctly. PASS/FAIL
 
-6. **Enemy AI**: Scavenger approach→windup (500ms)→strike→recovery (800ms) loop is readable. Telegraphs visible (red flash). Punishable windows clear. Test with new player (no spoilers). PASS/FAIL
+6. **Grab/throw**: Can grab hitstun enemies and throwables. Carry slows Marcus to 70% speed. Light throw 200px/10 dmg, heavy throw 400px/25 dmg. Objects break/settle correctly. PASS/FAIL
 
-7. **Grab/throw**: Can grab crates/barrels, carry, throw in facing direction. Throw deals correct damage (25/40). Enemy grab works on Scavengers (50 damage takedown). Test all throwables. PASS/FAIL
+7. **Performance**: 60 FPS locked with 5 enemies, 10 throwables, particles active. Profiler shows <2ms for combat logic. PASS/FAIL
 
-8. **Arena flow**: 3 waves spawn correctly, exits lock during combat, unlock on clear. Score display accurate (time, damage, throws, bonus). Test full clear. PASS/FAIL
+8. **Hit feedback**: Hit flash, camera shake, damage numbers all functional. Camera shake toggleable in options. Gore toggleable. PASS/FAIL
 
-9. **Hit feedback**: Hit flash (100ms white), screen shake (2-3px), damage numbers (float up, fade 1s). All toggleable in options. Test with high-speed camera. PASS/FAIL
+9. **Arena flow**: Enemies spawn, aggro Marcus. Exits locked while active. All defeated = exits unlock, "Clear" message. Victory sound plays. PASS/FAIL
 
-10. **Performance**: 60 FPS locked with 5 enemies, particles, screen shake, damage numbers. Profiler: <5ms per frame for all combat logic. PASS/FAIL
-
-11. **Accessibility**: Aim assist (5 levels) works. Slow-mo mode (0.5x/0.75x) functional. Reduced motion disables shake/tilt. High contrast outlines enemies. Test all options. PASS/FAIL
-
-12. **Save/load**: Marcus health, enemy states, arena progress persist after save/load. Test mid-combat save, quit, reload. PASS/FAIL
+10. **Save/load**: Marcus health, enemy states, arena state persist after save/load. No corruption. PASS/FAIL
 
 ---
 
 ## DO NOT
 
-- Add randomness (no random crits, no RNG damage)
-- Make enemies tanky (Scavenger = 50 HP max, dies in 4 lights)
-- Create long recovery animations (>1 second)
-- Allow enemies to stun-lock Marcus (max 1 hitstun at a time)
-- Spawn enemies on top of player (min 200px from Marcus on spawn)
-- Make combat mandatory for progression (this is test arena, but prepare for story integration)
+- Add final art—placeholders only
+- Add randomness to damage or AI behavior
+- Make enemies that can't be telegraphed
+- Add more than 5 enemies in test arena (performance)
+- Create unblockable attacks without clear 1.5s+ telegraph
+- Allow softlocks (enemies stuck in walls, etc.)
 
 ---
 
 ## FINISH BY REPORTING
 
-1. **Changed files**: List all new/modified files with descriptions
-2. **Test results**: For each acceptance criterion, state PASS/FAIL with evidence (videos, profiler screenshots)
-3. **Known limitations**: Any unresolved issues, TODOs, technical debt
-4. **Performance metrics**: FPS in arena with 1/3/5 enemies, combat logic time per frame
+1. **Changed files**: List all new/modified files
+2. **Test results**: Each acceptance criterion PASS/FAIL with evidence
+3. **Known limitations**: Unresolved issues, TODOs
+4. **Performance metrics**: FPS in arena, combat logic time, particle cost
 5. **Commit message**: Propose this exact message:
 
 ```
 Phase 3: Marcus combat fundamentals complete
 
 Award-level combat system with:
-- 3-hit combo (Light→Light→Heavy launch), aerial juggle, input buffering (200ms)
-- Perfect dodge (150ms i-frames, 150ms window → 2s slow-mo)
-- Parry/block (60% reduction, guard break 3s, 200ms parry window)
-- Style meter (D→S rating, combo counter, environmental bonus)
-- Hitbox/hurtbox system (no double-hits, debug overlay F4)
-- Enemy Scavenger AI (deterministic, readable telegraphs, punishable windows)
-- Grab/throw system (3 throwable tiers, enemy grab takedown)
-- Hit feedback (flash, shake, damage numbers, all toggleable)
-- Full accessibility (aim assist, slow-mo, reduced motion, high contrast)
+- Three-hit combo with input buffering and attack data resources
+- Perfect dodge (150ms i-frames), block (60% frontal reduction)
+- Deterministic hitbox/hurtbox system (no double-hits)
+- Enemy Scavenger with telegraphed AI (idle-approach-windup-strike-recovery)
+- Grab/throw system for enemies and environmental objects
+- Hit feedback (flash, camera shake, damage numbers, particles)
+- Combat arena with encounter controller and score display
 
-All 12 acceptance criteria PASS. 60 FPS locked. Ready for Phase 4.
+All 10 acceptance criteria PASS. 60 FPS locked. Ready for Phase 4.
 ```
