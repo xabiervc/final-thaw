@@ -1,587 +1,515 @@
 # FINAL THAW — Technical Quality Standards
 
+## Purpose
+
+This document defines TECHNICAL REQUIREMENTS that are MEASURABLE and TESTABLE. Each requirement has a pass/fail criterion. This is not aspirational—this is a quality gate. If a requirement fails, the game is NOT shippable.
+
+---
+
 ## 1. Matriz de Plataformas
 
-### Plataformas Objetivo
+### Target Platforms (Priority Order)
 
-| Plataforma | Versión Mínima | Resolución Target | FPS Target | Estado |
-|------------|----------------|-------------------|------------|--------|
-| **Windows** | 10 (64-bit) | 1920x1080 | 60 locked | ✅ Primary |
-| **macOS** | 11 (Big Sur) | 1920x1080 | 60 locked | ⚠️ Secondary (test required) |
-| **Linux** | Ubuntu 20.04 | 1920x1080 | 60 locked | ⚠️ Secondary (test required) |
-| **Steam Deck** | SteamOS 3.0 | 1280x800 | 60 locked | ⚠️ Secondary (test required) |
+| Platform | Priority | Minimum Spec | Target Spec | Notes |
+|----------|----------|--------------|-------------|-------|
+| **Windows PC** | P0 (Must ship) | GTX 1060 6GB, i5-6600K, 8GB RAM, SSD | RTX 3060, Ryzen 5 3600, 16GB RAM, NVMe | Primary platform, test first |
+| **Steam Deck** | P0 (Must ship) | Steam Deck (4GB VRAM, Zen 2, 16GB RAM) | Steam Deck (same) | Verify Proton compatibility, controller layout |
+| **macOS** | P1 (Should ship) | M1, 8GB RAM, integrated GPU | M2 Pro, 16GB RAM | Metal backend, test on Mac Mini + MacBook Pro |
+| **Linux** | P1 (Should ship) | Ubuntu 20.04+, GTX 1060, 8GB RAM | Ubuntu 22.04+, RTX 3060, 16GB RAM | Native Vulkan, test on Steam Deck + desktop |
+| **PlayStation 5** | P2 (Post-launch) | N/A | N/A | Port after PC launch, 60 FPS performance mode |
+| **Xbox Series X** | P2 (Post-launch) | N/A | N/A | Port after PC launch, Quick Resume support |
+| **Nintendo Switch** | P3 (Consider) | N/A | N/A | Evaluate performance (30 FPS target, dynamic resolution) |
 
-### Requisitos de Hardware
+### Platform-Specific Requirements
 
-**Mínimos (Windows)**:
-- CPU: Intel i5-6600K / AMD Ryzen 5 1600
-- GPU: NVIDIA GTX 1060 6GB / AMD RX 580
-- RAM: 8 GB
-- Storage: 4 GB (SSD recomendado)
-
-**Recomendados (Windows)**:
-- CPU: Intel i7-8700K / AMD Ryzen 7 3700X
-- GPU: NVIDIA RTX 3060 / AMD RX 6700 XT
-- RAM: 16 GB
-- Storage: 4 GB (SSD requerido)
-
-### Criterios de Soporte
-
-| Criterio | Windows | macOS | Linux | Steam Deck |
-|----------|---------|-------|-------|------------|
-| **Export templates** | ✅ Incluidos en Godot 4.x | ✅ Incluidos | ✅ Incluidos | ✅ Incluidos |
-| **Testing hardware** | ✅ GTX 1060, RTX 3060 | ❌ No disponible | ❌ No disponible | ❌ No disponible |
-| **Decisión** | **LANZAR DÍA 1** | **Post-launch (si hay hardware)** | **Post-launch (si hay hardware)** | **Post-launch (si hay hardware)** |
-
-**Regla**: No prometer soporte para plataformas que no se pueden testear físicamente.
+| Requirement | Windows | Steam Deck | macOS | Linux | PS5 | Xbox |
+|-------------|---------|------------|-------|-------|-----|------|
+| **Resolution** | 1080p-4K | 800p (native) | 1080p-4K | 1080p-4K | 1440p-4K | 1440p-4K |
+| **FPS Target** | 60 locked | 60 locked | 60 locked | 60 locked | 60 (perf), 30 (quality) | 60 locked |
+| **Input** | KB+M, XInput | Controller | KB+M, Controller | KB+M, Controller | Controller | Controller |
+| **Achievements** | Steam | Steam | Steam | Steam | PSN | Xbox Live |
+| **Cloud Saves** | Steam Cloud | Steam Cloud | Steam Cloud | Steam Cloud | PS+ Cloud | Xbox Cloud |
+| **HDR** | Optional | N/A | Optional | Optional | Required | Optional |
 
 ---
 
 ## 2. Objetivos de Rendimiento
 
-### Métricas Objetivo
+### Frame Rate Targets
 
-| Métrica | Target | Método de Medición | Frecuencia de Test |
-|---------|--------|-------------------|-------------------|
-| **FPS** | 60 locked (±2 FPS) | Godot Profiler, Steam Overlay | Cada build |
-| **Frame Time** | <16.67ms (60 FPS) | Godot Profiler → Monitor tab | Cada build |
-| **Input Latency** | <50ms | High-speed camera (240 FPS), medir input→respuesta | Semanal |
-| **Load Time (SSD)** | <2 segundos | Cronómetro, escena load a playable | Cada build |
-| **Load Time (HDD)** | <5 segundos | Cronómetro, escena load a playable | Cada build |
-| **Memory Peak** | <500 MB | Godot Debugger → Memory tab | Semanal |
-| **VRAM Usage** | <1 GB | GPU monitoring tool (MSI Afterburner) | Semanal |
+| Platform | Resolution | FPS Target | Frame Time | V-Sync |
+|----------|------------|------------|------------|--------|
+| **Windows (Min)** | 1080p | 60 locked | ≤16.67ms | On |
+| **Windows (Rec)** | 1440p | 60 locked | ≤16.67ms | On |
+| **Windows (High)** | 4K | 60 locked | ≤16.67ms | On |
+| **Steam Deck** | 800p | 60 locked | ≤16.67ms | Off (tearing acceptable) |
+| **macOS** | 1080p | 60 locked | ≤16.67ms | On |
+| **Linux** | 1080p | 60 locked | ≤16.67ms | On |
 
-### Cómo Testear FPS
+**Measurement**:
+- Tool: Godot Profiler (built-in), PresentMon (Windows), Steam Overlay FPS counter
+- Test: Run through Phases 0-16 with profiler enabled. Log FPS every second.
+- Pass/Fail: ≥99% of frames must be ≤16.67ms (60 FPS). No frame >33ms (30 FPS floor).
 
-```
-1. Abrir Godot Editor
-2. Ir a: Debugger → Monitor → FPS
-3. Ejecutar juego (F5)
-4. Jugar Phase 13 (Final Thaw Station, nivel más pesado)
-5. Observar FPS durante 5 minutos
-6. [PASS] FPS nunca cae por debajo de 58
-7. [FAIL] FPS cae por debajo de 55 (optimizar)
-```
+**Pass/Fail**:
+- ✅ PASS: ≥99% frames ≤16.67ms, 0 frames >33ms
+- ❌ FAIL: Any frame >33ms, or >1% frames >16.67ms
 
-### Cómo Testear Input Latency
+---
 
-```
-1. Configurar cámara a 240 FPS (4.17ms por frame)
-2. Grabar pantalla + input (tecla presionada)
-3. Reproducir en slow-motion
-4. Contar frames entre:
-   - Frame donde tecla se presiona (LED se enciende)
-   - Frame donde personaje se mueve (sprite cambia)
-5. Calcular: frames × 4.17ms = latency
-6. [PASS] Latency <50ms (<12 frames a 240 FPS)
-7. [FAIL] Latency >50ms (optimizar input pipeline)
-```
+### Input Latency
 
-### Optimizaciones Críticas
+| Platform | Target Latency | Measurement Method |
+|----------|----------------|-------------------|
+| **Windows** | <50ms (KB+M), <80ms (controller) | High-speed camera (240 FPS), input to action on screen |
+| **Steam Deck** | <80ms (controller) | High-speed camera, input to action |
+| **macOS/Linux** | <60ms (KB+M), <90ms (controller) | High-speed camera |
 
-**Si FPS <60**:
-1. Reducir particle count (máx 100 partículas activas)
-2. Reducir shadow quality (bajar de 2048 a 1024)
-3. Usar occlusion culling (no renderizar lo que cámara no ve)
-4. Batch static geometry (combinar meshes estáticos)
+**Test**:
+- Setup: 240 FPS camera pointed at screen and input device.
+- Action: Press attack button (Marcus combat). Measure frames from button press to hit effect on screen.
+- Calculation: Frames / 240 = latency in seconds.
 
-**Si Memory >500MB**:
-1. Reducir texture size (máx 2048x2048 para personajes, 4096x4096 para backgrounds)
-2. Usar texture compression (BPTC para GPU moderna, ETC2 para móvil)
-3. Liberar recursos no usados: `ResourceLoader.unload()`
-4. Usar object pooling (no crear/destruir enemigos, activar/desactivar)
+**Pass/Fail**:
+- ✅ PASS: All platforms meet latency targets
+- ❌ FAIL: Any platform exceeds target
+
+---
+
+### Load Times
+
+| Platform | Cold Boot | Scene Transition | Checkpoint Reload |
+|----------|-----------|------------------|-------------------|
+| **Windows (SSD)** | <5 seconds | <2 seconds | <1 second |
+| **Windows (HDD)** | <10 seconds | <4 seconds | <2 seconds |
+| **Steam Deck** | <7 seconds | <3 seconds | <1.5 seconds |
+| **macOS** | <8 seconds | <3 seconds | <1.5 seconds |
+| **Linux** | <8 seconds | <3 seconds | <1.5 seconds |
+
+**Measurement**:
+- Cold boot: Game launch from executable to MainMenu controllable.
+- Scene transition: Phase select → Phase loads → Player controllable.
+- Checkpoint reload: Death → Checkpoint loads → Player controllable.
+
+**Pass/Fail**:
+- ✅ PASS: All load times meet targets
+- ❌ FAIL: Any load time exceeds target
 
 ---
 
 ## 3. Presupuesto de Memoria
 
-### Límites por Categoría
+### Memory Budget (Peak Usage)
 
-| Categoría | Presupuesto | Cómo Medir | Target |
-|-----------|-------------|------------|--------|
-| **Textures** | <200 MB | Godot Debugger → Memory → Textures | 150-180 MB |
-| **Audio** | <100 MB | Godot Debugger → Memory → Audio | 80-90 MB |
-| **Scripts** | <50 MB | Godot Debugger → Memory → Scripts | 30-40 MB |
-| **Scenes** | <100 MB | Godot Debugger → Memory → Nodes | 80-90 MB |
-| **Buffers** | <50 MB | Godot Debugger → Memory → VBuffers | 30-40 MB |
-| **Total** | **<500 MB** | Godot Debugger → Memory → Total | **400-450 MB** |
+| Platform | VRAM Budget | System RAM Budget | Total Budget |
+|----------|-------------|-------------------|--------------|
+| **Windows (Min)** | 2 GB | 3 GB | 5 GB |
+| **Windows (Rec)** | 3 GB | 4 GB | 7 GB |
+| **Steam Deck** | 2 GB | 6 GB (shared) | 8 GB |
+| **macOS** | 2 GB | 6 GB (shared) | 8 GB |
+| **Linux** | 2 GB | 6 GB (shared) | 8 GB |
 
-### Cómo Optimizar Textures
+**Measurement**:
+- Tool: Godot Profiler (Memory tab), Task Manager (Windows), Activity Monitor (macOS)
+- Test: Run through each phase, log peak memory usage.
+- Pass/Fail: Peak must not exceed budget.
 
-```gdscript
-# En project.godot
-[rendering]
-textures/canvas_textures/default_filter=true  # Suavizado
-textures/vram_compression/import_etc=true  # Compresión para móvil
-textures/vram_compression/import_bptc=true  # Compresión para PC
+**Optimization Strategies**:
+- Texture streaming: Load only visible textures, unload off-screen.
+- Object pooling: Pre-allocate enemies, particles, projectiles. Reuse, don't free/alloc.
+- LOD system: 3 LOD levels for all 3D models. Swap at 20m, 50m distances.
+- Occlusion culling: Never render what camera can't see.
 
-# En cada textura (import settings)
-Compression Mode: VRAM Compressed
-Compression: BPTC (para PC) / ETC2 (para móvil)
-Mipmaps: Enabled (para texturas 3D)
-```
-
-### Cómo Optimizar Audio
-
-```gdscript
-# En cada archivo de audio (import settings)
-Format: Ogg Vorbis
-Bitrate: 64 kbps (para SFX), 128 kbps (para música)
-Max Polyphony: 32 voices (no más de 32 sonidos simultáneos)
-```
+**Pass/Fail**:
+- ✅ PASS: Peak memory ≤ budget on all platforms
+- ❌ FAIL: Any platform exceeds budget
 
 ---
 
-## 4. Estrategia de Guardado y Migración de Partidas
+## 4. Estrategia de Guardado y Migración
 
-### Formato de Guardado
+### Save File Structure
+
+```
+user://savegame_slot_0.json (active save)
+user://savegame_slot_0.backup.json (backup, auto-created)
+user://savegame_slot_1.json (manual save 1)
+...
+user://savegame_slot_10.json (manual save 10)
+```
+
+### Save File Format (JSON)
 
 ```json
 {
   "version": "1.0.0",
   "timestamp": "2026-09-30T10:00:00Z",
   "playtime_seconds": 3600,
-  "completed_phases": ["phase_0", "phase_1", "phase_2"],
-  "elena_safety": 3,
-  "prototype_integrity": 3,
-  "civilian_aid": 5,
-  "evidence_choice": null,
-  "memory_fragments": ["elena_memory_1", "marcus_memory_2"],
-  "story_flags": {
-    "rescued_shelter_civilians": true,
-    "vehicle_repaired_cleanly": true
+  "state": {
+    "elena_safety": 3,
+    "prototype_integrity": 2,
+    "civilian_aid": 5,
+    "current_checkpoint_id": "phase_6_shelter_exit",
+    "active_character_id": "elena",
+    "completed_phases": ["phase_0", "phase_1", "phase_2"],
+    "story_flags": {
+      "rescued_shelter_civilians": true,
+      "evidence_choice": "preserve"
+    },
+    "memory_fragments_collected": ["elena_memory_1", "marcus_memory_3"]
   },
-  "player_position": {"x": 1024, "y": 768},
-  "active_character": "elena"
+  "checksum": "CRC32:1234567890"
 }
 ```
 
-### Migración entre Versiones
+### Corruption Detection
 
-**Regla**: Partidas de versión 1.X.X son compatibles con 1.Y.Y (Y > X). No hay garantía para versiones mayores (2.X.X).
+**Algorithm**:
+1. On load, calculate CRC32 checksum of `state` object.
+2. Compare to stored `checksum` field.
+3. If mismatch: File corrupt. Attempt backup restore.
+4. If backup also corrupt: Delete both, return to MainMenu with error message.
 
-**Implementación**:
-```gdscript
-# En game_manager.gd
-func load_game(slot_name: String):
-    var file = FileAccess.open("user://savegame_%s.json" % slot_name, FileAccess.READ)
-    var save_data = JSON.parse_string(file.get_as_text())
-    file.close()
-    
-    # Verificar versión
-    var save_version = save_data.get("version", "0.0.0")
-    var current_version = ProjectSettings.get("application/config/version")
-    
-    if save_version != current_version:
-        save_data = migrate_save_data(save_data, save_version, current_version)
-    
-    # Restaurar datos
-    restore_from_save(save_data)
-
-func migrate_save_data(save_data: Dictionary, from_version: String, to_version: String):
-    # Ejemplo: migrar de 1.0.0 a 1.1.0 (añade nuevo campo)
-    if from_version == "1.0.0" and to_version >= "1.1.0":
-        save_data["new_field"] = default_value
-    
-    # Ejemplo: migrar de 1.1.0 a 1.2.0 (cambia nombre de campo)
-    if from_version == "1.1.0" and to_version >= "1.2.0":
-        save_data["new_name"] = save_data["old_name"]
-        save_data.erase("old_name")
-    
-    return save_data
+**Error Message**:
+```
+Save file corrupted. Attempting to restore from backup...
+Backup restore failed. Starting new game.
+(Your progress has been lost. We apologize for the inconvenience.)
 ```
 
-### Backup de Partidas
+### Migration (Version to Version)
 
-**Regla**: Cada partida tiene backup automático. Si archivo principal se corrompe, se restaura backup.
+**Scenario**: Player has save from v1.0.0, updates to v1.1.0 with new fields.
 
-**Implementación**:
+**Migration Script** (`scripts/autoload/save_migration.gd`):
+
 ```gdscript
-func save_game(slot_name: String):
-    # Guardar principal
-    var file = FileAccess.open("user://savegame_%s.json" % slot_name, FileAccess.WRITE)
-    file.store_string(JSON.stringify(save_data))
-    file.close()
+func migrate(old_save: Dictionary) -> Dictionary:
+    var new_save = get_default_save_template()
     
-    # Guardar backup
-    var backup_file = FileAccess.open("user://savegame_%s.backup.json" % slot_name, FileAccess.WRITE)
-    backup_file.store_string(JSON.stringify(save_data))
-    backup_file.close()
-
-func load_game(slot_name: String):
-    # Intentar cargar principal
-    var file = FileAccess.open("user://savegame_%s.json" % slot_name, FileAccess.READ)
-    if file == null:
-        # Principal no existe, cargar backup
-        file = FileAccess.open("user://savegame_%s.backup.json" % slot_name, FileAccess.READ)
-        if file == null:
-            push_error("No save file found for slot: %s" % slot_name)
-            return
+    # Copy over old fields
+    new_save.state.elena_safety = old_save.state.elena_safety
+    new_save.state.prototype_integrity = old_save.state.prototype_integrity
+    # ... copy all fields
     
-    var save_data = JSON.parse_string(file.get_as_text())
-    file.close()
+    # Add new fields with defaults
+    if not old_save.state.has("aster_calibrations_used"):
+        new_save.state.aster_calibrations_used = 0
     
-    # Verificar integridad (checksum)
-    if not verify_save_data(save_data):
-        push_error("Save file corrupted, attempting backup restore")
-        # Intentar cargar backup
-        file = FileAccess.open("user://savegame_%s.backup.json" % slot_name, FileAccess.READ)
-        if file:
-            save_data = JSON.parse_string(file.get_as_text())
-            file.close()
-        else:
-            push_error("Backup also corrupted, starting new game")
-            reset_new_game()
-            return
+    # Update version
+    new_save.version = "1.1.0"
     
-    restore_from_save(save_data)
+    return new_save
 ```
+
+**Test**:
+- Create save in v1.0.0.
+- Update to v1.1.0, load save.
+- Verify: All old fields preserved, new fields added with defaults.
+
+**Pass/Fail**:
+- ✅ PASS: Migration preserves all data, adds new fields safely
+- ❌ FAIL: Any data lost or migration crashes
 
 ---
 
 ## 5. Telemetría Respetuosa con la Privacidad
 
-### Qué Recoger (Opcional, Anonimizado)
+### What We Track (Anonymized, Opt-In)
 
-| Dato | Propósito | Anonimización | Opt-in |
-|------|-----------|---------------|--------|
-| **Tiempo de juego** | Balancear dificultad | Sin ID de usuario, solo sesión | ✅ Sí |
-| **Muertes por fase** | Identificar puntos de frustración | Sin ID, agregado por fase | ✅ Sí |
-| **Decisiones (Civilian Aid, Evidence)** | Entender preferencias de jugadores | Sin ID, solo conteos | ✅ Sí |
-| **Ending obtenido** | Balancear narrativa | Sin ID, solo tipo de ending | ✅ Sí |
-| **FPS promedio** | Optimizar rendimiento | Sin ID, solo estadísticas | ✅ Sí |
-| **Configuración de accesibilidad** | Mejorar opciones | Sin ID, solo qué opciones se usan | ✅ Sí |
+| Metric | Purpose | Personal Data? | Opt-In Required? |
+|--------|---------|----------------|------------------|
+| **Puzzle completion times** | Balance difficulty | No | Yes |
+| **Death locations** | Identify frustrating sections | No | Yes |
+| **Choice distribution** | Understand player preferences (evidence choice, rescues) | No | Yes |
+| **Average playtime per chapter** | Pacing validation | No | Yes |
+| **Drop-off points** | Where players quit | No | Yes |
+| **Accessibility option usage** | Validate accessibility investment | No | Yes |
+| **Platform, resolution, FPS** | Performance optimization | No | Yes |
 
-### Qué NO Recoger
+### What We DON'T Track
 
-- ❌ Nombre de usuario
-- ❌ Email o información personal
-- ❌ IP address
-- ❌ Hardware ID
-- ❌ Ubicación geográfica
-- ❌ Historial de navegación
-- ❌ Datos de terceros (Steam friends, etc.)
+- ❌ IP addresses
+- ❌ Geolocation
+- ❌ Player names (unless explicitly provided for leaderboards)
+- ❌ Hardware serial numbers
+- ❌ Email addresses
+- ❌ Payment information
 
-### Implementación (Privacy-First)
+### Privacy-Respecting Implementation
 
+**GDPR Compliance**:
+- EU players: Explicit opt-in checkbox ("Allow anonymous telemetry to improve the game?")
+- Right to deletion: Players can request data deletion via support email.
+- Data retention: Telemetry deleted after 2 years.
+
+**Implementation**:
 ```gdscript
-# En telemetry_manager.gd
-var telemetry_enabled: bool = false  # Default OFF, jugador debe activar
+# scripts/autoload/telemetry.gd
+var telemetry_enabled: bool = false  # Default OFF
 
-func _ready():
-    # Preguntar al jugador en primer launch
-    if not ProjectSettings.has_setting("user/telemetry_consent"):
-        show_telemetry_consent_dialog()
-    else:
-        telemetry_enabled = ProjectSettings.get_setting("user/telemetry_consent")
+func ask_for_consent():
+    if not consent_asked:
+        show_consent_dialog()  # "Allow anonymous telemetry?"
+        consent_asked = true
 
-func send_telemetry(event_name: String, data: Dictionary):
+class TelemetryEvent:
+    var event_type: String
+    var timestamp: String
+    var data: Dictionary  # Anonymized, no PII
+    
+func send_event(event: TelemetryEvent):
     if not telemetry_enabled:
         return
     
-    # Anonimizar: remover cualquier ID
-    data.erase("user_id")
-    data.erase("session_id")
-    data.erase("ip_address")
+    # Strip any potential PII
+    event.data = anonymize(event.data)
     
-    # Agregar solo datos necesarios
-    var anonymized_data = {
-        "event": event_name,
-        "timestamp": Time.get_unix_time_from_system(),
-        "version": ProjectSettings.get("application/config/version"),
-        "platform": OS.get_name(),
-        "data": data
-    }
-    
-    # Enviar (batch, no en tiempo real)
-    telemetry_queue.append(anonymized_data)
-    if telemetry_queue.size() >= 10:
-        flush_telemetry_queue()
-
-func flush_telemetry_queue():
-    # Enviar a servidor (ej: self-hosted Matomo)
-    var http = HTTPRequest.new()
-    http.request("https://telemetry.finalthaw.com/collect", ["Content-Type: application/json"], HTTPClient.METHOD_POST, JSON.stringify(telemetry_queue))
-    telemetry_queue.clear()
+    # Send to server (HTTPS only)
+    http_request.request(TELEMETRY_URL, ["Content-Type: application/json"], HTTPClient.METHOD_POST, event.to_json())
 ```
+
+**Pass/Fail**:
+- ✅ PASS: Telemetry opt-in only, no PII, GDPR compliant
+- ❌ FAIL: Any PII tracked, opt-out not respected
 
 ---
 
 ## 6. Plan de Localización
 
-### Idiomas Objetivo
+### Target Languages (Phase 16 Launch)
 
-| Idioma | Prioridad | Traducción | Testing | Estado |
-|--------|-----------|------------|---------|--------|
-| **Inglés** | Primary | Nativo (desarrollador) | ✅ Sí | ✅ Listo |
-| **Español** | Primary | Nativo (desarrollador) | ✅ Sí | ✅ Listo |
-| **Francés** | Secondary | Profesional (contratar) | ⚠️ Parcial | ⏳ Pendiente |
-| **Alemán** | Secondary | Profesional (contratar) | ⏳ No | ⏳ Pendiente |
-| **Japonés** | Tertiary | Profesional + cultural check | ⏳ No | ⏳ Pendiente |
-| **Chino Simplificado** | Tertiary | Profesional + cultural check | ⏳ No | ⏳ Pendiente |
+| Language | Priority | Text Expansion Factor | Notes |
+|----------|----------|----------------------|-------|
+| **English** | P0 | 1.0x | Base language |
+| **Spanish (ES)** | P0 | 1.2x | European Spanish, not Latin American |
+| **French (FR)** | P0 | 1.3x | European French |
+| **German (DE)** | P0 | 1.2x | Formal "Sie" form |
+| **Portuguese (PT-BR)** | P0 | 1.2x | Brazilian Portuguese |
+| **Russian (RU)** | P1 | 1.1x | Cyrillic script, test font rendering |
+| **Japanese (JA)** | P1 | 0.8x | Vertical text support optional |
+| **Chinese (Simplified)** | P1 | 0.7x | Simplified characters only |
+| **Korean (KO)** | P2 | 0.9x | Hangul script |
+| **Italian (IT)** | P2 | 1.2x | European Italian |
 
-### Implementación Técnica
+### Localization Workflow
 
-```gdscript
-# En localization_manager.gd
-var supported_locales = ["en", "es", "fr", "de", "ja", "zh"]
+1. **String Extraction**: All user-facing text in `resources/strings/en.json`, `es.json`, etc.
+2. **Translation**: Professional translators (not machine translation for narrative text).
+3. **Integration**: Load correct JSON at runtime based on system language or player choice.
+4. **Testing**: Native speaker plays through Phases 0-16, reports issues.
 
-func _ready():
-    # Detectar locale del sistema
-    var system_locale = OS.get_locale_language()
-    if system_locale in supported_locales:
-        TranslationServer.set_locale(system_locale)
-    else:
-        TranslationServer.set_locale("en")  # Fallback a inglés
+### String Table Format
 
-# En cada texto del juego
-label.text = tr("greeting_message")  # Busca en translations/*.csv
-
-# En translations/greeting.csv:
-# keys,en,es,fr,de,ja,zh
-# greeting_message,"Hello","Hola","Bonjour","Hallo","こんにちは","你好"
+```json
+// resources/strings/en.json
+{
+  "main_menu.start": "Start Game",
+  "main_menu.continue": "Continue",
+  "main_menu.quit": "Quit",
+  "hud.elena_safety": "Elena Safety",
+  "hud.prototype_integrity": "Prototype Integrity",
+  "hud.civilian_aid": "Civilian Aid",
+  "ending.public_thaw.title": "Public Thaw",
+  "ending.public_thaw.text": "The climate stabilized over 17 years..."
+}
 ```
 
-### Criterios de Calidad
+### Font Support
 
-- ✅ **No hardcodear texto**: Todo texto debe usar `tr()`
-- ✅ **Contexto para traductores**: Comments en CSV explican contexto (ej: "greeting_message: NPC saluda al jugador")
-- ✅ **Testing nativo**: Cada idioma probado por hablante nativo (no Google Translate)
-- ✅ **UI flexible**: Texto en alemán puede ser 30% más largo que inglés, UI debe acomodar
+| Language | Font | Unicode Range |
+|----------|------|---------------|
+| **EN, ES, FR, DE, PT, IT** | Noto Sans | Latin Extended (U+0100 to U+024F) |
+| **RU** | Noto Sans | Cyrillic (U+0400 to U+04FF) |
+| **JA** | Noto Sans JP | CJK Unified Ideographs (U+4E00 to U+9FFF) |
+| **ZH** | Noto Sans SC | Simplified Chinese (U+4E00 to U+9FFF) |
+| **KO** | Noto Sans KR | Hangul Syllables (U+AC00 to U+D7AF) |
+
+**Test**:
+- Display all languages in MainMenu, HUD, subtitles.
+- Verify: No missing glyphs, no layout breaking (text expansion handled).
+
+**Pass/Fail**:
+- ✅ PASS: All languages render correctly, no missing glyphs
+- ❌ FAIL: Any language has missing glyphs or layout breaks
 
 ---
 
 ## 7. Pruebas de Regresión
 
-### Qué Testear en Cada Build
+### Automated Test Suite
 
-| Test | Frecuencia | Cómo Automatizar | Criterio de Pass |
-|------|------------|------------------|------------------|
-| **Inicio de juego** | Cada build | Script: abrir juego, esperar MainMenu | MainMenu aparece en <5s, sin errores en Output |
-| **Guardado/Carga** | Cada build | Script: guardar, cerrar, abrir, cargar | Partida carga, posición de jugador restaurada |
-| **Fase 1 (movimiento)** | Cada build | Script: iniciar Fase 1, mover 10s | Jugador se mueve, FPS >55, sin crashes |
-| **Fase 3 (combate)** | Cada build | Script: iniciar Fase 3, matar 1 enemigo | Enemigo muere, Marcus no muere, FPS >55 |
-| **Fase 6 (puzzle)** | Cada build | Script: resolver puzzle | Puzzle se resuelve, puerta se abre, checkpoint save |
-| **Accesibilidad** | Semanal | Script: activar todas las opciones de accesibilidad | Todas las opciones funcionan, juego sigue jugable |
+**Test Framework**: GUT (Godot Unit Test) or custom.
 
-### Automatización con GDScript
+**Test Categories**:
+
+| Category | Tests | Frequency |
+|----------|-------|-----------|
+| **Unit tests** | GameManager save/load, state clamping, checksum validation | Every commit |
+| **Integration tests** | Full playthrough Phases 0-3 (automated, no human) | Nightly |
+| **Performance tests** | FPS profiling, memory profiling, load timing | Weekly |
+| **Regression tests** | Critical path must complete without errors (Phases 0-16) | Before every release |
+
+**Example Test** (GameManager save/load):
 
 ```gdscript
-# En tests/regression_test.gd
-func test_game_start():
-    var start_time = Time.get_ticks_msec()
-    get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
+# tests/test_game_manager.gd
+func test_save_load_preserves_state():
+    GameManager.reset_new_game()
+    GameManager.elena_safety = 2
+    GameManager.prototype_integrity = 1
+    GameManager.civilian_aid = 5
     
-    # Esperar 5 segundos
-    await get_tree().create_timer(5.0).timeout
+    GameManager.save_game(0)
+    GameManager.reset_new_game()  # Clear state
+    GameManager.load_game(0)
     
-    var load_time = Time.get_ticks_msec() - start_time
-    
-    # Verificar que MainMenu está activo
-    var main_menu = get_tree().current_scene
-    assert(main_menu.name == "MainMenu", "MainMenu no se cargó")
-    assert(load_time < 5000, "MainMenu tardó más de 5s en cargar: %dms" % load_time)
-    
-    print("[PASS] test_game_start")
-
-func test_save_load():
-    # Guardar
-    GameManager.save_game("test_slot")
-    
-    # Cerrar (simular)
-    var player_position_before = player.global_position
-    
-    # Cargar
-    GameManager.load_game("test_slot")
-    var player_position_after = player.global_position
-    
-    # Verificar
-    assert(player_position_before == player_position_after, "Posición no se restauró: %s → %s" % [player_position_before, player_position_after])
-    
-    print("[PASS] test_save_load")
+    assert_eq(GameManager.elena_safety, 2)
+    assert_eq(GameManager.prototype_integrity, 1)
+    assert_eq(GameManager.civilian_aid, 5)
 ```
+
+**Pass/Fail**:
+- ✅ PASS: All tests pass
+- ❌ FAIL: Any test fails (blocks release)
 
 ---
 
 ## 8. Pruebas de Carga
 
-### Escenarios de Carga
+### Stress Tests
 
-| Escenario | Descripción | Métrica | Target |
-|-----------|-------------|---------|--------|
-| **10 jugadores simultáneos** | No aplica (single-player) | N/A | N/A |
-| **100 enemigos en pantalla** | Stress test de combate | FPS, Memory | FPS >50, Memory <600MB |
-| **1000 partículas activas** | Stress test de efectos | FPS, Memory | FPS >55, Memory <550MB |
-| **20 saves simultáneos** | Stress test de I/O | Load time | <3s por save |
+| Test | Scenario | Target | Pass/Fail |
+|------|----------|--------|-----------|
+| **Enemy spam** | Spawn 50 enemies simultaneously | 60 FPS, no crash | ≥58 FPS, no crash |
+| **Particle storm** | Activate all particle systems | 60 FPS, no memory spike | ≥58 FPS, memory ≤ budget |
+| **Save/load spam** | Save and load 100 times in sequence | No corruption, no crash | 0 corruptions, no crash |
+| **Scene transition spam** | Load/unload scenes 1000 times | No memory leak, no crash | Memory stable, no crash |
+| **Input spam** | Press all inputs at 10 Hz for 60 seconds | No input lag spike, no crash | Latency <100ms, no crash |
 
-### Cómo Testear
+**Measurement**:
+- Tool: Godot Profiler, custom stress test scenes.
+- Test: Run each stress test for 5 minutes, log FPS, memory, errors.
 
-```
-1. Abrir Godot Editor
-2. Ir a: Debugger → Monitor → Nodes
-3. Ejecutar juego (F5)
-4. Spawnear 100 enemigos (debug command: `spawn_enemies(100)`)
-5. Observar FPS durante 1 minuto
-6. [PASS] FPS >50 todo el minuto
-7. [FAIL] FPS <50 por >5 segundos (optimizar)
-```
+**Pass/Fail**:
+- ✅ PASS: All stress tests pass (FPS, memory, no crash)
+- ❌ FAIL: Any stress test fails
 
 ---
 
 ## 9. Sistema de Errores Recuperables
 
-### Tipos de Errores
+### Error Categories
 
-| Error | Severidad | Recuperación | Ejemplo |
-|-------|-----------|--------------|---------|
-| **Crítico** | Juego no puede continuar | Reiniciar juego, cargar backup | Save file corrupto, escena no existe |
-| **Mayor** | Funcionalidad rota, juego continúa | Reintentar, skippear sección | Enemy AI se cuelga, puzzle no se resuelve |
-| **Menor** | Molesto, no bloquea progreso | Ignorar, workaround temporal | Subtitle no aparece, sonido no se reproduce |
-| **Cosmético** | Visual, no afecta gameplay | Ignorar hasta parche | Textura parpadea, typo en diálogo |
+| Category | Examples | Recovery Strategy |
+|----------|----------|-------------------|
+| **Recoverable** | Save file corrupt (backup exists), texture load fail (fallback texture), audio device lost (fallback to dummy) | Auto-recover, notify player, continue |
+| **Unrecoverable** | GPU driver crash, out of memory, critical assertion fail | Graceful shutdown, save crash dump, show error message |
 
-### Manejo de Errores
+### Error Handling Implementation
 
 ```gdscript
-# En error_handler.gd
-func handle_error(error_type: String, context: String, recoverable: bool):
-    push_error("[%s] %s: %s" % [error_type, context, error_message])
+# scripts/autoload/error_handler.gd
+func handle_error(error: Error, context: String):
+    if error == OK:
+        return
     
-    if error_type == "CRITICAL":
-        # Mostrar diálogo al jugador
-        show_error_dialog(
-            title="Critical Error",
-            message="The game encountered a critical error and must restart. Your progress has been saved."
-        )
-        
-        # Guardar progreso
-        GameManager.save_game("autosave")
-        
-        # Reiniciar
-        get_tree().reload_current_scene()
+    log_error(error, context)
     
-    elif error_type == "MAJOR":
-        # Intentar recuperar
-        if recoverable:
-            retry_operation()
-        else:
-            # Skippear sección
-            skip_current_section()
-    
-    elif error_type == "MINOR":
-        # Loggear, continuar
-        log_error_for_telemetry(error_message)
-    
-    elif error_type == "COSMETIC":
-        # Ignorar hasta parche
-        pass
+    if is_recoverable(error):
+        attempt_recovery(error)
+        show_notification("A minor error occurred and was recovered from. Your progress is safe.")
+    else:
+        save_crash_dump()
+        quit_gracefully()
+        show_error_message("A critical error occurred. The game will now close. Error: " + str(error))
+
+func is_recoverable(error: Error) -> bool:
+    return error in [
+        ERR_FILE_NOT_FOUND,  # Fallback to default
+        ERR_FILE_CORRUPT,    # Restore from backup
+        ERR_CANT_OPEN,       # Skip this asset
+        ERR_UNAVAILABLE        # Feature not available on this platform
+    ]
 ```
+
+### Player-Facing Error Messages
+
+| Error | Message | Action |
+|-------|---------|--------|
+| Save corrupt, backup exists | "Save file corrupted. Restored from backup. Your progress is safe." | Continue playing |
+| Save corrupt, no backup | "Save file corrupted. Backup also corrupted. Starting new game." | Reset to new game |
+| Texture load fail | (Silent, use fallback magenta texture) | Continue playing |
+| Audio device lost | "Audio device lost. Switching to silent mode." | Continue playing, no audio |
+| GPU driver crash | "Graphics driver encountered an error. The game will restart." | Restart game |
+| Out of memory | "Out of memory. Please close other applications and restart." | Quit to OS |
+
+**Pass/Fail**:
+- ✅ PASS: All recoverable errors recover, all unrecoverable errors quit gracefully
+- ❌ FAIL: Any error causes hard crash (CTD) without message
 
 ---
 
 ## 10. Criterios de "Listo para Vertical Slice" y "Listo para Producción"
 
-### Listo para Vertical Slice (Phase 0-6, 25 minutos jugables)
+### Ready for Vertical Slice (Phase 6, 25 Minutes)
 
-**Requisitos Técnicos**:
-- [ ] 60 FPS locked en Phase 6 (Flooded Shelter)
-- [ ] Load times <2s entre escenas
-- [ ] Input latency <50ms
-- [ ] Memory <500MB peak
-- [ ] No crashes en 1 hora de gameplay continuo
-- [ ] Guardado/carga funciona (autosave + checkpoint)
+| Criterion | Pass/Fail |
+|-----------|-----------|
+| **Playable start-to-finish** | ☐ Phase 6 complete, no blockers |
+| **Core mechanics implemented** | ☐ Elena movement, Marcus combat, interaction, scan, hazards |
+| **One moral choice** | ☐ Civilian rescue (3 civilians, +3 Civilian Aid, +5 minutes) |
+| **One narrative variation** | ☐ Rescued civilians appear later (Phase 13) |
+| **Checkpoint system** | ☐ 3 checkpoints in 25 minutes, save/load works |
+| **60 FPS locked** | ☐ Profiler shows ≥99% frames ≤16.67ms |
+| **No crashes** | ☐ 10 consecutive playthroughs, 0 crashes |
+| **Accessibility baseline** | ☐ Subtitles, remapping, colorblind mode, toggle inputs |
+| **Vertical slice ends with cliffhanger** | ☐ Marcus contacts Elena: "I'm coming in." Phase 7 preview loads |
 
-**Requisitos de Diseño**:
-- [ ] Core gameplay loop completo (movimiento, interacción, puzzle, hazard, rescue)
-- [ ] 1 decisión irreversible (rescue 0-3 civilians)
-- [ ] 1 variación narrativa (NPCs reaccionan diferente según rescates)
-- [ ] 1 secuencia de recuperación (muerte → checkpoint restart)
-- [ ] Cliffhanger al final (Marcus: "I'm at the perimeter. Coming in.")
-
-**Requisitos de Accesibilidad**:
-- [ ] Subtítulos configurables (tamaño, color, fondo)
-- [ ] Remapeo completo de controles
-- [ ] Toggle/hold para todas las acciones
-- [ ] Indicadores visuales + auditivos redundantes
-
-**Requisitos de QA**:
-- [ ] 10 playtesters completan vertical slice
-- [ ] Tasa de completación >80% (8/10 completan)
-- [ ] Frustración reportada <3.0/5.0
-- [ ] Feedback compilado, priorizado, acciones definidas
+**Sign-off**: [ ] Lead Designer, [ ] Lead Programmer, [ ] Producer
 
 ---
 
-### Listo para Producción (Todas las Phases, 12-15 horas)
+### Ready for Production (Phase 0 Full Implementation)
 
-**Requisitos Técnicos**:
-- [ ] 60 FPS locked en TODAS las phases (especialmente Phase 13, 14)
-- [ ] Load times <2s en todo el juego
-- [ ] Input latency <50ms consistente
-- [ ] Memory <500MB todo el juego
-- [ ] No crashes en 10 horas de gameplay continuo
-- [ ] Guardado/carga funciona (autosave + checkpoint + manual + quick load)
-- [ ] Backup de partidas funciona (corrupción → restore)
+| Criterion | Pass/Fail |
+|-----------|-----------|
+| **All 17 phases implemented** | ☐ Phases 0-16 complete, playable |
+| **All accessibility requirements** | ☐ 38 requirements from accessibility doc, all PASS |
+| **Performance targets met** | ☐ 60 FPS, <50ms input, <2s loads on all target platforms |
+| **Memory budget met** | ☐ Peak ≤5 GB (Windows min), ≤8 GB (Steam Deck/macOS/Linux) |
+| **Save/load robust** | ☐ Corruption detection, backup restore, migration tested |
+| **Localization complete** | ☐ 6 languages (EN, ES, FR, DE, PT-BR, RU), all render correctly |
+| **Regression tests pass** | ☐ All automated tests pass (unit, integration, performance) |
+| **Stress tests pass** | ☐ Enemy spam, particle storm, save/load spam, scene spam, input spam |
+| **Error handling robust** | ☐ All recoverable errors recover, all unrecoverable quit gracefully |
+| **Telemetry opt-in only** | ☐ GDPR compliant, no PII, anonymized |
+| **Vertical slice feedback incorporated** | ☐ Playtester feedback from Phase 6 slice addressed |
+| **3 ending cinematics complete** | ☐ Public, Guarded, Fragile (90+ seconds each, fully voiced) |
+| **Post-credits stinger** | ☐ Sequel hook, 3 years later, young scientist |
+| **Credits complete** | ☐ Team, advisors, voice actors, testers |
+| **Store assets prepared** | ☐ Screenshots, trailer, description, content warnings |
+| **Award submissions ready** | ☐ The Game Awards, D.I.C.E., BAFTA, GDC (trailers, forms, deadlines) |
 
-**Requisitos de Diseño**:
-- [ ] Todas las 16 phases implementadas, jugables de inicio a fin
-- [ ] 3 endings completos (Public/Guarded/Fragile Thaw)
-- [ ] 24 memory fragments coleccionables
-- [ ] 10 civilian rescues opcionales
-- [ ] Evidence choice (preserve/erase) con consecuencias mecánicas
-- [ ] New Game+ desbloqueado tras completar juego
-
-**Requisitos de Accesibilidad**:
-- [ ] TODOS los requisitos de `docs/accessibility_requirements.md` implementados
-- [ ] 10 usuarios con discapacidad motora testean, >80% completan
-- [ ] 10 usuarios con discapacidad visual testean, >80% completan
-- [ ] 10 usuarios con discapacidad auditiva testean, >80% completan
-- [ ] 10 usuarios con discapacidad cognitiva testean, >80% completan
-
-**Requisitos de QA**:
-- [ ] Regression tests automatizados pasan (100%)
-- [ ] Load tests pasan (100 enemigos, 1000 partículas, 20 saves)
-- [ ] No bugs críticos o mayores abiertos (solo menores/cosméticos permitidos)
-- [ ] 100 playtesters completan juego completo
-- [ ] Tasa de completación >70% (70/100 completan)
-- [ ] Metacritic score objetivo: 85+ (pre-lanzamiento, reviewer builds)
-
-**Requisitos de Localización**:
-- [ ] Inglés y español 100% traducidos, testeados por nativos
-- [ ] Francés, alemán, japonés, chino: al menos menús y tutorial traducidos
-- [ ] UI acomoda texto 30% más largo (alemán) sin cortarse
-
-**Requisitos de Plataforma**:
-- [ ] Windows export probado en GTX 1060 y RTX 3060
-- [ ] macOS, Linux, Steam Deck: o probados físicamente o declarados "no soportados oficialmente"
+**Sign-off**: [ ] Lead Designer, [ ] Lead Programmer, [ ] Producer, [ ] QA Lead, [ ] Publisher (if applicable)
 
 ---
 
-## Summary: Checklist Técnico
+## Summary: Technical Quality Checklist
 
-Antes de vertical slice:
-- [ ] 60 FPS en Phase 6
-- [ ] Load times <2s
-- [ ] Input latency <50ms
-- [ ] Memory <500MB
-- [ ] No crashes en 1 hora
-- [ ] Guardado/carga funciona
-- [ ] 1 decisión irreversible
-- [ ] 1 variación narrativa
-- [ ] 1 recuperación tras fracaso
-- [ ] Cliffhanger al final
-- [ ] Accesibilidad básica (subtítulos, remap, toggle/hold)
-- [ ] 10 playtesters, >80% completan
+| Section | Requirements | All Pass? |
+|---------|--------------|-----------|
+| **1. Platform matrix** | 6 platforms, spec defined | ☐ |
+| **2. Performance** | 60 FPS, <50ms input, <2s loads | ☐ |
+| **3. Memory** | ≤5-8 GB peak, optimized | ☐ |
+| **4. Save/migration** | CRC32 checksums, backup, migration | ☐ |
+| **5. Telemetry** | Opt-in, anonymized, GDPR | ☐ |
+| **6. Localization** | 6-10 languages, fonts, no missing glyphs | ☐ |
+| **7. Regression tests** | Unit, integration, performance, critical path | ☐ |
+| **8. Stress tests** | Enemy spam, particle storm, save/load spam | ☐ |
+| **9. Error handling** | Recoverable vs. unrecoverable, player messages | ☐ |
+| **10. Ready criteria** | Vertical slice (9 criteria), Production (16 criteria) | ☐ |
 
-Antes de producción (lanzamiento):
-- [ ] 60 FPS en TODAS las phases
-- [ ] 3 endings completos
-- [ ] 24 memory fragments
-- [ ] 10 civilian rescues
-- [ ] TODA la accesibilidad implementada
-- [ ] 40 usuarios con discapacidad testean, >80% completan
-- [ ] Regression/load tests pasan
-- [ ] No bugs críticos/mayores
-- [ ] 100 playtesters, >70% completan
-- [ ] Windows probado, otras plataformas declaradas (soportadas o no)
+**TOTAL**: 10 sections, ALL must PASS for game to be shippable.
 
-**Si algún ítem falla: NO LANZAR. Iterar hasta que todos pasen.**
+**This is not optional. This is technical excellence as a quality gate.**
