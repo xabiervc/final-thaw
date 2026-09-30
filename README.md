@@ -14,18 +14,19 @@ Alternate between scientist Elena Vast and former officer Marcus Reyes to surviv
 
 | Document | Status | Link |
 |----------|--------|------|
-| **VISION** | ✅ Complete | [`docs/VISION.md`](docs/VISION.md) (player fantasy, core emotion, pillars, ANTI-PILLARS, audience, differentiation, scope) |
-| **CORE_LOOP** | ✅ Complete | [`docs/CORE_LOOP.md`](docs/CORE_LOOP.md) (minute-by-minute gameplay, decision frequency) |
-| **SYSTEMS_SPEC** | ✅ Complete | [`docs/SYSTEMS_SPEC.md`](docs/SYSTEMS_SPEC.md) (9 systems: temperature, resources, shelter, displacement, threats, health, inventory, time, consequences—with inputs, outputs, limits, priorities, interactions) |
-| **LEVEL_STRUCTURE** | ✅ Complete | [`docs/LEVEL_STRUCTURE.md`](docs/LEVEL_STRUCTURE.md) (16 phases, 3 acts, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm) |
-| **SURVIVAL_SYSTEMS** | ✅ Complete | [`docs/SURVIVAL_SYSTEMS.md`](docs/SURVIVAL_SYSTEMS.md) (3 variables: elena_safety, prototype_integrity, civilian_aid) |
-| **EXPLORATION_FLOW** | ✅ Complete | [`docs/EXPLORATION_FLOW.md`](docs/EXPLORATION_FLOW.md) (phase structure, exploration metrics, rewards) |
-| **NARRATIVE_STATE_MAP** | ✅ Complete | [`docs/NARRATIVE_STATE_MAP.md`](docs/NARRATIVE_STATE_MAP.md) (global states, story flags, state transitions) |
-| **PROGRESSION_SPEC** | ✅ Complete | [`docs/PROGRESSION_SPEC.md`](docs/PROGRESSION_SPEC.md) (campaign order, skill progression, NG+ unlocks) |
-| **ACCESSIBILITY_SPEC** | ✅ Complete | [`docs/ACCESSIBILITY_SPEC.md`](docs/ACCESSIBILITY_SPEC.md) (38 testable requirements, 12 categories) |
-| **VERTICAL_SLICE_PLAN** | ✅ Complete | [`docs/VERTICAL_SLICE_PLAN.md`](docs/VERTICAL_SLICE_PLAN.md) (25-minute Phase 6 spec, success criteria) |
-| **TECHNICAL_RISK_REGISTER** | ✅ Complete | [`docs/TECHNICAL_RISK_REGISTER.md`](docs/TECHNICAL_RISK_REGISTER.md) (8 risks with mitigation) |
-| **TRACEABILITY_MATRIX** | ✅ Complete | [`docs/TRACEABILITY_MATRIX.md`](docs/TRACEABILITY_MATRIX.md) (Pillar → Mechanic → Scene → Variable → Interface → Test → Acceptance) |
+| **VISION.md** | ✅ Complete | [`docs/VISION.md`](docs/VISION.md) (player fantasy, core emotion, pillars, ANTI-PILLARS, scope, duration) |
+| **CORE_LOOP.md** | ✅ Complete | [`docs/CORE_LOOP.md`](docs/CORE_LOOP.md) (minute-by-minute gameplay, decision frequency) |
+| **SYSTEMS_SPEC.md** | ✅ Complete | [`docs/SYSTEMS_SPEC.md`](docs/SYSTEMS_SPEC.md) (9 survival systems with inputs, outputs, limits, priorities) |
+| **LEVEL_STRUCTURE.md** | ✅ Complete | [`docs/LEVEL_STRUCTURE.md`](docs/LEVEL_STRUCTURE.md) (zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm) |
+| **SURVIVAL_SYSTEMS.md** | ✅ Complete | [`docs/SURVIVAL_SYSTEMS.md`](docs/SURVIVAL_SYSTEMS.md) (Elena Safety, Prototype Integrity, Civilian Aid) |
+| **EXPLORATION_FLOW.md** | ✅ Complete | [`docs/EXPLORATION_FLOW.md`](docs/EXPLORATION_FLOW.md) (phase structure, rewards) |
+| **NARRATIVE_STATE_MAP.md** | ✅ Complete | [`docs/NARRATIVE_STATE_MAP.md`](docs/NARRATIVE_STATE_MAP.md) (global states, story flags, transitions) |
+| **PROGRESSION_SPEC.md** | ✅ Complete | [`docs/PROGRESSION_SPEC.md`](docs/PROGRESSION_SPEC.md) (campaign order, skill progression, NG+ unlocks) |
+| **ACCESSIBILITY_SPEC.md** | ✅ Complete | [`docs/ACCESSIBILITY_SPEC.md`](docs/ACCESSIBILITY_SPEC.md) (38 testable requirements, 12 categories) |
+| **VERTICAL_SLICE_PLAN.md** | ✅ Complete | [`docs/VERTICAL_SLICE_PLAN.md`](docs/VERTICAL_SLICE_PLAN.md) (25-minute Phase 6 spec, success criteria) |
+| **TECHNICAL_RISK_REGISTER.md** | ✅ Complete | [`docs/TECHNICAL_RISK_REGISTER.md`](docs/TECHNICAL_RISK_REGISTER.md) (8 risks with mitigation) |
+| **TRACEABILITY_MATRIX.md** | ✅ Complete | [`docs/TRACEABILITY_MATRIX.md`](docs/TRACEABILITY_MATRIX.md) (Pillar → Mechanic → Scene → Variable → Interface → Test → Acceptance) |
+| **DESIGN_AUTHORITY.md** | ✅ Complete | [`docs/DESIGN_AUTHORITY.md`](docs/DESIGN_AUTHORITY.md) (declares normative documents, archives redundant, resolves conflicts) |
 
 **Full Index**: [`docs/CRITICAL_DOCS_INDEX.md`](docs/CRITICAL_DOCS_INDEX.md) (entry point for all critical documents)
 
@@ -77,7 +78,7 @@ Alternate between scientist Elena Vast and former officer Marcus Reyes to surviv
 | **Prototype Integrity** | `prototype_integrity` | 0-3 | ≤1 → Forces Fragile Thaw ending |
 | **Civilian Aid** | `civilian_aid` | 0-10 | ≥4 → Enables Public Thaw ending (with evidence preserved) |
 
-**Full Spec**: [`docs/SURVIVAL_SYSTEMS.md`](docs/SURVIVAL_SYSTEMS.md) + [`docs/narrative_complete.md`](docs/narrative_complete.md)
+**Full Spec**: [`docs/SURVIVAL_SYSTEMS.md`](docs/SURVIVAL_SYSTEMS.md) + [`docs/SYSTEMS_SPEC.md`](docs/SYSTEMS_SPEC.md) (9 systems: Temperature, Resources, Shelter, Displacement, Threats, Health, Inventory, Time, Consequences)
 
 ---
 
@@ -94,7 +95,7 @@ Alternate between scientist Elena Vast and former officer Marcus Reyes to surviv
 **Act III: Convergence** (4-5 hours)
 - Phases 13-16: Final Thaw Station, boss battle, 3 endings
 
-**Full Spec**: [`docs/PROGRESSION_SPEC.md`](docs/PROGRESSION_SPEC.md) + [`docs/LEVEL_STRUCTURE.md`](docs/LEVEL_STRUCTURE.md) (16 phases, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm)
+**Full Spec**: [`docs/PROGRESSION_SPEC.md`](docs/PROGRESSION_SPEC.md) + [`docs/LEVEL_STRUCTURE.md`](docs/LEVEL_STRUCTURE.md) (32 zones, 30 checkpoints, 6 shortcuts, 30 decision points, 50+ resources)
 
 ---
 
@@ -184,13 +185,14 @@ final-thaw/
 ├── GDD.md                       ← High-level game design
 ├── CLAUDE.md                    ← Development rules
 ├── docs/                        ← All documentation (36+ files)
-│   ├── CRITICAL_DOCS_INDEX.md   ← Entry point for 12 critical docs
-│   ├── VISION.md                ← Player fantasy, core emotion, pillars, ANTI-PILLARS, audience, differentiation, scope
-│   ├── CORE_LOOP.md             ← Core gameplay loop (1-page)
-│   ├── SYSTEMS_SPEC.md          ← 9 systems (temperature, resources, shelter, displacement, threats, health, inventory, time, consequences)
-│   ├── LEVEL_STRUCTURE.md       ← 16 phases, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm
+│   ├── CRITICAL_DOCS_INDEX.md   ← Entry point for 13 critical docs
+│   ├── DESIGN_AUTHORITY.md      ← Declares normative documents, archives redundant
 │   ├── TRACEABILITY_MATRIX.md   ← Pillar → Mechanic → Scene → Variable → UI → Test → Acceptance
-│   ├── SURVIVAL_SYSTEMS.md      ← Survival systems (1-page)
+│   ├── VISION.md                ← Player fantasy, core emotion, pillars, ANTI-PILLARS, scope, duration
+│   ├── CORE_LOOP.md             ← Core gameplay loop (1-page)
+│   ├── SYSTEMS_SPEC.md          ← 9 survival systems (inputs, outputs, limits, priorities)
+│   ├── LEVEL_STRUCTURE.md       ← 32 zones, 30 checkpoints, 6 shortcuts, 30 decision points
+│   ├── SURVIVAL_SYSTEMS.md      ← 3 consequence systems (1-page)
 │   ├── EXPLORATION_FLOW.md      ← Exploration flow (1-page)
 │   ├── NARRATIVE_STATE_MAP.md   ← Narrative states (1-page)
 │   ├── PROGRESSION_SPEC.md      ← Progression spec (1-page)
@@ -257,21 +259,16 @@ final-thaw/
 ## 📋 Quick Reference
 
 ### For Design Questions
-→ [`docs/VISION.md`](docs/VISION.md) (player fantasy, core emotion, pillars, ANTI-PILLARS)
-
 → [`docs/CORE_LOOP.md`](docs/CORE_LOOP.md) (minute-by-minute gameplay)
-
-### For Systems Questions
-→ [`docs/SYSTEMS_SPEC.md`](docs/SYSTEMS_SPEC.md) (9 systems with inputs, outputs, limits, priorities, interactions)
 
 ### For Narrative Questions
 → [`docs/narrative_complete.md`](docs/narrative_complete.md) (full arc, characters, states)
 
-### For Level Design Questions
-→ [`docs/LEVEL_STRUCTURE.md`](docs/LEVEL_STRUCTURE.md) (16 phases, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm)
-
 ### For Accessibility Questions
 → [`docs/ACCESSIBILITY_SPEC.md`](docs/ACCESSIBILITY_SPEC.md) (38 requirements)
+
+### For Technical Questions
+→ [`docs/technical_quality.md`](docs/technical_quality.md) (platforms, performance, memory, save, telemetry)
 
 ### For Traceability
 → [`docs/TRACEABILITY_MATRIX.md`](docs/TRACEABILITY_MATRIX.md) (pillar → mechanic → scene → variable → UI → test → acceptance)
@@ -282,6 +279,9 @@ final-thaw/
 ### For Executive Summary
 → [`docs/COMPLETION_VERIFICATION.md`](docs/COMPLETION_VERIFICATION.md) (100% of critic requirements verified)
 
+### For Document Governance
+→ [`docs/DESIGN_AUTHORITY.md`](docs/DESIGN_AUTHORITY.md) (which documents are normative, which are archived, how to resolve conflicts)
+
 ---
 
 ## 📊 Pre-Production Completion
@@ -290,9 +290,11 @@ final-thaw/
 
 **Documents**: 36+ files, 700+ KB
 
-**Critical Documents**: 12/12 (all visible, all linked, all verified)
+**Critical Documents**: 13/13 (all visible, all linked, all verified)
 
 **Traceability**: ✅ Complete (16 mechanics, 20+ scenes, 16 variables, 16 UI, 17 tests, 16 acceptance criteria)
+
+**Design Authority**: ✅ Complete (normative documents declared, redundant archived, conflicts resolved)
 
 **Verification**: [`docs/COMPLETION_VERIFICATION.md`](docs/COMPLETION_VERIFICATION.md) (explicit mapping of every critic requirement)
 
