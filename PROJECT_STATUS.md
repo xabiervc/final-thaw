@@ -6,47 +6,41 @@ Phase 0 — Technical Foundation.
 
 ## Design status
 
-The design documentation is extensive and provides the current normative intent. It does not, by itself, prove that all systems are implemented or verified.
+The design authority and supporting specifications are present. Design completeness does not imply implementation completeness.
+
+## Implementation status
+
+Phase 0 acceptance test verified from the canonical checkout.
+
+## Verified evidence
+
+- Engine: Godot 4.7.2.stable.official.ed1daf0bf
+- Command: `--headless --path D:\\Projects\\github\\final-thaw res://tests/test_phase_0.tscn`
+- Result: 11 passed, 0 failed
+- Exit code: 0
+- Expected warning: the CRC32 corruption-detection test emits a corruption warning by design.
 
 ## Current milestone
 
-Make the canonical Godot checkout run a reproducible Phase 0 test room.
-
-## Working
-
-- The repository root contains `project.godot`.
-- Godot 4.7.x and GDScript are the declared technology baseline.
-- Design authority and traceability documents exist.
+Review the integration branch, then begin the first small playable implementation task.
 
 ## In progress
 
-- Verify the project opens from the canonical GitHub checkout.
-- Run the Phase 0 acceptance test.
-- Record the exact Godot patch version and result.
-- Resolve any mismatch between design documents and implementation.
+- Review governed multi-agent workflow.
+- Keep design traceability aligned with implementation.
+- Select one narrow Phase 0 or first-playable task.
 
-## Blocked
+## Known limitations
 
-- None recorded. Update this section when a real blocker appears.
-
-## Known issues
-
-- Runtime and acceptance-test status must be recorded from an actual run.
-- Design completion claims must be kept separate from implementation completion.
+- The full game, vertical slice, accessibility suite, performance targets, and platform exports are not yet verified.
+- The current evidence verifies Phase 0 only.
 
 ## Next three tasks
 
-1. Run the Phase 0 acceptance test from the repository root.
-2. Fix the first real failing behavior, if any.
-3. Update this file with commit, command, engine version, and evidence.
+1. Review and merge the integration branch after human review.
+2. Create one narrow implementation task with acceptance criteria.
+3. Implement, test, playtest, and record evidence.
 
-## Last verified
+## Reporting rule
 
-- Date: 2026-10-04
-- Commit: Record the current commit after staging or committing.
-- Godot version: 4.7.2.stable.official.ed1daf0bf
-- Test command:
-  `Godot_v4.7.2-stable_win64.exe --headless --path D:\Projects\github\final-thaw res://tests/test_phase_0.tscn`
-- Result: 11 passed, 0 failed
-- Exit code: 0
-- Warning: CRC32 corruption warning is expected and covered by test 07.
+Do not mark a feature as verified, playable, accessible, performant, or release-ready without evidence.
