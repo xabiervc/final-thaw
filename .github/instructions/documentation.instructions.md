@@ -5,8 +5,7 @@ applyTo: "**/*.md"
 # Documentation Instructions
 
 - Write in English.
-- Keep one canonical document per topic.
-- Update existing canonical documents instead of creating competing files.
-- Distinguish facts, decisions, assumptions, proposals, and unknowns.
-- Include dates, commits, versions, and evidence where relevant.
-- Do not claim tests, builds, backups, or playtests passed without evidence.
+- Treat `docs/DESIGN_AUTHORITY.md` as the design-governance entry point.
+- Update an existing canonical document instead of creating a competing file.
+- Distinguish normative requirements, implementation facts, hypotheses, decisions, and unknowns.
+- Never claim tests, builds, backups, or playtests passed without evidence.
