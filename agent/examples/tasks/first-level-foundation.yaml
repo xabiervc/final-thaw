@@ -1,0 +1,31 @@
+id: first-level-foundation
+title: Implement the smallest playable first-level slice
+description: Build one entry, one playable space, one core interaction, one consequence, and one restart path.
+phase: phase_1
+scope:
+  in:
+    - one entry point
+    - one playable room
+    - one core interaction
+    - one meaningful consequence
+    - one restart path
+  out:
+    - combat
+    - full campaign
+    - later-phase content
+    - final art pass
+authority:
+  - docs/DESIGN_AUTHORITY.md
+  - docs/CORE_LOOP.md
+  - docs/LEVEL_STRUCTURE.md
+  - docs/VERTICAL_SLICE_PLAN.md
+  - docs/PROJECT_CONTRACT.md
+verification:
+  automated:
+    - res://tests/test_phase_0.tscn
+    - res://tests/test_first_level.tscn
+  manual:
+    - scene loads
+    - core interaction completes
+    - restart works
+    - no critical debugger errors

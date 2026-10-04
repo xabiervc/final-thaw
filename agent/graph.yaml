@@ -1,0 +1,54 @@
+version: 1
+name: final-thaw-graph-consensus-v0
+max_consensus_rounds: 2
+nodes:
+  - id: task_intake
+    kind: deterministic
+    output: task.yaml
+  - id: independent_proposals
+    kind: external_llm
+    agents: [claude, gpt]
+    output: proposals/*.json
+  - id: independent_reviews
+    kind: external_llm
+    agents: [claude, gpt]
+    output: reviews/*.json
+  - id: consensus
+    kind: deterministic
+    implementation: agent/consensus.py
+    output: consensus.json
+  - id: implementation
+    kind: external_tool
+    agent: copilot
+    output: implementation.json
+  - id: verification
+    kind: deterministic
+    tool: godot
+    output: test-result.json
+  - id: evidence
+    kind: deterministic
+    implementation: agent/validate.py
+    output: evidence.json
+edges:
+  - from: task_intake
+    to: independent_proposals
+  - from: independent_proposals
+    to: independent_reviews
+  - from: independent_reviews
+    to: consensus
+  - from: consensus
+    to: implementation
+    when: approve
+  - from: consensus
+    to: independent_proposals
+    when: revise
+  - from: consensus
+    to: stop
+    when: reject
+  - from: consensus
+    to: escalate
+    when: escalate
+  - from: implementation
+    to: verification
+  - from: verification
+    to: evidence
