@@ -1,0 +1,45 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Graph: Start run",
+      "type": "shell",
+      "command": "python agent/start.py",
+      "problemMatcher": []
+    },
+    {
+      "label": "Graph: Calculate consensus",
+      "type": "shell",
+      "command": "python agent/consensus.py --proposals ${input:proposalPaths} --reviews ${input:reviewPaths} --output ${input:consensusPath}",
+      "problemMatcher": []
+    },
+    {
+      "label": "Graph: Validate evidence",
+      "type": "shell",
+      "command": "python agent/validate.py ${input:evidencePath}",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "proposalPaths",
+      "type": "promptString",
+      "description": "Proposal JSON paths separated by spaces"
+    },
+    {
+      "id": "reviewPaths",
+      "type": "promptString",
+      "description": "Review JSON paths separated by spaces"
+    },
+    {
+      "id": "consensusPath",
+      "type": "promptString",
+      "description": "Output consensus JSON path"
+    },
+    {
+      "id": "evidencePath",
+      "type": "promptString",
+      "description": "Evidence JSON path"
+    }
+  ]
+}
