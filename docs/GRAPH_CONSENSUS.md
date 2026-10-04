@@ -1,32 +1,42 @@
 # Graph Consensus Protocol
 
-## Single entry point
+## Common workspace
 
-The graph is started from VS Code. You do not manually reconstruct the task context for every agent.
+VS Code is the common interface, while `.agent/runs/<run-id>/` is the shared state. The graph is not tied to one model provider.
 
-1. Open the repository root in VS Code.
-2. Run `Terminal` → `Run Task` → `Graph: Start run`.
-3. Answer the task questions once.
-4. Open the generated `.agent/runs/<run-id>/RUN.md`.
-5. Use the generated Claude and GPT prompts from that run.
-6. Save their structured JSON responses in the generated proposal paths.
-7. Use the generated reviewer prompts.
-8. Run `Graph: Calculate consensus`.
-9. Use the generated Copilot prompt for normal implementation, or the generated Claude Code prompt for complex approved implementation.
-10. Run Godot and validate evidence.
+```text
+VS Code task
+  ↓
+task.yaml + shared-context.md
+  ├── Claude in VS Code or Claude Code terminal
+  ├── GPT in VS Code or GPT Go externally
+  └── Copilot in VS Code
+        ↓
+  consensus.py
+        ↓
+  Copilot or Claude Code
+        ↓
+  Godot
+        ↓
+  evidence.json
+```
 
-All agents receive the same `task.yaml` and shared context. Only their roles and output schemas differ.
+## Provider setup
 
-## Start a run
+Make Claude, GPT, and Copilot available through the VS Code model picker, approved provider integrations, or BYOK where supported by the installed VS Code version and account plans. Provider availability, quotas, and features can change. Do not put keys or tokens in the repository.
+
+If a provider is unavailable in VS Code, use its native application or CLI and write the structured result to the same run artifact path. This preserves the graph contract without forcing all providers into one UI.
+
+## Start from one point
 
 ```text
 VS Code → Terminal → Run Task → Graph: Start run
 ```
 
-The task creates a run such as:
+Answer the questions once. The task creates:
 
 ```text
-.agent/runs/20261005T000000Z-first-level-abc123/
+.agent/runs/<run-id>/
 ├── task.yaml
 ├── shared-context.md
 ├── RUN.md
@@ -35,45 +45,29 @@ The task creates a run such as:
 └── reviews/
 ```
 
-## Consensus path
+## Select the implementer
+
+Use the consensus result to choose the implementer:
+
+- localized task, few files, no architectural or persistence change: Copilot Agent;
+- complex multi-file, architectural, debugging, or migration task: Claude Code after consensus;
+- no approval: neither implementation agent edits.
+
+The handoff prompt must include the exact run paths and the approved `consensus.json`. The implementer may not expand the scope.
+
+## Minimal run
 
 ```text
-one task entry
-  ↓
-shared task artifact
-  ├── Claude planner
-  └── GPT planner
-        ↓
-  cross-review
-        ↓
-  deterministic consensus
-        ├── approve → Copilot or Claude Code
-        ├── revise → new round
-        ├── reject → stop
-        └── escalate → exception path
+1. Start one run in VS Code.
+2. Produce Claude and GPT proposals from the same task artifact.
+3. Produce cross-reviews.
+4. Run deterministic consensus.
+5. Implement with Copilot or Claude Code according to the approved result.
+6. Run Godot.
+7. Validate evidence.
+8. Commit and create a PR.
 ```
 
-The shared artifact is the common point. Claude and GPT do not invent separate tasks, and the implementation agent consumes the approved consensus rather than an unrelated chat.
+## Provider failure
 
-## Choosing the implementer
-
-Use Copilot in VS Code when the approved task is:
-
-- localized;
-- limited to a few files;
-- consistent with existing architecture;
-- not a save-format, project-configuration, or architectural change.
-
-Use Claude Code after consensus when the approved task is:
-
-- multi-file and tightly coupled;
-- architectural;
-- difficult to implement safely with local edits;
-- dependent on repository-wide reasoning;
-- a complex debugging or migration task.
-
-The implementation agent never changes the task scope. The consensus artifact is the handoff contract.
-
-## Why this is not fully automatic yet
-
-This v0 deliberately does not call model APIs. It makes the common task, prompts, artifact paths, and transitions automatic while keeping model credentials and provider integrations outside the repository. Later adapters can replace manual copy/paste without changing the graph state or schemas.
+A missing provider is not a new task. Keep the run and substitute the provider while preserving the same schema and artifact path. A provider failure must be recorded in the run; do not silently convert missing output into approval.
