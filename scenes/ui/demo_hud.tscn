@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid:demo_hud"]
+
+[ext_resource type="Script" path="res://scripts/ui/demo_hud.gd" id="1_hud"]
+
+[node name="DemoHUD" type="CanvasLayer"]
+script = ExtResource("1_hud")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 120.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+
+[node name="OxygenLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Oxígeno: 100%"
+
+[node name="ObjectiveLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Objetivo: Activa el generador"
+
+[node name="CivilianLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+text = "Civil: Atrapada"
