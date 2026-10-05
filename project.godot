@@ -4,7 +4,7 @@
 [application]
 
 config/name="Final Thaw"
-run/main_scene="res://scenes/levels/flooded_shelter_2_5d.tscn"
+run/main_scene="res://scenes/ui/main_menu.tscn"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
