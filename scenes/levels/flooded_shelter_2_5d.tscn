@@ -1,0 +1,68 @@
+[gd_scene load_steps=11 format=3 uid="uid:flooded_shelter_2_5d"]
+
+[ext_resource type="Script" path="res://scripts/levels/flooded_shelter_controller.gd" id="1_shelter"]
+[ext_resource type="Script" path="res://scripts/entities/elena.gd" id="2_elena"]
+[ext_resource type="Script" path="res://scripts/entities/civilian.gd" id="3_civilian"]
+[ext_resource type="Script" path="res://scripts/levels/props/power_console.gd" id="4_console"]
+[ext_resource type="Script" path="res://scripts/levels/props/valve_station.gd" id="5_valve"]
+[ext_resource type="Script" path="res://scripts/levels/props/flood_gate.gd" id="6_gate"]
+[ext_resource type="Script" path="res://scripts/levels/props/shelter_light.gd" id="7_light"]
+[ext_resource type="PackedScene" path="res://scenes/ui/demo_hud.tscn" id="8_hud"]
+
+[node name="FloodedShelter25D" type="Node2D"]
+groups = ["flooded_shelter"]
+
+[node name="ShelterController" type="Node" parent="."]
+script = ExtResource("1_shelter")
+
+[node name="Background" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.2, 0.2)
+
+[node name="Midground" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.5, 0.5)
+
+[node name="Foreground" type="Parallax2D" parent="."]
+scroll_scale = Vector2(1.1, 1.1)
+
+[node name="Elena" type="CharacterBody2D" parent="."]
+script = ExtResource("2_elena")
+
+[node name="Sprite2D" type="Sprite2D" parent="Elena"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Elena"]
+
+[node name="InteractionArea" type="Area2D" parent="Elena"]
+
+[node name="OxygenTimer" type="Timer" parent="Elena"]
+
+[node name="Civilian" type="Node2D" parent="."]
+script = ExtResource("3_civilian")
+
+[node name="PowerRoom" type="Node2D" parent="."]
+
+[node name="PowerConsole" type="Node2D" parent="PowerRoom"]
+script = ExtResource("4_console")
+
+[node name="ShelterLight" type="Node2D" parent="PowerRoom"]
+script = ExtResource("7_light")
+
+[node name="ValveRoom" type="Node2D" parent="."]
+
+[node name="ValveLeft" type="Node2D" parent="ValveRoom"]
+script = ExtResource("5_valve")
+
+[node name="ValveRight" type="Node2D" parent="ValveRoom"]
+script = ExtResource("5_valve")
+
+[node name="RescueRoom" type="Node2D" parent="."]
+
+[node name="FloodGateExit" type="Node2D" parent="RescueRoom"]
+script = ExtResource("6_gate")
+
+[node name="DemoHUD" instance=ExtResource("8_hud") parent="."]
+
+[connection signal="power_activated" from="PowerRoom/PowerConsole" to="ShelterController" method="_on_power_activated"]
+[connection signal="valve_opened" from="ValveRoom/ValveLeft" to="ShelterController" method="_on_valve_opened"]
+[connection signal="valve_opened" from="ValveRoom/ValveRight" to="ShelterController" method="_on_valve_opened"]
+[connection signal="civilian_rescued" from="Civilian" to="ShelterController" method="_on_civilian_rescued"]
+[connection signal="oxygen_changed" from="Elena" to="DemoHUD" method="update_oxygen"]
