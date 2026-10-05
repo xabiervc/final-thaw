@@ -7,14 +7,11 @@ class_name MainMenu
 
 func _ready() -> void:
 	if title_label:
-		title_label.text = "Final Thaw\nVertical Slice"
+		title_label.text = NarrativeTextManager.get_menu_title()
 	if context_label:
-		context_label.text = (
-			"Año 2047. El colapso climático ha sumido a las ciudades en caos. " +
-			"Elena Vast, científica del Aster, y Marcus Reyes, oficial de seguridad, " +
-			"deben cooperar para salvar lo que queda de la humanidad."
-		)
+		context_label.text = NarrativeTextManager.get_menu_context()
 	if start_button:
+		start_button.text = NarrativeTextManager.get_menu_start_button()
 		start_button.pressed.connect(_on_start_pressed)
 
 	_update_context_with_flags()
