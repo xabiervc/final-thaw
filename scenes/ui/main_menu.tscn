@@ -1,6 +1,26 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3 uid="uid:main_menu"]
 
-[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_s"]
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 
 [node name="MainMenu" type="Control"]
-script = ExtResource("1_s")
+script = ExtResource("1_menu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+offset_left = 100.0
+offset_top = 80.0
+offset_right = -100.0
+offset_bottom = -80.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+horizontal_alignment = 1
+text = "Final Thaw"
+
+[node name="ContextLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+autowrap_mode = 2
+text = "Año 2047. El colapso climático ha sumido a las ciudades en caos."
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer"]
+text = "Iniciar Demo"
