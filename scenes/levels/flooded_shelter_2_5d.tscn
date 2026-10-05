@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid:flooded_shelter_2_5d"]
+[gd_scene load_steps=12 format=3 uid="uid:flooded_shelter_2_5d"]
 
 [ext_resource type="Script" path="res://scripts/levels/flooded_shelter_controller.gd" id="1_shelter"]
 [ext_resource type="Script" path="res://scripts/entities/elena.gd" id="2_elena"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scripts/levels/props/flood_gate.gd" id="6_gate"]
 [ext_resource type="Script" path="res://scripts/levels/props/shelter_light.gd" id="7_light"]
 [ext_resource type="PackedScene" path="res://scenes/ui/demo_hud.tscn" id="8_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/demo_end.tscn" id="9_end"]
 
 [node name="FloodedShelter25D" type="Node2D"]
 groups = ["flooded_shelter"]
@@ -61,8 +62,12 @@ script = ExtResource("6_gate")
 
 [node name="DemoHUD" instance=ExtResource("8_hud") parent="."]
 
+[node name="DemoEnd" instance=ExtResource("9_end") parent="."]
+
 [connection signal="power_activated" from="PowerRoom/PowerConsole" to="ShelterController" method="_on_power_activated"]
 [connection signal="valve_opened" from="ValveRoom/ValveLeft" to="ShelterController" method="_on_valve_opened"]
 [connection signal="valve_opened" from="ValveRoom/ValveRight" to="ShelterController" method="_on_valve_opened"]
 [connection signal="civilian_rescued" from="Civilian" to="ShelterController" method="_on_civilian_rescued"]
 [connection signal="oxygen_changed" from="Elena" to="DemoHUD" method="update_oxygen"]
+[connection signal="level_completed" from="ShelterController" to="DemoEnd" method="show_end"]
+[connection signal="player_died" from="Elena" to="ShelterController" method="complete_level"]
