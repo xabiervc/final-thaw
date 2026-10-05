@@ -32,6 +32,9 @@ func _ready() -> void:
 	if civilian:
 		civilian.connect("civilian_rescued", _on_civilian_rescued)
 
+	# Optional: restore from persistence if needed
+	# restore_from_persistence()
+
 func _on_power_activated() -> void:
 	if has_power:
 		return
@@ -56,6 +59,7 @@ func complete_level(success: bool) -> void:
 	if level_complete:
 		return
 	level_complete = true
+	persist_state()
 	level_completed.emit(success, civilian_rescued)
 
 func get_persistent_state() -> Dictionary:
@@ -64,3 +68,19 @@ func get_persistent_state() -> Dictionary:
 		"shelter_valves_opened": valves_open >= 2,
 		"shelter_civilian_rescued": civilian_rescued
 	}
+
+func persist_state() -> void:
+	var gsm = GameStateManager if "GameStateManager" in get_tree()
+	if not gsm:
+		return
+	var data = get_persistent_state()
+	for k in data:
+		gsm.set_flag(k, data[k])
+
+func restore_from_persistence() -> void:
+	var gsm = GameStateManager if "GameStateManager" in get_tree()
+	if not gsm:
+		return
+	has_power = gsm.get_flag("shelter_power_restored", false)
+	valves_open = 2 if gsm.get_flag("shelter_valves_opened", false) else 0
+	civilian_rescued = gsm.get_flag("shelter_civilian_rescued", false)
