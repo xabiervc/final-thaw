@@ -5,15 +5,19 @@ class_name NarrativeTextManager
 ## Usa el recurso data/narrative_text.tres y permite sobrescribir valores en tiempo de ejecución.
 
 static var texts: NarrativeText
+static var current_locale: String = "es"
 
 static func _initialize() -> void:
 	if texts != null:
 		return
-	var path = "res://data/narrative_text.tres"
-	if ResourceLoader.exists(path):
-		texts = ResourceLoader.load(path) as NarrativeText
-	else:
-		texts = NarrativeText.new()
+	set_locale("es")
+
+static func set_locale(locale: String) -> void:
+	current_locale = locale
+	var path = "res://data/narrative_text_%s.tres" % locale
+	if not ResourceLoader.exists(path):
+		path = "res://data/narrative_text.tres"  # fallback a español
+	texts = ResourceLoader.load(path) as NarrativeText
 
 static func get_menu_title() -> String:
 	_initialize()
