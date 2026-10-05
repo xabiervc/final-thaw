@@ -1,46 +1,90 @@
-# Project Status
+# Estado del proyecto - Final Thaw
 
-## Current phase
+## Vertical Slice: "Flooded Shelter 2.5D" (Elena)
 
-Phase 0 — Technical Foundation.
+### Estado
+- **Rama:** `feat/godot-vertical-slice`
+- **Estado:** Esqueleto funcional completo, pendiente de arte y pulido visual/sonoro.
 
-## Design status
+### Qué hay implementado
 
-The design authority and supporting specifications are present. Design completeness does not imply implementation completeness.
+#### Gameplay
+- Movimiento lateral de Elena (izquierda/derecha, salto).
+- Sistema de oxígeno que disminuye con el tiempo.
+- Interacción con objetos (tecla `E`).
+- Tres salas:
+  - Sala de energía: consola para activar generador.
+  - Sala de válvulas: dos válvulas para drenar agua.
+  - Sala de rescate: civil atrapada y compuerta de salida.
+- Zona de victoria al alcanzar la salida.
+- Pantalla de fin de demo con resumen de decisiones.
 
-## Implementation status
+#### Estructura de escenas
+- `scenes/ui/main_menu.tscn`: menú con contexto narrativo y selector de idioma ES/EN.
+- `scenes/levels/flooded_shelter_2_5d.tscn`: nivel principal del slice.
+- `scenes/ui/demo_hud.tscn`: HUD con oxígeno, objetivo y estado de la civil.
+- `scenes/ui/demo_end.tscn`: pantalla final con resumen.
+- `scenes/props/*.tscn`: consola, válvulas, compuerta y luz.
 
-Phase 0 acceptance test verified from the canonical checkout.
+#### Sistemas
+- `GameStateManager`: persiste decisiones (energía, válvulas, civil) y preferencia de idioma.
+- `NarrativeTextManager`: textos centralizados en `data/narrative_text_*.tres`.
+- Soporte bilingüe ES/EN con selector en menú.
 
-## Verified evidence
+#### Documentación
+- `docs/SETUP_FLOODED_SHELTER.md`: instrucciones para montar y probar en Godot.
+- `docs/PRESENTATION_ROADMAP.md`: lista de tareas para una demo presentable (assets, luz, VFX, audio).
+- `docs/NARRATIVE_SCRIPT.md`: guion de textos y tono narrativo.
+- `docs/TRANSLATIONS.md`: guía para añadir más idiomas.
 
-- Engine: Godot 4.7.2.stable.official.ed1daf0bf
-- Command: `--headless --path D:\\Projects\\github\\final-thaw res://tests/test_phase_0.tscn`
-- Result: 11 passed, 0 failed
-- Exit code: 0
-- Expected warning: the CRC32 corruption-detection test emits a corruption warning by design.
+### Qué falta para una demo presentable
 
-## Current milestone
+#### Assets y arte
+- Sprites y animaciones de Elena (idle, walk, jump, interact).
+- Sprite y animaciones de la civil (atrapada, rescatada).
+- Arte de entorno: fondos parallax, suelo, paredes, tuberías, luces.
+- Sprites para objetos: consola, válvulas, compuerta, luces.
 
-Review the integration branch, then begin the first small playable implementation task.
+#### Iluminación y atmósfera
+- `CanvasModulate` para tono frío.
+- `PointLight2D` en luces de emergencia, Aster y objetos.
+- Ajuste de sombras y contraste.
 
-## In progress
+#### Efectos visuales
+- Lluvia y goteo (`GPUParticles2D`).
+- Vapor/niebla en zonas inundadas.
+- Destellos en interacciones.
 
-- Review governed multi-agent workflow.
-- Keep design traceability aligned with implementation.
-- Select one narrow Phase 0 or first-playable task.
+#### Audio
+- Ambiente: lluvia, goteo, zumbido de maquinaria.
+- SFX: pasos, interacciones, compuerta, aviso de oxígeno bajo.
+- Música ambiental tensa.
 
-## Known limitations
+#### UI y pulido
+- Barra de oxígeno visual (no solo texto).
+- Mejoras de legibilidad y espaciado en HUD.
+- Ajuste de ritmo y dificultad.
 
-- The full game, vertical slice, accessibility suite, performance targets, and platform exports are not yet verified.
-- The current evidence verifies Phase 0 only.
+## Próximos slices
 
-## Next three tasks
+### Marcus - Beat 'Em Up 2D
+- Arena con movimiento en X/Y (estilo Streets of Rage).
+- Combo básico, golpe fuerte, esquiva.
+- Enemigos básicos con hitbox/hurtbox.
+- Objeto ambiental arrojadizo.
+- Consecuencias que afectan a `civilian_aid`.
 
-1. Review and merge the integration branch after human review.
-2. Create one narrow implementation task with acceptance criteria.
-3. Implement, test, playtest, and record evidence.
+### Integración
+- Transiciones entre slices con diálogo y consecuencias.
+- Sistema de guardado global y árbol de decisiones.
 
-## Reporting rule
+## Cómo probar el slice actual
 
-Do not mark a feature as verified, playable, accessible, performant, or release-ready without evidence.
+1. Cambia a la rama `feat/godot-vertical-slice`.
+2. Abre el proyecto en Godot 4.4+.
+3. Sigue las instrucciones de `docs/SETUP_FLOODED_SHELTER.md` para asignar nodos y probar.
+4. Usa el selector ES/EN en el menú para cambiar de idioma.
+
+## Resumen
+
+El vertical slice de Elena está **funcionalmente completo** a nivel de diseño y código. El siguiente gran bloque de trabajo es **arte, iluminación, VFX y audio** para convertir este esqueleto en una demo presentable, seguido del slice de combate de Marcus.
