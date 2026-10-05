@@ -1,43 +1,39 @@
 extends Control
+class_name MainMenu
+
+@export var title_label: Label
+@export var context_label: Label
+@export var start_button: Button
 
 func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
-	var bg := ColorRect.new()
-	bg.color = Color("1a1a2e")
-	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(bg)
-	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	add_child(center)
-	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 16)
-	center.add_child(vbox)
-	var title := Label.new()
-	title.text = "FINAL THAW"
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 64)
-	vbox.add_child(title)
-	var start := _btn(vbox, "Start", _on_start)
-	var cont := _btn(vbox, "Continue", _on_continue)
-	cont.disabled = not GameManager.has_save(0)
-	_btn(vbox, "Options", func(): GameManager.change_scene("res://scenes/ui/options_menu.tscn"))
-	_btn(vbox, "Credits", func(): GameManager.change_scene("res://scenes/ui/credits.tscn"))
-	_btn(vbox, "Quit", func(): get_tree().quit())
-	start.grab_focus()
+	if title_label:
+		title_label.text = "Final Thaw\nVertical Slice"
+	if context_label:
+		context_label.text = (
+			"Año 2047. El colapso climático ha sumido a las ciudades en caos. " +
+			"Elena Vast, científica del Aster, y Marcus Reyes, oficial de seguridad, " +
+			"deben cooperar para salvar lo que queda de la humanidad."
+		)
+	if start_button:
+		start_button.pressed.connect(_on_start_pressed)
 
-func _btn(parent: Node, text: String, cb: Callable) -> Button:
-	var b := Button.new()
-	b.text = text
-	b.custom_minimum_size = Vector2(260, 48)
-	b.add_to_group("menu_button")
-	b.pressed.connect(cb)
-	parent.add_child(b)
-	return b
+	_update_context_with_flags()
 
-func _on_start() -> void:
-	GameManager.new_game()
-	GameManager.change_scene("res://scenes/levels/test_room.tscn")
+func _update_context_with_flags() -> void:
+	var gsm = GameStateManager if "GameStateManager" in get_tree()
+	if not gsm or not context_label:
+		return
 
-func _on_continue() -> void:
-	if GameManager.load_game(0):
-		GameManager.change_scene("res://scenes/levels/test_room.tscn")
+	var extra := ""
+	if gsm.get_flag("shelter_power_restored", false):
+		extra += "\n- Refugio: energía restaurada."
+	if gsm.get_flag("shelter_valves_opened", false):
+		extra += "\n- Refugio: válvulas abiertas."
+	if gsm.get_flag("shelter_civilian_rescued", false):
+		extra += "\n- Refugio: civil rescatada."
+
+	if extra != "":
+		context_label.text += "\n\nEstado previo:\n" + extra
+
+func _on_start_pressed() -> void:
+	get_tree().change_scene_to_file("res://scenes/levels/flooded_shelter_2_5d.tscn")
