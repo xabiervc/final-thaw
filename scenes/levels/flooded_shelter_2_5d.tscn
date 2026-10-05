@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid:flooded_shelter_2_5d"]
+[gd_scene load_steps=13 format=3 uid="uid:flooded_shelter_2_5d"]
 
 [ext_resource type="Script" path="res://scripts/levels/flooded_shelter_controller.gd" id="1_shelter"]
 [ext_resource type="Script" path="res://scripts/entities/elena.gd" id="2_elena"]
@@ -7,8 +7,9 @@
 [ext_resource type="Script" path="res://scripts/levels/props/valve_station.gd" id="5_valve"]
 [ext_resource type="Script" path="res://scripts/levels/props/flood_gate.gd" id="6_gate"]
 [ext_resource type="Script" path="res://scripts/levels/props/shelter_light.gd" id="7_light"]
-[ext_resource type="PackedScene" path="res://scenes/ui/demo_hud.tscn" id="8_hud"]
-[ext_resource type="PackedScene" path="res://scenes/ui/demo_end.tscn" id="9_end"]
+[ext_resource type="Script" path="res://scripts/levels/win_zone.gd" id="8_win"]
+[ext_resource type="PackedScene" path="res://scenes/ui/demo_hud.tscn" id="9_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/demo_end.tscn" id="10_end"]
 
 [node name="FloodedShelter25D" type="Node2D"]
 groups = ["flooded_shelter"]
@@ -60,9 +61,14 @@ script = ExtResource("5_valve")
 [node name="FloodGateExit" type="Node2D" parent="RescueRoom"]
 script = ExtResource("6_gate")
 
-[node name="DemoHUD" instance=ExtResource("8_hud") parent="."]
+[node name="WinZone" type="Area2D" parent="RescueRoom"]
+script = ExtResource("8_win")
 
-[node name="DemoEnd" instance=ExtResource("9_end") parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WinZone"]
+
+[node name="DemoHUD" instance=ExtResource("9_hud") parent="."]
+
+[node name="DemoEnd" instance=ExtResource("10_end") parent="."]
 
 [connection signal="power_activated" from="PowerRoom/PowerConsole" to="ShelterController" method="_on_power_activated"]
 [connection signal="valve_opened" from="ValveRoom/ValveLeft" to="ShelterController" method="_on_valve_opened"]
