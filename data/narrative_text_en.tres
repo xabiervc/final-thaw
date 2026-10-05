@@ -1,0 +1,77 @@
+extends Resource
+class_name NarrativeText
+
+## Main Menu
+@export_group("Main Menu")
+@export_multiline var menu_title: String = "Final Thaw\nVertical Slice"
+@export_multiline var menu_context: String = """
+Year 2047. Climate collapse has plunged cities into chaos.
+The storms do not stop. Shelters flood. People wait for someone
+to make impossible decisions.
+
+Elena Vast, scientist of the Aster project, and Marcus Reyes,
+security officer, must cooperate to save what remains of humanity.
+
+In this demo, you will control Elena in a flooded emergency shelter.
+Every decision affects those who depend on you.
+"""
+@export var menu_start_button: String = "Start Demo"
+
+## HUD
+@export_group("HUD")
+@export var hud_oxygen_label: String = "Oxygen: %d%%"
+@export var hud_oxygen_low_threshold: float = 30.0
+@export var hud_civilian_trapped: String = "Civilian: Trapped"
+@export var hud_civilian_rescued: String = "Civilian: Rescued"
+@export var hud_civilian_dead: String = "Civilian: Deceased"
+
+@export var hud_objective_start: String = "Objective: Activate the generator to restore power."
+@export var hud_objective_power_on: String = "Objective: Open the valves to drain the water and continue."
+@export var hud_objective_valves_open: String = "Objective: Decide whether to rescue the civilian before reaching the exit."
+@export var hud_objective_exit: String = "Objective: Reach the shelter exit."
+
+## Interactions
+@export_group("Interactions")
+@export var interact_power_console_off: String = "Activate generator"
+@export var interact_power_console_on: String = "Generator running"
+@export var interact_valve_closed: String = "Open valve"
+@export var interact_valve_open: String = "Valve open"
+@export var interact_civilian_trapped: String = "Rescue"
+@export var interact_civilian_rescued: String = "Safe"
+
+## Civilian Dialogue
+@export_group("Civilian Dialogue")
+@export var civilian_rescue_lines: Array[String] = [
+	"Thank you... I thought I wouldn't make it out of here.",
+	"I didn't think I'd see anyone again.",
+	"My family is in the northern sector... can you bring them help?",
+	"I don't have the strength to go on. Thanks for trying."
+]
+
+## Demo End
+@export_group("Demo End")
+@export var end_title_success: String = "Demo Complete"
+@export var end_title_failure: String = "Demo Failed"
+@export var end_elena_alive: String = "Elena: Survived"
+@export var end_elena_dead: String = "Elena: Did not survive"
+@export var end_civilian_unknown: String = "Civilian: Status unknown"
+
+@export_multiline var end_power_restored: String = """
+Shelter: power restored.
+Some emergency systems are back online.
+"""
+@export_multiline var end_valves_opened: String = """
+Shelter: valves opened.
+The water began to drain, but too late for some.
+"""
+@export_multiline var end_civilian_rescued: String = """
+Shelter: civilian rescued.
+One more life among those who depend on your decisions.
+"""
+@export_multiline var end_civilian_not_rescued: String = """
+Shelter: civilian not rescued.
+Not everyone can be saved. That is also a decision.
+"""
+
+@export var end_button_menu: String = "Back to Menu"
+@export var end_button_restart: String = "Restart Demo"
