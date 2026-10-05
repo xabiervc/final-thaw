@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=3 uid="uid:demo_end"]
+
+[ext_resource type="Script" path="res://scripts/ui/demo_end.gd" id="1_end"]
+
+[node name="DemoEnd" type="Control"]
+script = ExtResource("1_end")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+offset_left = 120.0
+offset_top = 100.0
+offset_right = -120.0
+offset_bottom = -100.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+
+[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+horizontal_alignment = 1
+text = "Demo completada"
+
+[node name="SummaryLabel" type="Label" parent="VBoxContainer"]
+autowrap_mode = 2
+text = "Resumen de decisiones"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+
+[node name="MenuButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+text = "Volver al menú"
+
+[node name="RestartButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+text = "Reiniciar demo"
