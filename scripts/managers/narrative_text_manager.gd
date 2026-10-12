@@ -1,109 +1,103 @@
 extends Node
 
-## Singleton para acceder a los textos de narrativa desde cualquier escena.
-## Usa el recurso data/narrative_text.tres y permite sobrescribir valores en tiempo de ejecución.
+## Central runtime access to localized NarrativeText resources.
+## This script is an autoload; do not give it a class_name matching the autoload.
 
-static var texts: NarrativeText
+static var texts: Resource
 static var current_locale: String = "es"
 
 static func _initialize() -> void:
-	if texts != null:
-		return
-	set_locale("es")
+	if texts == null:
+		set_locale("es")
 
 static func set_locale(locale: String) -> void:
 	current_locale = locale
-	var path = "res://data/narrative_text_%s.tres" % locale
+	var path := "res://data/narrative_text_%s.tres" % locale
 	if not ResourceLoader.exists(path):
-		path = "res://data/narrative_text.tres"  # fallback a español
-	texts = ResourceLoader.load(path) as NarrativeText
+		path = "res://data/narrative_text.tres"
+	var loaded: Resource = ResourceLoader.load(path)
+	if loaded == null:
+		push_error("NarrativeText resource could not be loaded: %s" % path)
+		texts = null
+		return
+	texts = loaded
+
+static func _text(property_name: String, fallback: String = "") -> String:
+	_initialize()
+	if texts == null:
+		return fallback
+	var value: Variant = texts.get(property_name)
+	return str(value) if value != null else fallback
 
 static func get_menu_title() -> String:
-	_initialize()
-	return texts.menu_title
+	return _text("menu_title", "Final Thaw")
 
 static func get_menu_context() -> String:
-	_initialize()
-	return texts.menu_context
+	return _text("menu_context")
 
 static func get_menu_start_button() -> String:
-	_initialize()
-	return texts.menu_start_button
+	return _text("menu_start_button", "Start Demo")
 
 static func get_hud_oxygen_label(value: float) -> String:
-	_initialize()
-	return texts.hud_oxygen_label % int(value)
+	return _text("hud_oxygen_label", "Oxygen: %d%%") % int(value)
 
 static func get_hud_civilian_state(trapped: bool, rescued: bool, dead: bool) -> String:
-	_initialize()
 	if dead:
-		return texts.hud_civilian_dead
+		return _text("hud_civilian_dead", "Civilian: Deceased")
 	if rescued:
-		return texts.hud_civilian_rescued
-	return texts.hud_civilian_trapped
+		return _text("hud_civilian_rescued", "Civilian: Rescued")
+	return _text("hud_civilian_trapped", "Civilian: Trapped")
 
 static func get_hud_objective(has_power: bool, valves_open: int, civilian_exists: bool, civilian_trapped: bool) -> String:
-	_initialize()
 	if not has_power:
-		return texts.hud_objective_start
+		return _text("hud_objective_start", "Objective: Activate the generator.")
 	if valves_open < 2:
-		return texts.hud_objective_power_on
+		return _text("hud_objective_power_on", "Objective: Open the valves.")
 	if civilian_exists and civilian_trapped:
-		return texts.hud_objective_valves_open
-	return texts.hud_objective_exit
+		return _text("hud_objective_valves_open", "Objective: Decide whether to rescue the civilian.")
+	return _text("hud_objective_exit", "Objective: Reach the exit.")
 
 static func get_interact_power_console(is_on: bool) -> String:
-	_initialize()
-	return texts.interact_power_console_on if is_on else texts.interact_power_console_off
+	return _text("interact_power_console_on", "Generator running") if is_on else _text("interact_power_console_off", "Activate generator")
 
 static func get_interact_valve(is_open: bool) -> String:
-	_initialize()
-	return texts.interact_valve_open if is_open else texts.interact_valve_closed
+	return _text("interact_valve_open", "Valve open") if is_open else _text("interact_valve_closed", "Open valve")
 
 static func get_interact_civilian(is_trapped: bool) -> String:
-	_initialize()
-	return texts.interact_civilian_trapped if is_trapped else texts.interact_civilian_rescued
+	return _text("interact_civilian_trapped", "Rescue") if is_trapped else _text("interact_civilian_rescued", "Safe")
 
 static func get_random_civilian_rescue_line() -> String:
 	_initialize()
-	if texts.civilian_rescue_lines.is_empty():
+	if texts == null:
 		return ""
-	return texts.civilian_rescue_lines.pick_random()
+	var lines: Array = texts.get("civilian_rescue_lines")
+	return str(lines.pick_random()) if not lines.is_empty() else ""
 
 static func get_end_title(success: bool) -> String:
-	_initialize()
-	return texts.end_title_success if success else texts.end_title_failure
+	return _text("end_title_success", "Demo Complete") if success else _text("end_title_failure", "Demo Failed")
 
 static func get_end_elena(alive: bool) -> String:
-	_initialize()
-	return texts.end_elena_alive if alive else texts.end_elena_dead
+	return _text("end_elena_alive", "Elena: Survived") if alive else _text("end_elena_dead", "Elena: Did not survive")
 
 static func get_end_civilian(rescued: bool, dead: bool, unknown: bool) -> String:
-	_initialize()
 	if unknown:
-		return texts.end_civilian_unknown
-	return texts.hud_civilian_rescued if rescued else texts.hud_civilian_dead if dead else texts.hud_civilian_trapped
+		return _text("end_civilian_unknown", "Civilian: Status unknown")
+	return get_hud_civilian_state(false, rescued, dead)
 
 static func get_end_power_restored() -> String:
-	_initialize()
-	return texts.end_power_restored
+	return _text("end_power_restored")
 
 static func get_end_valves_opened() -> String:
-	_initialize()
-	return texts.end_valves_opened
+	return _text("end_valves_opened")
 
 static func get_end_civilian_rescued() -> String:
-	_initialize()
-	return texts.end_civilian_rescued
+	return _text("end_civilian_rescued")
 
 static func get_end_civilian_not_rescued() -> String:
-	_initialize()
-	return texts.end_civilian_not_rescued
+	return _text("end_civilian_not_rescued")
 
 static func get_end_button_menu() -> String:
-	_initialize()
-	return texts.end_button_menu
+	return _text("end_button_menu", "Back to Menu")
 
 static func get_end_button_restart() -> String:
-	_initialize()
-	return texts.end_button_restart
+	return _text("end_button_restart", "Restart Demo")

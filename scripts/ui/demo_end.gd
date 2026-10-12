@@ -28,20 +28,16 @@ func show_end(success_result: bool, rescued_civilian: bool) -> void:
 func _update_text() -> void:
 	if title_label:
 		title_label.text = NarrativeTextManager.get_end_title(success)
-
 	if not summary_label:
 		return
 
-	var lines := []
-	lines.append(NarrativeTextManager.get_end_elena(success))
-
+	var lines: Array[String] = [NarrativeTextManager.get_end_elena(success)]
 	if shelter and shelter.civilian:
-		var dead := not shelter.civilian.is_alive
-		lines.append(NarrativeTextManager.get_hud_civilian_state(false, rescued, dead))
+		lines.append(NarrativeTextManager.get_end_civilian(rescued, not shelter.civilian.is_alive, false))
 	else:
-		lines.append(NarrativeTextManager.end_civilian_unknown)
+		lines.append(NarrativeTextManager.get_end_civilian(false, false, true))
 
-	var gsm = GameStateManager if "GameStateManager" in get_tree()
+	var gsm = get_node_or_null("/root/GameStateManager")
 	if gsm:
 		if gsm.get_flag("shelter_power_restored", false):
 			lines.append(NarrativeTextManager.get_end_power_restored())
@@ -52,11 +48,10 @@ func _update_text() -> void:
 		elif shelter and shelter.civilian and not rescued:
 			lines.append(NarrativeTextManager.get_end_civilian_not_rescued())
 
-	summary_label.text = "\n".join(lines)
+	summary_label.text = "\n".join(lines.filter(func(line: String) -> bool: return not line.is_empty()))
 
 func _on_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
 
 func _on_restart_pressed() -> void:
-	# Simple restart: reload current scene
 	get_tree().reload_current_scene()

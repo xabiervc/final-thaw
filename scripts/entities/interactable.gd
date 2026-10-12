@@ -1,4 +1,5 @@
 extends Area2D
+class_name Interactable
 
 @export var interact_text: String = "Interactuable"
 var interact_count: int = 0
@@ -14,6 +15,7 @@ func _ready() -> void:
 	vis.color = Color("ffd600")
 	vis.size = Vector2(100, 100)
 	vis.position = Vector2(-50, -50)
+	vis.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(vis)
 	var lbl := Label.new()
 	lbl.text = interact_text
