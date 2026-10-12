@@ -1,90 +1,96 @@
-# Estado del proyecto - Final Thaw
+# Project Status — FINAL THAW
 
-## Vertical Slice: "Flooded Shelter 2.5D" (Elena)
+## Current phase
 
-### Estado
-- **Rama:** `feat/godot-vertical-slice`
-- **Estado:** Esqueleto funcional completo, pendiente de arte y pulido visual/sonoro.
+Phase 1 — First playable vertical slice and early 3D prototype.
 
-### Qué hay implementado
+## Design status
 
-#### Gameplay
-- Movimiento lateral de Elena (izquierda/derecha, salto).
-- Sistema de oxígeno que disminuye con el tiempo.
-- Interacción con objetos (tecla `E`).
-- Tres salas:
-  - Sala de energía: consola para activar generador.
-  - Sala de válvulas: dos válvulas para drenar agua.
-  - Sala de rescate: civil atrapada y compuerta de salida.
-- Zona de victoria al alcanzar la salida.
-- Pantalla de fin de demo con resumen de decisiones.
+The design authority and supporting specifications are present. Design completeness does not imply implementation completeness.
 
-#### Estructura de escenas
-- `scenes/ui/main_menu.tscn`: menú con contexto narrativo y selector de idioma ES/EN.
-- `scenes/levels/flooded_shelter_2_5d.tscn`: nivel principal del slice.
-- `scenes/ui/demo_hud.tscn`: HUD con oxígeno, objetivo y estado de la civil.
-- `scenes/ui/demo_end.tscn`: pantalla final con resumen.
-- `scenes/props/*.tscn`: consola, válvulas, compuerta y luz.
+## Implementation status
 
-#### Sistemas
-- `GameStateManager`: persiste decisiones (energía, válvulas, civil) y preferencia de idioma.
-- `NarrativeTextManager`: textos centralizados en `data/narrative_text_*.tres`.
-- Soporte bilingüe ES/EN con selector en menú.
+Phase 0 acceptance testing remains verified from the canonical checkout.
 
-#### Documentación
-- `docs/SETUP_FLOODED_SHELTER.md`: instrucciones para montar y probar en Godot.
-- `docs/PRESENTATION_ROADMAP.md`: lista de tareas para una demo presentable (assets, luz, VFX, audio).
-- `docs/NARRATIVE_SCRIPT.md`: guion de textos y tono narrativo.
-- `docs/TRANSLATIONS.md`: guía para añadir más idiomas.
+The `feat/godot-vertical-slice` branch contains the functional skeleton of the **Flooded Shelter 2.5D** vertical slice, plus an early 3D test-room prototype.
 
-### Qué falta para una demo presentable
+### Flooded Shelter 2.5D slice
 
-#### Assets y arte
-- Sprites y animaciones de Elena (idle, walk, jump, interact).
-- Sprite y animaciones de la civil (atrapada, rescatada).
-- Arte de entorno: fondos parallax, suelo, paredes, tuberías, luces.
-- Sprites para objetos: consola, válvulas, compuerta, luces.
+- Elena has lateral movement, jumping, oxygen depletion and object interaction.
+- The slice includes a power room, valve room and rescue room.
+- The player can activate a generator, drain water through valves, rescue a trapped civilian and reach the exit.
+- A demo-end screen summarizes player decisions.
+- `GameStateManager` persists decisions and language preference.
+- `NarrativeTextManager` centralizes narrative text and supports ES/EN localization.
+- The main menu includes narrative context and an ES/EN language selector.
 
-#### Iluminación y atmósfera
-- `CanvasModulate` para tono frío.
-- `PointLight2D` en luces de emergencia, Aster y objetos.
-- Ajuste de sombras y contraste.
+### Early 3D prototype
 
-#### Efectos visuales
-- Lluvia y goteo (`GPUParticles2D`).
-- Vapor/niebla en zonas inundadas.
-- Destellos en interacciones.
+- A separate test room implements Elena movement, interaction and scanning in 3D.
+- This is an early technical prototype for Phase 1; it does not replace or complete the Flooded Shelter 2.5D slice.
+- Further work is required to validate 3D movement, camera framing, interaction affordances, collision, performance and visual direction.
 
-#### Audio
-- Ambiente: lluvia, goteo, zumbido de maquinaria.
-- SFX: pasos, interacciones, compuerta, aviso de oxígeno bajo.
-- Música ambiental tensa.
+## Verified evidence
 
-#### UI y pulido
-- Barra de oxígeno visual (no solo texto).
-- Mejoras de legibilidad y espaciado en HUD.
-- Ajuste de ritmo y dificultad.
+- Engine: Godot 4.7.2.stable.official.ed1daf0bf.
+- Phase 0 command: `--headless --path D:\Projects\github\final-thaw res://tests/test_phase_0.tscn`.
+- Phase 0 result: 11 passed, 0 failed; exit code 0.
+- Expected warning: the CRC32 corruption-detection test emits a corruption warning by design.
+- The Flooded Shelter slice and 3D test room require recorded manual playtest evidence before being considered verified milestones.
 
-## Próximos slices
+## Current milestone
 
-### Marcus - Beat 'Em Up 2D
-- Arena con movimiento en X/Y (estilo Streets of Rage).
-- Combo básico, golpe fuerte, esquiva.
-- Enemigos básicos con hitbox/hurtbox.
-- Objeto ambiental arrojadizo.
-- Consecuencias que afectan a `civilian_aid`.
+Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it after human review and recorded evidence.
 
-### Integración
-- Transiciones entre slices con diálogo y consecuencias.
-- Sistema de guardado global y árbol de decisiones.
+## In progress
 
-## Cómo probar el slice actual
+- Reviewing the governed multi-agent workflow.
+- Keeping design traceability aligned with implementation.
+- Validating the Flooded Shelter gameplay loop, narrative flow, localization and decision summary.
+- Evaluating the early 3D test room for movement, interaction, scanning and visual direction.
+- Preparing a narrow art-production workflow for assets, potentially using Claude with a Blender MCP under explicit asset specifications.
 
-1. Cambia a la rama `feat/godot-vertical-slice`.
-2. Abre el proyecto en Godot 4.4+.
-3. Sigue las instrucciones de `docs/SETUP_FLOODED_SHELTER.md` para asignar nodos y probar.
-4. Usa el selector ES/EN en el menú para cambiar de idioma.
+## Known limitations
 
-## Resumen
+- The full game, complete vertical slice, accessibility suite, performance targets and platform exports are not yet verified.
+- Phase 0 evidence verifies the technical foundation only.
+- The Flooded Shelter slice is functionally complete at a prototype level, but is not art-complete, audio-complete, polished or release-ready.
+- The 3D test room is an early prototype, not a content-complete or production-quality vertical slice.
+- Art, lighting, VFX, audio, Marcus gameplay, dual-protagonist systems, combat, puzzles and ending content remain unimplemented or unverified.
 
-El vertical slice de Elena está **funcionalmente completo** a nivel de diseño y código. El siguiente gran bloque de trabajo es **arte, iluminación, VFX y audio** para convertir este esqueleto en una demo presentable, seguido del slice de combate de Marcus.
+## Next three tasks
+
+1. Playtest the Flooded Shelter slice and record pass/fail evidence for movement, oxygen, interaction, generator activation, valve drainage, civilian rescue, exit progression and ES/EN localization.
+2. Playtest the 3D test room and record evidence for movement, interaction, scanning, collision, camera readability and performance.
+3. Define one narrow art-production task with acceptance criteria: a single environment module or prop set for the first playable space, specified for Blender and validated in Godot.
+
+## Next slices
+
+### Marcus — Beat ’em up 2D
+
+- Arena with X/Y movement.
+- Basic combo, heavy attack and dodge.
+- Basic enemies with hitboxes and hurtboxes.
+- Throwable environmental object.
+- Consequences affecting `civilian_aid`.
+
+### Integration
+
+- Transitions between slices with dialogue and consequences.
+- Global save system and decision tree.
+
+## How to test the current slice
+
+1. Switch to the `feat/godot-vertical-slice` branch.
+2. Open the project in Godot 4.4 or later.
+3. Follow `docs/SETUP_FLOODED_SHELTER.md` to configure nodes and run the slice.
+4. Use the ES/EN selector in the main menu to change language.
+5. Separately test the 3D test room for Elena movement, interaction and scanning.
+
+## Summary
+
+The Flooded Shelter 2.5D slice is functionally complete at prototype level. The next major work blocks are art, lighting, VFX and audio to make it presentation-ready, followed by the Marcus combat slice. In parallel, the early 3D test room should be validated before committing to a broader 3D art pipeline.
+
+## Reporting rule
+
+Do not mark a feature as verified, playable, accessible, performant or release-ready without evidence.
