@@ -1,11 +1,14 @@
 extends Control
 class_name MainMenu
 
-@onready var title_label: Label = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/TitleLabel")
-@onready var context_label: Label = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/ContextLabel")
-@onready var start_button: Button = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/StartButton")
-@onready var lang_es_button: Button = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/LanguageRow/LangESButton")
-@onready var lang_en_button: Button = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/LanguageRow/LangENButton")
+const LEVEL_PATH := "res://scenes/levels/flooded_shelter.tscn"
+const BOX := "CenterContainer/Panel/MarginContainer/VBoxContainer"
+
+@onready var title_label: Label = get_node(BOX + "/TitleLabel")
+@onready var context_label: Label = get_node(BOX + "/ContextLabel")
+@onready var start_button: Button = get_node(BOX + "/StartButton")
+@onready var lang_es_button: Button = get_node(BOX + "/LanguageRow/LangESButton")
+@onready var lang_en_button: Button = get_node(BOX + "/LanguageRow/LangENButton")
 
 var current_locale: String = "es"
 var base_context: String = ""
@@ -15,14 +18,14 @@ func _ready() -> void:
 	if game_state != null and game_state.get_flag("ui_language_en", false):
 		current_locale = "en"
 
-	base_context = NarrativeTextManager.get_menu_context()
 	context_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	context_label.custom_minimum_size = Vector2(620, 170)
-	context_label.add_theme_font_size_override("font_size", 20)
+	context_label.add_theme_font_size_override("font_size", 18)
 
 	lang_es_button.pressed.connect(_on_lang_es_pressed)
 	lang_en_button.pressed.connect(_on_lang_en_pressed)
 	start_button.pressed.connect(_on_start_pressed)
+	start_button.grab_focus()
 	_apply_language(current_locale)
 
 func _apply_language(locale: String) -> void:
@@ -34,10 +37,28 @@ func _apply_language(locale: String) -> void:
 		game_state.set_flag("ui_language_es", locale == "es")
 		game_state.set_flag("ui_language_en", locale == "en")
 
-	title_label.text = NarrativeTextManager.get_menu_title()
-	base_context = NarrativeTextManager.get_menu_context()
-	start_button.text = NarrativeTextManager.get_menu_start_button()
+	title_label.text = _title_text()
+	base_context = _context_text()
+	start_button.text = _start_text()
 	_refresh_context()
+
+func _title_text() -> String:
+	var t: String = NarrativeTextManager.get_menu_title().replace("\n", " - ")
+	return t if not t.is_empty() else "FINAL THAW"
+
+func _context_text() -> String:
+	var t: String = NarrativeTextManager.get_menu_context().strip_edges()
+	if not t.is_empty():
+		return t
+	if current_locale == "es":
+		return "Año 2047. El colapso climático ha sumido a las ciudades en caos."
+	return "Year 2047. Climate collapse has plunged cities into chaos."
+
+func _start_text() -> String:
+	var t: String = NarrativeTextManager.get_menu_start_button()
+	if not t.is_empty():
+		return t
+	return "Iniciar Demo" if current_locale == "es" else "Start Demo"
 
 func _refresh_context() -> void:
 	var lines: Array[String] = [base_context]
@@ -73,4 +94,4 @@ func _on_lang_en_pressed() -> void:
 	_apply_language("en")
 
 func _on_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/levels/flooded_shelter_2_5d.tscn")
+	get_tree().change_scene_to_file(LEVEL_PATH)

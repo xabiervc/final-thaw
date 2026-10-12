@@ -8,6 +8,10 @@ const WATER := Color("245975")
 const LOCKED := Color("70505a")
 const ACTIVE := Color("48ad99")
 const TEXT := Color("eff4ee")
+const MENU_PATH := "res://scenes/ui/main_menu.tscn"
+const PLAYER_START := Vector2(125, 390)
+const WORLD_MIN := Vector2(80, 130)
+const WORLD_MAX := Vector2(2020, 640)
 
 var rules = Rules.new()
 var player: CharacterBody2D
@@ -34,7 +38,7 @@ func _ready() -> void:
 	_create_interactable("CIVILIAN", Vector2(1510, 390))
 	_create_interactable("EXIT", Vector2(1840, 390))
 	player = PlayerScript.new()
-	player.position = Vector2(125, 390)
+	player.position = PLAYER_START
 	add_child(player)
 	var camera := Camera2D.new()
 	player.add_child(camera)
@@ -45,7 +49,7 @@ func _ready() -> void:
 	hint = _label(ui, Vector2(24, 56), "")
 	result = _label(ui, Vector2(230, 245), "")
 	result.visible = false
-	_update_ui("E: energia, valvulas, rescate y salida. WASD/flechas para moverse.")
+	_update_ui("E: energia, valvulas, rescate y salida. WASD/flechas para moverse. ESC: menu.")
 
 func _create_interactable(kind: String, location: Vector2) -> void:
 	var area := Area2D.new()
@@ -83,15 +87,19 @@ func _label(parent: Node, pos: Vector2, value: String) -> Label:
 func _process(delta: float) -> void:
 	if ended:
 		return
+	player.position = player.position.clamp(WORLD_MIN, WORLD_MAX)
 	if rules.valves_open:
 		if rules.drain_oxygen(delta):
 			_on_oxygen_empty()
 		_update_ui()
 
 func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		get_tree().change_scene_to_file(MENU_PATH)
+		return
 	if ended:
 		if event.is_action_pressed("interact"):
-			get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
+			get_tree().change_scene_to_file(MENU_PATH)
 		return
 	if event.is_action_pressed("scan"):
 		_update_ui("Orden: energia -> valvulas -> rescate opcional -> salida.")
@@ -131,7 +139,7 @@ func _interact_with(kind: String) -> void:
 				_update_ui("La salida sigue bloqueada. Activa energia y valvulas.")
 
 func _on_oxygen_empty() -> void:
-	player.position = Vector2(125, 390)
+	player.position = PLAYER_START
 	rules.reset()
 	_update_ui("Sin oxigeno. Reinicio desde la entrada; tu rescate guardado permanece.")
 
