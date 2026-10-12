@@ -6,7 +6,9 @@ Alternate between scientist Elena Vast and former officer Marcus Reyes to surviv
 
 ## Current status
 
-Phase 0: technical foundation. The design documentation is extensive, but implementation and runtime verification remain phase-based. A design document is not evidence that a feature runs.
+Phase 1: first playable vertical slice and early 3D prototype.
+
+The `feat/godot-vertical-slice` branch contains the functional skeleton of the **Flooded Shelter 2.5D** slice and an early 3D test room for Elena movement, interaction and scanning. These are prototypes: they require playtesting, art, audio, polish and recorded verification before being considered complete.
 
 ## Engine and targets
 
@@ -28,14 +30,34 @@ This repository is the canonical editable project. Open the `project.godot` at t
 ## Quick start
 
 1. Clone the repository.
-2. Open the repository root in Godot 4.7.x.
-3. Confirm that `project.godot` is selected.
-4. Run the project and inspect the debugger.
-5. Run the Phase 0 acceptance test:
+2. Check out `feat/godot-vertical-slice`.
+3. Open the repository root in Godot 4.7.x.
+4. Confirm that `project.godot` is selected.
+5. Run the project and inspect the debugger.
+6. Run the Phase 0 acceptance test:
 
 ```text
 godot --headless --path . res://tests/test_phase_0.tscn
 ```
+
+## Current playable content
+
+### Flooded Shelter 2.5D
+
+Open and run `scenes/levels/flooded_shelter_2_5d.tscn`.
+
+- Move Elena, manage oxygen and interact with objects.
+- Activate the generator, drain water with the valves and rescue the trapped civilian.
+- Reach the exit to view the decision summary.
+- Use the ES/EN selector in the main menu to change language.
+
+See `docs/SETUP_FLOODED_SHELTER.md` for setup and testing details.
+
+### 3D test room
+
+Use the 3D test-room scene to evaluate Elena movement, interaction and scanning in 3D.
+
+This is an early technical prototype. Validate movement, camera readability, collision, interaction feedback and performance before expanding the 3D art pipeline.
 
 ## Documentation authority
 
@@ -50,3 +72,5 @@ The design authority describes intended behavior. Implementation claims require 
 ## AI-assisted development
 
 Use a narrow task branch. Plan before editing, use one implementation tool at a time, run Godot verification, request a second-model review, update status, and open a pull request. Do not install plugins, MCP servers, skills, hooks, or subagents solely because Internet content recommends them.
+
+For 3D art production, use Claude to produce an approved asset specification first. Use Blender MCP only for narrowly scoped creation or modification tasks, then validate the exported asset in Godot before treating it as integrated.
