@@ -4,6 +4,7 @@ signal opened
 
 @export var locked: bool = true
 @export var door_size: Vector3 = Vector3(0.4, 3.0, 2.8)
+@export var locked_message: String = "La puerta está bloqueada. No hay energía en el circuito."
 
 var is_open: bool = false
 var _slab: StaticBody3D = null
@@ -38,7 +39,7 @@ func _on_interact(_actor: Node3D) -> void:
 	if is_open:
 		return
 	if locked:
-		show_message("La puerta está bloqueada. No hay energía en el circuito.")
+		show_message(locked_message)
 		return
 	open_door(true)
 

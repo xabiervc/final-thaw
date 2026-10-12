@@ -1,8 +1,10 @@
 extends CanvasLayer
 
 var _objective: Label = null
+var _hint: Label = null
 var _instructions: Label = null
 var _prompt: Label = null
+var _status: Label = null
 var _last_prompt: String = ""
 var _tween: Tween = null
 
@@ -17,8 +19,28 @@ func _ready() -> void:
 	box.add_theme_constant_override("separation", 6)
 	top.add_child(box)
 	_objective = _make_label(box, 22, Color(0.94, 0.96, 0.95))
+	_hint = _make_label(box, 17, Color(0.95, 0.88, 0.55))
+	_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_hint.custom_minimum_size = Vector2(820.0, 0.0)
+	_hint.visible = false
 	_instructions = _make_label(box, 15, Color(0.72, 0.8, 0.84))
 	_instructions.text = "WASD / flechas: mover   |   E: interactuar   |   Q / Tab: escanear   |   F5: guardar   F9: cargar   |   ESC: menú"
+
+	_status = Label.new()
+	_status.add_theme_font_size_override("font_size", 18)
+	_status.add_theme_color_override("font_color", Color(0.6, 0.92, 0.95))
+	_status.add_theme_stylebox_override("normal", _style(0.88))
+	_status.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_status.offset_left = -360.0
+	_status.offset_right = -20.0
+	_status.offset_top = 16.0
+	_status.offset_bottom = 56.0
+	_status.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_status.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_status.visible = false
+	add_child(_status)
+
 	_prompt = Label.new()
 	_prompt.add_theme_font_size_override("font_size", 24)
 	_prompt.add_theme_color_override("font_color", Color(0.55, 0.9, 0.82))
@@ -52,6 +74,16 @@ func _make_label(parent: Node, font_size: int, color: Color) -> Label:
 
 func set_objective(text: String) -> void:
 	_objective.text = text
+
+func set_hint(text: String) -> void:
+	if _hint.text != text:
+		_hint.text = text
+	_hint.visible = not text.is_empty()
+
+func set_status(text: String) -> void:
+	if _status.text != text:
+		_status.text = text
+	_status.visible = not text.is_empty()
 
 func set_prompt(text: String) -> void:
 	if text == _last_prompt:

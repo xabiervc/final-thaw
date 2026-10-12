@@ -13,6 +13,7 @@ const PanelScript = preload("res://scripts/ui/narrative_panel.gd")
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
+const NEXT_PATH := "res://scenes/levels/abandoned_lab.tscn"
 const ROOM_ID := "elena_test_room"
 const START := Vector3(-9.0, 0.1, 5.0)
 
@@ -209,9 +210,13 @@ func _complete_room() -> void:
 	completed = true
 	elena.input_enabled = false
 	hud.call("set_objective", "SALA SUPERADA  /  Energía restaurada")
-	panel.call("show_message", "Primer sistema restaurado. Pulsa ESC para volver al menú.", 20.0)
+	panel.call("show_message", "Primer sistema restaurado. Continuando hacia el laboratorio abandonado...", 6.0)
 	GameManager.current_checkpoint_id = "elena_test_room_exit"
 	_save_room()
+	get_tree().create_timer(6.0).timeout.connect(_go_next)
+
+func _go_next() -> void:
+	get_tree().change_scene_to_file(NEXT_PATH)
 
 func _save_room() -> void:
 	var data := {}
