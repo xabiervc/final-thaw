@@ -32,26 +32,22 @@ func _create_room() -> void:
 	backdrop.size = ROOM_SIZE
 	backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(backdrop)
-
 	var rear_panel := ColorRect.new()
 	rear_panel.color = Color("263946")
 	rear_panel.position = Vector2(40.0, 70.0)
 	rear_panel.size = Vector2(1200.0, 430.0)
 	rear_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(rear_panel)
-
 	var floor_visual := ColorRect.new()
 	floor_visual.color = Color("46545a")
 	floor_visual.position = Vector2(0.0, 570.0)
 	floor_visual.size = Vector2(ROOM_SIZE.x, 150.0)
 	floor_visual.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(floor_visual)
-
 	_add_wall(Vector2(0.0, 0.0), Vector2(ROOM_SIZE.x, WALL_THICKNESS))
 	_add_wall(Vector2(0.0, ROOM_SIZE.y - WALL_THICKNESS), Vector2(ROOM_SIZE.x, WALL_THICKNESS))
 	_add_wall(Vector2(0.0, WALL_THICKNESS), Vector2(WALL_THICKNESS, ROOM_SIZE.y - WALL_THICKNESS * 2.0))
 	_add_wall(Vector2(ROOM_SIZE.x - WALL_THICKNESS, WALL_THICKNESS), Vector2(WALL_THICKNESS, ROOM_SIZE.y - WALL_THICKNESS * 2.0))
-
 	var room_title := _make_label(self, Vector2(48.0, 36.0), "REFUGIO DE EMERGENCIA  /  SALA DE CONTROL", 20, Color("d8e4e8"))
 	room_title.z_index = 5
 	_add_detail_line(Vector2(70.0, 150.0), Vector2(1210.0, 150.0), Color("536d7a"))
@@ -60,13 +56,14 @@ func _create_room() -> void:
 func _add_wall(pos: Vector2, size: Vector2) -> void:
 	var body := StaticBody2D.new()
 	body.position = pos + size * 0.5
+	body.collision_layer = 1
+	body.collision_mask = 0
 	var shape_node := CollisionShape2D.new()
 	var shape := RectangleShape2D.new()
 	shape.size = size
 	shape_node.shape = shape
 	body.add_child(shape_node)
 	add_child(body)
-
 	var visual := ColorRect.new()
 	visual.color = Color("718087")
 	visual.position = pos
@@ -86,15 +83,15 @@ func _add_detail_line(start: Vector2, finish: Vector2, color: Color) -> void:
 func _create_console() -> void:
 	console_node = Area2D.new()
 	console_node.position = Vector2(500.0, 500.0)
-	console_node.collision_layer = 0
+	console_node.collision_layer = 4
 	console_node.collision_mask = 0
+	console_node.add_to_group("interactable")
 	var shape_node := CollisionShape2D.new()
 	var shape := CircleShape2D.new()
 	shape.radius = 42.0
 	shape_node.shape = shape
 	console_node.add_child(shape_node)
 	add_child(console_node)
-
 	var panel := ColorRect.new()
 	panel.color = Color("267b85")
 	panel.position = Vector2(-42.0, -70.0)
@@ -115,15 +112,15 @@ func _create_console() -> void:
 func _create_exit() -> void:
 	exit_node = Area2D.new()
 	exit_node.position = Vector2(1110.0, 500.0)
-	exit_node.collision_layer = 0
+	exit_node.collision_layer = 4
 	exit_node.collision_mask = 0
+	exit_node.add_to_group("interactable")
 	var shape_node := CollisionShape2D.new()
 	var shape := RectangleShape2D.new()
 	shape.size = Vector2(95.0, 150.0)
 	shape_node.shape = shape
 	exit_node.add_child(shape_node)
 	add_child(exit_node)
-
 	var frame := ColorRect.new()
 	frame.name = "Frame"
 	frame.color = Color("9e474b")
@@ -151,6 +148,10 @@ func _create_player() -> void:
 	var camera := Camera2D.new()
 	camera.position_smoothing_enabled = true
 	camera.position_smoothing_speed = 7.0
+	camera.limit_left = 0
+	camera.limit_top = 0
+	camera.limit_right = int(ROOM_SIZE.x)
+	camera.limit_bottom = int(ROOM_SIZE.y)
 	player.add_child(camera)
 	camera.make_current()
 
@@ -158,14 +159,12 @@ func _create_hud() -> void:
 	var ui := CanvasLayer.new()
 	ui.layer = 10
 	add_child(ui)
-
 	var panel := ColorRect.new()
 	panel.color = Color(0.035, 0.055, 0.075, 0.92)
 	panel.position = Vector2(24.0, 22.0)
 	panel.size = Vector2(690.0, 132.0)
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui.add_child(panel)
-
 	objective_label = _make_label(ui, Vector2(46.0, 38.0), "OBJETIVO  /  Restablece la energía para abrir la puerta", 22, Color("f2f5f4"))
 	prompt_label = _make_label(ui, Vector2(46.0, 82.0), "", 18, Color("8ee5d1"))
 	status_label = _make_label(ui, Vector2(46.0, 116.0), "E: interactuar  |  WASD/flechas: moverse", 16, Color("bac7cc"))
@@ -188,11 +187,10 @@ func _make_label(parent: Node, pos: Vector2, text: String, font_size: int, color
 func _process(_delta: float) -> void:
 	if completed or player == null:
 		return
-	var console_near := player.global_position.distance_to(console_node.global_position) <= INTERACT_DISTANCE
-	var exit_near := player.global_position.distance_to(exit_node.global_position) <= INTERACT_DISTANCE
-	if console_near:
+	var target: Area2D = player.get_nearest_interactable()
+	if target == console_node:
 		prompt_label.text = "E  /  ACTIVAR CONSOLA" if not rules.power_restored else "ENERGÍA RESTABLECIDA"
-	elif exit_near:
+	elif target == exit_node:
 		prompt_label.text = "E  /  ABRIR SALIDA" if rules.can_open_exit() else "SALIDA BLOQUEADA — falta energía"
 	else:
 		prompt_label.text = ""
@@ -201,13 +199,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		GameManager.change_scene("res://scenes/ui/main_menu.tscn")
 		return
-	if completed or not event.is_action_pressed("interact"):
+	if completed or not event.is_action_pressed("interact") or event.is_echo():
 		return
-	if player.global_position.distance_to(console_node.global_position) <= INTERACT_DISTANCE:
+	var target: Area2D = player.get_nearest_interactable()
+	if target == console_node:
 		var activated: bool = rules.activate_power()
 		status_label.text = "Generador conectado. La puerta de salida ya tiene energía." if activated else "La energía ya está restablecida."
 		_update_room_state()
-	elif player.global_position.distance_to(exit_node.global_position) <= INTERACT_DISTANCE:
+	elif target == exit_node:
 		if rules.can_open_exit():
 			_complete_room()
 		else:
@@ -230,8 +229,3 @@ func _complete_room() -> void:
 	objective_label.text = "SALA SUPERADA  /  Energía restaurada; salida abierta"
 	prompt_label.text = "PRIMER OBJETIVO COMPLETADO"
 	status_label.text = "Has restablecido la energía. Pulsa ESC para volver al menú."
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_RESIZED and player != null:
-		player.position.x = clampf(player.position.x, WALL_THICKNESS + 30.0, ROOM_SIZE.x - WALL_THICKNESS - 30.0)
-		player.position.y = clampf(player.position.y, WALL_THICKNESS + 45.0, ROOM_SIZE.y - WALL_THICKNESS - 45.0)
