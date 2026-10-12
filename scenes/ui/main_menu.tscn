@@ -3,32 +3,81 @@
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_menu"]
 
 [node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_menu")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
 anchors_preset = 15
-offset_left = 100.0
-offset_top = 80.0
-offset_right = -100.0
-offset_bottom = -80.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.035, 0.055, 0.075, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="TitleLabel" type="Label" parent="VBoxContainer"]
+[node name="Panel" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(720, 500)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 48
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 48
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 22
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "FINAL THAW"
 horizontal_alignment = 1
-text = "Final Thaw"
 
-[node name="ContextLabel" type="Label" parent="VBoxContainer"]
-autowrap_mode = 2
-text = "Año 2047. El colapso climático ha sumido a las ciudades en caos."
+[node name="ContextLabel" type="Label" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(620, 170)
+layout_mode = 2
+autowrap_mode = 3
+text = "Year 2047. Climate collapse has plunged cities into chaos."
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="StartButton" type="Button" parent="VBoxContainer"]
-text = "Iniciar Demo"
+[node name="StartButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 54)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Start Demo"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="LanguageRow" type="HBoxContainer" parent="CenterContainer/Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
 
-[node name="LangESButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="LangESButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/LanguageRow"]
+custom_minimum_size = Vector2(100, 42)
+layout_mode = 2
 text = "ES"
 
-[node name="LangENButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+[node name="LangENButton" type="Button" parent="CenterContainer/Panel/MarginContainer/VBoxContainer/LanguageRow"]
+custom_minimum_size = Vector2(100, 42)
+layout_mode = 2
 text = "EN"

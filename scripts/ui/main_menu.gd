@@ -1,87 +1,70 @@
 extends Control
 class_name MainMenu
 
-@onready var title_label: Label = get_node_or_null("MarginContainer/VBoxContainer/TitleLabel")
-@onready var context_label: Label = get_node_or_null("MarginContainer/VBoxContainer/ContextLabel")
-@onready var start_button: Button = get_node_or_null("MarginContainer/VBoxContainer/StartButton")
-@onready var lang_es_button: Button = get_node_or_null("MarginContainer/VBoxContainer/HBoxContainer/LangESButton")
-@onready var lang_en_button: Button = get_node_or_null("MarginContainer/VBoxContainer/HBoxContainer/LangENButton")
+@onready var title_label: Label = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/TitleLabel")
+@onready var context_label: Label = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/ContextLabel")
+@onready var start_button: Button = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/StartButton")
+@onready var lang_es_button: Button = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/LanguageRow/LangESButton")
+@onready var lang_en_button: Button = get_node("CenterContainer/Panel/MarginContainer/VBoxContainer/LanguageRow/LangENButton")
 
 var current_locale: String = "es"
+var base_context: String = ""
 
 func _ready() -> void:
 	var game_state = get_node_or_null("/root/GameStateManager")
-	if game_state != null:
-		if game_state.get_flag("ui_language_en", false):
-			current_locale = "en"
-		else:
-			current_locale = "es"
+	if game_state != null and game_state.get_flag("ui_language_en", false):
+		current_locale = "en"
 
-	if lang_es_button != null:
-		lang_es_button.pressed.connect(_on_lang_es_pressed)
-	if lang_en_button != null:
-		lang_en_button.pressed.connect(_on_lang_en_pressed)
-	if start_button != null:
-		start_button.pressed.connect(_on_start_pressed)
+	base_context = NarrativeTextManager.get_menu_context()
+	context_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	context_label.custom_minimum_size = Vector2(620, 170)
+	context_label.add_theme_font_size_override("font_size", 20)
 
+	lang_es_button.pressed.connect(_on_lang_es_pressed)
+	lang_en_button.pressed.connect(_on_lang_en_pressed)
+	start_button.pressed.connect(_on_start_pressed)
 	_apply_language(current_locale)
 
 func _apply_language(locale: String) -> void:
 	current_locale = locale
-	var narrative = get_node_or_null("/root/NarrativeTextManager")
-	if narrative == null:
-		push_error("NarrativeTextManager autoload is missing.")
-		return
-	narrative.set_locale(locale)
+	NarrativeTextManager.set_locale(locale)
 
 	var game_state = get_node_or_null("/root/GameStateManager")
 	if game_state != null:
 		game_state.set_flag("ui_language_es", locale == "es")
 		game_state.set_flag("ui_language_en", locale == "en")
 
-	if title_label != null:
-		title_label.text = narrative.get_menu_title()
-	if context_label != null:
-		context_label.text = narrative.get_menu_context()
-		_update_context_with_flags()
-	if start_button != null:
-		start_button.text = narrative.get_menu_start_button()
+	title_label.text = NarrativeTextManager.get_menu_title()
+	base_context = NarrativeTextManager.get_menu_context()
+	start_button.text = NarrativeTextManager.get_menu_start_button()
+	_refresh_context()
 
-func _update_context_with_flags() -> void:
+func _refresh_context() -> void:
+	var lines: Array[String] = [base_context]
 	var game_state = get_node_or_null("/root/GameStateManager")
-	if game_state == null or context_label == null:
-		return
-
-	var extra := ""
-	if game_state.get_flag("shelter_power_restored", false):
-		extra += "\n- " + _refuge_power_text()
-	if game_state.get_flag("shelter_valves_opened", false):
-		extra += "\n- " + _refuge_valves_text()
-	if game_state.get_flag("shelter_civilian_rescued", false):
-		extra += "\n- " + _refuge_civilian_text()
-
-	if not extra.is_empty():
-		context_label.text += "\n\n" + _state_prev_text() + "\n" + extra
+	if game_state != null:
+		var prior: Array[String] = []
+		if game_state.get_flag("shelter_power_restored", false):
+			prior.append(_refuge_power_text())
+		if game_state.get_flag("shelter_valves_opened", false):
+			prior.append(_refuge_valves_text())
+		if game_state.get_flag("shelter_civilian_rescued", false):
+			prior.append(_refuge_civilian_text())
+		if not prior.is_empty():
+			lines.append(_state_prev_text() + "\n" + "\n".join(prior))
+	context_label.text = "\n\n".join(lines)
 
 func _refuge_power_text() -> String:
-	if current_locale == "es":
-		return "Refugio: energía restaurada."
-	return "Shelter: power restored."
+	return "Refugio: energía restaurada." if current_locale == "es" else "Shelter: power restored."
 
 func _refuge_valves_text() -> String:
-	if current_locale == "es":
-		return "Refugio: válvulas abiertas."
-	return "Shelter: valves opened."
+	return "Refugio: válvulas abiertas." if current_locale == "es" else "Shelter: valves opened."
 
 func _refuge_civilian_text() -> String:
-	if current_locale == "es":
-		return "Refugio: civil rescatada."
-	return "Shelter: civilian rescued."
+	return "Refugio: civil rescatada." if current_locale == "es" else "Shelter: civilian rescued."
 
 func _state_prev_text() -> String:
-	if current_locale == "es":
-		return "Estado previo:"
-	return "Previous state:"
+	return "Estado previo:" if current_locale == "es" else "Previous state:"
 
 func _on_lang_es_pressed() -> void:
 	_apply_language("es")
