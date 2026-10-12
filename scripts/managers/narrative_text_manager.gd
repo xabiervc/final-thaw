@@ -1,5 +1,4 @@
 extends Node
-class_name NarrativeTextManager
 
 ## Singleton para acceder a los textos de narrativa desde cualquier escena.
 ## Usa el recurso data/narrative_text.tres y permite sobrescribir valores en tiempo de ejecución.
