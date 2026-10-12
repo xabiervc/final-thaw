@@ -18,7 +18,7 @@ var is_alive: bool = true
 @onready var interaction_area: Area2D = $InteractionArea
 @onready var oxygen_timer: Timer = $OxygenTimer
 
-var interactable_nearby: Interactable = null
+var interactable_nearby: Area2D = null
 
 signal oxygen_changed(new_oxygen: float)
 signal player_died
@@ -64,17 +64,19 @@ func die() -> void:
 	player_died.emit()
 
 func can_interact() -> bool:
-	return is_alive and interactable_nearby != null
+	return is_alive and is_instance_valid(interactable_nearby)
 
 func try_interact() -> bool:
 	if not can_interact():
 		return false
-	interactable_nearby.interact(self)
-	return true
+	if interactable_nearby.has_method("interact"):
+		interactable_nearby.call("interact")
+		return true
+	return false
 
 func _on_interaction_area_body_entered(body: Node2D) -> void:
-	if body is Interactable:
-		interactable_nearby = body
+	if body.is_in_group("interactable"):
+		interactable_nearby = body as Area2D
 
 func _on_interaction_area_body_exited(body: Node2D) -> void:
 	if body == interactable_nearby:
