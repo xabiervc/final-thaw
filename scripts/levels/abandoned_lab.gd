@@ -370,7 +370,7 @@ func _finish_part() -> void:
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	lbl.add_theme_font_size_override("font_size", 28)
-	lbl.text = "FASE 2 - PARTE A COMPLETADA\n\nSalas 1 y 2 superadas.\nFragmentos de memoria: %d/4\nLas salas 3 y 4 todavía no están implementadas.\n\nE: volver al menú   |   F9: cargar partida" % GameManager.memory_fragments_collected.size()
+	lbl.text = "FASE 2 - PARTE A COMPLETADA\n\nSalas 1 y 2 superadas.\nFragmentos de memoria: %d/4\nLas salas 3 y 4 todavía no están implementadas.\n\nE: volver al menú   |   F3: cargar partida" % GameManager.memory_fragments_collected.size()
 	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	overlay_layer.add_child(lbl)
 

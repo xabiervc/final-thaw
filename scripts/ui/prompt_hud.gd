@@ -24,7 +24,7 @@ func _ready() -> void:
 	_hint.custom_minimum_size = Vector2(820.0, 0.0)
 	_hint.visible = false
 	_instructions = _make_label(box, 15, Color(0.72, 0.8, 0.84))
-	_instructions.text = "WASD / flechas: mover   |   E: interactuar   |   Q / Tab: escanear   |   F5: guardar   F9: cargar   |   ESC: menú"
+	_instructions.text = "WASD / flechas: mover   |   E: interactuar   |   Q / Tab: escanear   |   F2: guardar   F3: cargar   |   ESC: menú"
 
 	_status = Label.new()
 	_status.add_theme_font_size_override("font_size", 18)
