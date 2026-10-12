@@ -21,6 +21,7 @@ const START := Vector3(2.0, 0.1, 3.0)
 const DIVIDER_1 := 16.0
 const DIVIDER_2 := 34.0
 const END_X := 42.0
+const LOAD_SAFE_X := 37.5
 
 const ENTRY = [
 	"Los sistemas están apagados. Tengo que devolver la energía.",
@@ -37,6 +38,7 @@ var scanner = null
 var hud = null
 var panel = null
 var grid_material = null
+var overlay_layer = null
 var doors: Array = []
 var r1_nodes: Array = []
 var r1_junction = null
@@ -269,6 +271,9 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		get_tree().change_scene_to_file(MENU_PATH)
 		return
+	if event.is_action_pressed("quick_load") and not event.is_echo():
+		_load_room()
+		return
 	if finished:
 		if event.is_action_pressed("interact") and not event.is_echo():
 			get_tree().change_scene_to_file(MENU_PATH)
@@ -276,8 +281,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("quick_save") and not event.is_echo():
 		_save_room()
 		panel.call("show_message", "Partida guardada.", 3.0)
-	elif event.is_action_pressed("quick_load") and not event.is_echo():
-		_load_room()
 
 func _on_node_used(_actor, node) -> void:
 	if r1_done:
@@ -353,23 +356,23 @@ func _finish_part() -> void:
 	manager.active = false
 	GameManager.current_phase = maxi(GameManager.current_phase, 2)
 	_save_room()
-	var layer := CanvasLayer.new()
-	layer.layer = 30
-	add_child(layer)
+	overlay_layer = CanvasLayer.new()
+	overlay_layer.layer = 30
+	add_child(overlay_layer)
 	var bg := ColorRect.new()
 	bg.color = Color(0.0, 0.0, 0.0, 0.72)
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	bg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	layer.add_child(bg)
+	overlay_layer.add_child(bg)
 	var lbl := Label.new()
 	lbl.set_anchors_preset(Control.PRESET_FULL_RECT)
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	lbl.add_theme_font_size_override("font_size", 28)
-	lbl.text = "FASE 2 - PARTE A COMPLETADA\n\nSalas 1 y 2 superadas.\nFragmentos de memoria: %d/4\nLas salas 3 y 4 todavía no están implementadas.\n\nE: volver al menú" % GameManager.memory_fragments_collected.size()
+	lbl.text = "FASE 2 - PARTE A COMPLETADA\n\nSalas 1 y 2 superadas.\nFragmentos de memoria: %d/4\nLas salas 3 y 4 todavía no están implementadas.\n\nE: volver al menú   |   F9: cargar partida" % GameManager.memory_fragments_collected.size()
 	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	layer.add_child(lbl)
+	overlay_layer.add_child(lbl)
 
 func _saveables() -> Array:
 	var out: Array = []
@@ -402,6 +405,12 @@ func _load_room() -> void:
 	if typeof(data) != TYPE_DICTIONARY:
 		panel.call("show_message", "No hay datos de esta sala en la partida.", 3.0)
 		return
+	finished = false
+	if overlay_layer != null:
+		overlay_layer.queue_free()
+		overlay_layer = null
+	elena.input_enabled = true
+	manager.active = true
 	for n in _saveables():
 		var sid := str(n.get("save_id"))
 		if sid != "" and data.has(sid):
@@ -416,6 +425,7 @@ func _load_room() -> void:
 	_refresh_arm_door()
 	var p = data.get("player", null)
 	if p is Array and p.size() == 3:
-		elena.global_position = Vector3(float(p[0]), float(p[1]), float(p[2]))
-		elena.velocity = Vector3.ZERO
+		var px := minf(float(p[0]), LOAD_SAFE_X)
+		elena.global_position = Vector3(px, float(p[1]), float(p[2]))
+	elena.velocity = Vector3.ZERO
 	panel.call("show_message", "Partida cargada.", 3.0)

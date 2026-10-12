@@ -16,6 +16,8 @@ const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const NEXT_PATH := "res://scenes/levels/abandoned_lab.tscn"
 const ROOM_ID := "elena_test_room"
 const START := Vector3(-9.0, 0.1, 5.0)
+const EXIT_TRIGGER_X := 10.0
+const LOAD_SAFE_X := 9.5
 
 var elena = null
 var manager = null
@@ -180,7 +182,7 @@ func _process(_delta: float) -> void:
 	if t != null and is_instance_valid(t):
 		line = str(t.call("get_prompt_line"))
 	hud.call("set_prompt", line)
-	if not completed and door.is_open and elena.global_position.x > 10.0:
+	if not completed and door.is_open and elena.global_position.x > EXIT_TRIGGER_X:
 		_complete_room()
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -193,15 +195,20 @@ func _unhandled_input(event: InputEvent) -> void:
 	elif event.is_action_pressed("quick_load") and not event.is_echo():
 		_load_room()
 
-func _on_lever_toggled(on: bool) -> void:
-	door.call("set_locked", not on)
-	if on:
+func _refresh_objective() -> void:
+	if door.is_open:
+		hud.call("set_objective", "OBJETIVO  /  Llega al punto de control")
+	elif lever.is_on:
 		hud.call("set_objective", "OBJETIVO  /  Cruza la puerta del este")
 	else:
 		hud.call("set_objective", "OBJETIVO  /  Restablece la energía para abrir la puerta del este")
 
+func _on_lever_toggled(on: bool) -> void:
+	door.call("set_locked", not on)
+	_refresh_objective()
+
 func _on_door_opened() -> void:
-	hud.call("set_objective", "OBJETIVO  /  Llega al punto de control")
+	_refresh_objective()
 
 func _on_fell() -> void:
 	elena.global_position = START
@@ -216,6 +223,8 @@ func _complete_room() -> void:
 	get_tree().create_timer(6.0).timeout.connect(_go_next)
 
 func _go_next() -> void:
+	if not completed:
+		return
 	get_tree().change_scene_to_file(NEXT_PATH)
 
 func _save_room() -> void:
@@ -236,6 +245,9 @@ func _load_room() -> void:
 	if typeof(data) != TYPE_DICTIONARY:
 		panel.call("show_message", "No hay datos de esta sala en la partida.", 3.0)
 		return
+	completed = false
+	elena.input_enabled = true
+	manager.active = true
 	for n in get_tree().get_nodes_in_group("interactables"):
 		var sid := str(n.get("save_id"))
 		if sid != "" and data.has(sid):
@@ -243,6 +255,8 @@ func _load_room() -> void:
 	door.call("set_locked", not lever.is_on)
 	var p = data.get("player", null)
 	if p is Array and p.size() == 3:
-		elena.global_position = Vector3(float(p[0]), float(p[1]), float(p[2]))
-		elena.velocity = Vector3.ZERO
+		var px := minf(float(p[0]), LOAD_SAFE_X)
+		elena.global_position = Vector3(px, float(p[1]), float(p[2]))
+	elena.velocity = Vector3.ZERO
+	_refresh_objective()
 	panel.call("show_message", "Partida cargada.", 3.0)
