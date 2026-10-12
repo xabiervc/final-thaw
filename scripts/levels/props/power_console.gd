@@ -3,21 +3,19 @@ class_name PowerConsole
 
 @export var is_on: bool = false
 
-var interactable: Interactable
+const INTERACTABLE_SCRIPT = preload("res://scripts/entities/interactable.gd")
+var interactable: Area2D
 
 signal power_activated
 
 func _ready() -> void:
-	interactable = Interactable.new()
-	interactable.interaction_text = "Activar generador"
-	interactable.can_interact_func = _can_interact
-	interactable.on_interact_func = _on_interact
+	interactable = INTERACTABLE_SCRIPT.new() as Area2D
+	interactable.set("interact_text", "Activar generador")
+	interactable.add_user_signal("interacted")
+	interactable.connect("interacted", _on_interact)
 	add_child(interactable)
 
-func _can_interact(interactor: Node2D) -> bool:
-	return not is_on
-
-func _on_interact(interactor: Node2D) -> void:
+func _on_interact() -> void:
 	if is_on:
 		return
 	is_on = true
