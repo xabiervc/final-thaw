@@ -1,0 +1,34 @@
+--- a/PROJECT_STATUS.md
++++ b/PROJECT_STATUS.md
+@@ -4,6 +4,8 @@
+ 
+ Phase 1 — First playable vertical slice and early 3D prototype.
+ 
++**Active work:** Phase 2, rooms 1 and 2 of the abandoned laboratory (3D).
++
+ ## Design status
+ 
+ The design authority and supporting specifications are present. Design completeness does not imply implementation completeness.
+@@ -37,11 +39,14 @@
+ - Phase 0 result: 11 passed, 0 failed; exit code 0.
+ - Expected warning: the CRC32 corruption-detection test emits a corruption warning by design.
+ - The Flooded Shelter slice and 3D test room require recorded manual playtest evidence before being considered verified milestones.
++- Lab palette and light test (`scenes/levels/art_tests/lab_palette_test.tscn`): validated visually in Godot 4.7.2.stable.official.ed1daf0bf by the project owner. The `--capture` run exited 0 and wrote 8 PNG files (1280x720) outside the repository.
+ 
+ ## Current milestone
+ 
+ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it after human review and recorded evidence.
+ 
++Next art milestone: the first complete art batch of the lab corner (floor, wall, corner, terminal, container, wall light), specified in `docs/art/LAB_STYLE_SPEC.md` and validated in Godot. The batch is assembled in `scenes/levels/art_tests/lab_corner_art_test_assets.tscn` and awaits owner validation; it is not final, optimized or integrated.
++
+ ## In progress
+ 
+ - Reviewing the governed multi-agent workflow.
+@@ -49,6 +54,7 @@
+ - Validating the Flooded Shelter gameplay loop, narrative flow, localization and decision summary.
+ - Evaluating the early 3D test room for movement, interaction, scanning and visual direction.
+ - Preparing a narrow art-production workflow for assets, potentially using Claude with a Blender MCP under explicit asset specifications.
++- Phase 2 (rooms 1 and 2 of the abandoned laboratory) is the active work; the art track starts with the lab corner batch.
+ 
+ ## Known limitations
+ 
