@@ -2,6 +2,7 @@ extends Node
 ## Autoload. Estado global + guardado con CRC32.
 
 signal stats_changed
+signal character_switched(character_id: String)
 
 var civilian_aid: int = 0
 var prototype_integrity: int = 3
@@ -10,6 +11,10 @@ var evidence_choice: String = "preserve"
 var memory_fragments_collected: Array = []
 var current_phase: int = 0
 var playtime_seconds: float = 0.0
+
+var active_character_id: String = "elena"
+var current_checkpoint_id: String = ""
+var world_state: Dictionary = {}
 
 var font_scale: float = 1.0
 var colorblind_mode: int = 0
@@ -22,6 +27,15 @@ func _ready() -> void:
 func save_path(slot: int) -> String:
 	return "user://save_%d.json" % slot
 
+func set_active_character(character_id: String) -> void:
+	if character_id == active_character_id:
+		return
+	active_character_id = character_id
+	character_switched.emit(character_id)
+
+func get_active_character() -> String:
+	return active_character_id
+
 func new_game() -> void:
 	civilian_aid = 0
 	prototype_integrity = 3
@@ -30,6 +44,9 @@ func new_game() -> void:
 	memory_fragments_collected = []
 	current_phase = 0
 	playtime_seconds = 0.0
+	active_character_id = "elena"
+	current_checkpoint_id = ""
+	world_state = {}
 	stats_changed.emit()
 
 func has_save(slot: int = 0) -> bool:
@@ -60,6 +77,9 @@ func _collect() -> Dictionary:
 		"colorblind_mode": colorblind_mode,
 		"subtitle_size": subtitle_size,
 		"input_profile": input_profile,
+		"active_character_id": active_character_id,
+		"current_checkpoint_id": current_checkpoint_id,
+		"world_state": world_state,
 	}
 
 func _apply(d: Dictionary) -> void:
@@ -74,6 +94,13 @@ func _apply(d: Dictionary) -> void:
 	colorblind_mode = int(d.get("colorblind_mode", 0))
 	subtitle_size = int(d.get("subtitle_size", 2))
 	input_profile = str(d.get("input_profile", "default"))
+	active_character_id = str(d.get("active_character_id", "elena"))
+	current_checkpoint_id = str(d.get("current_checkpoint_id", ""))
+	var ws = d.get("world_state", {})
+	if typeof(ws) == TYPE_DICTIONARY:
+		world_state = ws
+	else:
+		world_state = {}
 	stats_changed.emit()
 
 func save_game(slot: int = 0) -> bool:

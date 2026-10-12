@@ -1,7 +1,7 @@
 extends Control
 class_name MainMenu
 
-const LEVEL_PATH := "res://scenes/levels/flooded_shelter.tscn"
+const LEVEL_PATH := "res://scenes/levels/elena_test_room.tscn"
 const BOX := "CenterContainer/Panel/MarginContainer/VBoxContainer"
 
 @onready var title_label: Label = get_node(BOX + "/TitleLabel")
