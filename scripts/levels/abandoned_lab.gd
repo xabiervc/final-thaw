@@ -8,6 +8,8 @@ const JunctionScript = preload("res://scripts/components/junction_box.gd")
 const ArmScript = preload("res://scripts/components/robotic_arm.gd")
 const PlatformScript = preload("res://scripts/components/moving_platform.gd")
 const ButtonScript = preload("res://scripts/components/push_button.gd")
+const HazardScript = preload("res://scripts/components/hazard_zone.gd")
+const CarrierScript = preload("res://scripts/components/prototype_carrier.gd")
 const CheckpointScript = preload("res://scripts/components/checkpoint.gd")
 const FragmentScript = preload("res://scripts/components/memory_fragment.gd")
 const DoorScript = preload("res://scripts/components/door.gd")
@@ -23,13 +25,14 @@ const START := Vector3(2.0, 0.1, 3.0)
 const DIVIDER_1 := 16.0
 const DIVIDER_2 := 34.0
 const DIVIDER_3 := 60.0
-const END_X := 68.0
-const LOAD_SAFE_X := 63.5
+const END_X := 86.0
+const LOAD_SAFE_X := 81.5
 
 const ENTRY = [
 	"Los sistemas están apagados. Tengo que devolver la energía.",
 	"Un brazo robótico bloquea el paso. El terminal lo controla.",
 	"La plataforma sigue un ciclo de diez segundos. Hay que observar el patrón.",
+	"Mantén el prototipo con energía. Evita los peligros.",
 ]
 const DONE = [
 	"Energía restaurada. La instalación me recuerda.",
@@ -45,6 +48,7 @@ var panel = null
 var grid_material = null
 var overlay_layer = null
 var doors: Array = []
+var hazards: Array = []
 var r1_nodes: Array = []
 var r1_junction = null
 var r1_lamps: Array = []
@@ -69,6 +73,7 @@ func _ready() -> void:
 	_build_room1()
 	_build_room2()
 	_build_room3()
+	_build_room4()
 	_build_player()
 	_build_ui()
 	panel.call("show_message", ENTRY[0], 9.0)
@@ -101,6 +106,8 @@ func _build_environment() -> void:
 	_add_lamp(Vector3(47.0, 3.0, 0.0), Color(1.0, 0.85, 0.6), 1.0)
 	_add_lamp(Vector3(56.0, 3.0, 0.0), Color(0.7, 0.85, 1.0), 1.0)
 	_add_lamp(Vector3(64.0, 3.0, 0.0), Color(0.5, 1.0, 0.8), 1.0)
+	_add_lamp(Vector3(72.0, 3.0, 0.0), Color(0.6, 0.8, 1.0), 1.0)
+	_add_lamp(Vector3(80.0, 3.0, 0.0), Color(1.0, 0.8, 0.6), 1.0)
 
 func _add_lamp(pos: Vector3, color: Color, energy: float) -> OmniLight3D:
 	var l := OmniLight3D.new()
@@ -263,6 +270,25 @@ func _build_room3() -> void:
 
 	_add_fragment("lab_f3", Vector3(49.0, 0.0, 0.0), "Fragmento de memoria: las cifras de refugiados subían cada semana. Dejé de leerlas.")
 
+func _build_room4() -> void:
+	var specs := [
+		{"id": "r4_h1", "pos": Vector3(66.0, 0.0, 2.0), "size": Vector2(3.0, 3.0), "fake": false, "phase": 0.0},
+		{"id": "r4_h2", "pos": Vector3(71.0, 0.0, -2.0), "size": Vector2(3.0, 8.0), "fake": false, "phase": 2.0},
+		{"id": "r4_h3", "pos": Vector3(76.0, 0.0, 2.0), "size": Vector2(3.0, 8.0), "fake": false, "phase": 4.0},
+		{"id": "r4_h4", "pos": Vector3(81.0, 0.0, 0.0), "size": Vector2(3.0, 6.0), "fake": true, "phase": 0.0},
+	]
+	for s in specs:
+		var h = HazardScript.new()
+		h.save_id = s["id"]
+		h.zone_size = s["size"]
+		h.fake = s["fake"]
+		h.phase_offset = s["phase"]
+		h.position = s["pos"]
+		h.damaged.connect(_on_hazard_damaged)
+		add_child(h)
+		hazards.append(h)
+	_add_fragment("lab_f4", Vector3(73.5, 0.0, -5.0), "Fragmento de memoria: si Iris hubiera vivido, ¿habría querido este mundo? Tengo que decidirlo yo.")
+
 func _add_button(label: String, prompt: String, pos: Vector3, parent: Node) -> Node3D:
 	var b = ButtonScript.new()
 	b.display_name = label
@@ -288,6 +314,8 @@ func _build_player() -> void:
 	elena.position = START
 	add_child(elena)
 	elena.fell_off.connect(_on_fell)
+	var carrier = CarrierScript.new()
+	elena.add_child(carrier)
 	manager = ManagerScript.new()
 	manager.actor = elena
 	add_child(manager)
@@ -329,7 +357,10 @@ func _update_hud() -> void:
 	elif ex >= DIVIDER_1:
 		room = 1
 	hud.call("set_objective", "FASE 2 / LABORATORIO ABANDONADO  -  Sala %d de 4" % (room + 1))
-	hud.call("set_status", "Fragmentos de memoria: %d/4" % GameManager.memory_fragments_collected.size())
+	var status := "Fragmentos de memoria: %d/4" % GameManager.memory_fragments_collected.size()
+	if GameManager.has_prototype:
+		status = "Prototipo: integridad %d/3   |   " % GameManager.prototype_integrity + status
+	hud.call("set_status", status)
 	if room == 0:
 		var parts: Array = []
 		for n in r1_nodes:
@@ -346,7 +377,7 @@ func _update_hud() -> void:
 	elif room == 2:
 		hud.call("set_hint", "Plataforma 1: ciclo de 10 s (también se llama con el botón). Plataforma 2: llámala, súbete y pulsa Enviar.\nHay parada de emergencia en cada orilla. Caídas: %d/3 (a la tercera aparece una pasarela)." % falls)
 	else:
-		hud.call("set_hint", "")
+		hud.call("set_hint", "Las zonas de peligro parpadean 1 s antes de activarse. Una zona parece peligrosa pero es estable.\nCada zona activa que cruces cuesta 1 de integridad (una vez por zona). Hay carriles seguros.")
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
@@ -448,13 +479,21 @@ func _toggle_pause(p) -> void:
 	else:
 		panel.call("show_message", "Plataforma reanudada.", 3.0)
 
+func _on_hazard_damaged(_hazard) -> void:
+	GameManager.prototype_integrity = clampi(GameManager.prototype_integrity - 1, 0, 3)
+	GameManager.stats_changed.emit()
+	panel.call("show_message", "Peligro. El prototipo sufre daños. Integridad: %d/3." % GameManager.prototype_integrity, 4.0)
+
 func _on_checkpoint(cp, i: int) -> void:
 	GameManager.current_checkpoint_id = "lab_cp%d" % i
 	respawn = Vector3(cp.global_position.x + 0.5, 0.1, 0.0)
 	if i < 2:
 		panel.call("show_message", DONE[i] + " " + ENTRY[i + 1], 11.0)
 	else:
-		panel.call("show_message", DONE[2], 8.0)
+		GameManager.has_prototype = true
+		for h in hazards:
+			h.reset_hit()
+		panel.call("show_message", DONE[2] + " Recibes el prototipo Aster. " + ENTRY[3], 12.0)
 	_save_room()
 
 func _on_fell() -> void:
@@ -484,6 +523,10 @@ func _finish_part() -> void:
 	manager.active = false
 	GameManager.current_phase = maxi(GameManager.current_phase, 2)
 	_save_room()
+	var integrity: int = GameManager.prototype_integrity
+	var verdict := "Prototipo dañado. Aún puede funcionar."
+	if integrity == 3:
+		verdict = "Prototipo estable. Calibración perfecta."
 	overlay_layer = CanvasLayer.new()
 	overlay_layer.layer = 30
 	add_child(overlay_layer)
@@ -498,7 +541,7 @@ func _finish_part() -> void:
 	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	lbl.add_theme_font_size_override("font_size", 28)
-	lbl.text = "FASE 2 - SALAS 1 A 3 COMPLETADAS\n\nFragmentos de memoria: %d/4\nCaídas en los fosos: %d\nLa sala 4 todavía no está implementada.\n\nE: volver al menú   |   F3: cargar partida" % [GameManager.memory_fragments_collected.size(), falls]
+	lbl.text = "FASE 2 COMPLETADA\n\n%s\nIntegridad del prototipo: %d/3\nFragmentos de memoria: %d/4\nCaídas en los fosos: %d\n\nLa Fase 3 todavía no está disponible.\n\nE: volver al menú   |   F3: cargar partida" % [verdict, integrity, GameManager.memory_fragments_collected.size(), falls]
 	lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	overlay_layer.add_child(lbl)
 
