@@ -69,12 +69,12 @@ Treat this as a technical prototype. Before expanding 3D production, validate mo
 
 ```text
 final-thaw/
-├── CLAUDE.md
-├── AGENTS.md
-├── README.md
-├── PROJECT_STATUS.md
-├── GDD.md
-├── project.godot
+├── .github/
+├── assets/
+│   └── concept/
+│       └── characters/
+│           ├── elena_vast_concept.png
+│           └── marcus_reyes_concept.png
 ├── config/
 ├── data/
 ├── docs/
@@ -83,12 +83,32 @@ final-thaw/
 │   ├── ui/
 │   ├── levels/
 │   └── props/
-├── scripts/
 ├── schemas/
-└── tests/
+├── scripts/
+├── tests/
+├── AGENTS.md
+├── CLAUDE.md
+├── GDD.md
+├── PROJECT_STATUS.md
+├── README.md
+├── README_VERTICAL_SLICE.md
+├── icon.svg
+├── project.godot
+└── setup_phase0.py
 ```
 
 Use the repository as the source of truth for the exact current layout. When adding a major new directory or system, update this map and `PROJECT_STATUS.md`.
+
+## Concept art
+
+The approved character concept references are:
+
+- `assets/concept/characters/elena_vast_concept.png`
+- `assets/concept/characters/marcus_reyes_concept.png`
+
+Use these images to guide character proportions, silhouette, costume language, palette, materials and visual personality. They are design references, not final in-game assets.
+
+Before producing a 3D character or prop, derive a written specification from the relevant concept art. The specification must define scale, silhouette, materials, palette, level of detail, animation requirements, collision requirements and Godot integration requirements.
 
 ## Naming conventions
 
@@ -139,15 +159,16 @@ Do not rename or remove existing input actions without checking every scene and 
 
 Use a specification-first workflow for 3D assets.
 
-1. Define the asset’s purpose, dimensions, silhouette, materials, palette, animation needs, collision requirements and Godot integration requirements.
-2. Approve the specification before generating geometry.
-3. Use Blender MCP only for narrowly scoped creation or modification.
-4. Review renders from the intended in-game camera.
-5. Export using agreed naming, scale, pivot, UV, material and format conventions.
-6. Import and validate the asset in Godot.
-7. Record integration evidence before marking the asset complete.
+1. Select the relevant concept art and extract its visual rules.
+2. Define the asset’s purpose, dimensions, silhouette, materials, palette, animation needs, collision requirements and Godot integration requirements.
+3. Approve the specification before generating geometry.
+4. Use Blender MCP only for narrowly scoped creation or modification.
+5. Review renders from the intended in-game camera against the concept art and art direction.
+6. Export using agreed naming, scale, pivot, UV, material and format conventions.
+7. Import and validate the asset in Godot.
+8. Record integration evidence before marking the asset complete.
 
-Do not generate broad scene changes, character redesigns or material overhauls without an approved specification.
+Do not generate broad scene changes, character redesigns or material overhauls without an approved specification. Concept art guides the work; it does not replace Godot validation.
 
 ## Testing expectations
 
@@ -174,18 +195,21 @@ Do not mark a feature verified, playable, accessible, performant or release-read
 - `GDD.md`: complete game-design vision and pillars.
 - `PROJECT_STATUS.md`: current phase, implementation state and evidence.
 - `README.md`: setup, current playable content and project targets.
+- `README_VERTICAL_SLICE.md`: Flooded Shelter vertical-slice overview.
 - `AGENTS.md`: agent safety, roles, workflow and reporting rules.
 - `docs/DESIGN_AUTHORITY.md`: normative design authority.
 - `docs/SETUP_FLOODED_SHELTER.md`: Flooded Shelter slice setup and testing.
+- `assets/concept/characters/`: approved character concept references.
 
 ## Getting started
 
 1. Read `README.md`, `PROJECT_STATUS.md`, `AGENTS.md` and `GDD.md`.
-2. Check out `feat/godot-vertical-slice`.
-3. Open the repository root in Godot 4.7.x.
-4. Run the Phase 0 acceptance test.
-5. Playtest the Flooded Shelter slice and the 3D test room.
-6. Choose one narrow task with explicit acceptance criteria.
-7. Implement, test, document and open a pull request.
+2. Review `README_VERTICAL_SLICE.md` and the character concept references.
+3. Check out `feat/godot-vertical-slice`.
+4. Open the repository root in Godot 4.7.x.
+5. Run the Phase 0 acceptance test.
+6. Playtest the Flooded Shelter slice and the 3D test room.
+7. Choose one narrow task with explicit acceptance criteria.
+8. Implement, test, document and open a pull request.
 
 Do not skip verification. Do not expand scope before the current slice is stable.
