@@ -32,9 +32,6 @@ func _ready() -> void:
 	if civilian:
 		civilian.connect("civilian_rescued", _on_civilian_rescued)
 
-	# Optional: restore from persistence if needed
-	# restore_from_persistence()
-
 func _on_power_activated() -> void:
 	if has_power:
 		return
@@ -44,7 +41,7 @@ func _on_power_activated() -> void:
 	power_restored.emit()
 
 func _on_valve_opened() -> void:
-	valves_open = min(2, valves_open + 1)
+	valves_open = mini(2, valves_open + 1)
 	if elena and valves_open == 1:
 		elena.add_oxygen(oxygen_refill_on_valves)
 	valves_progress_changed.emit(valves_open)
@@ -70,17 +67,20 @@ func get_persistent_state() -> Dictionary:
 	}
 
 func persist_state() -> void:
-	var gsm = GameStateManager if "GameStateManager" in get_tree()
-	if not gsm:
+	var gsm = get_node_or_null("/root/GameStateManager")
+	if gsm == null:
 		return
-	var data = get_persistent_state()
-	for k in data:
-		gsm.set_flag(k, data[k])
+	var data := get_persistent_state()
+	for key in data:
+		gsm.set_flag(key, data[key])
 
 func restore_from_persistence() -> void:
-	var gsm = GameStateManager if "GameStateManager" in get_tree()
-	if not gsm:
+	var gsm = get_node_or_null("/root/GameStateManager")
+	if gsm == null:
 		return
 	has_power = gsm.get_flag("shelter_power_restored", false)
-	valves_open = 2 if gsm.get_flag("shelter_valves_opened", false) else 0
+	if gsm.get_flag("shelter_valves_opened", false):
+		valves_open = 2
+	else:
+		valves_open = 0
 	civilian_rescued = gsm.get_flag("shelter_civilian_rescued", false)
