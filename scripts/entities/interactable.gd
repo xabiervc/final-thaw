@@ -3,6 +3,10 @@ class_name Interactable
 
 @export var interact_text: String = "Interactuable"
 var interact_count: int = 0
+var can_interact_func: Callable
+var on_interact_func: Callable
+
+signal interacted(interactor: Node2D)
 
 func _ready() -> void:
 	add_to_group("interactable")
@@ -21,6 +25,15 @@ func _ready() -> void:
 	lbl.text = interact_text
 	lbl.position = Vector2(-50, -80)
 	add_child(lbl)
+
+func try_interact(interactor: Node2D) -> bool:
+	if can_interact_func.is_valid() and not can_interact_func.call(interactor):
+		return false
+	if on_interact_func.is_valid():
+		on_interact_func.call(interactor)
+	interact_count += 1
+	interacted.emit(interactor)
+	return true
 
 func interact() -> void:
 	interact_count += 1
