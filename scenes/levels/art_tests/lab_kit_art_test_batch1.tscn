@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/art_tests/lab_kit_art_test_batch1.gd" id="1_labkit"]
+
+[node name="LabKitArtTestBatch1" type="Node3D"]
+script = ExtResource("1_labkit")

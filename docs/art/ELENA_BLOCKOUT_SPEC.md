@@ -1,6 +1,6 @@
 # Elena Blockout — Specification
 
-**Status:** proposal; no geometry exists yet. Reference: `assets/concept/characters/elena_vast_concept.png` (front, side, three-quarter, face). The concept is a design reference, not an in-game asset. This blockout is not the final character.
+**Status:** built as `assets/models/characters/elena_blockout_a.glb` (1,544 triangles, 9 rigid meshes, no rig); checked automatically, **pending the owner's validation in Godot**. Reference: `assets/concept/characters/elena_vast_concept.png` (front, side, three-quarter, face). The concept is a design reference, not an in-game asset. This blockout is not the final character.
 
 ## Scope
 
@@ -24,7 +24,7 @@
 ## Proportions and scale [proposed]
 
 - Height 1.70 m, matching the gameplay capsule (r 0.32, h 1.7). About 7.2 heads; head enlarged ≈ 8% for readability at 8.5 m camera height (head height ≈ 0.25 m including hair).
-- Shoulder width ≈ 0.46 m; coat width at hem ≈ 0.58 m; depth with backpack ≈ 0.45 m.
+- Shoulder width ≈ 0.46 m; coat width at hem ≈ 0.58 m. As built the bounding box is 0.69 × 1.70 × 0.80 m (the forward right arm with the Aster and the backpack add depth).
 - Coat hem at y ≈ 0.80 m, boot shaft top at y ≈ 0.45 m, boot sole 0.04 m.
 - Silhouette priorities, in order: long coat with flared hem, stand collar, backpack bulk behind, knee boots, ponytail.
 
@@ -32,7 +32,7 @@
 
 - Origin at feet center on the floor. **Front = +Z** (as in `elena_controller.gd`, where `visual.rotation.y = atan2(x, z)`); backpack at −Z.
 - Pose: neutral A-stance, right forearm slightly forward holding the Aster.
-- No armature and no skin weights. Rigid parts as separate child nodes with pivots at joints so Godot can pose or rotate them later: `Root`, `Hips`, `Torso`, `Head`, `ArmL`, `ArmR`, `LegL`, `LegR`, `Backpack`, `Aster`. 9 pivots, no animation clips.
+- No armature and no skin weights. Rigid parts as nodes with pivots at joints so Godot can pose or rotate them later: `Root` → `Hips` → (`Torso` → `Head`, `ArmL`, `ArmR` → `Aster`, `Backpack`), `LegL`, `LegR`. 9 meshes, no animation clips. `R` is Elena's anatomical right, which is −X when she faces +Z.
 - Collision: none in the GLB. The existing capsule in `elena_controller.gd` stays the collider.
 
 ## Materials
@@ -51,11 +51,11 @@ Flat PBR, metallic 0. Colors match the palette-test reference so lighting review
 | `elena_blk_hair` | `#2A211E` | 0.90 | — |
 | `elena_blk_aster` | `#7FF0E6` | 0.40 | 2.0 (cyan reserved for Elena and scanning) |
 
-The amber beacon on the backpack is **not emissive** in the blockout (amber is reserved for interactables). It is modelled as a dim `lab_mat_painted_metal`-toned nub until decision D2 in `LAB_KIT_PLAN.md`.
+The amber beacon on the backpack is **not emissive** in the blockout (amber is reserved for interactables). It is a small nub using `lab_mat_painted_metal` (the tenth material in the file) until decision D2 in `LAB_KIT_PLAN.md`.
 
 ## Budget and export [proposed]
 
-- ≤ 3,500 triangles; ≤ 10 mesh nodes; 9 materials; no textures.
+- ≤ 3,500 triangles; ≤ 10 mesh nodes; 9 `elena_blk_*` materials + the beacon nub; no textures.
 - File: `assets/models/characters/elena_blockout_a.glb`; script `tools/blender/build_elena_blockout_a.py`; `.blend` outside the repo.
 - Facial detail: none (smooth head, hair mass with ponytail, no eyes, mouth or brows).
 
