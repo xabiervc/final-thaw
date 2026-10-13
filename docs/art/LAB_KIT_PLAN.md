@@ -101,10 +101,20 @@ Assets: `lab_platform_a`, `lab_barrel_a`, `lab_crate_a`, `lab_shelf_a`, `lab_mon
 6. Amber and cyan remain reserved for interactables and Elena respectively.
 7. No gameplay file, `project.godot`, autoload or input action is modified.
 
-## 6. Decisions needed from you
+## 6. Decisions
 
-- **D1** Art attachment method (before Batch 2).
-- **D2** Amber backpack beacon: the concept art has it, the style spec reserves amber for interactables. Proposal: model it unlit/dim, no emission, until you decide.
-- **D3** Texture policy for decals and wear (before Batch 3). Batch 1 only adds one detail map with default import settings; no project compression setting changes.
-- **D4** Confirm that the blockout follows the game's +Z front.
-- **D5** Blender MCP tools were not available in the previous session. If they are still absent at approval, I will use the headless Blender script route used for the previous batch unless you prefer to wait.
+The owner delegated these decisions ("take the most appropriate ones and continue"). They are recorded here and can be reversed.
+
+- **D1 — Art attachment: option A.** A separate `lab_art_dressing.tscn` overlays the art on the greybox, with a visual-only toggle that hides the greybox meshes. Reason: it leaves gameplay scripts, colliders and interaction origins untouched and is reversible with one flag. **Not implemented**: it modifies `abandoned_lab` and needs the owner's approval after validating Batches 1 and 2. Finding from Batch 2: imported materials are shared per asset, so the dressing must duplicate materials per instance.
+- **D2 — Amber backpack beacon:** modelled unlit, no emission (amber stays reserved for interactables).
+- **D3 — Textures:** none for now (no PNG in the repository). Dirt and decals stay postponed until the owner approves a policy.
+- **D4 — Elena front is +Z**, as in the game.
+- **D5 — Tooling:** Blender MCP is unavailable in this environment; headless Blender with reproducible scripts is used and noted in every delivery.
+
+## 7. Status
+
+| Batch | State |
+|---|---|
+| 1 — environment kit + Elena blockout | Generated, checked (40 checks), pushed; awaiting the owner's visual validation. |
+| 2 — interactive props, rooms 1–2 | Generated, checked (47 checks); `LAB_BATCH2_SPEC.md`; awaiting the owner's visual validation. |
+| 3 — ambient props, rooms 3–4 | Not started. |
