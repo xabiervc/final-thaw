@@ -1,5 +1,7 @@
 # Lab Style Spec — Abandoned Laboratory (3D)
 
+**Owner decision (reference-scene phase):** the assets built from this spec in batches 1–2 (`lab_*_a/b`, `elena_blockout_a`) are **technical blockouts and references only**, not the artistic standard of Final Thaw. Do not extend their flat-color, primitive look to the rest of the lab. The quality target is defined in `docs/art/LAB_REFERENCE_SCENE_SPEC.md`.
+
 **Status:** transcribed from the values validated in `scripts/levels/art_tests/lab_palette_test.gd` (Godot 4.7.2). Sections marked **[proposed]** are new and need owner approval. Nothing here is marked final, optimized or integrated.
 
 **Scope:** Phase 2, rooms 1 and 2 of the abandoned laboratory. Concept references: `assets/concept/characters/` (Elena). This document is the contract for `tools/blender/build_lab_corner_assets.py` and the scene `scenes/levels/art_tests/lab_corner_art_test_assets.tscn`.

@@ -1,6 +1,6 @@
 # Lab Art — Batch 1 Specification (environment kit)
 
-**Status:** approved by the owner on commit `ccf4905`; **generated and checked automatically, pending the owner's validation in Godot.** Not final, optimized or integrated; nothing is used by `abandoned_lab.tscn`. Values are as built unless a column says "target".
+**Role: technical blockout, not the artistic standard** (owner decision; see `LAB_REFERENCE_SCENE_SPEC.md`). **Status:** approved by the owner on commit `ccf4905`; **generated and checked automatically, pending the owner's validation in Godot.** Not final, optimized or integrated; nothing is used by `abandoned_lab.tscn`. Values are as built unless a column says "target".
 
 Conventions (same as `LAB_STYLE_SPEC.md`): GLB, 1 unit = 1 m, +Y up, front/interior = +Z, flat `lab_mat_*` materials, no lights, no cameras, no collision in the files. Sources: `tools/blender/build_lab_environment_kit_batch1.py` and `tools/blender/build_elena_blockout_a.py` (shared helpers in `tools/blender/lab_blender_common.py`). `.blend` files live outside the repository.
 

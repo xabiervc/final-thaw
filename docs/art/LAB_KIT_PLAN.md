@@ -117,4 +117,5 @@ The owner delegated these decisions ("take the most appropriate ones and continu
 |---|---|
 | 1 — environment kit + Elena blockout | Generated, checked (40 checks), pushed; awaiting the owner's visual validation. |
 | 2 — interactive props, rooms 1–2 | Generated, checked (47 checks); `LAB_BATCH2_SPEC.md`; awaiting the owner's visual validation. |
-| 3 — ambient props, rooms 3–4 | Not started. |
+| 3 — ambient props, rooms 3–4 | Not started; superseded by the reference-scene phase below. |
+| Reference scene — quality target | Built as an isolated scene (`LAB_REFERENCE_SCENE_SPEC.md`); awaiting the owner's visual review. Batches 1–2 are kept only as blockouts and technical references. |

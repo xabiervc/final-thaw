@@ -1,6 +1,6 @@
 # Lab Art — Batch 2 Specification (interactive props, rooms 1 and 2)
 
-**Status:** generated, imported in Godot 4.7.2 and checked automatically; **pending the owner's validation in Godot**. Not final, optimized or integrated: nothing here is used by `abandoned_lab.tscn`, and no gameplay script, scene, autoload, input action or `project.godot` was touched.
+**Role: technical blockout, not the artistic standard** (owner decision; see `LAB_REFERENCE_SCENE_SPEC.md`). **Status:** generated, imported in Godot 4.7.2 and checked automatically; **pending the owner's validation in Godot**. Not final, optimized or integrated: nothing here is used by `abandoned_lab.tscn`, and no gameplay script, scene, autoload, input action or `project.godot` was touched.
 
 Conventions: `LAB_STYLE_SPEC.md`. Sources: `tools/blender/build_lab_interactive_props_batch2.py` (+ `lab_blender_common.py`); `.blend` outside the repo. Test scene: `scenes/levels/art_tests/lab_props_art_test_batch2.tscn` + `scripts/levels/art_tests/lab_props_art_test_batch2.gd`.
 
