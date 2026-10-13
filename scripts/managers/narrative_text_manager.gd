@@ -101,3 +101,36 @@ static func get_end_button_menu() -> String:
 
 static func get_end_button_restart() -> String:
 	return _text("end_button_restart", "Restart Demo")
+
+## Claves de texto del puzle de registros y cableado. Cada clave debe existir y no estar vacia en ES y EN.
+const CONTROL_ROOM_KEYS: Array[String] = [
+	"cr_log_before_title",
+	"cr_log_before_body",
+	"cr_log_after_title",
+	"cr_log_after_body",
+	"cr_breaker_a_response",
+	"cr_breaker_b_response",
+	"cr_breaker_b_cooldown",
+	"cr_breaker_c_response",
+	"cr_gate_locked",
+	"cr_gate_open_prompt",
+	"cr_prompt_read_log",
+	"cr_prompt_use_breaker",
+	"cr_trace_a",
+	"cr_trace_b",
+	"cr_trace_c",
+	"cr_hint_level_1",
+	"cr_hint_level_2",
+	"cr_objective_start",
+	"cr_objective_done",
+	"cr_hint_button",
+]
+
+static func get_control_room_text(key: String) -> String:
+	if not CONTROL_ROOM_KEYS.has(key):
+		push_warning("Unknown control room text key: %s" % key)
+		return ""
+	var value := _text(key)
+	if value.is_empty() and OS.is_debug_build():
+		push_warning("Missing control room text: %s (%s)" % [key, current_locale])
+	return value

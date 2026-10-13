@@ -75,3 +75,26 @@ No todos pueden ser salvados. Eso también es una decisión.
 
 @export var end_button_menu: String = "Volver al menú"
 @export var end_button_restart: String = "Reiniciar demo"
+
+## Puzle de registros y cableado (Fase 1, sala de control)
+@export_group("Control Room Puzzle")
+@export var cr_log_before_title: String = "Mantenimiento 14/06"
+@export var cr_log_before_body: String = "Compuerta este: alimentación por el circuito ámbar. Revisión de contactos sin incidencias."
+@export var cr_log_after_title: String = "Revisión posterior al incidente"
+@export var cr_log_after_body: String = "Circuito ámbar fuera de servicio: fusible quemado tras la inundación. Compuerta este reencaminada por el circuito verde."
+@export var cr_breaker_a_response: String = "La luz de la compuerta se enciende, pero el mecanismo no responde."
+@export var cr_breaker_b_response: String = "Salta una chispa. El fusible de este ramal está quemado."
+@export var cr_breaker_b_cooldown: String = "El cuadro todavía está caliente. Espera unos segundos."
+@export var cr_breaker_c_response: String = "Contactos cerrados. La compuerta tiene presión."
+@export var cr_gate_locked: String = "La compuerta está bloqueada. No hay presión en el mecanismo."
+@export var cr_gate_open_prompt: String = "Abrir compuerta"
+@export var cr_prompt_read_log: String = "Leer registro"
+@export var cr_prompt_use_breaker: String = "Accionar cuadro"
+@export var cr_trace_a: String = "Luminaria"
+@export var cr_trace_b: String = "Bomba de achique"
+@export var cr_trace_c: String = "Compuerta este"
+@export var cr_hint_level_1: String = "Compara las fechas de los dos registros. Escanea cerca de los cuadros para ver adónde va cada cable."
+@export var cr_hint_level_2: String = "El cuadro C alimenta la compuerta este."
+@export var cr_objective_start: String = "OBJETIVO  /  Abre la compuerta este"
+@export var cr_objective_done: String = "SALA SUPERADA  /  La compuerta está abierta"
+@export var cr_hint_button: String = "Pista"
