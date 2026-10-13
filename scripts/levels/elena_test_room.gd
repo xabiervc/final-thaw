@@ -11,6 +11,8 @@ const ScanScript = preload("res://scripts/components/scan_system.gd")
 const CameraScript = preload("res://scripts/components/follow_camera.gd")
 const PanelScript = preload("res://scripts/ui/narrative_panel.gd")
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
+const StationScript = preload("res://scripts/components/stamina_station.gd")
+const LowObstacleScript = preload("res://scripts/components/low_obstacle.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const NEXT_PATH := "res://scenes/levels/abandoned_lab.tscn"
@@ -33,6 +35,7 @@ func _ready() -> void:
 	_build_environment()
 	_build_room()
 	_build_props()
+	_build_condition_area()
 	_build_player()
 	_build_ui()
 	panel.call("show_message", "Sala de pruebas de Elena. Examina el terminal y busca la forma de abrir la puerta del este.", 9.0)
@@ -139,6 +142,17 @@ func _build_props() -> void:
 
 	lever.toggled.connect(_on_lever_toggled)
 	door.opened.connect(_on_door_opened)
+
+func _build_condition_area() -> void:
+	B.label3d(self, "ZONA DE PRUEBA DE SALTO", Vector3(-4.5, 1.8, -6.0), 36, Color(0.95, 0.88, 0.55))
+	for x in [-7.0, -4.3]:
+		var obstacle = LowObstacleScript.new()
+		obstacle.position = Vector3(x, 0.0, -6.0)
+		add_child(obstacle)
+	B.solid_box(self, Vector3(2.0, 0.5, 2.0), Vector3(-2.0, 0.25, -5.5), Color(0.55, 0.42, 0.22))
+	var station = StationScript.new()
+	station.position = Vector3(-7.5, 0.0, -2.5)
+	add_child(station)
 
 func _add_inspect(id: String, variant: int, pos: Vector3, text: String) -> void:
 	var p = InspectScript.new()

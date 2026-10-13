@@ -1,8 +1,11 @@
 extends Node3D
 
+const PROTOTYPE_LOAD := 0.4
+
 var _orb: MeshInstance3D = null
 var _light: OmniLight3D = null
 var _t: float = 0.0
+var _load_applied: bool = false
 
 func _ready() -> void:
 	var sphere := SphereMesh.new()
@@ -29,8 +32,23 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	visible = GameManager.has_prototype
+	_sync_load(visible)
 	if not visible:
 		return
 	_t += delta
 	var s := 1.0 + 0.08 * sin(_t * TAU)
 	_orb.scale = Vector3(s, s, s)
+
+func _sync_load(carrying: bool) -> void:
+	var parent := get_parent()
+	if parent == null:
+		return
+	var c = parent.get("condition")
+	if c == null:
+		return
+	if carrying:
+		c.load_factor = PROTOTYPE_LOAD
+		_load_applied = true
+	elif _load_applied:
+		c.load_factor = 0.0
+		_load_applied = false

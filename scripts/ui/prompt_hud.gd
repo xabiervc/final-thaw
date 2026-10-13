@@ -5,6 +5,8 @@ var _hint: Label = null
 var _instructions: Label = null
 var _prompt: Label = null
 var _status: Label = null
+var _condition: Label = null
+var _cond_bar: ProgressBar = null
 var _last_prompt: String = ""
 var _tween: Tween = null
 
@@ -41,6 +43,35 @@ func _ready() -> void:
 	_status.visible = false
 	add_child(_status)
 
+	_condition = Label.new()
+	_condition.add_theme_font_size_override("font_size", 16)
+	_condition.add_theme_color_override("font_color", Color(0.85, 0.95, 0.92))
+	_condition.add_theme_stylebox_override("normal", _style(0.88))
+	_condition.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_condition.offset_left = -360.0
+	_condition.offset_right = -20.0
+	_condition.offset_top = 62.0
+	_condition.offset_bottom = 100.0
+	_condition.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_condition.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_condition.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_condition.visible = false
+	add_child(_condition)
+
+	_cond_bar = ProgressBar.new()
+	_cond_bar.min_value = 0.0
+	_cond_bar.max_value = 100.0
+	_cond_bar.show_percentage = false
+	_cond_bar.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_cond_bar.offset_left = -360.0
+	_cond_bar.offset_right = -20.0
+	_cond_bar.offset_top = 104.0
+	_cond_bar.offset_bottom = 114.0
+	_cond_bar.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_cond_bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_cond_bar.visible = false
+	add_child(_cond_bar)
+
 	_prompt = Label.new()
 	_prompt.add_theme_font_size_override("font_size", 24)
 	_prompt.add_theme_color_override("font_color", Color(0.55, 0.9, 0.82))
@@ -71,6 +102,36 @@ func _make_label(parent: Node, font_size: int, color: Color) -> Label:
 	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	parent.add_child(l)
 	return l
+
+func _process(_delta: float) -> void:
+	var p := get_tree().get_first_node_in_group("player")
+	var c = null
+	if p != null:
+		c = p.get("condition")
+	if c == null:
+		_condition.visible = false
+		_cond_bar.visible = false
+		return
+	_update_condition(c)
+
+func _update_condition(c) -> void:
+	var state := str(c.state_name())
+	var text := "RESISTENCIA %d%%  |  %s" % [int(round(c.stamina)), state.to_upper()]
+	if c.load_factor > 0.0:
+		text += "  |  Carga del Aster"
+	_condition.text = text
+	_cond_bar.value = c.stamina
+	var tint := Color(0.4, 0.9, 0.8)
+	match state:
+		"fatiga":
+			tint = Color(0.95, 0.85, 0.4)
+		"exhausta":
+			tint = Color(0.95, 0.6, 0.3)
+		"critica":
+			tint = Color(0.95, 0.35, 0.3)
+	_cond_bar.modulate = tint
+	_condition.visible = true
+	_cond_bar.visible = true
 
 func set_objective(text: String) -> void:
 	_objective.text = text
