@@ -15,6 +15,7 @@ var playtime_seconds: float = 0.0
 var active_character_id: String = "elena"
 var current_checkpoint_id: String = ""
 var has_prototype: bool = false
+var elena_condition: Dictionary = {}
 var world_state: Dictionary = {}
 
 var font_scale: float = 1.0
@@ -48,6 +49,7 @@ func new_game() -> void:
 	active_character_id = "elena"
 	current_checkpoint_id = ""
 	has_prototype = false
+	elena_condition = {}
 	world_state = {}
 	stats_changed.emit()
 
@@ -82,6 +84,7 @@ func _collect() -> Dictionary:
 		"active_character_id": active_character_id,
 		"current_checkpoint_id": current_checkpoint_id,
 		"has_prototype": has_prototype,
+		"elena_condition": elena_condition,
 		"world_state": world_state,
 	}
 
@@ -100,6 +103,11 @@ func _apply(d: Dictionary) -> void:
 	active_character_id = str(d.get("active_character_id", "elena"))
 	current_checkpoint_id = str(d.get("current_checkpoint_id", ""))
 	has_prototype = bool(d.get("has_prototype", false))
+	var ec = d.get("elena_condition", {})
+	if typeof(ec) == TYPE_DICTIONARY:
+		elena_condition = ec
+	else:
+		elena_condition = {}
 	var ws = d.get("world_state", {})
 	if typeof(ws) == TYPE_DICTIONARY:
 		world_state = ws

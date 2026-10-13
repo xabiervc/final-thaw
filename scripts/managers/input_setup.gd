@@ -1,11 +1,12 @@
 extends Node
-## Crea las 16 acciones de entrada por codigo (remapeables en runtime).
+## Crea las acciones de entrada por codigo (remapeables en runtime).
 
 const ACTIONS = {
 	"move_up": [KEY_W, KEY_UP],
 	"move_down": [KEY_S, KEY_DOWN],
 	"move_left": [KEY_A, KEY_LEFT],
 	"move_right": [KEY_D, KEY_RIGHT],
+	"jump": [KEY_SPACE],
 	"attack_primary": [KEY_J, KEY_K],
 	"attack_secondary": [KEY_L],
 	"dodge": [KEY_SPACE, KEY_SHIFT],
