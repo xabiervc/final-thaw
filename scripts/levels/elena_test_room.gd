@@ -17,9 +17,25 @@ const LowObstacleScript = preload("res://scripts/components/low_obstacle.gd")
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const NEXT_PATH := "res://scenes/levels/abandoned_lab.tscn"
 const ROOM_ID := "elena_test_room"
-const START := Vector3(-9.0, 0.1, 5.0)
+const START := Vector3(-9.5, 0.1, 3.5)
 const EXIT_TRIGGER_X := 10.0
 const LOAD_SAFE_X := 9.5
+
+const DIV1 := -8.0
+const DIV2 := 3.9
+const BARRIER_XS := [-6.3, -4.4, -2.5, 1.6]
+const BARRIER_SIZE := Vector3(0.3, 0.5, 16.0)
+
+const ZONE_HINTS := [
+	"WASD / flechas: mover. Acércate al terminal y pulsa E para acceder.",
+	"ESPACIO: saltar. Cada salto gasta resistencia (barra arriba a la derecha). Por debajo del 70 % el salto se acorta y no supera las barreras: espera un momento o pasa por la estación de recuperación.",
+	"Q / Tab: escanear. Revela los objetos interactivos cercanos, incluso detrás de las paredes. Busca la palanca del generador.",
+]
+const ZONE_MESSAGES := [
+	"",
+	"Barreras altas. Salta con Espacio: cada salto gasta resistencia.",
+	"No veo la palanca del generador. Escanea con Q o Tab para revelar objetos interactivos cercanos, incluso tras las paredes.",
+]
 
 var elena = null
 var manager = null
@@ -29,16 +45,21 @@ var panel = null
 var terminal = null
 var lever = null
 var door = null
+var door_a = null
 var completed: bool = false
+var hint_level: int = 1
+
+var _zone: int = -1
+var _shown: Array = []
 
 func _ready() -> void:
 	_build_environment()
 	_build_room()
 	_build_props()
-	_build_condition_area()
+	_build_tutorial_zones()
 	_build_player()
 	_build_ui()
-	panel.call("show_message", "Sala de pruebas de Elena. Examina el terminal y busca la forma de abrir la puerta del este.", 9.0)
+	panel.call("show_message", "Sala de pruebas de Elena. Accede al terminal de seguridad para abrir la puerta del oeste.", 9.0)
 
 func _build_environment() -> void:
 	var env := Environment.new()
@@ -60,8 +81,9 @@ func _build_environment() -> void:
 	sun.light_color = Color(0.75, 0.85, 1.0)
 	sun.shadow_enabled = true
 	add_child(sun)
-	_add_lamp(Vector3(-6.0, 3.0, 0.0), Color(1.0, 0.85, 0.6), 1.2)
-	_add_lamp(Vector3(2.0, 3.0, 2.0), Color(0.7, 0.85, 1.0), 1.0)
+	_add_lamp(Vector3(-10.0, 3.0, 0.0), Color(1.0, 0.85, 0.6), 1.2)
+	_add_lamp(Vector3(-3.0, 3.0, 0.0), Color(0.7, 0.85, 1.0), 1.1)
+	_add_lamp(Vector3(6.0, 3.0, 2.0), Color(0.7, 0.85, 1.0), 0.4)
 	_add_lamp(Vector3(10.5, 2.6, 0.0), Color(0.5, 1.0, 0.8), 1.0)
 
 func _add_lamp(pos: Vector3, color: Color, energy: float) -> void:
@@ -105,25 +127,37 @@ func _build_room() -> void:
 	B.solid_box(self, Vector3(0.5, 3.2, 6.6), Vector3(8.5, 1.6, -4.7), wall)
 	B.solid_box(self, Vector3(0.5, 3.2, 6.6), Vector3(8.5, 1.6, 4.7), wall)
 
+	for dx in [DIV1, DIV2]:
+		B.solid_box(self, Vector3(0.6, 3.2, 6.6), Vector3(dx, 1.6, -4.7), wall)
+		B.solid_box(self, Vector3(0.6, 3.2, 6.6), Vector3(dx, 1.6, 4.7), wall)
+
+	B.solid_box(self, Vector3(2.4, 3.2, 0.5), Vector3(5.9, 1.6, -4.6), wall)
+
 	B.box(self, Vector3(0.2, 2.6, 0.2), Vector3(11.0, 1.3, -1.2), Color(0.2, 0.9, 0.6), 2.0)
 	B.box(self, Vector3(0.2, 2.6, 0.2), Vector3(11.0, 1.3, 1.2), Color(0.2, 0.9, 0.6), 2.0)
 	B.box(self, Vector3(0.2, 0.2, 2.6), Vector3(11.0, 2.6, 0.0), Color(0.2, 0.9, 0.6), 2.0)
 	B.label3d(self, "PUNTO DE CONTROL", Vector3(11.0, 3.2, 0.0), 40, Color(0.5, 1.0, 0.8))
 
-	B.solid_box(self, Vector3(1.2, 0.8, 1.0), Vector3(0.0, 0.4, -5.3), Color(0.3, 0.27, 0.23))
-	B.solid_box(self, Vector3(1.2, 1.2, 1.0), Vector3(2.0, 0.6, -5.3), Color(0.3, 0.27, 0.23))
-
 func _build_props() -> void:
 	terminal = TerminalScript.new()
 	terminal.display_name = "Terminal de seguridad"
 	terminal.save_id = "terminal"
-	terminal.position = Vector3(-5.0, 0.0, -1.0)
+	terminal.message = "Terminal de bienvenida: acceso concedido. La puerta del oeste ya no está bloqueada."
+	terminal.position = Vector3(-10.5, 0.0, -3.0)
 	add_child(terminal)
+
+	door_a = DoorScript.new()
+	door_a.display_name = "Puerta del oeste"
+	door_a.save_id = "door_a"
+	door_a.position = Vector3(DIV1, 0.0, 0.0)
+	door_a.interaction_range = 3.0
+	door_a.locked_message = "La puerta está bloqueada. Accede primero al terminal de seguridad."
+	add_child(door_a)
 
 	lever = LeverScript.new()
 	lever.display_name = "Palanca del generador"
 	lever.save_id = "lever"
-	lever.position = Vector3(3.5, 0.0, -1.0)
+	lever.position = Vector3(5.2, 0.0, -6.4)
 	add_child(lever)
 
 	door = DoorScript.new()
@@ -134,24 +168,27 @@ func _build_props() -> void:
 	add_child(door)
 
 	_add_inspect("crate_a", 0, Vector3(-9.0, 0.0, -5.0), "Caja de suministros del laboratorio. Está vacía.")
-	_add_inspect("console_b", 1, Vector3(-2.0, 0.0, 4.0), "Un monitor auxiliar muestra una transmisión parcial. Destino: Estación Final Thaw.")
-	_add_inspect("barrel_c", 2, Vector3(1.0, 0.0, -6.6), "Detrás de las cajas, un barril con el sello de Helix.")
+	_add_inspect("console_b", 1, Vector3(-10.5, 0.0, 5.5), "Un monitor auxiliar muestra una transmisión parcial. Destino: Estación Final Thaw.")
+	_add_inspect("barrel_c", 2, Vector3(-9.0, 0.0, 6.2), "Un barril con el sello de Helix.")
 	_add_inspect("crate_d", 0, Vector3(5.5, 0.0, 5.0), "Una mochila abandonada con una manta térmica. Alguien se marchó con prisa.")
 	_add_inspect("console_e", 1, Vector3(-10.5, 0.0, 0.5), "Un mapa de evacuación con la ruta norte tachada a mano.")
-	_add_inspect("crate_f", 0, Vector3(6.2, 0.0, -5.0), "Material de campo del proyecto Aster, guardado a toda prisa.")
+	_add_inspect("crate_f", 0, Vector3(6.6, 0.0, -6.3), "Material de campo del proyecto Aster, guardado a toda prisa.")
 
+	terminal.interacted.connect(_on_terminal_used)
+	door_a.opened.connect(_on_door_a_opened)
 	lever.toggled.connect(_on_lever_toggled)
 	door.opened.connect(_on_door_opened)
 
-func _build_condition_area() -> void:
-	B.label3d(self, "ZONA DE PRUEBA DE SALTO", Vector3(-4.5, 1.8, -6.0), 36, Color(0.95, 0.88, 0.55))
-	for x in [-7.0, -4.3]:
-		var obstacle = LowObstacleScript.new()
-		obstacle.position = Vector3(x, 0.0, -6.0)
-		add_child(obstacle)
-	B.solid_box(self, Vector3(2.0, 0.5, 2.0), Vector3(-2.0, 0.25, -5.5), Color(0.55, 0.42, 0.22))
+func _build_tutorial_zones() -> void:
+	for x in BARRIER_XS:
+		var barrier = LowObstacleScript.new()
+		barrier.obstacle_size = BARRIER_SIZE
+		barrier.position = Vector3(x, 0.0, 0.0)
+		add_child(barrier)
+	B.label3d(self, "BARRERAS ALTAS: SALTA (ESPACIO)", Vector3(-6.3, 1.4, 0.0), 30, Color(0.95, 0.88, 0.55))
 	var station = StationScript.new()
-	station.position = Vector3(-7.5, 0.0, -2.5)
+	station.zone_size = Vector3(2.0, 2.0, 3.0)
+	station.position = Vector3(-0.4, 0.0, 0.0)
 	add_child(station)
 
 func _add_inspect(id: String, variant: int, pos: Vector3, text: String) -> void:
@@ -186,9 +223,16 @@ func _build_player() -> void:
 func _build_ui() -> void:
 	hud = HudScript.new()
 	add_child(hud)
-	hud.call("set_objective", "OBJETIVO  /  Restablece la energía para abrir la puerta del este")
 	panel = PanelScript.new()
 	add_child(panel)
+	_refresh_objective()
+
+func _zone_at(x: float) -> int:
+	if x < DIV1:
+		return 0
+	if x < DIV2:
+		return 1
+	return 2
 
 func _process(_delta: float) -> void:
 	var t = manager.current_target
@@ -196,8 +240,24 @@ func _process(_delta: float) -> void:
 	if t != null and is_instance_valid(t):
 		line = str(t.call("get_prompt_line"))
 	hud.call("set_prompt", line)
+	var zone := _zone_at(elena.global_position.x)
+	if zone != _zone:
+		_zone = zone
+		_on_zone_changed(zone)
 	if not completed and door.is_open and elena.global_position.x > EXIT_TRIGGER_X:
 		_complete_room()
+
+func _on_zone_changed(zone: int) -> void:
+	_update_hint()
+	if zone > 0 and not _shown.has(zone):
+		_shown.append(zone)
+		panel.call("show_message", str(ZONE_MESSAGES[zone]), 7.0)
+
+func _update_hint() -> void:
+	var text := ""
+	if hint_level >= 1 and _zone >= 0 and not door.is_open:
+		text = str(ZONE_HINTS[_zone])
+	hud.call("set_hint", text)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
@@ -214,8 +274,20 @@ func _refresh_objective() -> void:
 		hud.call("set_objective", "OBJETIVO  /  Llega al punto de control")
 	elif lever.is_on:
 		hud.call("set_objective", "OBJETIVO  /  Cruza la puerta del este")
+	elif door_a.is_open:
+		hud.call("set_objective", "OBJETIVO  /  Cruza las barreras y encuentra la palanca del generador")
+	elif terminal.accessed:
+		hud.call("set_objective", "OBJETIVO  /  Abre la puerta del oeste")
 	else:
-		hud.call("set_objective", "OBJETIVO  /  Restablece la energía para abrir la puerta del este")
+		hud.call("set_objective", "OBJETIVO  /  Accede al terminal de seguridad")
+	_update_hint()
+
+func _on_terminal_used(_actor) -> void:
+	door_a.call("set_locked", false)
+	_refresh_objective()
+
+func _on_door_a_opened() -> void:
+	_refresh_objective()
 
 func _on_lever_toggled(on: bool) -> void:
 	door.call("set_locked", not on)
@@ -266,11 +338,13 @@ func _load_room() -> void:
 		var sid := str(n.get("save_id"))
 		if sid != "" and data.has(sid):
 			n.call("apply_state", data[sid])
+	door_a.call("set_locked", not terminal.accessed)
 	door.call("set_locked", not lever.is_on)
 	var p = data.get("player", null)
 	if p is Array and p.size() == 3:
 		var px := minf(float(p[0]), LOAD_SAFE_X)
 		elena.global_position = Vector3(px, float(p[1]), float(p[2]))
 	elena.velocity = Vector3.ZERO
+	_zone = -1
 	_refresh_objective()
 	panel.call("show_message", "Partida cargada.", 3.0)
