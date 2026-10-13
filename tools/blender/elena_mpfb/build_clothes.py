@@ -89,6 +89,11 @@ def flare_hem(obj, z_hem=0.93, steps=6, dz=0.065, sx=1.035, sy=1.02):
 			v.co.x *= sx
 			v.co.y *= sy
 		loop = new_edges
+	hem = [v for e in loop for v in e.verts]
+	if hem:
+		level = sum(v.co.z for v in hem) / len(hem)
+		for v in hem:
+			v.co.z = level  # flat hem instead of the wavy edge left by smoothing
 	bm.normal_update()
 	bm.to_mesh(obj.data)
 	bm.free()
@@ -136,6 +141,20 @@ boots = garments.region_object(body, 'Elena_Boots', keep_boots, lambda co, _: 0.
 for _obj, _off in ((coat, 0.018), (knit, 0.006), (trousers, 0.006), (boots, 0.010)):
 	garments.fit_outside(_obj, body, _off)
 
+
+def round_boot_toes(obj, iterations=40):
+	import bmesh
+	bm = bmesh.new()
+	bm.from_mesh(obj.data)
+	toe = [v for v in bm.verts if v.co.z < 0.10 and v.co.y < -0.03]
+	for _ in range(iterations):
+		bmesh.ops.smooth_vert(bm, verts=toe, factor=0.6, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+	bm.to_mesh(obj.data)
+	bm.free()
+
+
+# round_boot_toes(boots)  # tried: smoothing stretches the toe tips into spikes; left disabled
+
 tint(coat, (0.16, 0.36, 0.38, 1))
 tint(knit, (0.14, 0.15, 0.16, 1))
 tint(trousers, (0.20, 0.22, 0.24, 1))
@@ -176,7 +195,7 @@ def make_hair_shell():
 		0.0, smooth_iters=0)
 	bm = bmesh.new()
 	bm.from_mesh(obj.data)
-	bmesh.ops.subdivide_edges(bm, edges=list(bm.edges), cuts=2, use_grid_fill=True)
+	bmesh.ops.subdivide_edges(bm, edges=list(bm.edges), cuts=3, use_grid_fill=True)
 	bmesh.ops.delete(bm, geom=[v for v in bm.verts if not keep_scalp(v.co, 'head', v)], context='VERTS')
 	bm.to_mesh(obj.data)
 	bm.free()
