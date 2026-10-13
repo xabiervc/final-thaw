@@ -4,6 +4,10 @@ extends Node
 @export var highlight_seconds: float = 2.0
 @export var visuals_enabled: bool = true
 
+## Grupos que el escaner resalta. Los nodos de "scannables" son solo visuales: deben
+## implementar set_scanned(active: bool) y no pueden ser objetivo de interaccion.
+const SCAN_GROUPS: Array[String] = ["interactables", "scannables"]
+
 var actor: Node3D = null
 var _serial: int = 0
 var _lit: Array = []
@@ -20,15 +24,16 @@ func scan() -> void:
 	var my_serial := _serial
 	if visuals_enabled:
 		_spawn_ring()
-	for n in get_tree().get_nodes_in_group("interactables"):
-		var node := n as Node3D
-		if node == null:
-			continue
-		var a := actor.global_position
-		var b := node.global_position
-		if Vector2(a.x - b.x, a.z - b.z).length() <= scan_radius:
-			node.call("set_scanned", true)
-			_lit.append(node)
+	for group_name in SCAN_GROUPS:
+		for n in get_tree().get_nodes_in_group(group_name):
+			var node := n as Node3D
+			if node == null or _lit.has(node):
+				continue
+			var a := actor.global_position
+			var b := node.global_position
+			if Vector2(a.x - b.x, a.z - b.z).length() <= scan_radius:
+				node.call("set_scanned", true)
+				_lit.append(node)
 	await get_tree().create_timer(highlight_seconds).timeout
 	if my_serial == _serial:
 		_clear()
