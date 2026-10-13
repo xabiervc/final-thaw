@@ -3,6 +3,10 @@ extends CharacterBody3D
 const B = preload("res://scripts/components/build_util.gd")
 const ConditionScript = preload("res://scripts/components/character_condition.gd")
 
+## Modelo con textura de Elena (MPFB). Si no se puede cargar, se usa el cuerpo procedural.
+const MPFB_MODEL_PATH := "res://assets/models/lab_ref/ref_elena_mpfb.glb"
+const MPFB_MATERIAL_DIR := "res://assets/materials/lab_ref/"
+
 signal fell_off
 signal jumped
 
@@ -15,16 +19,21 @@ signal jumped
 @export var jump_velocity: float = 5.8
 @export var coyote_time: float = 0.12
 @export var jump_buffer_time: float = 0.14
+## Usa el modelo MPFB texturizado en lugar del cuerpo de primitivas.
+@export var use_mpfb_model: bool = true
 
 var facing_vector: Vector2 = Vector2(0.0, 1.0)
 var input_enabled: bool = true
 var visual: Node3D = null
 var condition = null
+## True si el modelo MPFB se cargo; false si se usa el cuerpo de primitivas.
+var uses_mpfb_model: bool = false
 
 var _t: float = 0.0
 var _coyote_left: float = 0.0
 var _buffer_left: float = 0.0
 var _sync_left: float = 0.0
+var _material_cache: Dictionary = {}
 
 func _ready() -> void:
 	add_to_group("player")
@@ -49,7 +58,11 @@ func _build_body() -> void:
 
 	visual = Node3D.new()
 	add_child(visual)
+	if use_mpfb_model and _build_mpfb_visual():
+		return
+	_build_primitive_visual()
 
+func _build_primitive_visual() -> void:
 	var dark := Color(0.07, 0.09, 0.12)
 	var coat := Color(0.05, 0.24, 0.32)
 	var skin := Color(0.8, 0.62, 0.52)
@@ -99,6 +112,56 @@ func _add_mesh(mesh: Mesh, pos: Vector3, color: Color, emission: float = 0.0) ->
 	mi.position = pos
 	visual.add_child(mi)
 	return mi
+
+func _build_mpfb_visual() -> bool:
+	if not ResourceLoader.exists(MPFB_MODEL_PATH):
+		return false
+	var scene := load(MPFB_MODEL_PATH) as PackedScene
+	if scene == null:
+		return false
+	var model := scene.instantiate() as Node3D
+	if model == null:
+		return false
+	model.name = "ElenaModel"
+	visual.add_child(model)
+	_dress_model(model)
+	_add_aster_glow(Vector3(-0.16, 1.1, 0.4), 0.7, 1.8)
+	uses_mpfb_model = true
+	return true
+
+## Asigna a cada superficie el .tres que se llama como su material importado
+## (mismo metodo que lab_reference_scene.gd). Si falta uno, se conserva el importado.
+func _dress_model(model: Node) -> void:
+	for node in model.find_children("*", "MeshInstance3D", true, false):
+		var mesh_instance := node as MeshInstance3D
+		if mesh_instance == null or mesh_instance.mesh == null:
+			continue
+		for surface in mesh_instance.mesh.get_surface_count():
+			var imported := mesh_instance.mesh.surface_get_material(surface)
+			var material_name := imported.resource_name if imported != null else ""
+			var material := _material_for(material_name)
+			if material != null:
+				mesh_instance.set_surface_override_material(surface, material)
+
+func _material_for(material_name: String) -> Material:
+	if material_name == "":
+		return null
+	if _material_cache.has(material_name):
+		return _material_cache[material_name]
+	var path := MPFB_MATERIAL_DIR + material_name + ".tres"
+	var material: Material = null
+	if ResourceLoader.exists(path):
+		material = load(path) as Material
+	_material_cache[material_name] = material
+	return material
+
+func _add_aster_glow(pos: Vector3, energy: float, light_range: float) -> void:
+	var glow := OmniLight3D.new()
+	glow.light_color = Color(0.3, 0.95, 0.9)
+	glow.light_energy = energy
+	glow.omni_range = light_range
+	glow.position = pos
+	visual.add_child(glow)
 
 func _process(delta: float) -> void:
 	_t += delta
