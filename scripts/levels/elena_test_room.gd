@@ -15,7 +15,7 @@ const StationScript = preload("res://scripts/components/stamina_station.gd")
 const LowObstacleScript = preload("res://scripts/components/low_obstacle.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
-const NEXT_PATH := "res://scenes/levels/abandoned_lab.tscn"
+const NEXT_PATH := "res://scenes/levels/abandoned_lab_art.tscn"
 const ROOM_ID := "elena_test_room"
 const START := Vector3(-9.5, 0.1, 3.5)
 const EXIT_TRIGGER_X := 10.0
