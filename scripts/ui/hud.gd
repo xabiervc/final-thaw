@@ -5,7 +5,6 @@ var integrity_label: Label
 var safety_label: Label
 var character_label: Label
 var fps_label: Label
-var stamina_fill: ColorRect
 
 func _ready() -> void:
 	layer = 10
@@ -21,35 +20,8 @@ func _ready() -> void:
 	character_label.position = Vector2(1100, 20)
 	fps_label = _label(self)
 	fps_label.position = Vector2(20, 680)
-	_build_stamina_bar()
 	GameManager.stats_changed.connect(refresh)
 	refresh()
-	_call_deferred("_connect_player")
-
-func _build_stamina_bar() -> void:
-	var background := ColorRect.new()
-	background.color = Color(0, 0, 0, 0.55)
-	background.position = Vector2(20, 70)
-	background.size = Vector2(260, 18)
-	add_child(background)
-	stamina_fill = ColorRect.new()
-	stamina_fill.color = Color(0.25, 0.85, 1.0)
-	stamina_fill.position = Vector2(2, 2)
-	stamina_fill.size = Vector2(256, 14)
-	background.add_child(stamina_fill)
-
-func _connect_player() -> void:
-	var players := get_tree().get_nodes_in_group("player")
-	if not players.is_empty():
-		var player: Node = players[0]
-		if not player.stamina_changed.is_connected(_on_stamina_changed):
-			player.stamina_changed.connect(_on_stamina_changed)
-		_on_stamina_changed(player.stamina, player.max_stamina)
-
-func _on_stamina_changed(value: float, maximum: float) -> void:
-	var ratio := 0.0 if maximum <= 0.0 else clampf(value / maximum, 0.0, 1.0)
-	stamina_fill.size.x = 256.0 * ratio
-	stamina_fill.color = Color(0.25, 0.85, 1.0) if ratio > 0.25 else Color(1.0, 0.35, 0.25)
 
 func _label(parent: Node) -> Label:
 	var l := Label.new()
