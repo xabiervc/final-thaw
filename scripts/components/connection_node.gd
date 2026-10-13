@@ -11,6 +11,7 @@ func _ready() -> void:
 	super()
 	if prompt_text == "Interactuar":
 		prompt_text = "Conectar"
+	make_solid(Vector3(0.7, 1.1, 0.7))
 	B.box(self, Vector3(0.7, 0.5, 0.7), Vector3(0.0, 0.25, 0.0), Color(0.14, 0.16, 0.2))
 	var sphere := SphereMesh.new()
 	sphere.radius = 0.28

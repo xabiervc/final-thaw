@@ -16,6 +16,18 @@ var _scan_label: Label3D = null
 func _ready() -> void:
 	add_to_group("interactables")
 
+func make_solid(size: Vector3, offset: Vector3 = Vector3.ZERO) -> void:
+	var body := StaticBody3D.new()
+	body.collision_layer = 1
+	body.collision_mask = 0
+	body.position = Vector3(offset.x, size.y * 0.5 + offset.y, offset.z)
+	var cs := CollisionShape3D.new()
+	var shape := BoxShape3D.new()
+	shape.size = size
+	cs.shape = shape
+	body.add_child(cs)
+	add_child(body)
+
 func interact(actor: Node3D) -> void:
 	if not enabled:
 		return

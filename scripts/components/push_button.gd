@@ -10,6 +10,8 @@ func _ready() -> void:
 	super()
 	if prompt_text == "Interactuar":
 		prompt_text = "Pulsar"
+	if not (get_parent() is AnimatableBody3D):
+		make_solid(Vector3(0.5, 0.8, 0.5))
 	B.box(self, Vector3(0.5, 0.7, 0.5), Vector3(0.0, 0.35, 0.0), Color(0.16, 0.18, 0.22))
 	_top = B.box(self, Vector3(0.36, 0.1, 0.36), Vector3(0.0, 0.75, 0.0), button_color, 2.0)
 

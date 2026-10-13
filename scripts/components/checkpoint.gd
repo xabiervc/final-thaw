@@ -16,6 +16,17 @@ func _ready() -> void:
 	_parts.append(B.box(self, Vector3(0.2, 2.6, 0.2), Vector3(0.0, 1.3, -1.2), Color(0.2, 0.7, 0.9), 2.0))
 	_parts.append(B.box(self, Vector3(0.2, 2.6, 0.2), Vector3(0.0, 1.3, 1.2), Color(0.2, 0.7, 0.9), 2.0))
 	_parts.append(B.box(self, Vector3(0.2, 0.2, 2.6), Vector3(0.0, 2.6, 0.0), Color(0.2, 0.7, 0.9), 2.0))
+	for pz in [-1.2, 1.2]:
+		var body := StaticBody3D.new()
+		body.collision_layer = 1
+		body.collision_mask = 0
+		body.position = Vector3(0.0, 1.3, pz)
+		var cs := CollisionShape3D.new()
+		var shape := BoxShape3D.new()
+		shape.size = Vector3(0.3, 2.6, 0.3)
+		cs.shape = shape
+		body.add_child(cs)
+		add_child(body)
 	B.label3d(self, "PUNTO DE CONTROL", Vector3(0.0, 3.3, 0.0), 36, Color(0.6, 0.95, 1.0))
 	_refresh()
 

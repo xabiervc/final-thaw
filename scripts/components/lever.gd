@@ -10,6 +10,7 @@ func _ready() -> void:
 	super()
 	if prompt_text == "Interactuar":
 		prompt_text = "Accionar palanca"
+	make_solid(Vector3(0.9, 1.0, 0.6))
 	B.box(self, Vector3(0.9, 0.5, 0.6), Vector3(0.0, 0.25, 0.0), Color(0.16, 0.18, 0.21))
 	_lamp = B.box(self, Vector3(0.18, 0.08, 0.05), Vector3(0.0, 0.35, 0.31), Color(0.85, 0.2, 0.2), 2.0)
 	_pivot = Node3D.new()

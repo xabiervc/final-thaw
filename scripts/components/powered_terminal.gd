@@ -14,6 +14,7 @@ func _ready() -> void:
 	super()
 	if prompt_text == "Interactuar":
 		prompt_text = "Usar terminal"
+	make_solid(Vector3(1.0, 1.3, 0.8))
 	B.box(self, Vector3(1.0, 1.0, 0.7), Vector3(0.0, 0.5, 0.0), Color(0.12, 0.15, 0.18))
 	var tilt := B.box(self, Vector3(0.9, 0.55, 0.08), Vector3(0.0, 1.2, 0.2), Color(0.1, 0.12, 0.15))
 	tilt.rotation_degrees.x = -25.0
