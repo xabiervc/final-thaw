@@ -1,18 +1,20 @@
-# FINAL THAW — Arquitectura espacial de Fase 1 (v1.0)
+# FINAL THAW — Arquitectura espacial de Fase 1 (v1.1)
 
-**Estado:** decisión arquitectónica cerrada para el nuevo greybox. Planos esquemáticos y cotas de diseño; no equivalen a geometría construida ni validada en Godot.
+**Estado:** distribución arquitectónica de referencia cerrada; primera reconstrucción geométrica en código ampliada, pero pendiente de ejecutar y validar en Godot. Los SVG son planos de diseño, no evidencia de colisiones o recorrido validado.
 
 ## Decisión
 
-Recuperamos la idea narrativa histórica: **descender para descubrir la causa y subir para comprender el sistema**. Es un ala industrial de ensayo y control de inundaciones de Helix, evacuada durante el deshielo. La columna vertical de calibración Aster liga visualmente la nave, el mezzanine y la pasarela superior.
+Ala industrial de ensayo y control de inundaciones de Helix, evacuada durante el deshielo y parcialmente abandonada. No es una ruina genérica: estructura, señalización y equipos deben revelar una instalación operativa que se cerró con prisa. La columna de calibración Aster conecta visualmente nave, mezzanine y pasarela superior.
+
+El edificio debe leerse como una sola instalación con perímetro, vestíbulos, salas técnicas, pasillos y circulación vertical. La primera versión de código era demasiado abierta y no representaba de forma suficiente la huella D1 del foso; la reconstrucción actual amplía el foso continuo D1/D2 y añade límites de salas, equipamiento industrial, bandejas y estructura de cubierta. Sigue siendo greybox, no arte final.
 
 | Cota | Programa |
 |---|---|
-| P−1 · Y=−2 m | Foso D: esquema, puente A→T, interruptor de mantenimiento. |
-| P0 · Y=0 m | Acceso A, nave B y taller C. |
-| M · Y=+1,5 m | Sala de bombas y galería de observación. Mezzanine parcial. |
-| P2 · Y=+3 m | Control E, archivo F y esclusa G. |
-| H | Exterior e inicio de Containment. |
+| P−1 · Y=−2 m | Foso D1 de achique y D2 de distribución; esquema, puente A→T e interruptor. |
+| P0 · Y=0 m | Acceso A, nave de ensayo B, taller C, galería de servicio y hueco protegido del foso. |
+| M · Y=+1,5 m | Sala de bombas y galería de observación; mezzanine parcial con barandilla. |
+| P2 · Y=+3 m | Control E, archivo F, pasarela superior y esclusa G. |
+| H | Exterior inmediato; transición a aparcamiento/Containment de Fase 2. |
 
 ## Circulación vertical definitiva
 
@@ -22,33 +24,33 @@ Recuperamos la idea narrativa histórica: **descender para descubrir la causa y 
 4. **Escalera directa P0↔P2:** colapsada y bloqueada, visible pero no transitable.
 5. **G↔H:** esclusa horizontal al exterior; no tiene escalera de retorno a P0.
 
-Cada conexión vertical cumple un propósito distinto: no hay dos escaleras operativas al mismo destino ni un elevador que replique la subida a control.
+No añadir rampas, elevadores adicionales ni conexiones secretas. Las rutas verticales deben tener destino legible y responder a la arquitectura, no a una secuencia arbitraria.
 
 ## Programa de estancias
 
 | Zona | Cota | Contenido y función |
 |---|---:|---|
-| A · Esclusa de acceso | 0 m | Señal de evacuación, armario, primera vista a la nave. |
-| B · Nave de ensayo | 0 m | Rig bajo, columna Aster, bandejas y barreras; rodear la maquinaria. |
+| A · Esclusa de acceso | 0 m | Señal de evacuación, armario y primera vista a B. |
+| B · Nave de ensayo | 0 m | Rig bajo, columna Aster, bandejas y barreras; rodear maquinaria. |
 | C · Taller técnico | 0 m | Cuadros, banco, repuestos y colectores; sin llave nueva. |
 | D1 · Galería de achique | −2 m | Bombas, sumidero, colector y marcas de marea. |
 | D2 · Foso de distribución | −2 m | Esquema previsto, puente físico manipulado A→T e interruptor. |
 | M · Sala de bombas | +1,5 m | Bombas, manómetros, colectores, banco y zumbido mecánico. |
 | Galería de observación | +1,5 m | Barandilla y vista parcial de B/columna. |
 | E · Control | +3 m | Selector, aislador, diagnóstico, panel y rearme. |
-| F · Archivo | +3 m | Consulta, terminal independiente e indicador local. |
+| F · Archivo | +3 m | Consola de consulta, terminal independiente e indicador local. |
 | G · Esclusa exterior | +3 m | Puerta desde F, compuerta exterior y señal de sincronización. |
-| H · Exterior | exterior | Inicio de huida bajo reglas normales de percepción. |
+| H · Exterior | transición | Salida legible hacia aparcamiento; inicio de persecución en Fase 2. |
 
-No añadimos coleccionables, llaves, puzzles nuevos ni salas de relleno. Taller, galería y sala de bombas tienen función industrial/orientativa, no nuevas barreras de progreso.
+No añadir coleccionables, llaves, puzzles nuevos ni salas de relleno. Taller, galería y sala de bombas tienen función industrial/orientativa, no nuevas barreras de progreso.
 
 ## Recorrido narrativo
 
-A → B → S1 ↓ D → S1 ↑ B → galería de servicio → elevador ↑ M → bombas/galería → S2 ↑ E → F → G → H.
+A → B → S1 ↓ D → S1 ↑ B → galería de servicio → elevador ↑ M → bombas/galería → S2 ↑ E → F → G → H → aparcamiento/Containment.
 
-Mantenimiento empieza apagado. Al activarlo se encienden luces y se habilita el elevador; el circuito de recuperación permanece independiente. El escáner revela continuidad A→T, pero no señala los controles. F solo permite consulta con suministro estable; consultar no es extracción. Cruzar G transmite SERVICE_OVERRIDE y, si procede, RESTRICTED_RECORD_READ; Helix inicia Containment.
+Mantenimiento empieza apagado. Al activarlo se encienden luces y se habilita el elevador; el circuito de recuperación permanece independiente. El escáner revela continuidad A→T, pero no señala controles. F solo permite consulta con suministro estable; consultar no es extracción. Cruzar G transmite SERVICE_OVERRIDE y, si procede, RESTRICTED_RECORD_READ; Helix inicia Containment.
 
-## Planos
+## Planos existentes
 
 - P−1: [foso de mantenimiento](assets/phase1_architecture/plan_p_minus2.svg)
 - P0: [acceso, nave y taller](assets/phase1_architecture/plan_p0.svg)
@@ -56,4 +58,4 @@ Mantenimiento empieza apagado. Al activarlo se encienden luces y se habilita el 
 - P2: [control, archivo y esclusa](assets/phase1_architecture/plan_p_plus3.svg)
 - [Sección vertical de cuatro cotas](assets/phase1_architecture/section_vertical.svg)
 
-La decisión espacial queda cerrada; medidas finales, cámara, colisiones y experiencia requieren reconstrucción y validación en Godot. La escena actual usa geometría previa. Contrato lógico, guardado JSON/CRC32, autoloads, inputs y renderer no cambian.
+Los SVG mantienen la autoridad de distribución y deben compararse con la escena en la revisión visual. Medidas finales, cámara, colisiones y experiencia requieren validación en Godot. Contrato lógico, guardado JSON/CRC32, autoloads, inputs y renderer no cambian.
