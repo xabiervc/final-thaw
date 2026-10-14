@@ -30,7 +30,7 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | F · Archivo | +3 | X 3..9, Z −9..−4,5 | Consulta con ARCHIVO estable. |
 | G · Esclusa de doble puerta | +3 | X 0..3, Z −9..−4,5 | La compuerta exterior envía la auditoría e inicia Containment; la puerta interior devuelve a F. El sigilo precede a la carrera. No es la salida final. |
 | Pasarela superior | +3 | X 9..26, Z −4,5..−1,5, con hueco S2 | Circulación y observación protegidas. |
-| Aparcamiento | Y=−2 | Coordenadas locales X=0..48, Z=0..30; mundo X=local X+28,7, Z=local Z−15,8 | Umbral mundo (34, 6); spawn seguro (35,5, 6); egress lejano (71,5, −14). |
+| Aparcamiento | Y=−2 | Coordenadas locales X=0..48, Z=0..30; mundo X=local X+28,7, Z=local Z−15,8 | Umbral mundo (34, 6); checkpoint de recuperación (35,5, 6; no spawn inicial); egress lejano más allá del muro norte (71,5, −16,2). |
 
 La galería de evacuación y la boca este quedan seleccionadas como **baseline de diseño**: galería 6 × 3 m desde X=28..34, Z=4,5..7,5; boca en X=34, Y=−2. El suelo exterior del patio de servicio comparte Y=−2, por lo que no se añade rampa/escalón en el umbral. La geometría y continuidad física siguen pendientes de verificación en Godot.
 
