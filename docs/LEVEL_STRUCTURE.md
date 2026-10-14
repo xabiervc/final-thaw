@@ -86,7 +86,7 @@ The parking layout is not accepted from a prose description alone. Its design pa
 4. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
 5. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
 
-The existing project has Phase 1 plan/section SVGs. Extend the same disciplined visual conventions for Phase 2 in the existing architecture asset family once the parking dimensions are resolved; do not present a screenshot of the prototype as an architectural plan.
+The Phase 2 asset family now includes the plan, transverse section, threat/sightline overlay and lighting/landmark overlay. They use the same local coordinate convention but remain concept v0.1; the next revision must add/check internal dimension strings and reconcile the exact exterior datum. Do not present a screenshot of the prototype as an architectural plan.
 
 ### 2.4 Provisional spatial graph
 
@@ -98,10 +98,10 @@ The following coordinates are derived from the concept plan only. Origin is the 
 | P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (13.9, 19.3) | Short exposed path | To P2-A2; limited cover |
 | P2-A2 Exposed crossing | (22.9, 21.8) | High-risk crossing | To P2-A3; retain recovery cover nearby |
-| P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-JOIN; minimum clear width 2.0 m |\n| P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
+| P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-JOIN; minimum clear width 2.0 m |
+| P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
 | P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
 | P2-B3 Technical cage | (37.1, 12.1) | Service-side traversal | To P2-JOIN; must not be a dead end |
-| P2-A3 West-side bypass | (37.1, 16.8) | Direct route skirts west of P2-O2 before convergence | From P2-A2 to P2-JOIN with ≥2.0 m target clearance |
 | P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05 |
 | P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
 | P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
