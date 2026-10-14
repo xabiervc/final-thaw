@@ -30,7 +30,7 @@ The architecture should communicate:
 - a far-side egress target that is visible or inferable early, but not immediately safe;
 - one or more service features (loading shutter, maintenance cage, drainage channel, barrier or security kiosk) that give the site a specific industrial identity.
 
-**Continuity rule — selected design baseline:** the Phase 1 P−1 gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m, through a 3 m opening. The parking vestibule begins at the same threshold; the selected transform is world X=local X+28.7 m, world Z=local Z−15.8 m, Y=−2.0 m. This maps the threshold to local (5.3, 21.8), safe spawn to world (35.5, 6), and far-side egress to (71.5, −14). These are design-baseline coordinates, not runtime evidence. Validate the actual gallery, opening, elevation, colliders and camera in Godot; if the scene differs, update all affected drawings together. Never teleport Elena into the parking lot.
+**Continuity rule — selected design baseline:** the Phase 1 P−1 gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m, through a 3 m opening. The parking vestibule begins at the same threshold; the selected transform is world X=local X+28.7 m, world Z=local Z−15.8 m, Y=−2.0 m. This maps the threshold to local (5.3, 21.8), the recovery checkpoint to world (35.5, 6), and the far-side egress beyond the north gate to (71.5, −16.2). Initial handoff stays at the threshold; the checkpoint is for recovery only. These are design-baseline coordinates, not runtime evidence. Validate the actual gallery, opening, elevation, colliders and camera in Godot; if the scene differs, update all affected drawings together. Never teleport Elena into the parking lot.
 
 ### 2.2 Greybox scale and coordinate contract
 
@@ -97,7 +97,7 @@ The parking graph uses local metres, origin at the northwest inside corner, X ea
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
 | P2-01 Service threshold | local (5.3, 21.8); world (34, 6, −2) | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; aligned to the selected P−1 east mouth by the design-baseline transform |
-| P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
+| P2-CP Recovery checkpoint | local (6.8, 21.8); world (35.5, 6, −2) | Safe pocket inside vestibule, 1.5 m beyond the mouth | Recovery-only checkpoint after fair failure; not the initial integration spawn |\n| P2-02 Route decision | local (9.3, 21.8); world (38, 6, −2) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (14.3, 19.3) | Short exposed path; turns north around the first column | To P2-A2; keep ≥1.2 m clear west of the column |
 | P2-A2 Exposed crossing | (22.9, 19.3) | High-risk central-apron crossing | To P2-A3; retain recovery cover nearby |
 | P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-A4; minimum clear width 2.0 m |
@@ -109,11 +109,11 @@ The parking graph uses local metres, origin at the northwest inside corner, X ea
 | P2-05A Barrier approach | (44.3, 16.8) | Clear approach south of the barrier, with the 1.3 m aperture visible ahead | To P2-05; keep the approach collision-free |
 | P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
 | P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
-| P2-EXIT Boundary | local (42.8, 1.8); world (71.5, −14, −2) | Physical escape threshold in north boundary; 3.6 m clear opening | Mission completion only after crossing actual boundary |
+| P2-EXIT Boundary | local (42.8, −0.4); world (71.5, −16.2, −2) | Far-side threshold beyond the north wall; 3.6 m clear opening | Mission completion only after crossing the gate and its wall thickness |
 
 **Graph constraints:** all edges are bidirectionally traversable unless explicitly marked otherwise; no drop, climb, jump or squeeze is implied by a line alone. For every edge, the final graph must state clear width, elevation, traversal verb, threat accessibility, sightline condition, fail/recovery behavior and whether it is part of the intended fast route. The current concept has no approved one-way drop.
 
-The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). The selected transform `X_world=X_local+28.7 / Z_world=Z_local−15.8`, at `Y=−2.0 m`, aligns the P−1 east mouth at world (34, 4.5..7.5, −2) with the parking threshold local (5.3, 21.8); the safe spawn is world (35.5, 6) and the far-side egress is (71.5, −14). The current prototype starts near `(X=34.5, Z=0)` and its builder has only a 14 m corridor half-width of 7 m; these are implementation facts to reconcile, not reasons to force the architecture to the old prototype. The selected transform remains a design baseline until scene geometry, elevation, collision and camera continuity are verified.
+The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). The selected transform `X_world=X_local+28.7 / Z_world=Z_local−15.8`, at `Y=−2.0 m`, aligns the P−1 east mouth at world (34, 4.5..7.5, −2) with the parking threshold local (5.3, 21.8); the recovery checkpoint is world (35.5, 6) and the far-side egress beyond the north wall is (71.5, −16.2). The current prototype starts near `(X=34.5, Z=0)` and its builder has only a 14 m corridor half-width of 7 m; these are implementation facts to reconcile, not reasons to force the architecture to the old prototype. The selected transform remains a design baseline until scene geometry, elevation, collision and camera continuity are verified.
 
 ### 2.5 Provisional edge and clearance contract
 
