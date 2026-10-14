@@ -9,7 +9,7 @@ extends Node
 
 const ElenaScript = preload("res://scripts/characters/elena_controller.gd")
 
-const EXPECTED_MESHES := 16
+const EXPECTED_MESHES := 21  # 16 body/outfit pieces + 4 eyelash lines + the hair cards
 const TRIANGLE_BUDGET := 30000
 const ELENA_HEIGHT := 1.7
 const HEIGHT_TOLERANCE := 0.06
@@ -74,7 +74,7 @@ func _test_model_or_graceful_fallback() -> void:
 	var box := _local_aabb(elena, meshes)
 	_expect(absf(box.size.y - ELENA_HEIGHT) <= HEIGHT_TOLERANCE, "the model is about 1.70 m tall (%.3f m)" % box.size.y)
 	_expect(absf(box.position.y) <= 0.05, "the model stands on the floor (min y = %.3f)" % box.position.y)
-	var lights := elena.visual.find_children("*", "OmniLight3D", false, false)
+	var lights: Array = elena.visual.find_children("*", "OmniLight3D", false, false)
 	_expect(lights.size() == 1, "the model path adds exactly one Aster light")
 	elena.queue_free()
 

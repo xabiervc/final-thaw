@@ -22,12 +22,20 @@ var font_scale: float = 1.0
 var colorblind_mode: int = 0
 var subtitle_size: int = 2
 var input_profile: String = "default"
+## Persisted boolean preferences (e.g. accessibility_high_contrast); kept across new games like the other options.
+var flags: Dictionary = {}
 
 func _ready() -> void:
 	load_game(0)
 
 func save_path(slot: int) -> String:
 	return "user://save_%d.json" % slot
+
+func set_flag(key: String, value: bool) -> void:
+	flags[key] = value
+
+func get_flag(key: String, default: bool = false) -> bool:
+	return bool(flags.get(key, default))
 
 func set_active_character(character_id: String) -> void:
 	if character_id == active_character_id:
@@ -81,6 +89,7 @@ func _collect() -> Dictionary:
 		"colorblind_mode": colorblind_mode,
 		"subtitle_size": subtitle_size,
 		"input_profile": input_profile,
+		"flags": flags,
 		"active_character_id": active_character_id,
 		"current_checkpoint_id": current_checkpoint_id,
 		"has_prototype": has_prototype,
@@ -100,6 +109,8 @@ func _apply(d: Dictionary) -> void:
 	colorblind_mode = int(d.get("colorblind_mode", 0))
 	subtitle_size = int(d.get("subtitle_size", 2))
 	input_profile = str(d.get("input_profile", "default"))
+	var saved_flags = d.get("flags", {})
+	flags = saved_flags if typeof(saved_flags) == TYPE_DICTIONARY else {}
 	active_character_id = str(d.get("active_character_id", "elena"))
 	current_checkpoint_id = str(d.get("current_checkpoint_id", ""))
 	has_prototype = bool(d.get("has_prototype", false))

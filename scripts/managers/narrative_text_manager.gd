@@ -8,6 +8,16 @@ static var current_locale: String = "es"
 
 signal language_changed(locale: String)
 
+## Autoload instance, so static functions can emit the instance signal.
+static var _instance: Object
+
+func _enter_tree() -> void:
+	_instance = self
+
+func _exit_tree() -> void:
+	if _instance == self:
+		_instance = null
+
 static func _initialize() -> void:
 	if texts == null:
 		set_locale("es")
@@ -23,7 +33,8 @@ static func set_locale(locale: String) -> void:
 		texts = null
 		return
 	texts = loaded
-	language_changed.emit(locale)
+	if _instance != null:
+		_instance.emit_signal("language_changed", locale)
 
 static func _text(property_name: String, fallback: String = "") -> String:
 	_initialize()

@@ -59,7 +59,7 @@ func show_message(text: String, duration: float = 8.0) -> void:
 	_shown_msec = Time.get_ticks_msec()
 	_timer.start(duration)
 
-func is_visible() -> bool:
+func is_message_visible() -> bool:
 	return _panel != null and _panel.visible
 
 func _hide_panel() -> void:
