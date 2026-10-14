@@ -31,6 +31,8 @@ var _audit_events: Array[String] = []
 var _service_lights: Array[OmniLight3D] = []
 var _lift_lower_button: MeshInstance3D
 var _lift_upper_button: MeshInstance3D
+var _lift_deck_label: Label3D
+var _safe_point: Vector3 = Vector3(3.0, 0.2, 7.0)
 var _lift_deck_button: MeshInstance3D
 var _switch_lamp: MeshInstance3D
 var _archive_status_label: Label3D
@@ -66,6 +68,10 @@ func _physics_process(_delta: float) -> void:
 	_update_interaction_prompt()
 	if not _hotspot_id.is_empty() and Input.is_action_just_pressed("interact"):
 		_interact(_hotspot_id)
+	_update_safe_point()
+	if player.global_position.y < -8.0:
+		player.global_position = _safe_point
+		player.velocity = Vector3.ZERO
 	if _outer_hatch_open and not _handoff_started and player.global_position.x < -0.25 and player.global_position.y > 2.3 and absf(player.global_position.z + 7.5) < 1.0:
 		_begin_handoff()
 	_refresh_dynamic_lift_button()
@@ -354,6 +360,8 @@ func _build_lift() -> void:
 	_label3d("LiftCallLowerLabel", "LLAMAR · NIVEL INFERIOR", Vector3(26.7, 0.72, -0.2), Color(0.95, 0.8, 0.4), 16, 0.003)
 	_lift_upper_button = _visual_box("LiftCallUpper", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 3.28, -6.1), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
 	_label3d("LiftCallUpperLabel", "LLAMAR · NIVEL SUPERIOR", Vector3(26.8, 3.72, -6.1), Color(0.95, 0.8, 0.4), 16, 0.003)
+	_lift_deck_button = _visual_box("LiftDeckButton", Vector3(0.25, 0.08, 0.2), Vector3(26.0, float(lift.platform_y) + 0.06, -3.0), _flat_material(Color(0.25, 0.9, 0.6), 0.4, 0.0, 1.2))
+	_lift_deck_label = _label3d("LiftDeckButtonLabel", "ENVIAR AL OTRO NIVEL", Vector3(26.0, float(lift.platform_y) + 0.32, -3.0), Color(0.6, 1.0, 0.75), 14, 0.0028)
 
 
 func _build_controls_and_fixtures() -> void:
@@ -363,14 +371,14 @@ func _build_controls_and_fixtures() -> void:
 	_visual_box("IsolatorBody", Vector3(0.45, 0.7, 0.38), Vector3(19.0, 3.35, -7.0), materials.get_material("steel_light"))
 	_label3d("IsolatorLabel", "AISLADOR\nRAMA ENSAYO", Vector3(19.0, 4.0, -7.0), Color(0.95, 0.72, 0.28), 18, 0.003)
 
-	_visual_box("EStatusPanelBoard", Vector3(2.5, 1.15, 0.16), Vector3(15.5, 4.1, -5.85), materials.get_material("screen_dark"))
-	_status_panel_label = _label3d("EStatusPanelText", "", Vector3(15.5, 4.08, -5.72), Color(0.78, 0.92, 0.95), 19, 0.0025)
-	_indicator_label = _label3d("EIndicatorReadout", "", Vector3(15.5, 3.55, -5.78), Color(0.94, 0.82, 0.48), 16, 0.0026)
-	_visual_box("RearmButtonBody", Vector3(0.32, 0.22, 0.18), Vector3(15.5, 3.5, -5.85), _flat_material(Color(0.2, 0.55, 0.3), 0.4, 0.0, 0.8))
-	_label3d("RearmButtonLabel", "REARME", Vector3(15.5, 3.85, -5.7), Color(0.8, 1.0, 0.8), 17, 0.003)
+	_visual_box("EStatusPanelBoard", Vector3(2.5, 1.15, 0.16), Vector3(15.5, 4.55, -8.15), materials.get_material("screen_dark"))
+	_status_panel_label = _label3d("EStatusPanelText", "", Vector3(15.5, 4.55, -8.05), Color(0.78, 0.92, 0.95), 19, 0.0025)
+	_indicator_label = _label3d("EIndicatorReadout", "", Vector3(15.5, 4.08, -8.05), Color(0.94, 0.82, 0.48), 16, 0.0026)
+	_visual_box("RearmButtonBody", Vector3(0.32, 0.22, 0.18), Vector3(15.5, 3.5, -8.15), _flat_material(Color(0.2, 0.55, 0.3), 0.4, 0.0, 0.8))
+	_label3d("RearmButtonLabel", "REARME", Vector3(15.5, 3.8, -8.05), Color(0.8, 1.0, 0.8), 17, 0.003)
 
 	_visual_box("ArchiveStatusBoard", Vector3(0.12, 0.9, 0.8), Vector3(8.55, 3.8, -7.0), materials.get_material("screen_dark"))
-	_archive_status_label = _label3d("ArchiveStatusText", "", Vector3(8.42, 3.82, -7.0), Color(0.84, 0.95, 0.88), 16, 0.0028)
+	_archive_status_label = _label3d("ArchiveStatusText", "", Vector3(8.68, 3.82, -7.0), Color(0.84, 0.95, 0.88), 16, 0.0028)
 
 	# Archive consultation console and the always-available diagnostic terminal are distinct fixtures.
 	_visual_box("ArchiveConsole", Vector3(0.9, 0.75, 0.5), Vector3(5.0, 3.38, -7.0), materials.get_material("steel"))
@@ -648,7 +656,26 @@ func _refresh_state_fixtures() -> void:
 func _refresh_dynamic_lift_button() -> void:
 	if _lift_deck_button == null or lift == null:
 		return
-	_lift_deck_button.position = Vector3(26.0, float(lift.platform_y) + 0.15, -3.0)
+	_lift_deck_button.position = Vector3(26.0, float(lift.platform_y) + 0.06, -3.0)
+	if _lift_deck_label != null:
+		_lift_deck_label.position = Vector3(26.0, float(lift.platform_y) + 0.32, -3.0)
+
+
+func _update_safe_point() -> void:
+	if not player.is_on_floor():
+		return
+	var p: Vector3 = player.global_position
+	if p.y > 2.7:
+		_safe_point = Vector3(26.0, 3.2, -6.2)
+	elif p.y < -1.55 and p.y > -3.0:
+		_safe_point = Vector3(25.0, -1.8, 7.0)
+	elif absf(p.y) < 0.45:
+		if p.x >= 23.5 and p.x <= 26.5 and p.z >= 8.0 and p.z <= 12.0:
+			_safe_point = Vector3(25.0, 0.2, 11.0)
+		elif p.x < 18.0 and p.z > 4.5:
+			_safe_point = Vector3(3.0, 0.2, 7.0)
+		else:
+			_safe_point = Vector3(25.0, 0.2, 9.0)
 
 
 func _current_audit_events() -> Array[String]:
