@@ -1,8 +1,8 @@
-# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v0.6)
+# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v0.7)
 
 **Estado:** diseño funcional cerrado para el primer slice; validación de escena y jugabilidad pendiente.  
 **Autoridad de experiencia:** FASE1_FUNCTIONAL_SPEC.md v1.0.  
-**Autoridad espacial:** FASE1_SPATIAL_GRAPH.md v0.4 y FASE1_GREYBOX_SPEC.md v1.1.  
+**Autoridad espacial:** FASE1_SPATIAL_GRAPH.md v0.5 y FASE1_GREYBOX_SPEC.md v1.2.  
 **Autoridad eléctrica:** FASE1_LOGIC_CONTRACT.md.  
 **Implementación inicial pendiente de ejecutar:** `scenes/prototypes/phase1_canonical_greybox.tscn`; criterios de comprobación en `FASE1_CANONICAL_BUILD.md`.
 
@@ -17,7 +17,7 @@
 
 Entrada → ruta sur → explanada → escalera fija → foso → activar mantenimiento → vuelta por escalera fija → plataforma elevadora → pasarela E → archivo F → vestíbulo G → exterior H.
 
-La variante B (subir antes de visitar el foso) queda retirada del slice. Mantenimiento inicia apagado; la plataforma depende de él y no hay rampa paralela. Esta dependencia hace que el jugador visite el foso sin obligarlo a leer cada pista. La escalera del foso sigue siendo funcional sin electricidad.
+La variante B (subir antes de visitar el foso) queda retirada del slice. Mantenimiento inicia apagado; la plataforma depende de él y no hay rampa paralela. Esta dependencia hace que el jugador visite el foso sin obligarlo a leer cada pista. La escalera del foso sigue siendo funcional sin electricidad. Las compuertas fijas de los dos rellanos se interbloquean con el estado del elevador: solo se abre la del rellano donde está acoplado el deck y ambas permanecen cerradas durante el movimiento.
 
 ## 3. Sectores funcionales
 
