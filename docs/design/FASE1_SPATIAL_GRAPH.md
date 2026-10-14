@@ -17,7 +17,7 @@
 | E · Control | +3 m | X 9..24, Z −9..−4,5 | Selector, aislador, panel/rearme. |
 | F · Archivo | +3 m | X 3..9, Z −9..−4,5 | Consulta y terminal. |
 | G · Esclusa | +3 m | X 0..3, Z −9..−4,5 | Salida horizontal a H. |
-| Pasarela | +3 m | X 9..26, Z −4,5..−2 | Vista de B y llegada S2. |
+| Pasarela | +3 m | X 9..26, Z −4,5..−1,5 (hueco S2 X 9..13) | Vista de B y llegada S2. |
 | H · Exterior | exterior | Oeste de G | Umbral de salida a la zona de aparcamiento/Containment. |
 
 ~~~text
@@ -37,4 +37,4 @@ No son aristas: escalera colapsada P0↔P2; escalera desde G a P0; rampa paralel
 
 Los controles conservan posiciones lógicas de referencia: selector (12,3,-7), aislador (19,3,-7), panel (15.5,4.55,-8.15), rearme (15.5,3.5,-8.15), consola (5,3,-7), indicador F (8.55,3.8,-7). Ajustar montajes, no reglas.
 
-La aceptación requiere que B quede al norte del foso, el pasillo A→B bordee el hueco sin cruzarlo, y M se lea como sala de bombas, el elevador termine en M, S2 llegue a P2, G conduzca al exterior, la escalera dañada no se atraviese, la huella D1 exista realmente en P−1 y la orientación entre cotas sea legible. Planos no validan cámara ni colisiones.
+La aceptación requiere que B quede al norte del foso, el pasillo A→B bordee el hueco sin cruzarlo, que los bordes abiertos de M/P2 y ambos lados del hueco del elevador estén protegidos, y que M se lea como sala de bombas, el elevador termine en M, S2 llegue a P2, G conduzca al exterior, la escalera dañada no se atraviese, la huella D1 exista realmente en P−1 y la orientación entre cotas sea legible. Planos no validan cámara ni colisiones.
