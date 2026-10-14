@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/prototypes/motion_chase_prototype.gd" id="1_chase"]
+
+[node name="Phase2ParkingChase" type="Node3D"]
+script = ExtResource("1_chase")
+initial_checkpoint_index = 2
