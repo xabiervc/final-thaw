@@ -15,7 +15,7 @@ signal power_changed(on: bool)
 const COLD := Color(0.78, 0.88, 1.0)
 const WARM := Color(1.0, 0.6, 0.32)
 const RED := Color(1.0, 0.18, 0.1)
-const GREEN := Color(0.25, 1.0, 0.55)
+const GREEN := Color(0.35, 1.0, 0.3)
 
 const LAMP_ENERGY := 3.0
 const VENT_ENERGY := 2.2

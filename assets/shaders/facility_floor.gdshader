@@ -57,7 +57,7 @@ void fragment() {
 	col *= 1.0 - damp * 0.12;
 	col = mix(col, col * vec3(0.6, 0.66, 0.72), puddle);
 	rough = mix(rough, rough * 0.6, damp);
-	rough = mix(rough, 0.04, puddle);
+	rough = mix(rough, 0.16, puddle);
 
 	ALBEDO = col;
 	ROUGHNESS = rough;

@@ -15,7 +15,7 @@ const NOISE_SEED := 4127  # fixed: puddles, stains and frost are identical on ev
 
 const COLD_WHITE := Color(0.78, 0.88, 1.0)
 const WARNING_RED := Color(1.0, 0.16, 0.08)
-const SAFE_GREEN := Color(0.25, 1.0, 0.55)
+const SAFE_GREEN := Color(0.35, 1.0, 0.3)
 const ASTER_CYAN := Color(0.35, 0.95, 0.9)
 const HEATER_WARM := Color(1.0, 0.55, 0.25)
 
