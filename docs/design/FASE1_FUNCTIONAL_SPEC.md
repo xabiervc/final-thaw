@@ -1,7 +1,7 @@
 # FASE1 — Especificación funcional de implementación (v1.1)
 
 **Estado:** decisiones de diseño y comportamiento cerradas para construir el primer slice. Las pruebas de escena, cámara, colisiones y jugabilidad siguen pendientes; este documento no afirma validación en Godot.  
-**Autoridad funcional:** este documento define la experiencia de Fase 1; el contrato lógico define las reglas del circuito; la arquitectura espacial y el greybox definen su geometría. Autoridad espacial: FASE1_ARCHITECTURAL_LAYOUT.md v1.0, FASE1_SPATIAL_GRAPH.md v0.6 y FASE1_GREYBOX_SPEC.md v1.3.
+**Autoridad funcional:** este documento define la experiencia de Fase 1; el contrato lógico define las reglas del circuito; la arquitectura espacial y el greybox definen su geometría. Autoridad espacial: FASE1_ARCHITECTURAL_LAYOUT.md v1.1, FASE1_SPATIAL_GRAPH.md v0.7 y FASE1_GREYBOX_SPEC.md v1.4.
 
 ## 1. Objetivo jugable
 
@@ -80,7 +80,7 @@ La consulta del archivo no es necesaria para operar los controles ni para abrir 
 
 ## 8. Alcance, criterios de aceptación y prueba
 
-Fase 1 está funcionalmente especificada y tiene una primera escena en `scenes/prototypes/phase1_canonical_greybox.tscn`; el código aún requiere ejecución y validación. La escena de destino debe seguir FASE1_ARCHITECTURAL_LAYOUT.md v1.0, el grafo v0.6 y el greybox v1.3. La escena actual refleja geometría anterior y debe reconstruirse.
+Fase 1 está funcionalmente especificada y la escena `scenes/prototypes/phase1_canonical_greybox.tscn` tiene una reconstrucción geométrica ampliada en curso. El builder incluye el foso D1/D2 continuo, límites de salas y estructura industrial, pero la geometría aún requiere ejecución y validación en Godot. La escena de destino debe seguir FASE1_ARCHITECTURAL_LAYOUT.md v1.1, el grafo v0.7 y el greybox v1.4.
 
 Aceptar la implementación solo si:
 0. Mantener `scan` 0,9 s revela únicamente las trazas de A/puente A→T/T durante 3 s; después se ocultan y el escáner entra en recarga de 4 s.
@@ -100,4 +100,4 @@ Registrar versión de Godot, commit, resolución, renderer, entrada, comandos ex
 Cerradas: cuatro cotas; S1 P0↔D, elevador P0↔M, S2 M↔P2, G horizontal a H; comportamiento seguro del elevador, circuito recuperable, indicadores, rearme, evidencia y Containment.
 
 Pendiente por definición: ninguna decisión arquitectónica o funcional dentro del slice. La escena existente aún no refleja la nueva arquitectura.  
-Pendiente por evidencia: ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. Véase `FASE1_CANONICAL_BUILD.md`.
+Pendiente por evidencia: ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. La integración con el aparcamiento de Fase 2 tampoco se considera validada. Véase `FASE1_CANONICAL_BUILD.md`.
