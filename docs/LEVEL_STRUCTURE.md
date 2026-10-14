@@ -110,7 +110,21 @@ These are design targets for the concept graph, not measured clearances in the c
 
 No jump or climb is currently required by the parking concept. Do not import the prototype's 1.8 m/3.0 m gaps into this level simply because they exist in the mechanics test. If a jump, climb or squeeze is later added, it needs an approach/landing diagram and a measured capability test.
 
-### 2.6 Checkpoint and retry contract
+### 2.6 Landmark, lighting and sound schedule
+
+All positions below use the local plan coordinates. These are design placements, not light-node coordinates for direct code copying.
+
+| ID | Approx. local position (X, Z) | Visual/audio role | Required player reading |
+|---|---:|---|---|
+| L1 / S1 Service mouth | (6.8, 21.8) | Stable cool spill light; pump/ventilation sound recedes as exterior ambience emerges | The player can orient toward the apron and identify the facility facade behind them |
+| L2 / S2 Central apron | (22.0, 15.0) | Hard, stable security-light pools; a short relay/actuator cue may signal a state change | The direct route is exposed; lighting does not imply that the illuminated route is safe |
+| L3 / S3 Technical cage | (37.1, 12.1) | Restrained amber service indicator; local electrical/mechanical hum | The covered route has a real operational purpose and is not a decorative dead end |
+| L4 / S4 Bottleneck | (44.3, 14.8) | Barrier state has both a visible position and an audible actuator/denial cue | The player understands the available aperture and bypass before committing |
+| L5 / S5 Egress landmark | (42.8, 1.8) | Clear silhouette/backlight with no overexposed bloom; gate/perimeter sound | The goal is inferable early, but crossing the boundary is still a physical action |
+
+Lighting must preserve dark adaptation and camera readability. No strobing alarm, colour-only threat cue or pitch-black required route. Critical sounds (unit entering, barrier movement, alert state) need visual equivalents; critical visual state changes need an audio or text alternative where feasible. Use sound to reinforce distance and state, never to provide the only route instruction.
+
+### 2.7 Checkpoint and retry contract
 
 The concept plan marks three provisional anchors: **S** at the service entry, **CP1** at P2-JOIN after both routes converge, and **CP2** at the egress approach before the final bottleneck. These are design locations, not current code checkpoints.
 
