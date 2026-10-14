@@ -147,6 +147,6 @@
     <text x="0" y="535" class="small">Toda alternativa debe tener un coste real.</text>
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
-  <text x="48" y="710" class="small">Concept coordinates: X east/right, Z south/down; origin at northwest inside corner. Candidate handoff transform: world X = local X + 28.7 m; world Z = local Z − 15.8 m. This aligns the entry threshold plane (local X≈5.3 m, Z≈21.8 m) with the Phase 1 mouth (world X≈34, Z≈6); the interior spawn pocket is around world (X≈35.5, Z≈6). Confirm footprint and elevation before approval.</text>
+  <text x="48" y="710" class="small">Concept coordinates only: X east/right, Z south/down; origin at northwest inside corner, 14 px/m. No world transform is locked. Fit/rotate this local plan to the Phase 1 exit selected after the stealth-to-chase route is approved; preserve the physical threshold, width, orientation and elevation.</text>
   <text x="48" y="730" class="small">Do not implement as-is without reconciliation against Phase 1 service-exit location and current prototype geometry.</text>
 </svg>
