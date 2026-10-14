@@ -11,7 +11,7 @@ La experiencia se basa en inferencia ambiental, no en una secuencia arbitraria d
 
 ## 2. Recorrido definitivo
 
-1. Entrada A en P0: observar la nave B y la columna vertical de calibración Aster.
+1. Entrar por el túnel exterior a A en P0: orientarse, observar la nave B y localizar la columna vertical de calibración Aster.
 2. Rodear el rig hasta la escalera fija S1.
 3. Bajar a D (Y=−2 m); comparar esquema y puente A→T y activar mantenimiento.
 4. Volver por S1 y llegar por la galería de servicio al elevador.
