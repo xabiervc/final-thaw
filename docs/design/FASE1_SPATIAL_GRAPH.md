@@ -33,6 +33,10 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 
 Las coordenadas de la galería de evacuación y la boca de servicio son **extensión de diseño**, no geometría ya implementada. Los planos deben reflejarlas; si el ancho o el desnivel requieren más espacio, ampliar el perímetro de forma coherente en vez de estrechar el paso.
 
+### Handoff geométrico con Fase 2
+
+La boca de servicio se sitúa aproximadamente en `(X=34, Z=6)`, con la galería de evacuación llegando desde X=28..34 y Z=4,5..7,5. El plano de parking define un sistema local separado. Su transformación candidata es `X_mundo = X_local + 27,2 m` y `Z_mundo = Z_local − 15,8 m`, que coloca el centro de entrada conceptual en `(34, 6)`. Esta transformación es una hipótesis de coordinación, no un dato de runtime: antes de aceptarla hay que comprobar el ancho/orientación de la boca, la altura de suelo y el volumen de colisión en los SVG y la escena canónica. La planta de Fase 2 no debe desplazarse para acomodar el checkpoint antiguo del prototipo.
+
 ## Grafo de circulación
 
 ~~~text
