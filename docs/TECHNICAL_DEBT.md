@@ -6,7 +6,7 @@ Track implementation debt that blocks the project from meeting its quality targe
 
 ## Architecture decision
 
-`scenes/levels/flooded_shelter_2_5d.tscn` is now the canonical Flooded Shelter implementation. See `docs/ARCHITECTURE_DECISIONS.md`.
+`scenes/levels/flooded_shelter_2_5d.tscn` is the canonical Flooded Shelter implementation. See `docs/ARCHITECTURE_DECISIONS.md`.
 
 The dynamically built `flooded_shelter.tscn` remains a systems/accessibility laboratory, but new production features should target the canonical 2.5D scene.
 
@@ -16,15 +16,23 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
 
 - **Canonical scene:** `scenes/levels/flooded_shelter_2_5d.tscn`
 - **Laboratory scene:** `scenes/levels/flooded_shelter.tscn`
-- **Problem:** The canonical scene has a stronger node/controller architecture, but lacks accessibility, localization, sound cues and the narrative interaction grace period developed in the laboratory scene.
-- **Required work:**
-  - Call `restore_from_persistence()` on controller readiness.
-  - Emit initial civilian and oxygen state.
-  - Localize civilian, HUD and end-screen text.
-  - Integrate `AccessibilityManager` into `DemoHUD`, `DemoEnd` and Elena.
-  - Add the narrative dismissal grace period.
-  - Integrate `SoundCueHUD`.
-  - Define a shared interaction contract.
+- **Status:** In progress.
+- **Completed:**
+  - Controller references are wired in the scene.
+  - Controller joins `flooded_shelter` group.
+  - Controller restores persistence and emits initial state.
+  - Elena detects `Interactable` areas and calls `try_interact()`.
+  - Civilian has a rescue interaction.
+  - Level geometry, player collision, interaction collision and win-zone collision exist.
+  - Death flow is connected safely.
+  - Demo HUD connects oxygen and initializes civilian state.
+  - Missing HUD localization methods were added.
+- **Remaining work:**
+  - Localize `PowerConsole` and `ValveStation` interaction text.
+  - Restore prop state from persistence.
+  - Add visual/audio feedback for generator, valves, gate and rescue.
+  - Port `AccessibilityManager` and `SoundCueHUD`.
+  - Add narrative dismissal grace period.
 - **Owner:** Perplexity + Claude/local Godot validation.
 - **Priority:** P0.
 
@@ -75,13 +83,24 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
 - **Owner:** Claude/local validation.
 - **Priority:** P1.
 
-### TD-011 — Elena 2.5D interaction connections are unverified
+### TD-011 — Canonical shelter interaction chain
 
-- **Files:** `scripts/entities/elena.gd`, `scenes/levels/flooded_shelter_2_5d.tscn`
-- **Problem:** `elena.gd` defines `_on_interaction_area_body_entered()` and `_on_interaction_area_body_exited()`, but the audited scene file does not show connections for those signals.
-- **Risk:** `interactable_nearby` may remain null, making `try_interact()` always fail.
-- **Action required:** Inspect the full scene/import state and add explicit signal connections or connect them in `_ready()`.
-- **Owner:** Perplexity + local Godot validation.
+- **Status:** Implemented; pending Godot verification.
+- **Completed:**
+  - Elena listens to `area_entered` / `area_exited`.
+  - Elena stores and calls `Interactable.try_interact()`.
+  - `Interactable.interact()` delegates to `try_interact()`.
+  - `InteractionArea` has a collision shape.
+  - Controller references are wired.
+  - Controller joins the expected group.
+  - Civilian is interactable.
+  - Win zone can locate the controller.
+- **Verification required:**
+  - Godot loads the scene without errors.
+  - Elena interacts with console, valves and civilian.
+  - Generator, valves, gate, rescue and exit all work.
+  - HUD oxygen and civilian state update.
+- **Owner:** Perplexity + Claude/local Godot validation.
 - **Priority:** P0.
 
 ### TD-012 — Oxygen design differs between implementations
@@ -91,6 +110,24 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
 - **Risk:** Inconsistent difficulty, tutorial pacing and player fairness.
 - **Action required:** Choose one canonical survival rule and apply it across the game.
 - **Owner:** Design decision.
+- **Priority:** P1.
+
+### TD-013 — Prop state is not restored from persistence
+
+- **Files:** `scripts/levels/props/power_console.gd`, `scripts/levels/props/valve_station.gd`, `scripts/levels/props/flood_gate.gd`
+- **Problem:** The controller restores its own state, but props do not restore `is_on`, `is_open` or visual state from `GameStateManager`.
+- **Risk:** A restored save can show an active generator or open valves as inactive.
+- **Action required:** Add restoration hooks or have the controller initialize prop state after restoring persistence.
+- **Owner:** Perplexity.
+- **Priority:** P1.
+
+### TD-014 — Prop interaction text is hardcoded
+
+- **Files:** `scripts/levels/props/power_console.gd`, `scripts/levels/props/valve_station.gd`
+- **Problem:** Console and valve prompts use hardcoded Spanish strings.
+- **Risk:** English players see Spanish UI; language changes do not update prompts.
+- **Action required:** Use `NarrativeTextManager.get_interact_power_console()` and `get_interact_valve()`.
+- **Owner:** Perplexity.
 - **Priority:** P1.
 
 ## Resolution rule
@@ -104,10 +141,12 @@ A debt item is closed only when:
 
 ## Current priority order
 
-1. TD-011: verify and repair Elena interaction connections.
-2. TD-001: bring the canonical 2.5D scene to parity.
-3. TD-012: choose the canonical oxygen rule.
-4. TD-005: define and consolidate the production player-controller contract.
-5. TD-007: port accessibility to the canonical implementation.
-6. TD-004: apply narrative grace period to the canonical implementation.
-7. TD-006 and TD-008: harden condition systems and validation.
+1. TD-011: run Godot and verify the repaired interaction chain.
+2. TD-014: localize console and valve prompts.
+3. TD-013: restore prop state from persistence.
+4. TD-001: complete canonical parity.
+5. TD-012: choose the canonical oxygen rule.
+6. TD-005: define and consolidate the production player-controller contract.
+7. TD-007: port accessibility to the canonical implementation.
+8. TD-004: apply narrative grace period to the canonical implementation.
+9. TD-006 and TD-008: harden condition systems and validation.
