@@ -67,7 +67,7 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 | Marked bay | 3.0 m wide × 5.0 m deep | Wider than a minimum stall to permit readable cover routes; validate total bay count and circulation |
 | Parked car envelope | approx. 1.9 × 4.5 m | Static cover; doors/bonnets do not create walkable space |
 | Structural column | 1.0 × 1.0 m footprint | Must not intrude into the required clear route or hide a required landing |
-| Technical cage | approx. 5.6 × 3.4 m at local centre (32.1, 12.8) | Fixed service enclosure; route B passes east/north of it with ≥1.5 m target clearance; no route through the cage |
+| Technical cage | approx. 5.6 × 3.4 m at local centre (32.1, 13.1) | Fixed service enclosure; route B passes east/north of it with ≥1.5 m target clearance; no route through the cage |
 | Main central apron | approx. 17.3 m between the two parking rows | Deliberately a service/maneuvering apron, not a standard aisle; use the technical cage, cover clusters and exposed crossing to break the open area |
 | Pedestrian pinch | target ≥1.2 m | Only at one clearly telegraphed, non-jump pinch; prefer ≥1.5 m for a fast turn |
 | Primary route | target ≥2.0 m clear | Measured between collision surfaces, not visual prop bounds |
