@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 1 implementation — design decisions closed; scene and tests not yet validated.** The active branch contains the isolated third-person motion/chase prototype v2 plus the earlier shelter and Elena-room experiments. Fase 1 now has a single implementable functional spec and reconciled spatial/greybox references.
+**Phase 1 implementation — design decisions closed; first canonical scene and integration checks are present, not yet executed.** The active branch retains the motion/chase prototype v2 and earlier comparison prototypes. Phase 1 now has one functional spec, reconciled geometry references, a canonical greybox scene and an integration test.
 
 ## Phase 1 sources of truth
 
@@ -14,15 +14,23 @@
 
 No design alternative remains open inside the Phase 1 slice. Scene, collision, camera, timing and playtest results remain unverified.
 
-## Phase 1 implementation sequence
+## Phase 1 current implementation
 
-1. Build the fixed geometry: entry, broken approach, south route, pit and always-usable fixed stairs.
-2. Build the single platform elevator at X=24.5..27.5, Z=-4.5..-1.5; remove the provisional ramp and the second platform reservation X=30..34.
-3. Port the circuit logic into isolated GDScript tests before wiring interaction UI.
-4. Build selector, isolator, state panel, rearm, terminal, archive indicator and consultation.
-5. Build the west vestibule and outer exit hatch; add the queued service-audit event and handoff to H.
-6. Run Phase 1 tests and the Phase 0 regression; record exact Godot version/commands/results.
-7. Only then integrate H with the existing motion/chase prototype. Run its v2 automated test and perform a separate hands-on playtest before claiming the chase works.
+- Canonical scene: `scenes/prototypes/phase1_canonical_greybox.tscn`.
+- Builder/interactions: `scripts/prototypes/phase1_canonical_greybox.gd`.
+- Integration test: `tests/test_phase1_canonical_greybox.tscn` / `tests/test_phase1_canonical_greybox.gd`.
+- Reused circuit model: `scripts/prototypes/phase1_circuit_model.gd`.
+- Reused service elevator: `scripts/prototypes/service_lift.gd`.
+
+The scene connects the new single-bay geometry to the circuit model, maintenance-controlled lift, archive consultation, status fixtures, and G→H transition. This is code presence, not verified behavior.
+
+## Phase 1 next steps
+
+1. Run canonical scene integration test and service-lift state-machine/physics tests; fix all parse/runtime failures.
+2. Run circuit model tests and Phase 0 regression.
+3. Play the canonical scene manually: check floor continuity, missing stair barrier, pit exit, shaft gates, rider transport, camera, reachability and indicator readability.
+4. Fix defects in the existing canonical scene before adding final art or expanding scope.
+5. Run the existing motion/chase v2 test and play that prototype manually; then confirm the G→H handoff before considering the combined slice accepted.
 
 ## Existing motion/chase prototype v2
 
