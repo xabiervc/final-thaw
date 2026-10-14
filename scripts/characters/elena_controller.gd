@@ -12,6 +12,8 @@ signal fell_off
 signal jumped
 
 @export var max_speed: float = 4.5
+@export var run_multiplier: float = 1.7
+@export var crouch_multiplier: float = 0.5
 @export var acceleration: float = 15.0
 @export var deceleration: float = 15.0
 @export var min_speed: float = 0.1
@@ -20,6 +22,12 @@ signal jumped
 @export var jump_velocity: float = 5.8
 @export var coyote_time: float = 0.12
 @export var jump_buffer_time: float = 0.14
+@export var climb_speed: float = 2.6
+@export var climb_check_distance: float = 0.55
+@export var stamina_max: float = 100.0
+@export var stamina_run_drain: float = 18.0
+@export var stamina_climb_drain: float = 26.0
+@export var stamina_regen: float = 22.0
 ## Usa el modelo MPFB texturizado en lugar del cuerpo de primitivas.
 @export var use_mpfb_model: bool = true
 
@@ -32,11 +40,16 @@ var uses_mpfb_model: bool = false
 ## Procedural pose layer (MPFB model only): lowers the bind-pose arms and animates walk, jump and landing.
 var pose = null
 
+var stamina: float = 100.0
+var is_crouching: bool = false
+var is_climbing: bool = false
+
 var _t: float = 0.0
 var _coyote_left: float = 0.0
 var _buffer_left: float = 0.0
 var _sync_left: float = 0.0
 var _material_cache: Dictionary = {}
+var _collision_shape: CollisionShape3D = null
 
 func _ready() -> void:
 	add_to_group("player")
@@ -58,6 +71,7 @@ func _build_body() -> void:
 	cs.shape = cap
 	cs.position = Vector3(0.0, 0.85, 0.0)
 	add_child(cs)
+	_collision_shape = cs
 
 	visual = Node3D.new()
 	add_child(visual)
@@ -88,8 +102,8 @@ func _build_primitive_visual() -> void:
 	_add_mesh(head, Vector3(0.0, 1.72, 0.0), skin)
 
 	var hair_mesh := SphereMesh.new()
-	hair_mesh.radius = 0.18
-	hair_mesh.height = 0.34
+	hair.radius = 0.18
+	hair.height = 0.34
 	_add_mesh(hair_mesh, Vector3(0.0, 1.76, -0.05), hair)
 
 	var pack := BoxMesh.new()
@@ -179,7 +193,35 @@ func _physics_process(delta: float) -> void:
 	var input_vec := Vector2.ZERO
 	if input_enabled:
 		input_vec = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+
+	var wants_run: bool = input_enabled and Input.is_key_pressed(KEY_SHIFT) and input_vec != Vector2.ZERO
+	var wants_crouch: bool = input_enabled and (Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_C))
+	var wants_climb: bool = input_enabled and Input.is_key_pressed(KEY_SPACE)
+
+	if is_climbing and (not wants_climb or stamina <= 0.0 or not _wall_ahead()):
+		is_climbing = false
+
+	if not is_climbing and wants_climb and _wall_ahead() and stamina > 0.0:
+		is_climbing = true
+
+	if is_climbing:
+		velocity.x = 0.0
+		velocity.z = 0.0
+		velocity.y = climb_speed
+		stamina = maxf(0.0, stamina - stamina_climb_drain * delta)
+		condition.tick(delta, false, false)
+		move_and_slide()
+		_sync_condition(delta)
+		return
+
+	is_crouching = wants_crouch and on_floor
+
 	var speed: float = max_speed * condition.speed_multiplier()
+	if is_crouching:
+		speed *= crouch_multiplier
+	elif wants_run and stamina > 0.0:
+		speed *= run_multiplier
+
 	var target := Vector3(input_vec.x, 0.0, input_vec.y) * speed
 	var horizontal := Vector3(velocity.x, 0.0, velocity.z)
 	var rate := acceleration if input_vec != Vector2.ZERO else deceleration
@@ -207,6 +249,11 @@ func _physics_process(delta: float) -> void:
 		_coyote_left = 0.0
 		jumped.emit()
 
+	if wants_run and input_vec != Vector2.ZERO and stamina > 0.0:
+		stamina = maxf(0.0, stamina - stamina_run_drain * delta)
+	else:
+		stamina = minf(stamina_max, stamina + stamina_regen * delta)
+
 	condition.tick(delta, input_vec != Vector2.ZERO, on_floor)
 
 	if input_vec != Vector2.ZERO:
@@ -223,3 +270,16 @@ func _physics_process(delta: float) -> void:
 	if global_position.y < -6.0:
 		velocity = Vector3.ZERO
 		fell_off.emit()
+
+func _sync_condition(delta: float) -> void:
+	_sync_left -= delta
+	if _sync_left <= 0.0:
+		_sync_left = 0.25
+		GameManager.elena_condition = condition.to_dict()
+
+func _wall_ahead() -> bool:
+	var space := get_world_3d().direct_space_state
+	var from := global_position + Vector3(0.0, 1.1, 0.0)
+	var dir := Vector3(facing_vector.x, 0.0, facing_vector.y).normalized()
+	var query := PhysicsRayQueryParameters3D.create(from, from + dir * climb_check_distance, collision_mask)
+	return not space.intersect_ray(query).is_empty()
