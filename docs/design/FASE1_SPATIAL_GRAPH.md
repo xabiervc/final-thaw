@@ -20,7 +20,7 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | D1 · Achique | −2 | X 10..20, Z 1..8 | Bombas, sumidero y colector. |
 | D2 · Distribución | −2 | X 20..28, Z 1..8 | Esquema, puente A→T y mantenimiento. |
 | Galería de evacuación (candidato actual) | −2 | X 28..34, Z 4,5..7,5 (propuesta no bloqueante) | Ruta posible hacia una salida exterior nueva; no se ha construido/validado. Reubicarla si la topología completa requiere otra salida. |
-| Boca de servicio (candidata) | variable | X≈34, Z≈6 (propuesta no bloqueante) | Salida exterior de servicio conectada con parking; ubicación definitiva pendiente del grafo completo. |
+| Boca de servicio alternativa | Y=−2 | X=34, Z=4,5..7,5 (3 m de apertura libre) | Salida este de la galería P−1, distinta del túnel oeste; conecta con la entrada local X=5,3, Z=21,8 del parking. |
 | Elevador | 0↔+1,5 | X 24,5..27,5, Z −4,5..−1,5 | Transporte P0↔M, habilitado por mantenimiento; lo usa Elena y lo sigue físicamente la unidad. |
 | R1 · Umbral de reacquisición | 0 | X≈29, Z≈1; transición de galería de servicio a retorno este P0 | La unidad sale del elevador detrás de Elena y la reacquiere por LOS real; inicia la carrera. Sin teletransporte ni spawn delante del jugador. |
 | Galería de observación | +1,5 | X 9..13, Z −9..−1,5 | Vista a B y llegada de S2. |
@@ -30,15 +30,15 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | F · Archivo | +3 | X 3..9, Z −9..−4,5 | Consulta con ARCHIVO estable. |
 | G · Esclusa de doble puerta | +3 | X 0..3, Z −9..−4,5 | La compuerta exterior envía la auditoría e inicia Containment; la puerta interior devuelve a F. El sigilo precede a la carrera. No es la salida final. |
 | Pasarela superior | +3 | X 9..26, Z −4,5..−1,5, con hueco S2 | Circulación y observación protegidas. |
-| Aparcamiento | exterior | Conectado a la boca seleccionada; orientación por decidir | Inicio del tramo exterior de Fase 2. |
+| Aparcamiento | Y=−2 | Coordenadas locales X=0..48, Z=0..30; mundo X=local X+28,7, Z=local Z−15,8 | Umbral mundo (34, 6); spawn seguro (35,5, 6); egress lejano (71,5, −14). |
 
-Las coordenadas de la galería de evacuación y la boca de servicio son **extensión de diseño**, no geometría ya implementada. Los planos deben reflejarlas; si el ancho o el desnivel requieren más espacio, ampliar el perímetro de forma coherente en vez de estrechar el paso.
+La galería de evacuación y la boca este quedan seleccionadas como **baseline de diseño**: galería 6 × 3 m desde X=28..34, Z=4,5..7,5; boca en X=34, Y=−2. El suelo exterior del patio de servicio comparte Y=−2, por lo que no se añade rampa/escalón en el umbral. La geometría y continuidad física siguen pendientes de verificación en Godot.
 
 ### Handoff geométrico con Fase 2
 
-La galería de evacuación y la boca exterior dibujadas en P−1 son todavía una **propuesta de coordinación**, no un punto de salida bloqueado. El contrato vigente es: la salida debe ser distinta del túnel oeste, físicamente continua desde la circulación existente de P−1 y conectada con el aparcamiento. La ruta interior completa incluye evasión silenciosa por F/E, pasarela y M; después Elena toma el elevador existente hacia P0 y la unidad la reacquiere en R1, en la transición al retorno este. La carrera continúa por P0→S1→P−1. La posición final de la boca debe derivarse después de cerrar esa ruta y dibujarse en planta y sección.
+La salida seleccionada es la boca este de P−1 en X=34, Z=4,5..7,5, Y=−2, conectada por una galería de servicio de 6 × 3 m. Es distinta del túnel oeste y comparte cota con el patio de servicio; no requiere una rampa nueva en el umbral. La ruta interior es: evasión silenciosa por F/E, pasarela y M → elevador existente a P0 → R1 → carrera por retorno este → S1/P−1 → galería de evacuación → boca este → parking.
 
-La planta de parking y sus overlays usan coordenadas locales. Se retira el transform candidato `X+28,7 / Z−15,8`: no se debe copiar al constructor ni usar para decidir la salida interior. Cuando la salida esté cerrada, medir su huella, ancho, orientación y cota; entonces derivar un único transform local-mundo y actualizar en conjunto la planta, sección, grafo y overlays de Fase 2. El checkpoint antiguo del prototipo no decide la arquitectura.
+La planta y overlays de parking usan coordenadas locales con transform seleccionado de diseño: `X_mundo = X_local + 28,7 m`, `Z_mundo = Z_local − 15,8 m`, `Y = −2,0 m`. El umbral local (5,3; 21,8) coincide con la boca P−1 (34; 6); el spawn local (6,8; 21,8) queda en mundo (35,5; 6). El egress local (42,8; 1,8) queda en mundo (71,5; −14). Validar orientación, cota, colliders y continuidad en Godot; no sustituir estas coordenadas por el checkpoint antiguo del prototipo.
 
 ## Estados de sigilo y transición a carrera (contrato provisional)
 
@@ -46,7 +46,7 @@ La planta de parking y sus overlays usan coordenadas locales. Se retira el trans
 |---|---|---|---|---|
 | Evasión silenciosa | F/E → pasarela → S2/M; áreas de trabajo conectadas | Evita líneas de visión, ruido y atención de personal que puede seguir trabajando. | Elena recorre M en silencio, baja por el elevador existente y cruza R1 en P0; la unidad sale detrás y la reacquiere por LOS real. Una alerta de personal solo marca última posición conocida. | Marcar cobertura real, campos de visión, rutas de patrulla, refugios y rutas alternativas en los planos; NPC no bloquean pasillos como props. |
 | Carrera interior | R1: transición de galería de servicio a retorno este P0, inmediatamente después del rellano del elevador | Corre por el retorno este hacia S1 y P−1, interpretando obstáculos legibles. | Cruza el umbral exterior alternativo elegido en P−1. | La unidad debe llegar por el mismo elevador y reacquirir por LOS real; R1 no teletransporta ni fuerza la carrera si la unidad no está presente. |
-| Transición a parking | Umbral exterior seleccionado | Continúa el movimiento hacia la zona de servicio/aparcamiento. | El checkpoint integrado de Phase 2 toma el control una sola vez. | Transform local-mundo derivado después de fijar la salida real; no reutilizar la transformación provisional retirada. |
+| Transición a parking | Umbral exterior seleccionado | Continúa el movimiento hacia la zona de servicio/aparcamiento. | El checkpoint integrado de Phase 2 toma el control una sola vez. | Transform de diseño seleccionado: X_mundo=X_local+28,7; Z_mundo=Z_local−15,8; verificar en escena. |
 
 ## Grafo de circulación
 
@@ -59,7 +59,7 @@ HUIDA (dos ritmos, sin rutas nuevas):
 G abre → Containment → retroceso por puerta interior → F/E → pasarela → S2 ↓ M
 → evasión silenciosa en M (STAFF-M1 + cobertura C1/O2) → elevador ↓ P0
 → R1 (X≈29, Z≈1; reacquisición por LOS real) → carrera por retorno este
-→ S1 ↓ P−1 → galería de evacuación (candidata) → boca alternativa (por seleccionar)
+→ S1 ↓ P−1 → galería de evacuación 6×3 m → boca este (X=34, Z=4,5..7,5, Y=−2)
 → aparcamiento
 
                                                                               P−1
