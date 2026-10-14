@@ -219,21 +219,19 @@ func _build_entry() -> void:
 # --- test hall (0 m): the rig housing and the Column ----------------------------------------------------
 
 func _build_hall() -> void:
-	# Test rig housing. It forces the route around it, as the layout intends.
-	box("machine", Vector3(6.0, 2.0, 6.0), Vector3(18.0, 1.0, -1.0))
-	box("steel", Vector3(5.2, 0.5, 5.2), Vector3(18.0, 2.25, -1.0))
-	box("cap", Vector3(6.04, 0.06, 6.04), Vector3(18.0, 2.03, -1.0), 0.0, false)
+	# Test rig housing: low and compact, so it forces a detour without hiding the hall from the camera.
+	box("machine", Vector3(5.0, 1.6, 4.0), Vector3(18.0, 0.8, -1.0))
+	box("steel", Vector3(4.2, 0.4, 3.2), Vector3(18.0, 1.8, -1.0))
+	box("cap", Vector3(5.04, 0.06, 4.04), Vector3(18.0, 1.63, -1.0), 0.0, false)
 	for i in 4:
-		var vx := 16.1 + 1.25 * float(i)
-		box("gen_vent", Vector3(0.9, 1.0, 0.02), Vector3(vx, 0.9, 2.02), 0.0, false)
+		var vx := 16.3 + 1.1 * float(i)
+		box("gen_vent", Vector3(0.8, 0.9, 0.02), Vector3(vx, 0.8, 1.02), 0.0, false)
 		for s in 5:
-			box("cap", Vector3(0.9, 0.025, 0.012), Vector3(vx, 0.55 + 0.17 * float(s), 2.03), 0.0, false)
-	box("hazard", Vector3(6.6, 0.008, 0.2), Vector3(18.0, 0.006, 2.5), 0.0, false)
-	cylinder("pipe", 0.16, 2.4, Vector3(16.0, 3.7, -2.0))
-	cylinder("pipe", 0.16, 2.4, Vector3(20.0, 3.7, 0.0))
-	cylinder("beacon_red", 0.1, 0.18, Vector3(18.0, 2.65, -1.0), "y", false)
-	solid(Vector3(6.0, 2.6, 6.0), Vector3(18.0, 1.3, -1.0))
-	_light(Vector3(18.0, 3.2, -1.0), WARNING_RED, 0.45, 5.0)
+			box("cap", Vector3(0.8, 0.025, 0.012), Vector3(vx, 0.5 + 0.15 * float(s), 1.03), 0.0, false)
+	box("hazard", Vector3(5.6, 0.008, 0.2), Vector3(18.0, 0.006, 1.5), 0.0, false)
+	cylinder("beacon_red", 0.1, 0.18, Vector3(18.0, 2.1, -1.0), "y", false)
+	solid(Vector3(5.0, 2.0, 4.0), Vector3(18.0, 1.0, -1.0))
+	_light(Vector3(18.0, 2.8, -1.0), WARNING_RED, 0.45, 5.0)
 	# The Column: the Aster calibration column, a landmark visible from every level.
 	var cx := 18.0
 	var cz := -8.6

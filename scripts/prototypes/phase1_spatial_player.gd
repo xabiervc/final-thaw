@@ -4,8 +4,9 @@ extends "res://scripts/characters/elena_controller.gd"
 ## so both do not fight over the same bones.
 const LANDING_TIME := 0.2
 const MOVE_SPEED := 4.2
+## Default camera elevation: steeper than before (about 31 degrees) so low volumes hide less of the floor behind them.
 var orbit_yaw: float = -0.21
-var orbit_pitch: float = -0.35
+var orbit_pitch: float = -0.55
 @export var mouse_sensitivity: float = 0.002
 var pivot: Node3D
 var arm: SpringArm3D
@@ -55,7 +56,7 @@ func _input(event: InputEvent) -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		orbit_yaw -= event.relative.x * mouse_sensitivity
-		orbit_pitch = clampf(orbit_pitch - event.relative.y * mouse_sensitivity, -1.0, 0.1)
+		orbit_pitch = clampf(orbit_pitch - event.relative.y * mouse_sensitivity, -1.2, 0.1)
 
 func _physics_process(delta: float) -> void:
 	var input_vec := Input.get_vector("move_left", "move_right", "move_up", "move_down")

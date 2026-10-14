@@ -1,7 +1,8 @@
 extends Node3D
 ## Phase 1 spatial review: six rooms on four levels joined by fixed stairs (layout in phase1_layout.gd).
 ## Reuses the art team's FacilityMaterials, prompt HUD and wall dither, and Elena's animations. The rooms are dressed by
-## phase1_dressing.gd. No circuit, archive extraction, pursuit or containment. The lift is not installed.
+## phase1_dressing.gd. Review views: F4 top-down, F5 side cut. No circuit, archive extraction, pursuit or containment.
+## The lift is not installed.
 const Layout = preload("res://scripts/prototypes/phase1_layout.gd")
 const Player = preload("res://scripts/prototypes/phase1_spatial_player.gd")
 const Dressing = preload("res://scripts/prototypes/phase1_dressing.gd")
@@ -36,6 +37,9 @@ var shortcut_body: StaticBody3D
 var shortcut_open: bool = false
 var safe_point: Vector3 = Vector3(2.0, 0.2, 1.0)
 var current_room: String = ""
+var overview_camera: Camera3D
+var side_camera: Camera3D
+var view_mode: String = "player"
 
 func _ready() -> void:
 	_build_environment()
@@ -51,15 +55,45 @@ func _ready() -> void:
 	player = Player.new()
 	player.position = Layout.ROOMS["entry"]["spawn"]
 	add_child(player)
+	overview_camera = _make_review_camera(Vector3(22.0, 52.0, 3.0), Vector3(22.0, 0.0, 3.0), Vector3(0.0, 0.0, -1.0))
+	side_camera = _make_review_camera(Vector3(22.0, 9.0, 70.0), Vector3(22.0, 2.0, 0.0), Vector3.UP)
 	hud = HudScript.new()
 	add_child(hud)
 	hud.call("set_objective", "OBJETIVO  /  Accede al registro del archivo")
-	hud.call("set_hint", "Prueba espacial: recorre las salas y los niveles. El ascensor no está instalado.")
+	hud.call("set_hint", "Prueba espacial · F4 vista elevada · F5 corte lateral")
 
 func _exit_tree() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
+func _make_review_camera(pos: Vector3, target: Vector3, up: Vector3) -> Camera3D:
+	var cam := Camera3D.new()
+	cam.fov = 50.0
+	add_child(cam)
+	cam.global_position = pos
+	cam.look_at(target, up)
+	return cam
+
+## mode: "player", "overview" (top-down) or "side" (cut from the south). Review modes show every wall faded.
+func _set_view(mode: String) -> void:
+	view_mode = mode
+	if mode == "overview":
+		overview_camera.make_current()
+	elif mode == "side":
+		side_camera.make_current()
+	else:
+		var player_view = player.get("view")
+		if player_view != null:
+			(player_view as Camera3D).make_current()
+
 func _unhandled_input(event: InputEvent) -> void:
+	var key := event as InputEventKey
+	if key != null and key.pressed and not key.echo:
+		if key.physical_keycode == KEY_F4:
+			_set_view("player" if view_mode == "overview" else "overview")
+			return
+		if key.physical_keycode == KEY_F5:
+			_set_view("player" if view_mode == "side" else "side")
+			return
 	if event.is_action_pressed("pause"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -109,9 +143,17 @@ func _build_shortcut_door() -> void:
 
 # --- Wall dither: walls between the camera and Elena fade out through the shared wall shader -------------
 
+func _apply_fade(group: Dictionary, goal: float, delta: float) -> void:
+	group["amount"] = move_toward(float(group["amount"]), goal, FADE_SPEED * delta)
+	(group["material"] as ShaderMaterial).set_shader_parameter("dither_fade", group["amount"])
+
 func _update_occluders(delta: float) -> void:
 	var camera := get_viewport().get_camera_3d()
 	if camera == null or fade_groups.is_empty():
+		return
+	if view_mode != "player":
+		for group in fade_groups:
+			_apply_fade(group, FADED, delta)
 		return
 	var hit_groups: Array = []
 	var excluded: Array[RID] = [player.get_rid()]
@@ -130,10 +172,7 @@ func _update_occluders(delta: float) -> void:
 		if body_group.has(collider):
 			hit_groups.append(body_group[collider])
 	for index in fade_groups.size():
-		var group: Dictionary = fade_groups[index]
-		var goal := FADED if hit_groups.has(index) else 0.0
-		group["amount"] = move_toward(float(group["amount"]), goal, FADE_SPEED * delta)
-		(group["material"] as ShaderMaterial).set_shader_parameter("dither_fade", group["amount"])
+		_apply_fade(fade_groups[index], FADED if hit_groups.has(index) else 0.0, delta)
 
 # --- Construction ----------------------------------------------------------------------------------
 
