@@ -98,7 +98,8 @@ The following coordinates are derived from the concept plan only. Origin is the 
 | P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (13.9, 19.3) | Short exposed path | To P2-A2; limited cover |
 | P2-A2 Exposed crossing | (22.9, 21.8) | High-risk crossing | To P2-A3; retain recovery cover nearby |
-| P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-JOIN; minimum clear width 2.0 m |
+| P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-A4; minimum clear width 2.0 m |
+| P2-A4 South-east turn | (40.7, 19.6) | Exposed 90-degree turn south of O2 before convergence | To P2-JOIN; keep 2.0 m clear and visible from approach |
 | P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
 | P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
 | P2-B3 Technical cage | (37.1, 12.1) | Service-side traversal | To P2-JOIN; must not be a dead end |
