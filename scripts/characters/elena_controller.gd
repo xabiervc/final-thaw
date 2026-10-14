@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 const B = preload("res://scripts/components/build_util.gd")
 const ConditionScript = preload("res://scripts/components/character_condition.gd")
+const PoseScript = preload("res://scripts/characters/elena_procedural_pose.gd")
 
 ## Modelo con textura de Elena (MPFB). Si no se puede cargar, se usa el cuerpo procedural.
 const MPFB_MODEL_PATH := "res://assets/models/lab_ref/ref_elena_mpfb.glb"
@@ -28,6 +29,8 @@ var visual: Node3D = null
 var condition = null
 ## True si el modelo MPFB se cargo; false si se usa el cuerpo de primitivas.
 var uses_mpfb_model: bool = false
+## Procedural pose layer (MPFB model only): lowers the bind-pose arms and animates walk, jump and landing.
+var pose = null
 
 var _t: float = 0.0
 var _coyote_left: float = 0.0
@@ -126,6 +129,10 @@ func _build_mpfb_visual() -> bool:
 	visual.add_child(model)
 	_dress_model(model)
 	_add_aster_glow(Vector3(-0.16, 1.1, 0.4), 0.7, 1.8)
+	pose = PoseScript.new()
+	pose.name = "ProceduralPose"
+	add_child(pose)
+	pose.setup(self, model)
 	uses_mpfb_model = true
 	return true
 
