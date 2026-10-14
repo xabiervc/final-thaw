@@ -1,6 +1,6 @@
 # Phase 1 — Independent greybox specification (v1.1)
 
-**Status:** geometry closed for initial construction. Not yet built or validated in Godot. See FASE1_FUNCTIONAL_SPEC.md v1.0 for exact interactions and progression. This document does not authorize final art, campaign integration, save migration, or changes to existing contracts.
+**Status:** geometry decisions closed; first canonical greybox code now exists in `scenes/prototypes/phase1_canonical_greybox.tscn` and `scripts/prototypes/phase1_canonical_greybox.gd`. It has not been executed or validated in Godot. See FASE1_FUNCTIONAL_SPEC.md v1.0 for exact interactions and progression. This document does not authorize final art, campaign integration, save migration, or changes to existing contracts.
 
 ## Coordinates and construction rules
 
@@ -85,6 +85,8 @@ The former shortcut doorway at the west cabin partition remains, but the west ve
 - Safe points: entrance, pit stair top, platform landings after arrival. The platform must always permit exit to a reachable landing.
 
 ## Construction and acceptance gate
+
+Initial implementation is present but unverified. Run `docs/design/FASE1_CANONICAL_BUILD.md` before treating any geometry or interaction as accepted.
 
 Build in this order: main floors and barriers; pit/stairs; platform shaft/landing gates; upper walkway and cabin openings; controls and status fixtures; G vestibule and outer hatch. Use plain materials and debug labels before art.
 
