@@ -1,6 +1,6 @@
 # FINAL THAW — Arquitectura espacial de Fase 1 (v1.1)
 
-**Estado:** distribución arquitectónica de referencia cerrada; primera reconstrucción geométrica en código ampliada, pero pendiente de ejecutar y validar en Godot. Los SVG son planos de diseño, no evidencia de colisiones o recorrido validado.
+**Estado:** topología espacial aprobada conceptualmente; reconstrucción geométrica ampliada en código, pendiente de ejecutar y validar en Godot. Los SVG son planos de diseño, no evidencia de colisiones o recorrido validado. Las causas concretas de la respuesta de Helix, la percepción de Elena y el destino posterior siguen siendo decisiones narrativas propuestas, no requisitos aprobados.
 
 ## Decisión
 
@@ -49,11 +49,15 @@ No añadir rampas, elevadores adicionales ni conexiones secretas. Las rutas vert
 
 No añadir coleccionables, llaves, puzzles nuevos ni salas de relleno. Taller, galería y sala de bombas tienen función industrial/orientativa, no nuevas barreras de progreso.
 
-## Recorrido narrativo
+## Recorrido espacial y beats narrativos
 
-A → B → S1 ↓ D → S1 ↑ B → galería de servicio → elevador ↑ M → bombas/galería → S2 ↑ E → F → G → H → aparcamiento/Containment.
+**Recorrido físico de referencia:** exterior → túnel → A → B → S1 ↓ D1/D2 → S1 ↑ → perímetro sur del foso → retorno este → galería de servicio → elevador ↑ M → bombas/galería → S2 ↑ E → F → G → H → aparcamiento.
 
-Mantenimiento empieza apagado. Al activarlo se encienden luces y se habilita el elevador; el circuito de recuperación permanece independiente. El escáner revela continuidad A→T, pero no señala controles. F solo permite consulta con suministro estable; consultar no es extracción. Cruzar G transmite SERVICE_OVERRIDE y, si procede, RESTRICTED_RECORD_READ; Helix inicia Containment.
+El regreso desde D1/D2 no debe interpretarse como volver a cruzar B: desde el rellano superior de S1 se rodea el foso por el perímetro sur y el pasillo este hasta la galería de servicio. Esta arista debe existir en la geometría y las colisiones, no solo en el plano.
+
+**Beats funcionales acordados:** mantenimiento empieza apagado; activarlo en D enciende luces y habilita el elevador, sin alimentar la protección de recuperación. El escáner revela continuidad A→T, no los controles. F solo permite consulta con suministro estable; consultar no es extracción.
+
+**Pendiente de aprobación narrativa:** el evento exacto que Helix recibe al salir, si la lectura de F se audita, cómo percibe Elena la respuesta, el momento y la forma de activar Containment y el destino posterior. `SERVICE_OVERRIDE`, `RESTRICTED_RECORD_READ`, una señal de sincronización y la patrulla en H son propuestas existentes en documentos/prototipos; no deben presentarse como canon ni ampliarse hasta aprobar el beat narrativo. La transición física G→H sí pertenece a la arquitectura espacial.
 
 ## Planos existentes
 
