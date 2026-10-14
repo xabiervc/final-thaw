@@ -34,6 +34,9 @@ const RETEXTURE := {
 }
 const GEM_REST_Y := 1.0  # the greybox gem floats around this height
 
+## Multiplier on the mirrored emission energy; a host level with a darker light rig can lower it (1.0 = unchanged).
+var emission_scale: float = 1.0
+
 ## One entry per dressed component: {node, mirrors:[{src, dst}], gem, gem_src, lever_arm, door_slab}
 var _entries: Array = []
 
@@ -164,7 +167,7 @@ func _sync(entry: Dictionary) -> void:
 			to.albedo_color = from.albedo_color
 			to.emission_enabled = from.emission_enabled
 			to.emission = from.emission
-			to.emission_energy_multiplier = from.emission_energy_multiplier
+			to.emission_energy_multiplier = from.emission_energy_multiplier * emission_scale
 	var gem := entry["gem"] as Node3D
 	var gem_src := entry["gem_src"] as Node3D
 	if gem != null and is_instance_valid(gem_src):
