@@ -139,9 +139,9 @@
     <text x="0" y="327" class="small">Propuesta espacial, no plano de obra.</text>
     <text x="0" y="346" class="small">Dimensiones por validar con cápsula,</text>
     <text x="0" y="363" class="small">cámara, colisiones y flujo real.</text>
-    <text x="0" y="393" class="label">DECISIONES ABIERTAS</text>
-    <text x="0" y="414" class="small">• Cota y pendiente del acceso</text>
-    <text x="0" y="432" class="small">• Altura de cubierta / pilares</text>
+    <text x="0" y="393" class="label">VERIFICACIÓN PENDIENTE</text>
+    <text x="0" y="414" class="small">• Verificar cota Y=−2 y conexión física</text>
+    <text x="0" y="432" class="small">• Altura de racks y cámara</text>
     <text x="0" y="450" class="small">• Footprints definitivos de obstáculos</text>
     <text x="0" y="468" class="small">• Ruta final del perseguidor</text>
     <text x="0" y="496" class="label">REGLAS</text>
@@ -149,6 +149,7 @@
     <text x="0" y="535" class="small">Toda alternativa debe tener un coste real.</text>
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
-  <text x="48" y="710" class="small">Selected design baseline: Phase 1 P−1 service gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m. Parking local coordinates: X east/right, Z south/down, origin northwest corner of the combined facade/site plan, 14 px/m; the 48 × 30 m envelope is measured to the inside faces of the north/south/east perimeter walls. Transform: world X = local X + 28.7 m; world Z = local Z − 15.8 m. The 3.0 m threshold plane (local X≈5.3, Z≈21.8) maps to world (34, 6); recovery checkpoint (local X≈6.8, Z≈21.8) maps to (35.5, 6); entry handoff remains at the threshold (34, 6); far egress threshold (local X≈42.8, Z≈−0.4) maps to (71.5, −16.2). Pavement datum Y=−2.0 m. Verify against scene geometry before implementation.</text>
-  <text x="48" y="730" class="small">Local concept only. Do not force Phase 1 to match this entrance coordinate; derive the world transform from the final selected exit after the complete route is approved.</text>
+  <text x="48" y="700" class="small">Coordinate frame: X east/right, Z south/down; origin at NW corner of combined facade/site plan; 48 × 30 m measured to inside faces of north/south/east walls.</text>
+  <text x="48" y="720" class="small">Selected transform: X_world=X_local+28.7, Z_world=Z_local−15.8, Y=−2.0 m. Entry handoff (34,6,−2); recovery checkpoint (35.5,6,−2), not initial spawn; far egress beyond north wall (71.5,−16.2,−2).</text>
+  <text x="48" y="740" class="small">Clearance targets: O1 bypass ≥1.2 m; O2 route ≥1.5 m; service-cage bypass ≈2.6 m; O3 aperture 1.3 × 2.2 m. Verify capsule, camera and scene before implementation.</text>
 </svg>
