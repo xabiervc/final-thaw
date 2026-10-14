@@ -58,7 +58,7 @@ The circuit reference model remains authoritative and unchanged. Its maintenance
 - Reading the restricted record adds the in-session knowledge flag `RESTRICTED_RECORD_READ`; it does not send the audit or start Containment.
 - Opening the exterior leaf of G while `SERVICE_OVERRIDE` is queued sends the audit, marks it sent and starts Containment exactly once. Repeated interaction/open callbacks must not send duplicate audits or restart the chase.
 - The event must be visible/audible through door motion, a state-light change and the containment cue. No forced camera, unskippable line or direct scene transition.
-- The recovery unit enters from the exterior side of G; Elena retreats through the inner leaf toward F/E. The chase then follows the existing spatial graph back via S2, M, the existing lift to P0, S1 to P−1 and the new service evacuation gallery.
+- The recovery unit enters from the exterior side of G; Elena retreats through the inner leaf toward F/E. The player first evades quietly through the observation walkway, S2/M and the staffed pump work area. Elena then descends via the existing lift to P0; the recovery unit follows through the same lift and reacquires her at R1, the exposed transition from service gallery to east return corridor (X≈29, Z≈1). The running chase continues to S1, P−1 and the selected alternative service exit.
 - If G is opened before `SERVICE_OVERRIDE` is queued, the door must provide a diegetic unavailable/locked response; it must not start Containment. Do not invent an alternate trigger. Restarting the mission resets both mission flags; no flag is written to persistent save data.
 
 | Event | Precondition | Mission-state result | Circuit-model result | Player-facing result |
