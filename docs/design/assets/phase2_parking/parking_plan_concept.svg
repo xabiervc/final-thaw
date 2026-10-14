@@ -88,14 +88,14 @@
     <rect x="336" y="145" width="52" height="36" class="service"/><text x="362" y="167" class="tiny" text-anchor="middle">COVER</text>
     <rect x="424" y="215" width="58" height="34" class="service"/><text x="453" y="236" class="tiny" text-anchor="middle">COVER</text>
     <!-- O1 obstruction -->
-    <rect x="177" y="173" width="27" height="30" class="obstacle"/><text x="190" y="191" class="tiny" text-anchor="middle">O1</text>
+    <rect x="173" y="173" width="27" height="30" class="obstacle"/><text x="186" y="191" class="tiny" text-anchor="middle">O1</text>
     <!-- provisional threat sightline and functional light overlay; conceptual only -->
     <path d="M330 190 L250 151 L250 229 Z" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-width="1.2" stroke-dasharray="4 4"/>
     <path d="M500 190 L425 151 L425 229 Z" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-width="1.2" stroke-dasharray="4 4"/>
     <ellipse cx="245" cy="190" rx="64" ry="36" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <ellipse cx="445" cy="190" rx="70" ry="38" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <!-- routes -->
-    <path d="M74 305 L95 305 L150 305 L195 270 L270 270 L320 305 L405 305 L475 275 L520 275 L520 235 L570 235 L620 207 L620 70 L599 25" class="routeA"/>
+    <path d="M74 305 L95 305 L150 305 L195 270 L270 270 L320 305 L405 305 L475 275 L535 275 L570 275 L570 235 L620 207 L620 70 L599 25" class="routeA"/>
     <path d="M74 305 L95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L450 135 L500 135 L520 170 L540 200 L570 235 L620 207 L620 70 L599 25" class="routeB"/>
     <!-- threat path -->
     <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 190 L415 190 L500 190 L560 205" class="threat"/>
