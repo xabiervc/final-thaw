@@ -64,7 +64,7 @@
 | P2-AI-02 | Threat cannot use undocumented shortcuts or cross solid obstacles | Threat navigation overlay | Walkthrough of all enemy/player routes |
 | P2-FEEDBACK-01 | Alert/detection is legible and fair | Audio/visual feedback spec | Verify HUD, audio and state transitions in play |
 | P2-SCAN-01 | Scanner supports tactical inference without revealing the route | Scanner timing and information table | Playtest charge/reveal/cooldown usefulness |
-| P2-NARR-01 | Each beat reveals or reinforces one specific story fact | Beat-to-information table in `LEVEL_STRUCTURE.md` | Comprehension check after playtest |
+| P2-NARR-01 | Each beat reveals or reinforces one specific story fact; the final beat shows containment active in the exterior sector without naming an operator | Beat-to-information table in `LEVEL_STRUCTURE.md` and N2-01…N2-06 script table in `narrative_complete.md` | Comprehension check after playtest; verify final subtitle is skippable and never interrupts control |
 | P2-NARR-02 | Proposed Helix coordination remains explicitly provisional | Narrative decision log / wording in docs | Review all VO, signage and props for canon overreach |
 | P2-ACCESS-01 | Critical information is not colour-only or audio-only | Accessibility checklist | Keyboard/controller, visual audio alternatives and subtitles review |
 | P2-RECOVERY-01 | Failure retries from a fair checkpoint and preserves agreed state | Checkpoint/state contract | Repeated catch/fall/restart integration tests |
