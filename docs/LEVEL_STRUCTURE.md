@@ -153,7 +153,7 @@ The concept plan marks three provisional anchors: **S** at the service entry, **
 
 | Anchor | Local coordinate (X, Z) | Purpose | Activation rule |
 |---|---:|---|---|
-| S / entry spawn pocket | (6.8, 21.8) local; target world (35.5, 6) | Safe spawn point 1.5 m inside the 3 m service threshold | Set by the integrated scene; do not spawn on the threshold collider or replay the standalone corridor |
+| P2-CP / recovery checkpoint | local (6.8, 21.8); world (35.5, 6, −2) | Recovery-only anchor 1.5 m inside the 3 m service threshold | Not the initial spawn. Preserve the entry transform at P2-01; use CP only after fair failure |
 | CP1 | (40.7, 16.8) | Avoid replaying both route branches after the player has completed the main traversal | Activate only after Elena physically enters the convergence pocket |
 | CP2 | (44.3, 5.0) | Keep the final bottleneck/egress attempt short after the player reaches the last safe approach | Activate before the final committed crossing, not after an untelegraphed hazard |
 
@@ -305,7 +305,7 @@ Any voice line must have a trigger, exact text or approved intent, delivery timi
 The canonical handoff is:
 `G → quiet evasion through F/E and potentially occupied work areas → mapped reacquisition threshold → running chase through service circulation → approved alternative exterior exit → parking entry → parking chase → far-side egress`.
 
-This is the intended narrative/spatial sequence. The existing parking prototype's standalone start and checkpoints are test infrastructure, not proof of this integrated route. The integrated scene must spawn Elena at the parking entry checkpoint and must not replay the earlier corridor or reset mission evidence without an explicit persistence decision.
+This is the intended narrative/spatial sequence. The existing parking prototype's standalone start and checkpoints are test infrastructure, not proof of this integrated route. The integrated scene must preserve Elena's world transform/orientation at P2-01 through the physical handoff; P2-CP is recovery-only, not the initial spawn. Do not replay the earlier corridor or reset mission evidence without an explicit persistence decision.
 
 ## 7. Functional contract and failure recovery
 
