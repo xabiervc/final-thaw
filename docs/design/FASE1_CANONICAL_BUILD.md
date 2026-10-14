@@ -1,22 +1,31 @@
 # Phase 1 — Canonical build and verification
 
-**Estado:** reconstrucción de la escena canónica implementada en GDScript y recurso .tscn; ejecución de pruebas y playtest pendientes.
+**Estado:** primera reconstrucción arquitectónica ampliada en GDScript y recurso .tscn; ejecución de pruebas y playtest pendientes. No declarada como greybox aceptado.
 
 ## Autoridad
 
-FASE1_ARCHITECTURAL_LAYOUT.md v1.0; FASE1_SPATIAL_GRAPH.md v0.6; FASE1_GREYBOX_SPEC.md v1.3; FASE1_FUNCTIONAL_SPEC.md v1.1; FASE1_LOGIC_CONTRACT.md (sin cambios); mapa v0.8.
+FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_architecture/; FASE1_SPATIAL_GRAPH.md v0.7; FASE1_GREYBOX_SPEC.md v1.4; FASE1_FUNCTIONAL_SPEC.md v1.1; FASE1_LOGIC_CONTRACT.md (sin cambios); mapa de progresión v0.9.
 
-## Estado de la escena
+## Cambios de esta reconstrucción
 
-El builder canónico construye ahora las cuatro cotas, M/S2, salas funcionales y una esclusa G horizontal. La instancia del elevador usa Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. Se ha añadido un recurso .tscn explícito y el test de integración lo instancia. Reutiliza circuito, jugador, HUD y materiales; no modifica persistencia ni inputs.
+- P0 conserva su perímetro, acceso, nave, taller y rutas contractuales; se añaden particiones con pasos anchos, bandejas, armarios y estructura de cubierta.
+- P−1 ahora reserva un hueco continuo para D1/D2 (X=10..28, Z=1..8), con suelo de mantenimiento, bombas/sumidero, señalización y protección perimetral. S1 conserva su abertura.
+- M/P2 mantienen sus cotas, huecos de elevador y S2, pasarela, archivo, control y esclusa G.
+- La instancia de misión usa el elevador Y=0→1,5; el componente genérico y sus tests de 3 m no cambian.
+- Se conservan circuito, jugador, HUD, rutas de recursos, inputs y guardado; no se altera el contrato lógico.
+
+## Límites
+
+La ampliación geométrica no prueba que las paredes, barandillas, cubierta o huecos sean transitables/correctos. Godot no está disponible en el entorno de edición; la ejecución y el recorrido manual siguen pendientes. El aparcamiento de Fase 2 está definido como continuidad de diseño, no como escena integrada y validada.
 
 ## Orden de verificación
 
 1. Ejecutar test de circuito, elevador genérico, transporte, integración canónica y regresión Fase 0.
 2. Corregir errores de parseo/runtime antes de ampliar el slice.
-3. Recorrer A→B→D→P0→M→S2→E→F→G→H a mano.
+3. Recorrer A→B→D1/D2→B→galería de servicio→M→S2→E→F→G→H a mano.
 4. Revisar cámara, sightlines, colisiones, anchos, puertas y pérdida de energía.
-5. Validar el prototipo motion/chase v2 por separado y después la transición combinada.
+5. Comprobar que el umbral exterior ofrece contexto para iniciar la escena de aparcamiento/Containment.
+6. Validar el prototipo motion/chase v2 por separado y después la transición combinada.
 
 ~~~sh
 godot --headless --path . res://tests/test_phase1_circuit_model.tscn
@@ -26,4 +35,4 @@ godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
 godot --headless --path . res://tests/test_phase_0.tscn
 ~~~
 
-El test genérico puede usar 3 m; el test de misión debe verificar 1,5 m, S2, puertas y pérdida de energía. Godot no está instalado en el entorno de edición; registra versión, commit, comandos, salida y exit code al ejecutar localmente. Test automático no sustituye playtest.
+El test genérico puede usar 3 m; el test de misión debe verificar 1,5 m, S2, puertas y pérdida de energía. Registrar versión de Godot, commit, comandos, salida y exit code al ejecutar localmente. Test automático no sustituye playtest.
