@@ -53,22 +53,24 @@ La ampliación geométrica no prueba que las paredes, barandillas, cubierta o hu
 
 ## Regresión automatizada
 
-Se añadió `.github/workflows/godot-headless-tests.yml` para importar recursos y ejecutar Fase 0, el vertical slice existente, contrato de circuito, elevador genérico, transporte y la integración canónica en Godot 4.7.1. El resultado de GitHub Actions no se ha verificado durante esta revisión; no se declara CI verde sin consultar el run real.
+Se añadió `.github/workflows/godot-headless-tests.yml` para importar recursos y ejecutar Fase 0, el vertical slice existente, contrato de circuito, elevador genérico, transporte, integración canónica y el smoke test del checkpoint de aparcamiento en Godot 4.7.1. El resultado de GitHub Actions no se ha verificado durante esta revisión; no se declara CI verde sin consultar el run real.
 
 ## Orden de verificación
 
-1. Ejecutar test de circuito, elevador genérico, transporte, integración canónica y regresión Fase 0.
+1. Ejecutar test de circuito, elevador genérico, transporte, integración canónica, checkpoint de aparcamiento, vertical slice previo y regresión Fase 0.
 2. Corregir errores de parseo/runtime antes de ampliar el slice.
 3. Recorrer A→B→D1/D2→B→galería de servicio→M→S2→E→F→G→H a mano.
 4. Revisar cámara, sightlines, colisiones, anchos, puertas y pérdida de energía.
 5. Comprobar que G carga `phase2_parking_chase.tscn` en el checkpoint de entrada al aparcamiento (X=34,5), no al inicio del prototipo standalone, y que la unidad no detecta a Elena automáticamente al cargar.
-6. Validar el prototipo motion/chase v2 por separado y después la transición combinada.
+6. Ejecutar el smoke test del checkpoint de aparcamiento; validar el prototipo motion/chase v2 por separado y después la transición combinada.
 
 ~~~sh
 godot --headless --path . res://tests/test_phase1_circuit_model.tscn
 godot --headless --path . res://tests/test_service_lift.tscn
 godot --headless --path . res://tests/test_service_lift_transport.tscn
 godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
+godot --headless --path . res://tests/test_phase2_parking_entry.tscn
+godot --headless --path . res://tests/test_vertical_slice.tscn
 godot --headless --path . res://tests/test_phase_0.tscn
 ~~~
 
