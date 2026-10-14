@@ -30,7 +30,7 @@ The architecture should communicate:
 - a far-side egress target that is visible or inferable early, but not immediately safe;
 - one or more service features (loading shutter, maintenance cage, drainage channel, barrier or security kiosk) that give the site a specific industrial identity.
 
-**Continuity rule:** the selected Phase 1 exit and the parking entry must connect physically and visually, but their world coordinates are not a design authority and must not dictate the interior route. Phase 1 may leave through a different service route and a different exterior mouth if that produces a stronger stealth-to-chase sequence. Lock the selected exit, local coordinate frames, transform and elevation only after the complete room route is approved. Never teleport Elena into the parking lot.
+**Continuity rule — selected design baseline:** the Phase 1 P−1 gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m, through a 3 m opening. The parking vestibule begins at the same threshold; the selected transform is world X=local X+28.7 m, world Z=local Z−15.8 m, Y=−2.0 m. This maps the threshold to local (5.3, 21.8), safe spawn to world (35.5, 6), and far-side egress to (71.5, −14). These are design-baseline coordinates, not runtime evidence. Validate the actual gallery, opening, elevation, colliders and camera in Godot; if the scene differs, update all affected drawings together. Never teleport Elena into the parking lot.
 
 ### 2.2 Greybox scale and coordinate contract
 
@@ -59,7 +59,7 @@ These are design targets, not verified measurements. Any deviation must be recor
 
 ### 2.2.1 Provisional dimension schedule
 
-The SVG uses a nominal 14 px per local metre in plan. This schedule records the dimensions implied by the concept, not verified construction dimensions. Parking coordinates are local; there is deliberately no locked world transform until the Phase 1 escape route and exit mouth are selected.
+The SVG uses a nominal 14 px per local metre in plan. This schedule records the dimensions implied by the concept, not verified construction dimensions. Parking coordinates are local with the selected design transform X_world=X_local+28.7 m and Z_world=Z_local−15.8 m; verify it against the actual Phase 1 exit before implementation.
 
 | Element | Concept dimension | Design intent / check |
 |---|---:|---|
@@ -78,16 +78,16 @@ Before design lock, add dimension strings for the narrowest clear passage on eac
 
 ### 2.3 Required plan and section views
 
-A first spatial concept is recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg), with companion section, threat and landmark/lighting overlays. All four drawings form **concept package v0.2**: the 48 × 30 m envelope, routes, sightline sectors, light zones and prop placements are design proposals, not approved production geometry and not a representation of the current Godot scene. The entry threshold is a provisional 3 m concept opening, not a requirement that Phase 1 use the currently drawn mouth or its coordinates. The plan's local origin and scale support spatial review; they do not lock its rotation or world transform. Their purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the chosen exit, physical connection, clearances and elevation are reconciled.
+The selected spatial baseline is recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg), with companion section, threat and landmark/lighting overlays. All four drawings form **concept package v0.3**: the 48 × 30 m envelope, routes, sightline sectors, light zones and prop placements are design proposals, not approved production geometry and not a representation of the current Godot scene. The entry threshold is a 3 m opening matched to the selected P−1 service mouth. The plan's local origin and scale are mapped to the selected world transform stated above; runtime verification is still required. Their purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the chosen exit, physical connection, clearances and elevation are reconciled.
 
 The parking layout is not accepted from a prose description alone. Its design package must contain:
 1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and patrol/sightline overlays.
-2. **Section B–B:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a dimensioned north–south section through representative parking rows, the 17.3 m service apron, optional canopy and 2.8 m headroom target. It does not cut the service mouth or north egress gate; those are defined in plan. The exterior datum relative to P−1 remains unresolved; do not infer a ramp or step from this drawing.
+2. **Section B–B:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a dimensioned north–south section through representative parking rows, the 17.3 m service apron, optional canopy and 2.8 m headroom target. It does not cut the service mouth or north egress gate; those are defined in plan. The selected datum is Y=−2.0 m, continuous with P−1; no ramp or step is intended at the service mouth. Verify the elevation in Godot.
 3. **Spatial graph:** nodes, traversable edges, directed drops/climbs, blocked edges and route alternatives.
 4. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
 5. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
 
-The Phase 2 asset family now includes the plan, transverse section, threat/sightline overlay and lighting/landmark overlay. They use the same local coordinate convention but remain concept v0.1; the next revision must add/check internal dimension strings and reconcile the exact exterior datum. Do not present a screenshot of the prototype as an architectural plan.
+The Phase 2 asset family now includes the plan, north–south section, threat/sightline overlay and lighting/landmark overlay in concept v0.3. They share local coordinates and the selected world transform; the next revision must validate the clearances, final gate, and Y=−2.0 m continuity in Godot. Do not present a screenshot of the prototype as an architectural plan.
 
 ### 2.4 Provisional spatial graph
 
