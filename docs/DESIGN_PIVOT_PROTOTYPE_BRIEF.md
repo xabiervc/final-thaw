@@ -34,7 +34,7 @@ The functional decisions for Phase 1 are closed in `docs/design/FASE1_FUNCTIONAL
 
 The existing motion/chase prototype is the foundation, not yet validated or campaign-integrated. It includes a third-person camera, movement, jumps, crouch, a defined climb, scanner, checkpoints and a patrol/investigate/alert/chase/search/return recovery unit. It has no navigation mesh, crouch/climb animations are provisional, and detection/noise values need playtesting.
 
-Do not connect H until Phase 1's scene and tests are stable and the v2 motion/chase test has been run.
+The current canonical scene contains a provisional G→H handoff into the existing motion/chase scene so the boundary can be tested end to end. Do not accept the combined slice or tune campaign pacing until the Phase 1 scene/tests are stable, the v2 motion/chase test has run, and a hands-on chase playtest is recorded.
 
 ## Implementation order
 
