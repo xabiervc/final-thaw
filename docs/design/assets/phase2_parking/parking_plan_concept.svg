@@ -99,6 +99,9 @@
     <path d="M95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L450 135 L500 135 L520 170 L540 200 L570 235 L620 207 L620 70 L599 25" class="routeB"/>
     <!-- threat path -->
     <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 190 L415 190 L500 190 L560 205" class="threat"/>
+    <!-- route graph waypoints; coordinates correspond to LEVEL_STRUCTURE.md -->
+    <circle cx="535" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="520" y="295" class="tiny" text-anchor="middle">A3</text>
+    <circle cx="570" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="563" y="295" class="tiny" text-anchor="middle">A4</text>
     <!-- provisional checkpoints: entry is the integration spawn; CP1 and CP2 are retry anchors -->
     <circle cx="95" cy="305" r="9" fill="#ffffff" stroke="#263849" stroke-width="2.2"/><text x="95" y="308" class="tiny" text-anchor="middle">S</text>
     <circle cx="570" cy="235" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="570" y="238" class="tiny" text-anchor="middle">1</text>
@@ -141,6 +144,6 @@
     <text x="0" y="535" class="small">Toda alternativa debe tener un coste real.</text>
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
-  <text x="48" y="710" class="small">Concept coordinates: X east/right, Z south/down; origin at northwest inside corner. Candidate handoff transform: world X = local X + 28.7 m; world Z = local Z − 15.8 m. This aligns the entry threshold plane (local X≈5.3 m, Z≈6.0 m) with the Phase 1 mouth (world X≈34, Z≈6); the interior spawn pocket is around world (X≈35.5, Z≈6). Confirm footprint and elevation before approval.</text>
+  <text x="48" y="710" class="small">Concept coordinates: X east/right, Z south/down; origin at northwest inside corner. Candidate handoff transform: world X = local X + 28.7 m; world Z = local Z − 15.8 m. This aligns the entry threshold plane (local X≈5.3 m, Z≈21.8 m) with the Phase 1 mouth (world X≈34, Z≈6); the interior spawn pocket is around world (X≈35.5, Z≈6). Confirm footprint and elevation before approval.</text>
   <text x="48" y="730" class="small">Do not implement as-is without reconciliation against Phase 1 service-exit location and current prototype geometry.</text>
 </svg>
