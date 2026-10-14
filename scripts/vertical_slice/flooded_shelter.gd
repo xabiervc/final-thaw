@@ -5,22 +5,6 @@ const PlayerScript = preload("res://scripts/entities/player.gd")
 
 const BG := Color("182b39")
 const WATER := Color("245975")
-const LOCKED := Color("70505a")
-const ACTIVE := Color("48ad99")
-const HIGHLIGHT := Color("8ef7e4")
-const TEXT := Color("eff4ee")
-const OXYGEN_NORMAL := Color("eff4ee")
-const OXYGEN_WARNING := Color("f2c14e")
-const OXYGEN_CRITICAL := Color("f26d5b")
-const HC_BG := Color("000000")
-const HC_WATER := Color("003b5c")
-const HC_LOCKED := Color("5a5a5a")
-const HC_ACTIVE := Color("00e5a0")
-const HC_HIGHLIGHT := Color("ffffff")
-const HC_TEXT := Color("ffffff")
-const HC_OXYGEN_NORMAL := Color("ffffff")
-const HC_OXYGEN_WARNING := Color("ffd400")
-const HC_OXYGEN_CRITICAL := Color("ff5252")
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const PLAYER_START := Vector2(125, 390)
 const WORLD_MIN := Vector2(80, 130)
@@ -110,7 +94,6 @@ func _create_interactable(kind: String, location: Vector2) -> void:
 	area.add_child(shape_node)
 
 	var graphic := ColorRect.new()
-	graphic.color = LOCKED
 	graphic.position = Vector2(-45, -45)
 	graphic.size = Vector2(90, 90)
 	area.add_child(graphic)
@@ -118,7 +101,6 @@ func _create_interactable(kind: String, location: Vector2) -> void:
 	var label := Label.new()
 	label.text = kind
 	label.position = Vector2(-44, -82)
-	label.add_theme_color_override("font_color", TEXT)
 	area.add_child(label)
 
 	add_child(area)
@@ -129,7 +111,6 @@ func _label(parent: Node, pos: Vector2, value: String) -> Label:
 	var label := Label.new()
 	label.position = pos
 	label.text = value
-	label.add_theme_color_override("font_color", TEXT)
 	label.add_theme_font_size_override("font_size", int(20.0 * AccessibilityManager.ui_scale()))
 	parent.add_child(label)
 	return label
@@ -243,20 +224,16 @@ func _on_accessibility_changed() -> void:
 	_update_ui()
 
 func _update_interactable_visuals() -> void:
-	var high_contrast := AccessibilityManager.is_high_contrast()
-	var locked := HC_LOCKED if high_contrast else LOCKED
-	var active := HC_ACTIVE if high_contrast else ACTIVE
-	var highlight := HC_HIGHLIGHT if high_contrast else HIGHLIGHT
-	var text := HC_TEXT if high_contrast else TEXT
+	var palette: Dictionary = AccessibilityManager.shelter_palette()
 
 	for kind in interactables:
 		var data: Dictionary = interactables[kind]
 		var graphic: ColorRect = data["graphic"]
 		var label: Label = data["label"]
 		var is_active := _is_interactable_active(kind)
-		graphic.color = active if is_active else locked
-		graphic.self_modulate = highlight if kind == highlighted_kind else Color.WHITE
-		label.add_theme_color_override("font_color", text)
+		graphic.color = palette["active"] if is_active else palette["locked"]
+		graphic.self_modulate = palette["highlight"] if kind == highlighted_kind else Color.WHITE
+		label.add_theme_color_override("font_color", palette["text"])
 		label.text = _interactable_prompt(kind)
 
 func _is_interactable_active(kind: String) -> bool:
@@ -284,7 +261,7 @@ func _interactable_prompt(kind: String) -> String:
 	return kind
 
 func _update_ui(message: String = "") -> void:
-	var high_contrast := AccessibilityManager.is_high_contrast()
+	var palette: Dictionary = AccessibilityManager.shelter_palette()
 	hud.text = NarrativeTextManager.get_shelter_hud(
 		rules.power_on,
 		rules.valves_open,
@@ -293,19 +270,11 @@ func _update_ui(message: String = "") -> void:
 	)
 
 	var oxygen_state := rules.oxygen_state()
-	var oxygen_color := OXYGEN_NORMAL
+	var oxygen_color: Color = palette["oxygen_normal"]
 	if oxygen_state == "warning":
-		oxygen_color = OXYGEN_WARNING
+		oxygen_color = palette["oxygen_warning"]
 	elif oxygen_state == "critical":
-		oxygen_color = OXYGEN_CRITICAL
-
-	if high_contrast:
-		if oxygen_state == "warning":
-			oxygen_color = HC_OXYGEN_WARNING
-		elif oxygen_state == "critical":
-			oxygen_color = HC_OXYGEN_CRITICAL
-		else:
-			oxygen_color = HC_OXYGEN_NORMAL
+		oxygen_color = palette["oxygen_critical"]
 
 	hud.add_theme_color_override("font_color", oxygen_color)
 

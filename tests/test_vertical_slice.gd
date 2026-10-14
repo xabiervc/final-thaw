@@ -14,6 +14,7 @@ func _ready() -> void:
 	_check_prompt_text_contract()
 	_check_accessibility_text_contract()
 	_check_accessibility_manager()
+	_check_colorblind_palettes()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -130,6 +131,11 @@ func _check_accessibility_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_options_subtitle_none().is_empty(), "Subtitle none fallback exists")
 	_expect(not NarrativeTextManager.get_options_subtitle_dim().is_empty(), "Subtitle dim fallback exists")
 	_expect(not NarrativeTextManager.get_options_subtitle_solid().is_empty(), "Subtitle solid fallback exists")
+	_expect(not NarrativeTextManager.get_options_colorblind_mode().is_empty(), "Colorblind mode fallback exists")
+	_expect(not NarrativeTextManager.get_options_colorblind_none().is_empty(), "Colorblind none fallback exists")
+	_expect(not NarrativeTextManager.get_options_colorblind_deuteranopia().is_empty(), "Deuteranopia fallback exists")
+	_expect(not NarrativeTextManager.get_options_colorblind_protanopia().is_empty(), "Protanopia fallback exists")
+	_expect(not NarrativeTextManager.get_options_colorblind_tritanopia().is_empty(), "Tritanopia fallback exists")
 
 func _check_accessibility_manager() -> void:
 	var previous_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
@@ -150,6 +156,21 @@ func _check_accessibility_manager() -> void:
 	GameManager.set_flag("accessibility_high_contrast", previous_contrast)
 	GameManager.set_flag("accessibility_reduced_motion", previous_motion)
 	GameManager.subtitle_size = previous_subtitle
+
+func _check_colorblind_palettes() -> void:
+	var previous_mode: int = GameManager.colorblind_mode
+	var previous_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
+
+	GameManager.set_flag("accessibility_high_contrast", false)
+	for mode in [0, 1, 2, 3]:
+		GameManager.colorblind_mode = mode
+		var palette: Dictionary = AccessibilityManager.shelter_palette()
+		_expect(palette.has("locked") and palette.has("active") and palette.has("highlight"), "Palette exists for mode %d" % mode)
+		_expect(palette.has("text") and palette.has("oxygen_normal"), "Text palette exists for mode %d" % mode)
+		_expect(palette.has("oxygen_warning") and palette.has("oxygen_critical"), "Oxygen palette exists for mode %d" % mode)
+
+	GameManager.colorblind_mode = previous_mode
+	GameManager.set_flag("accessibility_high_contrast", previous_contrast)
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid

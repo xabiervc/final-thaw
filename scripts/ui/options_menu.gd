@@ -2,10 +2,6 @@ extends Control
 
 const MAIN_MENU_PATH := "res://scenes/ui/main_menu.tscn"
 
-var high_contrast: bool = false
-var reduced_motion: bool = false
-var subtitle_background: int = 1
-
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new()
@@ -38,7 +34,6 @@ func _ready() -> void:
 	contrast_check.text = _contrast_text()
 	contrast_check.button_pressed = GameManager.get_flag("accessibility_high_contrast")
 	contrast_check.toggled.connect(func(pressed: bool):
-		high_contrast = pressed
 		GameManager.set_flag("accessibility_high_contrast", pressed)
 		GameManager.stats_changed.emit())
 	vbox.add_child(contrast_check)
@@ -47,7 +42,6 @@ func _ready() -> void:
 	motion_check.text = _motion_text()
 	motion_check.button_pressed = GameManager.get_flag("accessibility_reduced_motion")
 	motion_check.toggled.connect(func(pressed: bool):
-		reduced_motion = pressed
 		GameManager.set_flag("accessibility_reduced_motion", pressed)
 		GameManager.stats_changed.emit())
 	vbox.add_child(motion_check)
@@ -62,14 +56,28 @@ func _ready() -> void:
 	subtitle_option.add_item(_subtitle_solid_text(), 2)
 	subtitle_option.selected = clampi(GameManager.subtitle_size, 0, 2)
 	subtitle_option.item_selected.connect(func(index: int):
-		subtitle_background = index
 		GameManager.subtitle_size = index
 		GameManager.stats_changed.emit())
 	vbox.add_child(subtitle_option)
 
+	var colorblind_label := Label.new()
+	colorblind_label.text = _colorblind_text()
+	vbox.add_child(colorblind_label)
+
+	var colorblind_option := OptionButton.new()
+	colorblind_option.add_item(_colorblind_none_text(), 0)
+	colorblind_option.add_item(_colorblind_deuteranopia_text(), 1)
+	colorblind_option.add_item(_colorblind_protanopia_text(), 2)
+	colorblind_option.add_item(_colorblind_tritanopia_text(), 3)
+	colorblind_option.selected = AccessibilityManager.colorblind_mode()
+	colorblind_option.item_selected.connect(func(index: int):
+		GameManager.colorblind_mode = index
+		GameManager.stats_changed.emit())
+	vbox.add_child(colorblind_option)
+
 	var back := Button.new()
 	back.text = _back_text()
-	back.add_theme_font_size_override("font_size", int(18.0 * clampf(GameManager.font_scale, 0.75, 2.0)))
+	back.add_theme_font_size_override("font_size", int(18.0 * AccessibilityManager.ui_scale()))
 	back.pressed.connect(_on_back_pressed)
 	vbox.add_child(back)
 	back.grab_focus()
@@ -103,6 +111,26 @@ func _subtitle_dim_text() -> String:
 func _subtitle_solid_text() -> String:
 	var text: String = NarrativeTextManager.get_options_subtitle_solid()
 	return text if not text.is_empty() else ("Sólido" if NarrativeTextManager.current_locale == "es" else "Solid")
+
+func _colorblind_text() -> String:
+	var text: String = NarrativeTextManager.get_options_colorblind_mode()
+	return text if not text.is_empty() else ("Modo daltónico" if NarrativeTextManager.current_locale == "es" else "Colorblind mode")
+
+func _colorblind_none_text() -> String:
+	var text: String = NarrativeTextManager.get_options_colorblind_none()
+	return text if not text.is_empty() else ("Ninguno" if NarrativeTextManager.current_locale == "es" else "None")
+
+func _colorblind_deuteranopia_text() -> String:
+	var text: String = NarrativeTextManager.get_options_colorblind_deuteranopia()
+	return text if not text.is_empty() else "Deuteranopia"
+
+func _colorblind_protanopia_text() -> String:
+	var text: String = NarrativeTextManager.get_options_colorblind_protanopia()
+	return text if not text.is_empty() else "Protanopia"
+
+func _colorblind_tritanopia_text() -> String:
+	var text: String = NarrativeTextManager.get_options_colorblind_tritanopia()
+	return text if not text.is_empty() else "Tritanopia"
 
 func _back_text() -> String:
 	var text: String = NarrativeTextManager.get_options_back_button()

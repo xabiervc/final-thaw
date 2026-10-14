@@ -154,11 +154,24 @@ static func get_options_subtitle_dim() -> String:
 static func get_options_subtitle_solid() -> String:
 	return _text("options_subtitle_solid", "Solid")
 
+static func get_options_colorblind_mode() -> String:
+	return _text("options_colorblind_mode", "Colorblind mode")
+
+static func get_options_colorblind_none() -> String:
+	return _text("options_colorblind_none", "None")
+
+static func get_options_colorblind_deuteranopia() -> String:
+	return _text("options_colorblind_deuteranopia", "Deuteranopia")
+
+static func get_options_colorblind_protanopia() -> String:
+	return _text("options_colorblind_protanopia", "Protanopia")
+
+static func get_options_colorblind_tritanopia() -> String:
+	return _text("options_colorblind_tritanopia", "Tritanopia")
+
 static func get_credits_title() -> String:
 	return _text("credits_title", "FINAL THAW\nPhase 0 Prototype")
 
-## Shelter vertical-slice text. Fallbacks keep the scene usable while the
-## ES/EN NarrativeText resources are expanded.
 static func get_shelter_intro() -> String:
 	return _text("shelter_intro", "E: generator, valves, rescue and exit. WASD/arrows to move. ESC: menu.")
 
@@ -223,7 +236,6 @@ static func get_shelter_hud(power_on: bool, valves_open: bool, oxygen: float, ci
 		civilian_aid,
 	]
 
-## Claves de texto del puzle de registros y cableado. Cada clave debe existir y no estar vacia en ES y EN.
 const CONTROL_ROOM_KEYS: Array[String] = [
 	"cr_log_before_title",
 	"cr_log_before_body",
