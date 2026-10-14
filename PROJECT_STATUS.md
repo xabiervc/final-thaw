@@ -24,6 +24,31 @@ The `feat/godot-vertical-slice` branch contains the functional skeleton of the *
 - `NarrativeTextManager` centralizes narrative text and supports ES/EN localization.
 - The main menu includes narrative context and an ES/EN language selector.
 
+### Recent repair work
+
+The canonical 2.5D shelter received functional repairs:
+
+- Elena now detects `Interactable` areas through `area_entered` / `area_exited`.
+- Elena calls `Interactable.try_interact()`, which executes prop behavior and emits `interacted`.
+- `FloodedShelterController` joins the `flooded_shelter` group, allowing `WinZone` to locate it.
+- The controller restores persisted shelter state during `_ready()`.
+- The controller emits initial oxygen, valve, power and civilian state.
+- `DemoHUD` connects to Elena oxygen changes and initializes civilian status.
+- `NarrativeTextManager` now provides localized demo completion and failure HUD strings.
+
+### Verification boundary
+
+These repairs are implemented but **not yet verified by a recorded Godot playtest**. The following must be checked before TD-011 can close:
+
+- The project compiles without script errors.
+- Elena's `InteractionArea` has a valid collision shape and detects `Interactable` areas.
+- Generator activation works through Elena interaction.
+- Both valves open and the flood gate opens.
+- Civilian rescue updates HUD and controller state.
+- Reaching the win zone completes the level.
+- Oxygen HUD updates continuously.
+- ES/EN localization works for the new HUD strings.
+
 ### Early 3D prototype
 
 - A separate test room implements Elena movement, interaction and scanning in 3D.
@@ -44,7 +69,7 @@ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it aft
 
 ## In progress
 
-- Reviewing the governed multi-agent workflow.
+- Repairing and validating the canonical Flooded Shelter interaction loop.
 - Keeping design traceability aligned with implementation.
 - Validating the Flooded Shelter gameplay loop, narrative flow, localization and decision summary.
 - Evaluating the early 3D test room for movement, interaction, scanning and visual direction.
@@ -55,14 +80,15 @@ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it aft
 - The full game, complete vertical slice, accessibility suite, performance targets and platform exports are not yet verified.
 - Phase 0 evidence verifies the technical foundation only.
 - The Flooded Shelter slice is functionally complete at a prototype level, but is not art-complete, audio-complete, polished or release-ready.
+- The canonical shelter repairs have not yet been validated by recorded Godot playtesting.
 - The 3D test room is an early prototype, not a content-complete or production-quality vertical slice.
 - Art, lighting, VFX, audio, Marcus gameplay, dual-protagonist systems, combat, puzzles and ending content remain unimplemented or unverified.
 
 ## Next three tasks
 
-1. Playtest the Flooded Shelter slice and record pass/fail evidence for movement, oxygen, interaction, generator activation, valve drainage, civilian rescue, exit progression and ES/EN localization.
-2. Playtest the 3D test room and record evidence for movement, interaction, scanning, collision, camera readability and performance.
-3. Define one narrow art-production task with acceptance criteria: a single environment module or prop set for the first playable space, specified for Blender and validated in Godot.
+1. Run Godot and verify that the canonical shelter compiles and plays without script errors.
+2. Playtest the Flooded Shelter slice and record pass/fail evidence for movement, oxygen, interaction, generator activation, valve drainage, civilian rescue, exit progression and ES/EN localization.
+3. Playtest the 3D test room and record evidence for movement, interaction, scanning, collision, camera readability and performance.
 
 ## Next slices
 
@@ -89,7 +115,7 @@ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it aft
 
 ## Summary
 
-The Flooded Shelter 2.5D slice is functionally complete at prototype level. The next major work blocks are art, lighting, VFX and audio to make it presentation-ready, followed by the Marcus combat slice. In parallel, the early 3D test room should be validated before committing to a broader 3D art pipeline.
+The Flooded Shelter 2.5D slice is functionally complete at prototype level. Recent commits repaired the interaction chain, win-zone lookup, HUD initialization and missing localization methods. The next required step is recorded Godot validation of the repaired loop.
 
 ## Reporting rule
 

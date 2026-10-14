@@ -81,6 +81,12 @@ static func get_hud_objective(has_power: bool, valves_open: int, civilian_exists
 		return _text("hud_objective_valves_open", "Objective: Decide whether to rescue the civilian.")
 	return _text("hud_objective_exit", "Objective: Reach the exit.")
 
+static func get_hud_demo_completed(civilian_state: String) -> String:
+	return _text("hud_demo_completed", "Demo completed - %s") % civilian_state
+
+static func get_hud_demo_failed() -> String:
+	return _text("hud_demo_failed", "Demo failed - Elena did not survive")
+
 static func get_interact_power_console(is_on: bool) -> String:
 	return _text("interact_power_console_on", "Generator running") if is_on else _text("interact_power_console_off", "Activate generator")
 
