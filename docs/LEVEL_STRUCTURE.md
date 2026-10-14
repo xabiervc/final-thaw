@@ -109,7 +109,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 | P2-05A Barrier approach | (44.3, 16.8) | Clear approach south of the barrier, with the 1.3 m aperture visible ahead | To P2-05; keep the approach collision-free |
 | P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
 | P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
-| P2-EXIT Boundary | (42.8, 1.8) | Physical escape threshold | Mission completion only after crossing actual boundary |
+| P2-EXIT Boundary | local (42.8, 1.8); world (71.5, −14, −2) | Physical escape threshold in north boundary; 3.6 m clear opening | Mission completion only after crossing actual boundary |
 
 **Graph constraints:** all edges are bidirectionally traversable unless explicitly marked otherwise; no drop, climb, jump or squeeze is implied by a line alone. For every edge, the final graph must state clear width, elevation, traversal verb, threat accessibility, sightline condition, fail/recovery behavior and whether it is part of the intended fast route. The current concept has no approved one-way drop.
 
@@ -139,7 +139,7 @@ All positions below use the local plan coordinates. These are design placements,
 |---|---:|---|---|
 | L1 / S1 Service mouth | (6.8, 21.8) | Stable cool spill light; pump/ventilation sound recedes as exterior ambience emerges | The player can orient toward the apron and identify the facility facade behind them |
 | L2 / S2 Central apron | (22.0, 15.0) | Hard, stable security-light pools; a short relay/actuator cue may signal a state change | The direct route is exposed; lighting does not imply that the illuminated route is safe |
-| L3 / S3 Technical-cage bypass | (37.1, 12.1) | Restrained amber service indicator east of the cage; local electrical/mechanical hum | The covered route has a real operational purpose and is not a decorative dead end |
+| L3 / S3 Technical-cage bypass | (37.1, 12.1) | Restrained amber service indicator east of the cage; local electrical/mechanical hum | The service-side route has a real operational purpose and is not a decorative dead end |
 | L4 / S4 Bottleneck | (44.3, 14.8) | Fixed open service-shutter leaves, safety marking and a clear 1.3 m aperture | The player sees the aperture before committing; no timed mechanism |
 | L5 / S5 Egress landmark | (42.8, 1.8) | Clear silhouette/backlight with no overexposed bloom; gate/perimeter sound | The goal is inferable early, but crossing the boundary is still a physical action |
 
@@ -185,7 +185,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Rules:** the threat's detection cone, alert buildup and audio tell must be understandable. Do not require frame-perfect timing. At least one recovery option must exist if the player is detected early.
 
 ### Beat P2-05 — Service bottleneck
-**Player action:** pass through the fixed, visibly open 1.3 m aperture in the service barrier. The current concept does not include a separate bypass; do not make the aperture close dynamically or require a timed slide.  
+**Player action:** pass through the fixed, visibly open 1.3 m aperture in the service barrier. The selected baseline does not include a separate bypass; do not make the aperture close dynamically or require a timed slide.  
 **Design purpose:** a final physical decision tied to the site's logistics.  
 **Rules:** the obstacle must have a plausible architectural cause and a clear interaction affordance. Avoid a key hunt, a new unrelated puzzle or an unannounced dead end.
 
@@ -194,7 +194,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Design purpose:** deliver release without implying that the larger conflict is resolved.  
 **Narrative result:** the immediate recovery unit is evaded; Helix's ability to identify and track Elena remains a threat. End with a short, authored beat that changes the player's understanding or stakes, not a generic “level complete” message.
 
-The plan labels O1/O2/O3 correspond to register entries P2-O1/P2-O2/P2-O3. Their footprints and baseline dimensions are defined in plan and the obstacle detail sheet; final collision envelopes, camera behavior and traversal clearances still require reconciliation against the actual player capsule. The design no longer assumes the player arrives from a specific Phase 1 coordinate; the final parking entry is to be transformed or redrawn around the selected exit, not vice versa. The final number and placement of physical obstacles remain subject to playtest. The dimensioned [obstacle detail sheet](design/assets/phase2_parking/obstacle_detail_sheet.svg) records plan/elevation envelopes for O1/O2/O3. Each final obstacle must have a stable ID, measured footprint, approach, intended solution, recovery behavior, collision envelope, camera risks, narrative function and acceptance test.
+The plan labels O1/O2/O3 correspond to register entries P2-O1/P2-O2/P2-O3. Their footprints and baseline dimensions are defined in plan and the obstacle detail sheet; final collision envelopes, camera behavior and traversal clearances still require reconciliation against the actual player capsule. The selected handoff transform is X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. If the canonical scene differs, update the affected plans/section/graph and record the deviation; do not introduce a teleport or silently force the old prototype checkpoint. Final collision behavior remains subject to playtest. The dimensioned [obstacle detail sheet](design/assets/phase2_parking/obstacle_detail_sheet.svg) records plan/elevation envelopes for O1/O2/O3. Each final obstacle must have a stable ID, measured footprint, approach, intended solution, recovery behavior, collision envelope, camera risks, narrative function and acceptance test.
 
 ## 4. Route alternatives and threat fairness
 
