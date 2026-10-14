@@ -2,9 +2,11 @@
 
 **Estado:** primera reconstrucción arquitectónica ampliada en GDScript y recurso .tscn; ejecución de pruebas y playtest pendientes. No declarada como greybox aceptado.
 
-## Autoridad
+## Autoridad y estados de decisión
 
-FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_architecture/; FASE1_SPATIAL_GRAPH.md v0.7; FASE1_GREYBOX_SPEC.md v1.4; FASE1_FUNCTIONAL_SPEC.md v1.1; FASE1_LOGIC_CONTRACT.md (sin cambios); mapa de progresión v0.9.
+La topología espacial de referencia se describe en FASE1_ARCHITECTURAL_LAYOUT.md v1.1, los SVG existentes bajo docs/design/assets/phase1_architecture/, FASE1_SPATIAL_GRAPH.md v0.7 y FASE1_GREYBOX_SPEC.md v1.4. El comportamiento se rige por FASE1_FUNCTIONAL_SPEC.md v1.1 y FASE1_LOGIC_CONTRACT.md. El mapa de progresión existente mantiene la trazabilidad entre recorrido y beats narrativos.
+
+No confundir tres estados: **aprobado conceptualmente** (diseño de referencia), **propuesto** (requiere aprobación, especialmente beats narrativos) y **pendiente de validación** (requiere ejecución Godot o playtest). Ningún documento ni test estático convierte una propuesta en canon ni acredita colisiones/jugabilidad.
 
 ## Cambios de esta reconstrucción
 
