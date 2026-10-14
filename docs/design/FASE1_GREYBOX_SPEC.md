@@ -44,7 +44,7 @@ Galería de observación X=9..13, Z=−9..−1,5; sala de bombas X=13..24, Z=−
 
 ### P2 · Control, archivo, pasarela y puerta G — Y=+3
 
-G X=0..3, Z=−9..−4,5; F X=3..9, Z=−9..−4,5; E X=9..24, Z=−8,5..−4,5; pasarela X=9..26, Z=−4,5..−1,5, con hueco de S2 X=9..13. El panel E conserva su centro contractual (15,5; 4,55; −8,15) y su soporte. G es una esclusa de doble puerta: la compuerta oeste abre al umbral exterior y activa la persecución; la puerta interior vuelve a F. La puerta exterior no es la salida final y no puede teletransportar al jugador. La ruta de huida vuelve hacia E/S2; la salida real está en P−1.
+G X=0..3, Z=−9..−4,5; F X=3..9, Z=−9..−4,5; E X=9..24, Z=−8,5..−4,5; pasarela X=9..26, Z=−4,5..−1,5, con hueco de S2 X=9..13. El panel E conserva su centro contractual (15,5; 4,55; −8,15) y su soporte. G es una esclusa de doble puerta: la compuerta oeste abre al umbral exterior, envía la auditoría e inicia Containment; la puerta interior vuelve a F. El primer tramo es evasión silenciosa; la carrera comienza en un umbral expuesto de reacquisición, provisionalmente la salida del elevador hacia P0. La puerta exterior no es la salida final ni teletransporta al jugador. La ruta de huida vuelve hacia E/S2; la salida final se decide desde el grafo completo.
 
 ## Ruta de huida y obstáculos — posiciones candidatas acotadas
 
