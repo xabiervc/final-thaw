@@ -13,6 +13,7 @@ const PanelScript = preload("res://scripts/ui/narrative_panel.gd")
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
 const StationScript = preload("res://scripts/components/stamina_station.gd")
 const LowObstacleScript = preload("res://scripts/components/low_obstacle.gd")
+const TraceScript = preload("res://scripts/components/conduit_trace.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const NEXT_PATH := "res://scenes/levels/abandoned_lab_art.tscn"
@@ -25,6 +26,13 @@ const DIV1 := -8.0
 const DIV2 := 3.9
 const BARRIER_XS := [-6.3, -4.4, -2.5, 1.6]
 const BARRIER_SIZE := Vector3(0.3, 0.5, 16.0)
+
+## Generator feed cable, revealed by scanning in the generator bay: it runs from the hidden lever, out of the alcove
+## through its east gap, to the exit door. The trace origin sits in the bay so a scan from its entrance reaches it.
+const FEED_ORIGIN := Vector3(6.0, 0.0, -2.0)
+const FEED_ROUTE := [Vector3(-0.4, 0.0, -4.95), Vector3(1.7, 0.0, -4.95), Vector3(1.7, 0.0, 0.25), Vector3(2.2, 0.0, 0.25)]
+const FEED_LABEL := "ALIMENTACIÓN: GENERADOR → PUERTA DE SALIDA"
+const FEED_MESSAGE := "El cable de la puerta de salida viene del generador auxiliar, detrás del muro. Se entra por el hueco del este."
 
 const ZONE_HINTS := [
 	"WASD / flechas: mover. Acércate al terminal y pulsa E para acceder.",
@@ -46,6 +54,7 @@ var terminal = null
 var lever = null
 var door = null
 var door_a = null
+var feed_trace = null
 var completed: bool = false
 var hint_level: int = 1
 
@@ -167,12 +176,21 @@ func _build_props() -> void:
 	door.interaction_range = 3.0
 	add_child(door)
 
-	_add_inspect("crate_a", 0, Vector3(-9.0, 0.0, -5.0), "Caja de suministros del laboratorio. Está vacía.")
-	_add_inspect("console_b", 1, Vector3(-10.5, 0.0, 5.5), "Un monitor auxiliar muestra una transmisión parcial. Destino: Estación Final Thaw.")
-	_add_inspect("barrel_c", 2, Vector3(-9.0, 0.0, 6.2), "Un barril con el sello de Helix.")
-	_add_inspect("crate_d", 0, Vector3(5.5, 0.0, 5.0), "Una mochila abandonada con una manta térmica. Alguien se marchó con prisa.")
-	_add_inspect("console_e", 1, Vector3(-10.5, 0.0, 0.5), "Un mapa de evacuación con la ruta norte tachada a mano.")
-	_add_inspect("crate_f", 0, Vector3(6.6, 0.0, -6.3), "Material de campo del proyecto Aster, guardado a toda prisa.")
+	_add_inspect("crate_a", 0, Vector3(-9.0, 0.0, -5.0), "Caja de suministros del laboratorio. Está vacía.", "Caja de suministros")
+	_add_inspect("console_b", 1, Vector3(-10.5, 0.0, 5.5), "Un monitor auxiliar muestra una transmisión parcial. Destino: Estación Final Thaw.", "Monitor auxiliar")
+	_add_inspect("barrel_c", 2, Vector3(-9.0, 0.0, 6.2), "Un barril con el sello de Helix.", "Barril de Helix")
+	_add_inspect("crate_d", 0, Vector3(5.5, 0.0, 5.0), "Una mochila abandonada con una manta térmica. Alguien se marchó con prisa.", "Mochila abandonada")
+	_add_inspect("console_e", 1, Vector3(-10.5, 0.0, 0.5), "Un mapa de evacuación con la ruta norte tachada a mano.", "Mapa de evacuación")
+	_add_inspect("crate_f", 0, Vector3(6.6, 0.0, -6.3), "Material de campo del proyecto Aster, guardado a toda prisa.", "Material del proyecto Aster")
+
+	feed_trace = TraceScript.new()
+	feed_trace.name = "GeneratorFeed"
+	feed_trace.trace_id = "generator_feed"
+	feed_trace.label_text = FEED_LABEL
+	feed_trace.route = PackedVector3Array(FEED_ROUTE)
+	feed_trace.position = FEED_ORIGIN
+	add_child(feed_trace)
+	feed_trace.scanned.connect(_on_feed_scanned)
 
 	terminal.interacted.connect(_on_terminal_used)
 	door_a.opened.connect(_on_door_a_opened)
@@ -191,12 +209,12 @@ func _build_tutorial_zones() -> void:
 	station.position = Vector3(-0.4, 0.0, 0.0)
 	add_child(station)
 
-func _add_inspect(id: String, variant: int, pos: Vector3, text: String) -> void:
+func _add_inspect(id: String, variant: int, pos: Vector3, text: String, label: String) -> void:
 	var p = InspectScript.new()
 	p.save_id = id
 	p.variant = variant
 	p.message = text
-	p.display_name = "Objeto"
+	p.display_name = label
 	p.position = pos
 	add_child(p)
 
@@ -292,6 +310,13 @@ func _on_door_a_opened() -> void:
 func _on_lever_toggled(on: bool) -> void:
 	door.call("set_locked", not on)
 	_refresh_objective()
+
+## The first scan of the feed cable explains where the exit door's power comes from (once, while it is off).
+func _on_feed_scanned(_trace_id: String) -> void:
+	if lever.is_on or _shown.has("feed"):
+		return
+	_shown.append("feed")
+	panel.call("show_message", FEED_MESSAGE, 7.0)
 
 func _on_door_opened() -> void:
 	_refresh_objective()
