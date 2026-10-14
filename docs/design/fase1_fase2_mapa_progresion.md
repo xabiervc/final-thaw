@@ -6,7 +6,7 @@
 
 ## Experiencia objetivo
 
-La misión ocurre en una instalación clandestina de investigación hidrológica/industrial parcialmente abandonada. La persona jugadora investiga el edificio como un sistema: sigue tuberías y canalizaciones, contrasta la documentación con el estado físico, activa mantenimiento, entiende la anomalía eléctrica y decide cómo alimentar el archivo de forma segura. Tras abrir la puerta G, la experiencia cambia de investigación a huida física. El jugador debe atravesar el edificio bajo persecución y salir por la galería de servicio de P−1, distinta del túnel por el que entró, para llegar al aparcamiento y continuar en Fase 2.
+La misión ocurre en una instalación clandestina de investigación hidrológica/industrial parcialmente abandonada. La persona jugadora investiga el edificio como un sistema: sigue tuberías y canalizaciones, contrasta la documentación con el estado físico, activa mantenimiento, entiende la anomalía eléctrica y decide cómo alimentar el archivo de forma segura. Tras abrir G, la experiencia cambia de investigación a evasión y huida física en dos ritmos. Primero, Elena se mueve en silencio por salas de trabajo donde aún puede haber personal: debe evitar líneas de visión, ruido y atención, sin combate obligatorio. Después, al quedar expuesta en un tramo de servicio legible o ser reacquirida por Containment, la secuencia pasa a una persecución a la carrera. La salida final debe ser distinta del túnel de entrada y conectarse físicamente con el aparcamiento; su ubicación exacta se elige por la calidad del recorrido, no por una coordenada heredada.
 
 ## Progresión espacial y de información
 
@@ -21,9 +21,9 @@ La misión ocurre en una instalación clandestina de investigación hidrológica
 | 7. Resolver el circuito | S2 ↑ E | Contrasta hipótesis, usa diagnóstico y opera aislador/selector/rearme. Puede fallar y recuperarse. | Contrato lógico existente; el escáner revela continuidad A→T, nunca los controles. |
 | 8. Consultar la evidencia | E → F | Consulta el archivo si ARCHIVO está estable. El texto contextualiza la anomalía; no actúa como llave. | Consulta no equivale a extracción ni modifica el guardado persistente en este hito. |
 | 9. Abrir la puerta | F → G | Abre la compuerta exterior de la esclusa G. Si `SERVICE_OVERRIDE` está encolado, el umbral transmite la auditoría, la amenaza entra y Elena retrocede al interior por la puerta hacia F/E; la respuesta del edificio hace perceptible el cambio. | G no teletransporta al exterior. Este acto inicia la huida. |
-| 10. Huida interior | G → pasarela/corredor técnico → S2 ↓ M | La amenaza persigue a Elena. El jugador interpreta el espacio y atraviesa obstáculos industriales legibles. | Obstáculos con colisión, anticipación visual y al menos una solución justa; no depender de un salto ciego. |
-| 11. Descenso de servicio | M → elevador ↓ P0 → S1 ↓ P−1 | Regresa por la infraestructura técnica y llega al nivel de achique. La ruta es distinta de la entrada y se siente como parte del mismo edificio. | No crear ascensor ni escalera nueva. Estado del elevador durante la huida debe estar diseñado y probado. |
-| 12. Salida alternativa | D2 → galería de evacuación → boca este | Cruza el corredor de descarga/servicio y sale al exterior. | Galería y salida física nuevas en planos/código; nunca un teletransporte. |
+| 10. Evasión silenciosa | G → F/E → pasarela → S2/M y espacios de trabajo conectados | Elena se retira evitando al personal presente y los barridos de Containment. Se apoya en cobertura arquitectónica, tiempos de paso y control del ruido. | Ruta legible, zonas de observación, refugios reales y estados de NPC; no combate/takedown obligatorio ni NPC usados como paredes. |
+| 11. Ruptura de sigilo / persecución | Umbral expuesto definido en el grafo → retorno por M/P0 | Un evento espacial comprensible —reacquisición de la unidad, cruce de una zona visible o cierre de una puerta ya anticipada— cambia la evasión a carrera. El jugador lee el cambio y debe reaccionar sin corte de cámara. | El trigger se fija en plano/grafo y se prueba; no usar detección omnisciente ni forzar una muerte. El sigilo anterior debe cambiar realmente la presión o el estado de búsqueda. |
+| 12. Descenso y salida alternativa | M → elevador ↓ P0 → S1 ↓ P−1 → ruta de servicio/evacuación elegida | Elena completa la huida por una circulación de servicio distinta de la entrada; la salida puede situarse en otra zona del perímetro si el plano y la sección la justifican. | Conexiones verticales existentes; cualquier nuevo corredor debe aparecer en planta/sección y en el grafo. Salida física, no transición invisible. |
 | 13. Handoff | Exterior de servicio → aparcamiento | Entra en la zona de aparcamiento; la persecución exterior continúa como Fase 2. | La escena existente de parking-chase debe arrancar en el checkpoint de entrada, sin reiniciar el corredor standalone. |
 
 ## Puzle y evidencia distribuida
@@ -57,13 +57,15 @@ La lista definitiva de obstáculos y sus estados se cierra en la especificación
 
 ## Fase 2: aparcamiento
 
-El aparcamiento incluye contexto legible —acceso de servicio, carriles, plazas, pilares y vehículos inmóviles— y una ruta que recibe al jugador desde la boca este. Se reutiliza `scenes/prototypes/phase2_parking_chase.tscn` si sus contratos de checkpoint, percepción y navegación lo permiten. La versión standalone del corredor conserva su punto de inicio original.
+El aparcamiento incluye contexto legible —acceso de servicio, carriles, plazas, pilares y vehículos inmóviles— y una ruta que recibe al jugador desde la salida exterior finalmente seleccionada. La planta usa coordenadas locales; no obliga a reutilizar la boca este ni el transform provisional. Se reutiliza `scenes/prototypes/phase2_parking_chase.tscn` si sus contratos de checkpoint, percepción y navegación lo permiten. La versión standalone del corredor conserva su punto de inicio original.
 
-El paquete conceptual del parking incluye planta, sección, overlay de amenaza y overlay de iluminación/hitos en `docs/design/assets/phase2_parking/`; la especificación de arquitectura/rutas/encuentros está en `docs/LEVEL_STRUCTURE.md`. La transformación candidata corregida es X mundo = X local + 28,7 m y Z mundo = Z local − 15,8 m: alinea el plano del umbral local X≈5,3 m con la boca de servicio de Fase 1 en X≈34, Z=4,5..7,5 (3 m libres). El punto de aparición seguro queda aproximadamente en mundo (35,5; 6), 1,5 m dentro del vestíbulo. No es coordenada aprobada hasta confirmar huella, orientación y cota reales en la escena.
+El paquete conceptual del parking incluye planta, sección, overlay de amenaza y overlay de iluminación/hitos en `docs/design/assets/phase2_parking/`; la especificación de arquitectura/rutas/encuentros está en `docs/LEVEL_STRUCTURE.md`. El aparcamiento mantiene un sistema de coordenadas local. Se descarta como restricción el transform provisional X+28,7/Z−15,8: solo intentaba hacer coincidir una entrada conceptual con una boca aún no validada. Cuando se cierre la ruta de salas y la salida exterior, se elegirá la transformación/rotación o se ajustará el plano para garantizar continuidad física sin forzar el recorrido interior.
 
 El handoff se acepta solo cuando:
-1. G inicia la huida interior.
-2. Elena atraviesa la ruta interior con el perseguidor activo.
+1. G inicia Containment, pero no salta directamente a la escena de aparcamiento.
+2. La sección de evasión silenciosa tiene NPC/estados, cobertura y percepción verificables.
+3. Un trigger espacial legible permite la transición a la carrera sin teletransporte ni corte de cámara.
+4. Elena atraviesa la ruta interior con el perseguidor activo.
 3. Llega a la boca de servicio de P−1.
 4. El exterior se conecta visualmente y físicamente al aparcamiento.
 5. La escena de parking empieza en el checkpoint de entrada, no al inicio standalone.
@@ -72,7 +74,7 @@ El handoff se acepta solo cuando:
 
 ## Estado de decisiones
 
-- **Dirección fijada:** laboratorio completo y explorable en gran parte; puzle integrado en el edificio; G abre la huida interior; persecución antes de salir; salida alternativa a parking.
+- **Dirección fijada:** laboratorio completo y explorable en gran parte; puzle integrado en el edificio; G inicia Containment; la huida combina evasión silenciosa por áreas potencialmente ocupadas y una fase de carrera; salida distinta de la entrada y continuidad física con parking.
 - **Contrato existente que se conserva:** circuito, estados iniciales, recuperación reversible, escáner, mantenimiento y elevador P0↔M.
 - **Diseño por cerrar en plano/greybox:** huella final de la galería de evacuación, medidas del recorrido de persecución, posiciones de obstáculos, puertas y estados de seguridad.
 - **Contrato narrativo provisional del opening:** mantenimiento encola `SERVICE_OVERRIDE`; cruzar el umbral exterior de G envía la auditoría y activa Containment. El registro revela que el resultado fue retenido y la recomendación de despliegue suprimida. La implementación, el destinatario/supervisión y la motivación de la supresión siguen sin estar verificados o cerrados.
