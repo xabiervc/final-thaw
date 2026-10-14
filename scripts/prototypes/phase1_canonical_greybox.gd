@@ -280,9 +280,9 @@ func _build_fixed_geometry() -> void:
 	# The full pit perimeter is guarded in _build_pit(); S1 remains deliberately open.
 
 	# Distinct functional areas and the Aster column make the industrial volume readable.
-	_body_box("AsterVerticalColumn", Vector3(0.58, 4.4, 0.58), Vector3(14.5, 2.2, 0.5), materials.get_material("steel_light"))
-	_visual_box("AsterColumnBeacon", Vector3(0.8, 0.12, 0.8), Vector3(14.5, 4.45, 0.5), _flat_material(Color(0.3, 0.8, 0.8), 0.45, 0.2, 1.2))
-	_label3d("AsterColumnLabel", "ASTER · COLUMNA DE CALIBRACIÓN", Vector3(14.5, 4.7, 0.5), Color(0.5, 0.92, 0.9), 19)
+	_body_box("AsterVerticalColumn", Vector3(0.58, 4.4, 0.58), Vector3(14.5, 2.2, -4.0), materials.get_material("steel_light"))
+	_visual_box("AsterColumnBeacon", Vector3(0.8, 0.12, 0.8), Vector3(14.5, 4.45, -4.0), _flat_material(Color(0.3, 0.8, 0.8), 0.45, 0.2, 1.2))
+	_label3d("AsterColumnLabel", "ASTER · COLUMNA DE CALIBRACIÓN", Vector3(14.5, 4.7, -4.0), Color(0.5, 0.92, 0.9), 19)
 	_body_box("WorkshopBench", Vector3(2.0, 0.16, 0.8), Vector3(21.4, 0.85, -8.2), materials.get_material("steel"))
 	_body_box("WorkshopCabinet", Vector3(0.75, 1.6, 0.65), Vector3(23.1, 0.8, -8.4), materials.get_material("steel_light"))
 	_body_box("WorkshopPipeRack", Vector3(2.4, 0.18, 0.18), Vector3(22.0, 2.1, -8.7), materials.get_material("steel"))
@@ -303,11 +303,11 @@ func _build_fixed_geometry() -> void:
 	# Industrial details at scale: overhead cable trays, ducts and column footings.
 	_body_box("CableTrayMain", Vector3(15.0, 0.12, 0.22), Vector3(14.0, 3.05, -1.4), materials.get_material("steel"))
 	_body_box("CableTrayCross", Vector3(0.22, 0.12, 8.0), Vector3(18.5, 3.05, 1.0), materials.get_material("steel"))
-	_body_box("AsterColumnFooting", Vector3(1.0, 0.24, 1.0), Vector3(14.5, 0.12, 0.5), materials.get_material("steel"))
+	_body_box("AsterColumnFooting", Vector3(1.0, 0.24, 1.0), Vector3(14.5, 0.12, -4.0), materials.get_material("steel"))
 	# A few repeated service cabinets give the long nave a measurable industrial rhythm.
 	for cabinet_index in range(3):
 		_body_box("NaveServiceCabinet_%02d" % cabinet_index, Vector3(0.75, 1.5, 0.65), Vector3(8.5 + cabinet_index * 2.0, 0.75, -2.2), materials.get_material("steel_light"))
-	_label3d("NaveLabel", "B · NAVE DE ENSAYO", Vector3(14.0, 0.12, 7.0), Color(0.75, 0.86, 0.9), 18, 0.003)
+	_label3d("NaveLabel", "B · NAVE DE ENSAYO", Vector3(14.0, 0.12, -7.0), Color(0.75, 0.86, 0.9), 18, 0.003)
 	_label3d("ServiceDoorLabel", "ACCESO TÉCNICO", Vector3(20.3, 2.1, -6.0), Color(0.8, 0.86, 0.88), 14, 0.003)
 	# Roof framing establishes a building volume without hiding the Aster sightline.
 	for beam_index in range(5):
@@ -349,7 +349,7 @@ func _build_scanner_fixtures() -> void:
 	# Three transient markers communicate continuity at A, the physical bridge and T without naming an action.
 	var marker_a := _label3d("ScanSchematicLabel", "TRAZA DE CONTINUIDAD · A", Vector3(27.0, -0.52, 6.12), Color(0.35, 0.98, 0.95), 18, 0.0035)
 	var marker_bridge := _label3d("ScanBridgeLabel", "CONTINUIDAD A → T", Vector3(22.0, -0.72, 4.0), Color(0.35, 0.98, 0.95), 20, 0.0037)
-	var marker_t := _label3d("ScanNodeTLabel", "TRAZA DETECTADA · T", Vector3(14.5, 2.75, 2.7), Color(0.35, 0.98, 0.95), 18, 0.0035)
+	var marker_t := _label3d("ScanNodeTLabel", "TRAZA DETECTADA · T", Vector3(14.5, 3.9, -4.0), Color(0.35, 0.98, 0.95), 18, 0.0035)
 	var markers: Array[Label3D] = [marker_a, marker_bridge, marker_t]
 	for marker: Label3D in markers:
 		marker.visible = false
@@ -357,7 +357,7 @@ func _build_scanner_fixtures() -> void:
 	var glow := _flat_material(Color(0.25, 0.98, 0.9), 0.35, 0.1, 2.0)
 	var schematic_glow := _visual_box("ScanSchematicHighlight", Vector3(1.7, 0.05, 0.18), Vector3(27.0, -0.82, 6.1), glow)
 	var bridge_glow := _visual_box("ScanBridgeHighlight", Vector3(1.65, 0.05, 0.36), Vector3(22.0, -1.65, 4.0), glow)
-	var node_t_glow := _visual_box("ScanNodeTHighlight", Vector3(0.8, 0.05, 0.8), Vector3(14.5, 2.14, 0.5), glow)
+	var node_t_glow := _visual_box("ScanNodeTHighlight", Vector3(0.8, 0.05, 0.8), Vector3(14.5, 2.14, -4.0), glow)
 	var highlights: Array[MeshInstance3D] = [schematic_glow, bridge_glow, node_t_glow]
 	for highlight: MeshInstance3D in highlights:
 		highlight.visible = false
