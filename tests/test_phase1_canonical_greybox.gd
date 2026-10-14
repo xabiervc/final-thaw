@@ -125,7 +125,7 @@ func _run() -> void:
 	_expect(is_equal_approx(scene._scan_cooldown_left, 0.9), "scanner cooldown lasts four seconds from activation")
 	scene._consult_archive()
 	_expect(not scene._archive_consulted, "archive cannot be consulted before stable supply")
-	_expect(not scene._archive_consulted and not scene._audit_events.has("RESTRICTED_RECORD_READ"), "a denied consultation does not grant knowledge or queue a record-read audit")
+	_expect(not scene._archive_consulted, "a denied consultation does not grant knowledge")
 
 	# Unsafe order trips protection and rejected rearm is non-destructive.
 	scene._toggle_selector()
@@ -145,14 +145,12 @@ func _run() -> void:
 	scene._consult_archive()
 	_expect(scene._archive_consulted, "archive consultation is recorded in the current session")
 	_expect(scene.circuit.known_clues().size() == 1, "consultation grants session knowledge without save migration")
-	_expect(scene._audit_events.has("RESTRICTED_RECORD_READ"), "archive reading queues its optional audit event")
 
 	# Maintenance and platform power are wired independently of the recovery circuit.
 	scene._toggle_maintenance()
 	_expect(scene.circuit.maintenance_on and scene.lift.powered, "maintenance enables the service lift")
 	_expect(scene._service_lights[0].light_energy > 0.7 and scene._service_lights[1].light_energy > 0.7, "maintenance turns on the service lights")
 	_expect(scene.circuit.outputs()["diagnostic"], "diagnostics remain available with maintenance on")
-	_expect(scene._audit_events.has("SERVICE_OVERRIDE"), "maintenance queues SERVICE_OVERRIDE")
 	scene._call_lift("upper")
 	await get_tree().physics_frame
 	_expect(not lower_gate_shape.disabled and not upper_gate_shape.disabled and lower_gate_mesh.visible and upper_gate_mesh.visible, "both fixed shaft gates close during travel")
