@@ -17,6 +17,7 @@ const HANDOFF_DELAY := 2.4
 const SCAN_CHARGE_TIME := 0.9
 const SCAN_REVEAL_TIME := 3.0
 const SCAN_COOLDOWN := 4.0
+## Draft clue text: narrative wording is provisional until the Phase 1 story beat is approved.
 const ARCHIVE_RECORD := "El acta oficial declara alimentación exclusiva del nodo T. La telemetría de bornes registra corriente simultánea en A y T durante la ventana de ensayo; el cierre posterior la atribuye a una interrupción automática."
 
 var materials = FacilityMaterials.new()
@@ -30,6 +31,7 @@ var _shortcut_unlocked := false
 var _outer_hatch_open := false
 var _handoff_started := false
 var _archive_consulted := false
+## Candidate audit events only; their story meaning/trigger is not an approved narrative contract.
 var _audit_events: Array[String] = []
 var _service_lights: Array[OmniLight3D] = []
 var _scan_charge: float = 0.0
@@ -770,7 +772,7 @@ func _open_outer_hatch() -> void:
 		_outer_door_shape.set_deferred("disabled", true)
 	if _outer_door_mesh != null:
 		_outer_door_mesh.visible = false
-	_banner("Compuerta abierta", "Al cruzar se sincronizará la auditoría de mantenimiento.", Color(0.95, 0.67, 0.25), 4.0)
+	_banner("Compuerta abierta", "La salida al exterior está habilitada.", Color(0.95, 0.67, 0.25), 4.0)
 	_log("outer_hatch", "opened")
 
 
@@ -783,10 +785,10 @@ func _begin_handoff() -> void:
 	player.set_physics_process(false)
 	player.set_process_input(false)
 	var transmitted := ", ".join(PackedStringArray(_audit_events))
-	_log("audit_transmitted", transmitted)
-	_log("containment_trigger", "outer_hatch_crossed")
-	hud.call("set_objective", "OBJETIVO  /  Sobrevive a la respuesta de Helix")
-	hud.call("show_banner", "SINCRONIZACIÓN DETECTADA", "Helix ha recibido la auditoría. Containment activado.", Color(1.0, 0.22, 0.16), HANDOFF_DELAY)
+	# The queued events and the narrative cause of the next scene remain provisional; do not present them as canon.
+	_log("candidate_audit_events_at_exit", transmitted)
+	hud.call("set_objective", "OBJETIVO  /  Continúa hacia el aparcamiento")
+	hud.call("show_banner", "SALIDA EXTERIOR", "La transición continúa hacia el aparcamiento.", Color(0.95, 0.67, 0.25), HANDOFF_DELAY)
 	await get_tree().create_timer(HANDOFF_DELAY).timeout
 	var error: Error = get_tree().change_scene_to_file(CHASE_SCENE)
 	if error != OK:
