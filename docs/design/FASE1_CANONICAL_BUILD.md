@@ -9,6 +9,7 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_ar
 ## Cambios de esta reconstrucción
 
 - P0 conserva su perímetro, acceso, nave, taller y rutas contractuales; B queda en X=7..20, Z=−9..1 y el pasillo A→B discurre por X=7..10, Z=1..8. Se añaden particiones con pasos anchos, bandejas, armarios y estructura de cubierta.
+- El arranque incluye un túnel físico exterior de 3 m con suelo, paredes, techo y abertura alineada con A; Elena aparece en el túnel orientada hacia la entrada.
 - P−1 tiene suelo continuo D1/D2 (X=10..28, Z=1..8) a Y=−2. El hueco P0 coincide con esa huella y S1 conserva su abertura; B termina en Z=1, por lo que nave y vacío no se solapan.
 - M/P2 mantienen sus cotas, huecos de elevador y S2, pasarela, archivo, control y esclusa G.
 - La instancia de misión usa el elevador Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. Las compuertas fijas se alinean con los bordes del hueco y las barandillas laterales protegen ambas cotas.
