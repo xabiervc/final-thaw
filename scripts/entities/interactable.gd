@@ -1,10 +1,14 @@
 extends Area2D
 class_name Interactable
 
+signal interact_text_changed(new_text: String)
+
 @export var interact_text: String = "Interactuable"
 var interact_count: int = 0
 var can_interact_func: Callable
 var on_interact_func: Callable
+
+var label: Label
 
 signal interacted(interactor: Node2D)
 
@@ -21,10 +25,15 @@ func _ready() -> void:
 	vis.position = Vector2(-50, -50)
 	vis.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(vis)
-	var lbl := Label.new()
-	lbl.text = interact_text
-	lbl.position = Vector2(-50, -80)
-	add_child(lbl)
+	label = Label.new()
+	label.text = interact_text
+	label.position = Vector2(-50, -80)
+	add_child(label)
+
+func update_label() -> void:
+	if label:
+		label.text = interact_text
+	interact_text_changed.emit(interact_text)
 
 func can_interact(_interactor: Node2D) -> bool:
 	if can_interact_func.is_valid():

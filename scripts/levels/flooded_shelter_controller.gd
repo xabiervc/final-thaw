@@ -4,10 +4,10 @@ class_name FloodedShelterController
 @export var elena: Elena
 @export var civilian: Civilian
 
-@export var power_console: Node
-@export var valve_station_left: Node
-@export var valve_station_right: Node
-@export var flood_gate_exit: Node
+@export var power_console: PowerConsole
+@export var valve_station_left: ValveStation
+@export var valve_station_right: ValveStation
+@export var flood_gate_exit: FloodGate
 
 @export var oxygen_refill_on_power: float = 40.0
 @export var oxygen_refill_on_valves: float = 30.0
@@ -103,6 +103,13 @@ func restore_from_persistence() -> void:
 	else:
 		valves_open = 0
 	civilian_rescued = gsm.get_flag("shelter_civilian_rescued", false)
+
+	if power_console:
+		power_console.restore_state(has_power)
+	if valve_station_left:
+		valve_station_left.restore_state(valves_open >= 1)
+	if valve_station_right:
+		valve_station_right.restore_state(valves_open >= 2)
 
 	if valves_open >= 2 and flood_gate_exit:
 		flood_gate_exit.open_gate()

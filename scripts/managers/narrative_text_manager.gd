@@ -6,6 +6,8 @@ extends Node
 static var texts: Resource
 static var current_locale: String = "es"
 
+signal language_changed(locale: String)
+
 static func _initialize() -> void:
 	if texts == null:
 		set_locale("es")
@@ -21,6 +23,7 @@ static func set_locale(locale: String) -> void:
 		texts = null
 		return
 	texts = loaded
+	language_changed.emit(locale)
 
 static func _text(property_name: String, fallback: String = "") -> String:
 	_initialize()
