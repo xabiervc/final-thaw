@@ -1,163 +1,281 @@
 extends Node3D
-## Spatial review only: no circuit integration, archive extraction or containment.
+## Phase 1 spatial review: six rooms on four levels joined by fixed stairs (layout in phase1_layout.gd).
+## Reuses the art team's FacilityMaterials, prompt HUD and wall dither, and Elena's animations.
+## No circuit, archive extraction, pursuit or containment. The lift is not installed.
+const Layout = preload("res://scripts/prototypes/phase1_layout.gd")
 const Player = preload("res://scripts/prototypes/phase1_spatial_player.gd")
-const FLOOR := Color(0.24, 0.28, 0.31)
-const RAIL := Color(0.6, 0.44, 0.15)
+const FacilityMaterials = preload("res://scripts/levels/test_room_art/facility_materials.gd")
+const HudScript = preload("res://scripts/ui/prompt_hud.gd")
+const MENU_PATH := "res://scenes/ui/main_menu.tscn"
+const WALL_THICKNESS := 0.3
+const RAIL_HEIGHT := 1.1
+const RAIL_THICKNESS := 0.1
+const SLAB := 0.25
+const STEP_HEIGHT := 0.2
+const FADED := 0.8
+const FADE_SPEED := 5.0
+const SHORTCUT_REACH := 2.5
+const SHORTCUT_CENTER := Vector3(2.0, 3.0, -10.0)
+
+var materials = FacilityMaterials.new()
 var player: CharacterBody3D
-var shortcut_shape: CollisionShape3D
-var shortcut_mesh: MeshInstance3D
+var hud: CanvasLayer
+var fade_groups: Array = []
+var body_group: Dictionary = {}
+var shortcut_body: StaticBody3D
 var shortcut_open: bool = false
-var safe_point := Vector3(3.0, 0.1, 7.0)
-var hud: Label
+var safe_point: Vector3 = Vector3(2.0, 0.2, 1.0)
+var current_room: String = ""
 
 func _ready() -> void:
-	_build()
+	_build_environment()
+	for id in Layout.ROOMS:
+		_build_room(id)
+	for stair in Layout.STAIRS:
+		_build_stairs(stair)
+	_build_shortcut_door()
+	_build_markers()
 	player = Player.new()
-	player.position = safe_point
+	player.position = Layout.ROOMS["entry"]["spawn"]
 	add_child(player)
-	var layer := CanvasLayer.new()
-	add_child(layer)
-	hud = Label.new()
-	hud.position = Vector2(16.0, 16.0)
-	hud.add_theme_constant_override("outline_size", 6)
-	layer.add_child(hud)
+	hud = HudScript.new()
+	add_child(hud)
+	hud.call("set_objective", "OBJETIVO  /  Accede al registro del archivo")
+	hud.call("set_hint", "Prueba espacial: recorre las salas y los niveles. El ascensor no está instalado.")
 
-func _physics_process(_delta: float) -> void:
-	if player.is_on_floor() and player.position.y > 2.8:
-		safe_point = Vector3(26.0, 3.1, -6.5)
-	if player.position.y < -5.0:
-		player.position = safe_point
-		player.velocity = Vector3.ZERO
-	var near := player.position.distance_to(Vector3(2.0, 3.0, -7.5)) < 2.5
-	hud.text = "SPATIAL TEST / NOT A MISSION\nWASD: move | Mouse: camera (click) | Space: jump | Esc: release mouse/menu\nTemporary ramp replaces the lift; no lift validation."
-	if near and not shortcut_open:
-		hud.text += "\nE: unlock shortcut from cabin side"
-		if Input.is_action_just_pressed("interact"):
-			unlock_shortcut(player.position)
+func _exit_tree() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		else:
-			get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
+			get_tree().change_scene_to_file(MENU_PATH)
 
-func _exit_tree() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+func _physics_process(delta: float) -> void:
+	_update_room()
+	_update_shortcut_prompt()
+	_update_occluders(delta)
+	if player.position.y < -8.0:
+		player.position = safe_point
+		player.velocity = Vector3.ZERO
+
+func _update_room() -> void:
+	var id := Layout.room_at(player.position)
+	if id == "" or id == current_room:
+		return
+	current_room = id
+	safe_point = Layout.ROOMS[id]["spawn"]
+	hud.call("set_status", "Zona: " + str(Layout.ROOMS[id]["name"]))
+
+# --- Shortcut (unlockable only from the cabin side) ---------------------------------------------------
+
+func unlock_allowed(from: Vector3) -> bool:
+	return from.z < -10.1 and from.x > 0.5 and from.x < 3.5 and absf(from.y - 3.0) < 1.5 and from.distance_to(SHORTCUT_CENTER) <= SHORTCUT_REACH
 
 func unlock_shortcut(from: Vector3) -> bool:
-	if from.x <= 2.0 or from.distance_to(Vector3(2.0, 3.0, -7.5)) > 2.5:
+	if shortcut_open or not unlock_allowed(from):
 		return false
 	shortcut_open = true
-	shortcut_shape.set_deferred("disabled", true)
-	shortcut_mesh.visible = false
+	(shortcut_body.get_child(0) as CollisionShape3D).set_deferred("disabled", true)
+	shortcut_body.visible = false
+	hud.call("show_banner", "Atajo desbloqueado", "La escalera de servicio conecta la cabina con el vestíbulo.")
 	return true
 
-func _box(id: String, size: Vector3, pos: Vector3, color: Color) -> StaticBody3D:
+func _update_shortcut_prompt() -> void:
+	var near := not shortcut_open and unlock_allowed(player.position)
+	hud.call("set_prompt", "[E] Desbloquear - Puerta del atajo" if near else "")
+	if near and Input.is_action_just_pressed("interact"):
+		unlock_shortcut(player.position)
+
+func _build_shortcut_door() -> void:
+	shortcut_body = _body("ShortcutDoor", Vector3(2.0, 2.4, 0.2), Vector3(2.0, 4.2, -10.0), materials.get_material("safety_paint"))
+
+# --- Wall dither: walls between the camera and Elena fade out through the shared wall shader -------------
+
+func _update_occluders(delta: float) -> void:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null or fade_groups.is_empty():
+		return
+	var hit_groups: Array = []
+	var excluded: Array[RID] = [player.get_rid()]
+	var from := camera.global_position
+	var to := player.global_position + Vector3(0.0, 1.0, 0.0)
+	var space := get_world_3d().direct_space_state
+	for i in 3:
+		var query := PhysicsRayQueryParameters3D.create(from, to, 1)
+		query.exclude = excluded
+		var hit := space.intersect_ray(query)
+		if hit.is_empty():
+			break
+		var collider = hit["collider"]
+		if collider is CollisionObject3D:
+			excluded.append((collider as CollisionObject3D).get_rid())
+		if body_group.has(collider):
+			hit_groups.append(body_group[collider])
+	for index in fade_groups.size():
+		var group: Dictionary = fade_groups[index]
+		var goal := FADED if hit_groups.has(index) else 0.0
+		group["amount"] = move_toward(float(group["amount"]), goal, FADE_SPEED * delta)
+		(group["material"] as ShaderMaterial).set_shader_parameter("dither_fade", group["amount"])
+
+# --- Construction ----------------------------------------------------------------------------------
+
+func _build_environment() -> void:
+	var env := Environment.new()
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.02, 0.03, 0.05)
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color(0.32, 0.4, 0.48)
+	env.ambient_light_energy = 0.45
+	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	var holder := WorldEnvironment.new()
+	holder.environment = env
+	add_child(holder)
+	var fill := DirectionalLight3D.new()
+	fill.rotation_degrees = Vector3(-55.0, 25.0, 0.0)
+	fill.light_color = Color(0.6, 0.72, 0.9)
+	fill.light_energy = 0.25
+	add_child(fill)
+
+func _body(label: String, size: Vector3, center: Vector3, material: Material, collide: bool = true) -> StaticBody3D:
 	var body := StaticBody3D.new()
-	body.name = id
-	body.position = pos
+	body.name = label
+	body.position = center
 	body.collision_layer = 1
 	body.collision_mask = 0
-	var shape := CollisionShape3D.new()
-	var resource := BoxShape3D.new()
-	resource.size = size
-	shape.shape = resource
-	body.add_child(shape)
+	if collide:
+		var shape := CollisionShape3D.new()
+		var box := BoxShape3D.new()
+		box.size = size
+		shape.shape = box
+		body.add_child(shape)
 	var mesh := MeshInstance3D.new()
-	var box := BoxMesh.new()
-	box.size = size
-	mesh.mesh = box
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
+	var box_mesh := BoxMesh.new()
+	box_mesh.size = size
+	mesh.mesh = box_mesh
 	mesh.material_override = material
 	body.add_child(mesh)
 	add_child(body)
 	return body
 
-func _floor(id: String, x0: float, x1: float, z0: float, z1: float, y: float) -> void:
-	_box(id, Vector3(x1-x0, 0.25, z1-z0), Vector3((x0+x1)*0.5, y-0.125, (z0+z1)*0.5), FLOOR)
+func _new_fade_group(wall_key: String) -> int:
+	var material := materials.get_material(wall_key).duplicate() as ShaderMaterial
+	fade_groups.append({"material": material, "amount": 0.0})
+	return fade_groups.size() - 1
 
-func _ramp(id: String, x0: float, x1: float, z0: float, z1: float, y0: float, y1: float) -> void:
-	var angle := -atan2(y1-y0, z1-z0)
-	var basis := Basis(Vector3.RIGHT, angle)
-	var center := Vector3((x0+x1)*0.5, (y0+y1)*0.5, (z0+z1)*0.5) - basis.y * 0.125
-	var body := _box(id, Vector3(x1-x0, 0.25, Vector2(z1-z0,y1-y0).length()), center, FLOOR)
-	body.rotation.x = angle
+func _build_room(id: String) -> void:
+	var r: Dictionary = Layout.ROOMS[id]
+	var x0 := float(r["x0"])
+	var x1 := float(r["x1"])
+	var z0 := float(r["z0"])
+	var z1 := float(r["z1"])
+	var y := float(r["y"])
+	_body("Floor_" + id, Vector3(x1 - x0, SLAB, z1 - z0), Vector3((x0 + x1) * 0.5, y - SLAB * 0.5, (z0 + z1) * 0.5), materials.get_material(str(r.get("floor", "floor"))))
+	var gaps := Layout.openings(id)
+	var skipped := Layout.skipped_sides(id)
+	var rails: Array = r.get("rail_sides", [])
+	var heights: Dictionary = r.get("side_h", {})
+	var wall_key := str(r.get("wall", "wall"))
+	for side in ["north", "south", "west", "east"]:
+		if skipped.has(side):
+			continue
+		var is_rail := rails.has(side)
+		var h := RAIL_HEIGHT if is_rail else float(heights.get(side, Layout.WALL_HEIGHT))
+		var thick := RAIL_THICKNESS if is_rail else WALL_THICKNESS
+		var material: Material = materials.get_material("steel_light")
+		var group := -1
+		if not is_rail:
+			group = _new_fade_group(wall_key)
+			material = (fade_groups[group]["material"] as Material)
+		var horizontal := side == "north" or side == "south"
+		var fixed := z0 if side == "north" else (z1 if side == "south" else (x0 if side == "west" else x1))
+		var run_lo := x0 if horizontal else z0
+		var run_hi := x1 if horizontal else z1
+		for segment in _segments(run_lo, run_hi, gaps[side]):
+			var a := float(segment[0])
+			var b := float(segment[1])
+			var size := Vector3(b - a, h, thick) if horizontal else Vector3(thick, h, b - a)
+			var center := Vector3((a + b) * 0.5, y + h * 0.5, fixed) if horizontal else Vector3(fixed, y + h * 0.5, (a + b) * 0.5)
+			var body := _body("Wall_%s_%s" % [id, side], size, center, material)
+			if group >= 0:
+				body_group[body] = group
+	var light := OmniLight3D.new()
+	light.position = Vector3((x0 + x1) * 0.5, y + 3.6, (z0 + z1) * 0.5)
+	light.light_color = Color(0.78, 0.88, 1.0)
+	light.light_energy = 0.7
+	light.omni_range = maxf(x1 - x0, z1 - z0) * 0.6 + 4.0
+	add_child(light)
 
-func _sign(text: String, at: Vector3) -> void:
-	var label := Label3D.new()
-	label.text = text
-	label.position = at
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.font_size = 42
-	label.pixel_size = 0.008
-	add_child(label)
+func _segments(run_lo: float, run_hi: float, gaps: Array) -> Array:
+	var sorted := gaps.duplicate()
+	sorted.sort_custom(func(p, q): return float(p[0]) < float(q[0]))
+	var out: Array = []
+	var cursor := run_lo
+	for gap in sorted:
+		if float(gap[0]) > cursor + 0.001:
+			out.append([cursor, float(gap[0])])
+		cursor = maxf(cursor, float(gap[1]))
+	if cursor < run_hi - 0.001:
+		out.append([cursor, run_hi])
+	return out
 
-func _build() -> void:
-	var environment := WorldEnvironment.new()
-	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(0.08,0.1,0.13)
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.7,0.8,0.9)
-	env.ambient_light_energy = 0.7
-	environment.environment = env
-	add_child(environment)
-	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-50,-30,0)
-	sun.light_energy = 0.8
-	add_child(sun)
-	# Split main floor: no collider covering pit or descending stairs.
-	_floor("WestFloorWithInfill",0,20,-10,12,0)
-	_floor("NorthFloor",20,30,-10,1,0)
-	_floor("EastFloor",28,30,1,12,0)
-	_floor("ApronWest",20,24,8,12,0)
-	_floor("ApronEast",26,28,8,12,0)
-	_floor("StairTopApron",24,26,11,12,0)
-	_floor("Pit",20,28,1,8,-2)
-	_ramp("PitStairsCollision",24,26,8,11,-2,0)
-	_box("Machine",Vector3(7,2,5),Vector3(14.5,1,0.5),Color(0.15,0.2,0.22))
-	_floor("Cabin",2,9,-9,-5,3)
-	_floor("PublicWalkway",9,26,-8,-6,3)
-	_floor("UpperLanding",24,28,-7,-4.5,3)
-	_floor("LiftLowerConnector",24.5,27.5,-1.5,-1,0)
-	_ramp("BrokenApproach",2,4,-3,3,3,0)
-	_floor("BrokenLanding",2,4,-4,-3,3)
-	_box("BrokenBarrier",Vector3(2,2.4,0.15),Vector3(3,4.2,-4),RAIL)
-	# Shortcut has no overlap with public walkway.
-	_floor("ShortcutVestibule",0,2,-9,-6,3)
-	_ramp("ShortcutStairsCollision",0,2,-6,0,3,0)
-	_floor("ShortcutFoot",0,2,0,2,0)
-	_box("WestPartitionNorth",Vector3(0.15,2.4,0.5),Vector3(2.075,4.2,-8.75),FLOOR)
-	_box("WestPartitionSouth",Vector3(0.15,2.4,1.5),Vector3(2.075,4.2,-5.75),FLOOR)
-	_box("WestLintel",Vector3(0.15,0.2,2),Vector3(2.075,5.3,-7.5),FLOOR)
-	var door := _box("ShortcutDoor",Vector3(0.15,2.2,2),Vector3(2.075,4.1,-7.5),RAIL)
-	shortcut_shape = door.get_child(0) as CollisionShape3D
-	shortcut_mesh = door.get_child(1) as MeshInstance3D
-	_box("VestibuleNorth",Vector3(2,2.4,0.15),Vector3(1,4.2,-9.075),FLOOR)
-	_box("VestibuleWest",Vector3(0.15,2.4,3),Vector3(-0.075,4.2,-7.5),FLOOR)
-	_box("VestibuleRoof",Vector3(2,0.2,3),Vector3(1,5.5,-7.5),FLOOR)
-	_box("StairSeparation",Vector3(0.15,5.4,6),Vector3(2,2.7,-3),FLOOR)
-	# Temporary alternative, not a functioning lift.
-	_floor("TemporaryGroundJoin",28,31,8,10,0)
-	_floor("TemporaryLowerLanding",31,33,8,10,0)
-	_ramp("TemporaryRamp",31,33,-6,8,3,0)
-	_floor("TemporaryUpperLanding",31,33,-8,-6,3)
-	_floor("TemporaryReturn",28,31,-8,-6,3)
-	_floor("TemporaryUpperJoin",26,28,-8,-6,3)
-	# Pit protection, with the stair mouth left open.
-	_box("PitWestRail",Vector3(0.2,1.2,7),Vector3(19.9,0.6,4.5),RAIL)
-	_box("PitSouthRailA",Vector3(4,1.2,0.2),Vector3(22,0.6,7.9),RAIL)
-	_box("PitSouthRailB",Vector3(2,1.2,0.2),Vector3(27,0.6,7.9),RAIL)
-	_box("PitEastRail",Vector3(0.15,1.2,7),Vector3(28.075,0.6,4.5),RAIL)
-	_box("PitNorthRail",Vector3(8,1.2,0.15),Vector3(24,0.6,0.925),RAIL)
-	_box("LiftNotInstalledBarrier",Vector3(4,1.2,0.15),Vector3(26,3.6,-4.425),RAIL)
-	_sign("ARCHIVE / UPPER CABIN",Vector3(5,4.5,-7))
-	_sign("MAINTENANCE / PIT",Vector3(26,-0.6,2))
-	_sign("SCHEMATIC (clue position)",Vector3(27,-0.5,6))
-	_sign("TAMPERED BRIDGE (clue position)",Vector3(22,-0.5,4))
-	_sign("ISOLATOR (control position)",Vector3(19,4.2,-7))
-	_sign("SELECTOR (control position)",Vector3(12,4.2,-7))
-	_sign("PROVISIONAL RAMP / NOT LIFT VALIDATION",Vector3(32,1.8,9))
-	_sign("LIFT NOT INSTALLED",Vector3(26,4.5,-4.5))
+func _build_stairs(stair: Dictionary) -> void:
+	var along_z: bool = stair["axis"] == "z"
+	var a0 := float(stair["a0"])
+	var a1 := float(stair["a1"])
+	var y0 := float(stair["y0"])
+	var y1 := float(stair["y1"])
+	var c0 := float(stair["c0"])
+	var c1 := float(stair["c1"])
+	var length := a1 - a0
+	var rise := y1 - y0
+	var width := c1 - c0
+	var lateral := (c0 + c1) * 0.5
+	var angle := atan2(rise, length)
+	var surface: Material = materials.get_material("grate")
+	# Collision ramp: smooth for the character controller. Its mesh is hidden; the steps below are what is seen.
+	var ramp_length := sqrt(length * length + rise * rise)
+	var ramp_size := Vector3(width, SLAB, ramp_length) if along_z else Vector3(ramp_length, SLAB, width)
+	var ramp := _body("Stair_" + str(stair["id"]), ramp_size, Vector3.ZERO, surface)
+	if along_z:
+		ramp.rotation.x = -angle
+	else:
+		ramp.rotation.z = angle
+	var middle := Vector3(lateral, (y0 + y1) * 0.5, (a0 + a1) * 0.5) if along_z else Vector3((a0 + a1) * 0.5, (y0 + y1) * 0.5, lateral)
+	ramp.position = middle - ramp.basis.y * (SLAB * 0.5)
+	(ramp.get_child(1) as MeshInstance3D).visible = false
+	var count := int(ceil(absf(rise) / STEP_HEIGHT))
+	var base_y := minf(y0, y1) - 0.3
+	for i in count:
+		var t := (float(i) + 0.5) / float(count)
+		var run_pos := a0 + t * length
+		var top := y0 + t * rise
+		var tread := absf(length) / float(count)
+		var block := top - base_y
+		var size := Vector3(width, block, tread) if along_z else Vector3(tread, block, width)
+		var center := Vector3(lateral, base_y + block * 0.5, run_pos) if along_z else Vector3(run_pos, base_y + block * 0.5, lateral)
+		_body("Step_%s_%d" % [stair["id"], i], size, center, surface, false)
+	# Stairwell side walls: constant height, flush with the room walls on both sides.
+	var group := _new_fade_group("bulkhead")
+	var wall_bottom := base_y
+	var wall_top := maxf(y0, y1) + 2.4
+	var wall_h := wall_top - wall_bottom
+	for edge in [c0 - 0.1, c1 + 0.1]:
+		var size := Vector3(0.2, wall_h, absf(length)) if along_z else Vector3(absf(length), wall_h, 0.2)
+		var center := Vector3(edge, wall_bottom + wall_h * 0.5, (a0 + a1) * 0.5) if along_z else Vector3((a0 + a1) * 0.5, wall_bottom + wall_h * 0.5, edge)
+		var wall := _body("StairWall_" + str(stair["id"]), size, center, fade_groups[group]["material"] as Material)
+		body_group[wall] = group
+
+func _build_markers() -> void:
+	for key in Layout.POSITIONS:
+		var entry: Dictionary = Layout.POSITIONS[key]
+		var label := Label3D.new()
+		label.text = str(entry["label"])
+		label.position = (entry["at"] as Vector3) + Vector3(0.0, 1.8, 0.0)
+		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		label.font_size = 36
+		label.pixel_size = 0.008
+		label.outline_size = 8
+		add_child(label)
