@@ -41,6 +41,7 @@ Replace the old endpoint (20,0,6) and boundary-following route through (20,0,9) 
 
 - South route rectangle X 7..19.5, Z 5..7 at Y=0, connected to the entrance by existing main floor.
 - West pit corridor X 17.5..19.5, Z 5..10 at Y=0: 2 m clear width, entirely west of the pit X=20 edge, with 0.5 m setback.
+- Solid floor infill X 19.5..20, Z 1..8 at Y=0, top flush with the main floor and corridor; continuous load-bearing collider, no slot or trench. The X 19.5..19.8 strip is additional floor outside the guaranteed 2 m corridor. The X 19.8..20 strip supports the west guardrail. This floor stops at X=20 and never covers the pit opening. It joins the corridor over Z 5..8; no rail or seam is placed at X=19.5.
 - Apron connector X 17.5..22, Z 8..10 at Y=0: overlaps west corridor over X 17.5..19.5 and service apron over X 20..22. It crosses X=20 only south of the pit boundary Z=8.
 - Surface joins are flush and uninterrupted. Guardrail posts, collision and wall thickness cannot enter these clear rectangles. Guardrails protecting the pit west edge occupy X 19.8..20, Z 1..8; south edge protection occupies Z 7.8..8 except the stair mouth X 24..26.
 
