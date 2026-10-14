@@ -4,7 +4,7 @@
 
 ## Recorrido de Fase 1
 
-A/B en P0 → S1 ↓ D1/D2 en P−1 → volver por S1 → galería de servicio → elevador P0↔M (+1,5 m) → sala de bombas/galería → S2 ↑ E/P2 (+3 m) → F → G → H.
+Túnel exterior → A/B en P0 → S1 ↓ D1/D2 en P−1 → volver por S1 → galería de servicio → elevador P0↔M (+1,5 m) → sala de bombas/galería → S2 ↑ E/P2 (+3 m) → F → G → H.
 
 La escalera directa P0↔P2 está dañada y bloqueada. G no incluye atajo vertical a P0. El elevador termina en M; S2 lleva a control. Cada conexión vertical tiene destino propio.
 
