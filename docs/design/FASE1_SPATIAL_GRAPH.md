@@ -12,7 +12,7 @@ Convención: [R] geometría base anterior; [D] decisión ahora cerrada; ninguna 
 
 1. **Recorrido único A:** foso y mantenimiento antes de subir a E. El estado inicial de mantenimiento es OFF y la plataforma elevadora no se mueve sin él. No existe una ruta de rampa en el slice final; la variante B queda retirada y no es un criterio de aceptación.
 2. **Una única plataforma:** es la plataforma del elevador en la huella original X=24.5..27.5, Z=-4.5..-1.5, de Y=0 a Y=3. Se elimina la segunda reserva de plataforma X=30..34 y se elimina la rampa provisional. No hay dos transportes compitiendo por el anexo.
-3. **Fallo de energía:** parada segura hacia el rellano más cercano con reserva de seguridad; empate exacto se resuelve hacia el rellano inferior. Al llegar, plataforma deshabilitada hasta reactivar mantenimiento. Nunca caída ni atrapamiento entre niveles.
+3. **Fallo de energía:** parada segura hacia el rellano más cercano con reserva de seguridad; empate exacto se resuelve hacia el rellano superior, de acuerdo con `service_lift.gd`. Al llegar, plataforma deshabilitada hasta reactivar mantenimiento. Nunca caída ni atrapamiento entre niveles.
 4. **Rearme:** interacción en soporte fuera del borde norte de la pasarela, centrada aproximadamente en (15.5,3.5,-5.85). Selector y aislador conservan exactamente (12,3,-7) y (19,3,-7).
 5. **Panel E:** soporte de estado cerca de (15.5,4.25,-5.85), cara al sur; el punto (15,3,-7) sigue siendo punto de observación, no una ubicación de indicador.
 6. **Indicador F:** interior de la entrada este, (8.55,3.8,-7), cara hacia +X y visible desde la pasarela antes de entrar. La consola de archivo sigue en (5,3,-7).
