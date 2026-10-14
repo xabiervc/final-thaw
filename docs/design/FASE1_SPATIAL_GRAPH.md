@@ -21,7 +21,7 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | D2 · Distribución | −2 | X 20..28, Z 1..8 | Esquema, puente A→T y mantenimiento. |
 | Galería de evacuación (candidato actual) | −2 | X 28..34, Z 4,5..7,5 (propuesta no bloqueante) | Ruta posible hacia una salida exterior nueva; no se ha construido/validado. Reubicarla si la topología completa requiere otra salida. |
 | Boca de servicio (candidata) | variable | X≈34, Z≈6 (propuesta no bloqueante) | Salida exterior de servicio conectada con parking; ubicación definitiva pendiente del grafo completo. |
-| Elevador | 0↔+1,5 | X 24,5..27,5, Z −4,5..−1,5 | Transporte P0↔M, habilitado por mantenimiento. |
+| Elevador | 0↔+1,5 | X 24,5..27,5, Z −4,5..−1,5 | Transporte P0↔M, habilitado por mantenimiento; lo usa Elena y lo sigue físicamente la unidad. |\n| R1 · Umbral de reacquisición | 0 | X≈29, Z≈1; transición de galería de servicio a retorno este P0 | La unidad sale del elevador detrás de Elena y la reacquiere por LOS real; inicia la carrera. Sin teletransporte ni spawn delante del jugador. |
 | Galería de observación | +1,5 | X 9..13, Z −9..−1,5 | Vista a B y llegada de S2. |
 | M · Bombas | +1,5 | X 13..24, Z −9..−1,5 | Bombas, colectores y paso al elevador. |
 | S2 · Escalera fija | +1,5↔+3 | X 9..13, Z −4,5..−1,5 | M a P2, independiente de alimentación. |
@@ -35,7 +35,7 @@ Las coordenadas de la galería de evacuación y la boca de servicio son **extens
 
 ### Handoff geométrico con Fase 2
 
-La galería de evacuación y la boca exterior dibujadas en P−1 son todavía una **propuesta de coordinación**, no un punto de salida bloqueado. El contrato vigente es: la salida debe ser distinta del túnel oeste, físicamente continua desde la circulación existente de P−1 y conectada con el aparcamiento. La ruta interior completa incluye evasión silenciosa y un trigger espacial de reacquisición antes de la carrera; la posición final de la boca debe derivarse después de cerrar esa ruta y dibujarse en planta y sección.
+La galería de evacuación y la boca exterior dibujadas en P−1 son todavía una **propuesta de coordinación**, no un punto de salida bloqueado. El contrato vigente es: la salida debe ser distinta del túnel oeste, físicamente continua desde la circulación existente de P−1 y conectada con el aparcamiento. La ruta interior completa incluye evasión silenciosa por F/E, pasarela y M; después Elena toma el elevador existente hacia P0 y la unidad la reacquiere en R1, en la transición al retorno este. La carrera continúa por P0→S1→P−1. La posición final de la boca debe derivarse después de cerrar esa ruta y dibujarse en planta y sección.
 
 La planta de parking y sus overlays usan coordenadas locales. Se retira el transform candidato `X+28,7 / Z−15,8`: no se debe copiar al constructor ni usar para decidir la salida interior. Cuando la salida esté cerrada, medir su huella, ancho, orientación y cota; entonces derivar un único transform local-mundo y actualizar en conjunto la planta, sección, grafo y overlays de Fase 2. El checkpoint antiguo del prototipo no decide la arquitectura.
 
@@ -43,8 +43,8 @@ La planta de parking y sus overlays usan coordenadas locales. Se retira el trans
 
 | Estado | Zona de referencia | Qué hace el jugador | Condición de salida | Requisito espacial |
 |---|---|---|---|---|
-| Evasión silenciosa | F/E → pasarela → S2/M; áreas de trabajo conectadas | Evita líneas de visión, ruido y atención de personal que puede seguir trabajando. | Elena cruza un umbral expuesto y la unidad de recuperación la reacquiere por LOS real o evento diegético claramente señalizado. | Marcar cobertura real, campos de visión, rutas de patrulla, refugios y rutas alternativas en los planos; NPC no bloquean pasillos como props. |
-| Carrera interior | Propuesta inicial: salida del elevador hacia circulación P0/taller | Corre, interpreta obstáculos y elige el retorno hacia la salida alternativa. | Cruza el umbral exterior elegido. | El trigger debe ser visible/anticipable, sin corte de cámara, bloqueo de input ni detección omnisciente. Su posición es provisional hasta revisar los planos juntos. |
+| Evasión silenciosa | F/E → pasarela → S2/M; áreas de trabajo conectadas | Evita líneas de visión, ruido y atención de personal que puede seguir trabajando. | Elena recorre M en silencio, baja por el elevador existente y cruza R1 en P0; la unidad sale detrás y la reacquiere por LOS real. Una alerta de personal solo marca última posición conocida. | Marcar cobertura real, campos de visión, rutas de patrulla, refugios y rutas alternativas en los planos; NPC no bloquean pasillos como props. |
+| Carrera interior | R1: transición de galería de servicio a retorno este P0, inmediatamente después del rellano del elevador | Corre por el retorno este hacia S1 y P−1, interpretando obstáculos legibles. | Cruza el umbral exterior alternativo elegido en P−1. | La unidad debe llegar por el mismo elevador y reacquirir por LOS real; R1 no teletransporta ni fuerza la carrera si la unidad no está presente. |
 | Transición a parking | Umbral exterior seleccionado | Continúa el movimiento hacia la zona de servicio/aparcamiento. | El checkpoint integrado de Phase 2 toma el control una sola vez. | Transform local-mundo derivado después de fijar la salida real; no reutilizar la transformación provisional retirada. |
 
 ## Grafo de circulación
