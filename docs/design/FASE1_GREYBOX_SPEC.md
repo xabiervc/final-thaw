@@ -20,7 +20,7 @@
 | D2 · Distribución | X=20..28, Z=1..8 | Esquema, puente A→T manipulado, switch de mantenimiento; espacio caminable alrededor de equipo. |
 | S1 inferior | X=24..26, Z=8..11 | Boca de escalera abierta en suelo, llegada segura y orientación a D1/D2. |
 | Galería de evacuación | X=28..34, Z=4,5..7,5 (propuesta heredada, no bloqueante) | Corredor de servicio con ancho libre ≥2 m, paredes y techo donde proceda. Conservarlo solo si la ruta completa lo justifica; si la salida se traslada, dibujar el corredor nuevo y retirar esta huella de los planos antes de implementar. |
-| Boca de servicio | X≈34, Z=4,5..7,5 (propuesta heredada, no bloqueante) | Umbral exterior físicamente conectado al parking. Su coordenada no obliga a fijar el recorrido interior. |
+| Boca de servicio alternativa | X=34, Z=4,5..7,5; Y=−2,0 (baseline de diseño) | Apertura libre de 3 m al este, conectada por galería 6×3 m al parking. Distinta del túnel oeste; verificar cota y continuidad en escena. |
 
 La extensión hacia el este es una decisión arquitectónica nueva respecto a v1.1. Los planos y la sección deben incluirla. Si la topografía requiere pendiente, rampa o escalones, dibujarlos y comprobar que son transitables. La galería no debe parecer un túnel secreto añadido al final: integrar canaletas, colectores, compuerta de mantenimiento, señalización de descarga y huellas de uso.
 
@@ -48,7 +48,7 @@ G X=0..3, Z=−9..−4,5; F X=3..9, Z=−9..−4,5; E X=9..24, Z=−8,5..−4,5;
 
 ## Ruta de huida y obstáculos — posiciones candidatas acotadas
 
-Ruta de referencia: G → F/E → pasarela superior → S2/M y áreas de trabajo potencialmente ocupadas (evasión silenciosa) → umbral expuesto/trigger de reacquisición → tramo a la carrera por circulación de servicio → conexiones existentes hacia P0/P−1 → salida alternativa elegida en el plano completo → aparcamiento. No se fija el lado de la salida ni un transform mundial del parking antes de cerrar el grafo.
+Ruta de referencia: G → F/E → pasarela superior → S2/M y áreas de trabajo potencialmente ocupadas (evasión silenciosa) → umbral expuesto/trigger de reacquisición → tramo a la carrera por circulación de servicio → conexiones existentes hacia P0/P−1 → salida este seleccionada en P−1 (X=34, Z=4,5..7,5, Y=−2) por galería 6×3 m → aparcamiento con transform de diseño X_mundo=X_local+28,7, Z_mundo=Z_local−15,8. Validar en escena, no rediseñar por el checkpoint antiguo.
 
 | ID | Cota/centro aproximado | Volumen de referencia | Lectura y solución | Aceptación geométrica |
 |---|---|---|---|---|
@@ -91,7 +91,7 @@ Estos son contratos de diseño para el greybox; no afirman que los colliders o l
 - Volumen objetivo de trigger: hasta 2,0 × 2,0 m dentro de la huella de circulación existente `X=28..30, Z=0..2`. No debe añadir pared, escalón ni obstáculo. Ajustar el volumen al footprint real de la puerta/corredor sin reducir la anchura libre.
 - La secuencia física es: Elena desciende por el elevador P0↔M; la unidad la sigue por el mismo elevador; ambos entran en la galería; al alcanzar R1, la unidad obtiene LOS real y se inicia la carrera.
 - Si la unidad no está presente o no tiene LOS, R1 no genera un spawn ni cambia a carrera. Una reacquisición anterior solo adelanta el trigger si la unidad ve a Elena por geometría real.
-- Tras R1, el recorrido usa el retorno este existente, S1, P−1 y la galería de evacuación seleccionada. La boca exterior final y el transform al parking siguen pendientes hasta cerrar la ruta completa.
+- Tras R1, el recorrido usa el retorno este existente, S1, P−1 y la galería de evacuación seleccionada. La boca exterior y el transform están seleccionados como baseline de diseño; su continuidad física debe verificarse en Godot.
 
 ## Criterios de aceptación
 
