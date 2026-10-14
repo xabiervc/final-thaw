@@ -288,7 +288,7 @@ func _build_fixed_geometry() -> void:
 	_body_box("WorkshopPipeRack", Vector3(2.4, 0.18, 0.18), Vector3(22.0, 2.1, -8.7), materials.get_material("steel"))
 	_label3d("WorkshopLabel", "C · TALLER TÉCNICO", Vector3(22.0, 1.4, -8.2), Color(0.7, 0.85, 0.9), 16, 0.003)
 	_label3d("AccessLabel", "A · ACCESO / EVACUACIÓN", Vector3(3.0, 0.08, 9.0), Color(0.9, 0.82, 0.62), 18, 0.003)
-	_label3d("SouthRouteMark", "PASILLO DE SERVICIO", Vector3(13.0, 0.06, 6.0), Color(0.7, 0.82, 0.86), 20, 0.003)
+	_label3d("SouthRouteMark", "PASILLO DE SERVICIO", Vector3(13.0, 0.06, 0.35), Color(0.7, 0.82, 0.86), 20, 0.003)
 	_label3d("PitApproachMark", "FOSO DE SERVICIO ↓", Vector3(21.8, 0.06, 9.7), Color(0.9, 0.74, 0.35), 20, 0.003)
 
 	# Room boundaries make the footprint read as an actual facility, while preserving every designed route.
