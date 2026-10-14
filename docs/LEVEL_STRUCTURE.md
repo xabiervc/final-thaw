@@ -67,7 +67,7 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 | Marked bay | 3.0 m wide × 5.0 m deep | Wider than a minimum stall to permit readable cover routes; validate total bay count and circulation |
 | Parked car envelope | approx. 1.9 × 3.6 m | Static cover; doors/bonnets do not create walkable space |
 | Structural column | 1.0 × 1.0 m footprint | Must not intrude into the required clear route or hide a required landing |
-| Technical cage | approx. 5.6 × 3.4 m at local centre (32.6, 12.8) | Fixed service enclosure; route B passes east/north of it with ≥1.5 m target clearance; no route through the cage |
+| Technical cage | approx. 5.6 × 3.4 m at local centre (32.1, 12.8) | Fixed service enclosure; route B passes east/north of it with ≥1.5 m target clearance; no route through the cage |
 | Main central apron | approx. 17.3 m between the two parking rows | Deliberately a service/maneuvering apron, not a standard aisle; use the technical cage, cover clusters and exposed crossing to break the open area |
 | Pedestrian pinch | target ≥1.2 m | Only at one clearly telegraphed, non-jump pinch; prefer ≥1.5 m for a fast turn |
 | Primary route | target ≥2.0 m clear | Measured between collision surfaces, not visual prop bounds |
@@ -222,7 +222,7 @@ These entries turn the concept symbols into reviewable design proposals. Their p
 | ID | Approx. position (X, Z) | Proposed physical element | Intended decision | Fairness and recovery contract |
 |---|---:|---|---|---|
 | P2-O1 | (13.3, 13.4) | Abandoned maintenance cart/pallet, approx. 1.9 × 2.1 m footprint, intruding into the covered service lane | Read the remaining side clearance and choose to walk around rather than sprint blindly | Keep a visibly continuous passage of at least 1.2 m; no hidden collision protrusions; route remains recoverable if detected |
-| P2-O2 | (37.2, 17.0) | Displaced service equipment rack, approx. 3.0 × 2.0 m footprint, between the routes near convergence | Use it as cover; Route A passes south of it while Route B approaches from the north-east | Must not intersect either route's minimum clear envelope; it changes sightline but does not block route connectivity |
+| P2-O2 | (36.9, 17.0) | Displaced service equipment rack, approx. 3.0 × 2.0 m footprint, between the routes near convergence | Use it as cover; Route A passes south of it while Route B approaches from the north-east | Must not intersect either route's minimum clear envelope; it changes sightline but does not block route connectivity |
 | P2-O3 | (44.3, 14.8) | Partially lowered service barrier; plan shows a fixed 1.3 m clear aperture | Read the opening and pass through without a timed slide | Validate player/camera/threat clearance; aperture never closes on a character; any impassable variant needs a dimensioned bypass in plan and graph |
 
 No obstacle is approved merely because it appears in the SVG. Before implementation, the design owner must review each item's measured footprint, approach view, collision shape, camera behavior, player and enemy traversability, audio/visual tell, alternative, checkpoint relationship and acceptance test. If an obstacle changes, update the plan, section/overlay, graph, register and traceability together.
