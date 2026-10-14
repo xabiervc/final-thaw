@@ -1,5 +1,7 @@
 # Phase 1 — The Ghost Protocol: grand design
 
+> **ESTADO ACTUAL — REFERENCIA NO CANÓNICA.** Este documento describe un diseño/prototipo anterior y se conserva como histórico/comparativo. Para implementar el slice actual, seguir `FASE1_FUNCTIONAL_SPEC.md` v1.0, `FASE1_SPATIAL_GRAPH.md` v0.4, `FASE1_GREYBOX_SPEC.md` v1.1, `fase1_fase2_mapa_progresion.md` v0.6 y `FASE1_LOGIC_CONTRACT.md`. No utilizar sus recorridos, coordenadas ni preguntas abiertas cuando contradigan esas fuentes.
+
 Status: design proposal for design and script validation. Not built. It does not decide the narrative items listed in section 9. It builds on FASE1_ROOM_COMPLEX.md (layout), FASE1_LOGIC_CONTRACT.md (circuit) and MISSION1_GHOST_PROTOCOL.md (premise).
 
 ## 1. Intent
