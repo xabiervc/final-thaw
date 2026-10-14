@@ -54,7 +54,7 @@ Ruta de referencia: G → F/E → pasarela superior → S2 ↓ M → sala de bom
 |---|---|---|---|---|
 | O1 · Estantería caída | P2: (8,0; 3,0; −7,0) | 1,0 × 1,1 × 0,8 m | Estantería de archivo vencida hacia el paso. Rodear por el lateral abierto, con aproximación visible desde F. | Mantener al menos 1,2 m de paso continuo; no tapar la puerta ni ocultar el acceso a E. |
 | O2 · Bastidor de tuberías | M: (18,0; 1,5; −3,0) | 2,0 × 0,8 × 1,2 m | Bastidor desplazado durante la evacuación; rodear siguiendo las líneas de servicio. | Dejar un recorrido ≥2,0 m entre maquinaria/barandillas; no invadir el acceso a elevador ni S2. |
-| O3 · Bandeja desprendida | P0: (22,5; 0,0; −0,5) | 1,2 × 0,8 × 0,6 m | Bandeja/canaleta caída en la galería de servicio; el paso lateral debe ser obvio y estable. | Dejar ≥1,2 m libres a ambos lados donde el trazado lo permita; no bloquear la llegada al elevador ni S1. |
+| O3 · Bandeja desprendida | P0: (22,5; 0,0; −1,5) | 1,2 × 0,8 × 0,6 m | Bandeja/canaleta caída en la galería de servicio; el paso lateral debe ser obvio y estable. | Dejar ≥1,2 m libres a ambos lados donde el trazado lo permita; no bloquear la llegada al elevador ni S1. |
 
 Estas posiciones son la primera propuesta de layout de persecución y deben dibujarse en planta antes de construir los colliders. Las dimensiones son máximos iniciales, no autorización para reducir pasos. Ajustar los obstáculos si la cápsula/cámara reales no permiten una solución justa; actualizar SVG y pruebas en el mismo cambio.
 
