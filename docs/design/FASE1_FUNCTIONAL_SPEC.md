@@ -32,7 +32,7 @@ Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protecció
 - Si se selecciona ARCHIVO con ENSAYO conectado, la protección dispara inmediatamente y registra `DEMANDA_SIMULTANEA`. No hay muerte ni bloqueo permanente. Aislar ENSAYO y rearmar permite recuperarse.
 - Cambiar selector o aislador no rearma por sí solo. Rearme solo tiene éxito con el fallo ausente.
 - El diagnóstico permanece disponible en cualquier estado y muestra estado actual y último disparo como datos separados.
-- Mantenimiento activa iluminación/elevador, pero no alimenta la protección de recuperación.
+- Mantenimiento activa iluminación/elevador, pero no alimenta la protección de recuperación. La interacción encola además el flag de misión `SERVICE_OVERRIDE` como efecto narrativo separado; no altera el modelo de circuito ni inicia Containment hasta que se abre G.
 - Consultar F solo está disponible cuando ARCHIVO está estable. El conocimiento adquirido se conserva durante la sesión aunque después se pierda alimentación; no se escribe en el guardado persistente en este hito.
 
 ## 4. Función de cada sector en la investigación
@@ -51,7 +51,7 @@ Las pistas ambientales deben poder leerse en el espacio real y desde la cámara.
 
 ## 5. Huida interior
 
-El segmento se activa cuando Elena abre G después de completar la condición de salida acordada. El disparador narrativo concreto de la amenaza sigue pendiente de cierre; la condición espacial de la huida queda fijada.
+El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_OVERRIDE` encolado por la interacción de mantenimiento. Esta bandera pertenece al flujo de misión, no al modelo eléctrico de `FASE1_LOGIC_CONTRACT.md`; no modifica sus salidas ni su historial. Abrir G envía la auditoría y activa Containment una sola vez. Consultar el archivo añade `RESTRICTED_RECORD_READ`, pero no dispara la persecución. Sin `SERVICE_OVERRIDE`, G devuelve una respuesta diegética de bloqueo y no inicia la huida.
 
 - La transición de exploración a huida debe ser perceptible mediante respuesta audiovisual del edificio y cambio de comportamiento de la amenaza.
 - La persecución sucede dentro del laboratorio. La escena del aparcamiento no debe cargarse hasta que Elena alcance la boca de servicio.
@@ -74,7 +74,7 @@ Criterios:
 
 ## 7. Historia y estado de decisiones
 
-La identidad general del laboratorio y el recorrido de huida son requisitos de diseño. Permanecen pendientes de aprobación narrativa: el evento exacto recibido por Helix, si F se audita, la percepción de Elena, causa/timing de Containment, identidad y punto de entrada de la amenaza, y el destino posterior. No convertir `SERVICE_OVERRIDE`, `RESTRICTED_RECORD_READ` o señales de sincronización en canon sin cerrar esos puntos.
+La identidad del laboratorio, el recorrido de huida y el contrato de evento del opening están especificados como propuesta en `docs/narrative_complete.md` y `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md`. Permanecen abiertos el motivo de la supresión, el destinatario/supervisión exactos, la identidad final de la unidad, la cronología completa y el destino posterior. `SERVICE_OVERRIDE` y `RESTRICTED_RECORD_READ` son flags de misión en memoria; no cambian el esquema de guardado ni el modelo eléctrico.
 
 ## 8. Pruebas y aceptación
 
