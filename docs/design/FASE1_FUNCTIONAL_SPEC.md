@@ -51,7 +51,7 @@ Las pistas ambientales deben poder leerse en el espacio real y desde la cámara.
 
 ## 5. Huida interior
 
-El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_OVERRIDE` encolado por la interacción de mantenimiento. Esta bandera pertenece al flujo de misión, no al modelo eléctrico de `FASE1_LOGIC_CONTRACT.md`; no modifica sus salidas ni su historial. Abrir G envía la auditoría, marca el evento como enviado y activa Containment una sola vez. Las llamadas repetidas no duplican el evento ni reinician la persecución. Consultar el archivo añade `RESTRICTED_RECORD_READ`, pero no dispara la persecución. Sin `SERVICE_OVERRIDE`, G devuelve una respuesta diegética de bloqueo y no inicia la huida. Reiniciar la misión restablece ambos flags; no se escriben en el guardado persistente.
+El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_OVERRIDE` encolado por la interacción de mantenimiento. Esta bandera pertenece al flujo de misión, no al modelo eléctrico de `FASE1_LOGIC_CONTRACT.md`; no modifica sus salidas ni su historial. Abrir G envía la auditoría, marca el evento como enviado y activa Containment una sola vez. Las llamadas repetidas no duplican el evento ni reinician la secuencia de huida. Consultar el archivo añade `RESTRICTED_RECORD_READ`, pero no dispara la persecución. Sin `SERVICE_OVERRIDE`, G devuelve una respuesta diegética de bloqueo y no inicia la huida. Reiniciar la misión restablece ambos flags; no se escriben en el guardado persistente.
 
 - La transición de exploración a huida debe ser perceptible mediante respuesta audiovisual del edificio y cambio de comportamiento de la amenaza.
 - La persecución sucede dentro del laboratorio. La escena del aparcamiento no debe cargarse hasta que Elena alcance la boca de servicio.
@@ -59,6 +59,26 @@ El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_
 - No añadir combate obligatorio, armas ni nuevos sistemas de progresión.
 - El descenso utiliza S2, elevador y S1 existentes. El estado del elevador durante la persecución debe definirse y probarse; no inventar una conexión vertical para salvar un bloqueo.
 - La ruta termina en una salida de servicio alternativa distinta del túnel de entrada. Su nivel, lado del perímetro y conexión final se deciden desde el grafo completo; no se fuerza una boca para encajar el transform local del parking.
+
+## 5.1 Contrato provisional de evasión y percepción de personal
+
+Esta capa es nueva y aún no está implementada ni validada. No debe mezclarse con el contrato eléctrico ni cambiar el guardado.
+
+- Estados mínimos del personal que participa en la sección: `WORKING`, `SUSPICIOUS`, `INVESTIGATING` y `ALERTED`. Las transiciones se basan en eventos observables (Elena entra en línea de visión, genera un ruido identificable, es vista tras cobertura o se cruza el trigger de carrera); cada estado debe tener una respuesta ambiental legible.
+- Visión: rango y cono explícitos más línea de visión libre. Muros y cobertura opaca bloquean visión. No detectar a través de geometría ni usar conocimiento omnisciente de la posición de Elena.
+- Ruido: interacciones ruidosas y movimiento rápido pueden generar eventos de investigación solo si el sistema de ruido está implementado; no afirmar un modelo de audio que no exista. Si todavía no hay un modelo de ruido, la primera versión puede basarse en LOS y timing, y el alcance debe quedar documentado.
+- Búsqueda: al perder contacto, investigar la última posición conocida y regresar a la rutina tras un tiempo definido; no rastrear indefinidamente la posición actual de Elena.
+- Diseño: cobertura, refugios y rutas de patrulla se dibujan en planta; no se considera cobertura un objeto que no bloquee visión/collider en runtime. El personal no bloquea físicamente toda la ruta y no exige combate, distracción consumible ni takedown obligatorio.
+- La evasión debe poder completarse por movimiento, observación y timing. Si el jugador es detectado antes del umbral previsto, debe existir recuperación legible (búsqueda/persecución temprana), no muerte arbitraria ni reinicio forzado.
+- La transición a carrera en la salida del elevador hacia P0 es una **hipótesis inicial**, no un punto bloqueado. Debe fijarse solo tras validar la topología, la línea de visión real y el ritmo de juego.
+
+Pruebas mínimas:
+1. Un NPC no detecta a Elena detrás de una cobertura opaca.
+2. Una detección requiere cono/rango/LOS o un evento de ruido válido.
+3. Al perder visión, el NPC busca la última posición conocida y no sigue la posición real a través de muros.
+4. La sección silenciosa admite una ruta completa sin takedowns.
+5. El umbral de reacquisición produce una transición audiovisual a carrera sin corte de cámara ni pérdida de input.
+6. Reiniciar la misión restablece los estados temporales sin alterar el estado del circuito ni el guardado.
 
 ## 6. Transición a Fase 2
 
