@@ -73,7 +73,7 @@ These rows define requirements and evidence, not passing results. No Phase 2 req
 | Requirement ID | Design requirement | Source of truth | Evidence required before design acceptance | Owner |
 |---|---|---|---|---|
 | P2-DOC-01 | Parking plan and section agree on dimensions, orientation, facade and service opening | `LEVEL_STRUCTURE.md`, `parking_plan_concept.svg`, `section_parking_concept.svg` | Coordinate/footprint reconciliation sheet; dimension and opening check | Design owner + programming owner |
-| P2-DOC-02 | Local-to-world transform aligns the parking entry with Phase 1's P−1 service mouth | `FASE1_SPATIAL_GRAPH.md`, `LEVEL_STRUCTURE.md` | Measured mouth bounds and transform checked against current scene | Design owner defines; programmer verifies in scene |
+| P2-DOC-02 | Local-to-world transform aligns the parking entry with Phase 1's P−1 service mouth | `FASE1_SPATIAL_GRAPH.md`, `LEVEL_STRUCTURE.md`, `parking_plan_concept.svg`, `section_parking_concept.svg` | Confirm the 3 m threshold plane at world (34, 6), the local-to-world transform, elevation and safe spawn pocket against current scene | Design owner defines; programmer verifies in scene |
 | P2-DOC-03 | Two routes are meaningfully different in exposure and traversal cost | `LEVEL_STRUCTURE.md` route graph and edge contract | Plan overlay plus route-by-route playtest observations | Design owner + programmer |
 | P2-DOC-04 | Every obstacle has stable ID, dimensions, approach, bypass and recovery | `LEVEL_STRUCTURE.md` obstacle register | Reviewed collision envelopes and manual traversal evidence | Design owner defines; programmer implements |
 | P2-DOC-05 | Threat line-of-sight, patrol, hearing, search and route access are bounded and spatially possible | `LEVEL_STRUCTURE.md`, `threat_sightline_overlay.svg` | Reconcile sightline sectors with measured cover; test occlusion, hearing, last-known position and enemy route reachability | Shared |
@@ -82,7 +82,7 @@ These rows define requirements and evidence, not passing results. No Phase 2 req
 | P2-DOC-08 | Every claim distinguishes proposal, specification, implementation and validation | `DESIGN_AUTHORITY.md`, `PROJECT_STATUS.md` | Status/evidence record tied to a commit and actual results | Both owners |
 | P2-DOC-09 | Entry, route convergence and final approach use fair local retry anchors | `LEVEL_STRUCTURE.md` checkpoint contract and concept plan | Repeated catch/retry tests, no spawn collision or immediate detection, state preservation | Shared |
 
-These requirements are design/verification gates, not passing results. The concept SVGs contain proposed sightline and light zones only; they do not represent a computed enemy perception model, actual navigation, measured illumination or Godot runtime behavior.
+These requirements are design/verification gates, not passing results. The concept SVGs contain proposed sightline and light zones only; they do not represent a computed enemy perception model, actual navigation, measured illumination or Godot runtime behavior. The plan and section now target a 3 m clear entry, but the handoff remains provisional until the phase-1 scene confirms its actual bounds and elevation.
 
 ## 6. Protected regression boundary
 
