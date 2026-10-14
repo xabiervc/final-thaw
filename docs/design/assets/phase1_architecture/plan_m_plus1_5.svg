@@ -28,6 +28,6 @@
   <rect x="0" y="71" width="22" height="17" fill="url(#blocked)" stroke="#efa17e"/><text x="34" y="84" class="small">Bloqueado / dañado</text>
   </g>
   <text x="30" y="758" font-size="13" fill="#a9c0cc">Plano esquemático acotado · metros · norte arriba</text>
-  <text x="30" y="779" font-size="10" fill="#7893a1">DISEÑO CONCEPTUAL · NO ES VALIDACIÓN DE COLISIONES NI PLANO CONSTRUCTIVO</text>
+  <text x="30" y="779" font-size="10" fill="#7893a1">DISEÑO CONCEPTUAL v1.1 · COORDINADO CON HUELGAS; COLISIONES PENDIENTES</text>
   <path d="M680 748H772M680 743V753M726 744V752M772 743V753" stroke="#d3e0e6" stroke-width="2"/><text x="680" y="738" font-size="10" fill="#8fa9b5">0</text><text x="726" y="738" font-size="10" text-anchor="middle" fill="#8fa9b5">2 m</text><text x="772" y="738" font-size="10" text-anchor="end" fill="#8fa9b5">4 m</text>
   </svg>
