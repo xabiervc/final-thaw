@@ -32,6 +32,8 @@ func _run() -> void:
 
 	_expect(scene.circuit != null, "canonical scene owns a circuit model")
 	_expect(scene.lift != null and scene.player != null, "scene creates player and service lift")
+	_expect(scene.get_node_or_null("AccessTunnelFloor") != null and scene.get_node_or_null("AccessTunnelCeiling") != null, "P0 has a real exterior approach tunnel into access A")
+	_expect(scene.player.global_position.x < 0.0, "the canonical slice starts in the entrance tunnel before entering A")
 	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 1.5), "mission lift connects P0 to mezzanine M at +1.5 m")
 	_expect(scene.get_node_or_null("MezzanineFloor_00") != null, "intermediate mezzanine floor is present")
 	_expect(scene.get_node_or_null("D1RoomLabel") != null and scene.get_node_or_null("D2RoomLabel") != null and scene.get_node_or_null("D1PumpA") != null, "both D1 and D2 are built on the continuous maintenance level")
