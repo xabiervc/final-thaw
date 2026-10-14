@@ -66,7 +66,7 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 | Site boundary | 48 × 30 m | Retain only if service operations and two routes justify the footprint |
 | Marked bay | 3.0 m wide × 5.0 m deep | Wider than a minimum stall to permit readable cover routes; validate total bay count and circulation |
 | Parked car envelope | approx. 1.9 × 4.5 m | Static cover; doors/bonnets do not create walkable space |
-| Structural column | 1.0 × 1.0 m footprint | Must not intrude into the required clear route or hide a required landing |
+| Pipe-rack support column | 1.0 × 1.0 m footprint at each inner parking-row edge | Supports overhead service pipes; no continuous canopy. Maintain 2.8 m clear below rack and keep the central apron open |
 | Technical cage | approx. 5.6 × 3.4 m at local centre (32.1, 13.1) | Fixed service enclosure; route B passes east/north of it with ≥1.5 m target clearance; no route through the cage |
 | Main central apron | approx. 17.3 m between the two parking rows | Deliberately a service/maneuvering apron, not a standard aisle; use the technical cage, cover clusters and exposed crossing to break the open area |
 | Pedestrian pinch | target ≥1.2 m | Only at one clearly telegraphed, non-jump pinch; prefer ≥1.5 m for a fast turn |
@@ -84,6 +84,7 @@ The parking layout is not accepted from a prose description alone. Its design pa
 1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and patrol/sightline overlays.
 2. **Section B–B:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a dimensioned north–south section at local X≈36 m through representative vehicles, both overhead pipe-rack supports, O2 and the 17.3 m open service apron; 2.8 m clearance is measured below the racks. No continuous canopy is part of the baseline. It does not cut the service mouth or north egress gate; those are defined in plan. The selected datum is Y=−2.0 m, continuous with P−1; no ramp or step is intended at the service mouth. Verify the elevation in Godot.
 3. **Spatial graph:** nodes, traversable edges, directed drops/climbs, blocked edges and route alternatives.
+4. **Obstacle detail sheet:** [obstacle_detail_sheet.svg](design/assets/phase2_parking/obstacle_detail_sheet.svg) defines the plan/elevation envelopes for O1, O2 and O3, including the 1.3 × 2.2 m O3 aperture.
 4. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
 5. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
 
@@ -193,7 +194,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Design purpose:** deliver release without implying that the larger conflict is resolved.  
 **Narrative result:** the immediate recovery unit is evaded; Helix's ability to identify and track Elena remains a threat. End with a short, authored beat that changes the player's understanding or stakes, not a generic “level complete” message.
 
-The plan labels O1/O2/O3 correspond to register entries P2-O1/P2-O2/P2-O3. Their footprints and baseline dimensions are defined in plan and the obstacle detail sheet; final collision envelopes, camera behavior and traversal clearances still require reconciliation against the actual player capsule. The design no longer assumes the player arrives from a specific Phase 1 coordinate; the final parking entry is to be transformed or redrawn around the selected exit, not vice versa. The final number and placement of physical obstacles remain subject to playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
+The plan labels O1/O2/O3 correspond to register entries P2-O1/P2-O2/P2-O3. Their footprints and baseline dimensions are defined in plan and the obstacle detail sheet; final collision envelopes, camera behavior and traversal clearances still require reconciliation against the actual player capsule. The design no longer assumes the player arrives from a specific Phase 1 coordinate; the final parking entry is to be transformed or redrawn around the selected exit, not vice versa. The final number and placement of physical obstacles remain subject to playtest. The dimensioned [obstacle detail sheet](design/assets/phase2_parking/obstacle_detail_sheet.svg) records plan/elevation envelopes for O1/O2/O3. Each final obstacle must have a stable ID, measured footprint, approach, intended solution, recovery behavior, collision envelope, camera risks, narrative function and acceptance test.
 
 ## 4. Route alternatives and threat fairness
 
@@ -221,7 +222,7 @@ These entries turn the concept symbols into reviewable design proposals. Their p
 
 | ID | Approx. position (X, Z) | Proposed physical element | Intended decision | Fairness and recovery contract |
 |---|---:|---|---|---|
-| P2-O1 | (13.3, 13.4) | Abandoned maintenance cart/pallet, approx. 1.9 × 2.1 m footprint, intruding into the covered service lane | Read the remaining side clearance and choose to walk around rather than sprint blindly | Keep a visibly continuous passage of at least 1.2 m; no hidden collision protrusions; route remains recoverable if detected |
+| P2-O1 | (13.3, 13.4) | Static maintenance cart/pallet, 1.9 × 2.1 m footprint, 1.1 m high | Read the remaining side clearance and choose to walk around rather than sprint blindly | Low cover only when crouched and only if actual geometry blocks LOS; not climbable or movable; passage ≥1.2 m |
 | P2-O2 | (36.9, 17.0) | Displaced service rack, 3.0 × 2.0 m footprint and 1.4 m high, between the routes near convergence | Low cover only while crouched; a standing Elena remains partly visible. Route A passes south, Route B passes east/north | Must not intersect either route's minimum clear envelope; no climbing or physics movement; see obstacle detail sheet |
 | P2-O3 | (44.3, 14.8) | Fixed service-shutter leaves with a 1.3 m wide × 2.2 m high clear aperture | Read the opening and pass through; no interaction or timed slide | Leaves remain fixed open during gameplay; keep the aperture clear for player and threat. No bypass exists in this baseline; see obstacle detail sheet |
 
