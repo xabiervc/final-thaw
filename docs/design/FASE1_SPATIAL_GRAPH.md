@@ -87,10 +87,16 @@ El interruptor de mantenimiento genera SERVICE_OVERRIDE local; la consulta de ar
 
 Registrar versión de Godot, commit, resolución, renderer, dispositivo de entrada, secuencia, salida de pruebas y observaciones manuales. Diseño aprobado no equivale a escena validada.
 
-## 7. Historial v0.4
+## 7. Historial
+
+### v0.5
+
+- Se añaden las dos compuertas fijas de seguridad, ubicadas en los rellanos inferior y superior, e interbloqueadas con el estado de acoplamiento del elevador.
+- Se confirma que ambas compuertas fijas cierran durante el movimiento y que solo se abre la del rellano donde queda detenido el deck.
+
+### v0.4
 
 - Se unifica el transporte en la plataforma de la huella original del elevador.
 - Se retiran la reserva X=30..34, la rampa provisional y la variante B.
 - Se decide posición del panel E, rearme, indicador F y compuerta exterior.
-- Se añade el interbloqueo de las dos compuertas fijas de rellano con el estado de acoplamiento del elevador.
 - Se cierra la causa funcional de Containment mediante sincronización de auditoría en la salida.
