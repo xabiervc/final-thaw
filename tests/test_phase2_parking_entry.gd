@@ -27,12 +27,14 @@ func _run() -> void:
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 
-	_expect(scene.player != null and scene.enemy != null, "parking scene creates Elena and the recovery unit")
-	_expect(is_equal_approx(scene.player.global_position.x, 34.5), "canonical handoff starts at the parking-entry checkpoint, not the standalone corridor start")
-	_expect(scene.player.global_position.x < 38.0, "player starts before the first parked vehicle and can read the space")
-	_expect(scene.enemy_state == "patrol" and scene.enemy_target == 1, "recovery unit begins in its ordinary patrol state")
-	_expect(scene.enemy.global_position.distance_to(scene.player.global_position) > NEAR_SENSE, "spawn does not trigger the proximity detector immediately")
-	_expect(scene.enemy.global_position.x > scene.player.global_position.x, "the patrol begins ahead of Elena rather than behind the exit")
+	var actors_ready: bool = scene.player != null and scene.enemy != null
+	_expect(actors_ready, "parking scene creates Elena and the recovery unit")
+	if actors_ready:
+		_expect(is_equal_approx(scene.player.global_position.x, 34.5), "canonical handoff starts at the parking-entry checkpoint, not the standalone corridor start")
+		_expect(scene.player.global_position.x < 38.0, "player starts before the first parked vehicle and can read the space")
+		_expect(scene.enemy_state == "patrol" and scene.enemy_target == 1, "recovery unit begins in its ordinary patrol state")
+		_expect(scene.enemy.global_position.distance_to(scene.player.global_position) > NEAR_SENSE, "spawn does not trigger the proximity detector immediately")
+		_expect(scene.enemy.global_position.x > scene.player.global_position.x, "the patrol begins ahead of Elena rather than behind the exit")
 	scene.queue_free()
 
 	completed = true
