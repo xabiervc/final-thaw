@@ -41,6 +41,8 @@ func _run() -> void:
 	var pit_rail := scene.get_node("PitRailWest") as StaticBody3D
 	_expect(is_equal_approx(pit_rail.position.y, 0.55), "pit guardrail rises above P0 floor instead of being buried below it")
 	_expect(scene.get_node_or_null("NaveWorkshopPierSouth") != null and scene.get_node_or_null("RoofBeam_00") != null, "P0 has room boundaries and industrial roof structure")
+	var aster_column := scene.get_node("AsterVerticalColumn") as StaticBody3D
+	_expect(is_equal_approx(aster_column.position.z, -4.0) and not _has_ground_slab_at(scene, Vector2(aster_column.position.x, aster_column.position.z)), "Aster column stands on the nave floor, clear of the maintenance void")
 	var workshop_bench := scene.get_node("WorkshopBench") as StaticBody3D
 	_expect(workshop_bench.position.z < -7.5, "workshop bench stays clear of the doorway to the service nave")
 	var workshop_cabinet := scene.get_node("WorkshopCabinet") as StaticBody3D
@@ -70,7 +72,9 @@ func _run() -> void:
 	_expect(scene._status_panel_label.text.contains("ARCHIVO NO DISPONIBLE"), "E panel exposes live archive state before the circuit is solved")
 	_expect(scene._archive_status_label.text.contains("NO"), "local F indicator shows unavailable supply initially")
 	var scan_bridge_label := scene.get_node_or_null("ScanBridgeLabel") as Label3D
+	var scan_node_t_label := scene.get_node_or_null("ScanNodeTLabel") as Label3D
 	_expect(scan_bridge_label != null and not scan_bridge_label.visible, "scanner trace markers start hidden")
+	_expect(scan_node_t_label != null and is_equal_approx(scan_node_t_label.position.z, aster_column.position.z), "scanner node T marker is colocated with the Aster landmark")
 	scene._start_scan_reveal()
 	_expect(scan_bridge_label != null and scan_bridge_label.visible, "scanner reveals the bridge continuity marker")
 	scene._update_scanner(3.1)
