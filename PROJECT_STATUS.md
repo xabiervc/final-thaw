@@ -26,6 +26,10 @@ Unique vertical routes: S1 P0↔P−1; elevator P0↔M; S2 M↔P2; direct P0↔P
 
 The canonical builder now adds room boundaries and industrial fixtures at P0, a continuous D1/D2 maintenance floor and perimeter protection, and keeps M/S2/P2 and the mission lift at +1.5 m. Existing scene wrapper and integration test remain. The latest edits have not been executed in Godot. Visual scale, collision clearances, floor holes, camera readability and the G→H parking handoff are not verified.
 
+## Automated regression
+
+A GitHub Actions workflow now imports project resources and runs Phase 0, the existing vertical slice, circuit, generic lift, lift transport and canonical integration tests with Godot 4.7.1. Its first run is still pending; no green CI result is claimed.
+
 ## Next verification
 
 1. Run circuit, generic lift, transport, canonical integration, and Phase 0 regression under Godot 4.7.x/Compatibility.
