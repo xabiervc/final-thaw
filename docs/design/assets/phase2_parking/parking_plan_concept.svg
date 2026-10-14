@@ -26,7 +26,7 @@
   </defs>
   <rect width="1120" height="760" fill="#ffffff"/>
   <text x="48" y="42" class="title">FINAL THAW · PHASE 2 PARKING — CONCEPT PLAN</text>
-  <text x="48" y="64" class="subtitle">Concept v0.3 · reconciled route geometry, schematic coordinates · not yet reconciled with the Godot builder or player capsule</text>
+  <text x="48" y="64" class="subtitle">Concept v0.3 · selected handoff baseline, local coordinates; runtime verification pending · not yet reconciled with the Godot builder or player capsule</text>
   <g transform="translate(120 112)">
     <rect x="0" y="0" width="672" height="420" fill="url(#grid)" stroke="#263849" stroke-width="2.5"/>
     <!-- dimensions -->
@@ -130,7 +130,7 @@
     <line x1="0" y1="80" x2="44" y2="80" class="threat"/><text x="56" y="84" class="small">Ruta de presión del perseguidor</text>
     <rect x="0" y="94" width="44" height="18" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-dasharray="4 4"/><text x="56" y="106" class="small">Cono visual conceptual</text>
     <rect x="0" y="124" width="22" height="18" class="car"/><text x="32" y="137" class="small">Vehículo estático / cobertura</text>
-    <rect x="0" y="154" width="22" height="18" class="column"/><text x="32" y="167" class="small">Pilar estructural</text>
+    <rect x="0" y="154" width="22" height="18" class="column"/><text x="32" y="167" class="small">Pilar / soporte de rack aéreo</text>
     <rect x="0" y="184" width="22" height="18" class="obstacle"/><text x="32" y="197" class="small">Obstáculo de encuentro</text>
     <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cubierta</text>
     <rect x="0" y="244" width="22" height="18" fill="#f0d88b" fill-opacity=".3" stroke="#c5a54f" stroke-dasharray="4 4"/><text x="32" y="257" class="small">Zona de iluminación conceptual</text>
