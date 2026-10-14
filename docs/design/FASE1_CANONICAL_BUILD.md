@@ -8,8 +8,8 @@ Open `scenes/prototypes/phase1_canonical_greybox.tscn` and press F6. Its builder
 
 This is the only scene that implements the current Phase 1 design authority:
 - `FASE1_FUNCTIONAL_SPEC.md` v1.0
-- `FASE1_SPATIAL_GRAPH.md` v0.4
-- `FASE1_GREYBOX_SPEC.md` v1.1
+- `FASE1_SPATIAL_GRAPH.md` v0.5
+- `FASE1_GREYBOX_SPEC.md` v1.2
 - `fase1_fase2_mapa_progresion.md` v0.6
 - `FASE1_LOGIC_CONTRACT.md`
 
