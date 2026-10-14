@@ -1,6 +1,6 @@
-# FINAL THAW — Arquitectura espacial de Fase 1 (v2.0)
+# FINAL THAW — Arquitectura espacial de Fase 1 (v2.1)
 
-**Estado:** dirección de diseño confirmada por el usuario; revisión de topología y planos en curso. Esta versión redefine el recorrido final respecto a v1.1. Los SVG describen el objetivo arquitectónico; geometría, colisiones, cámara, navegación y transición a Fase 2 siguen pendientes de validación en Godot. No declarar la fase aceptada por documentación o revisión estática.
+**Estado:** dirección de diseño confirmada por el usuario; revisión de topología y planos en curso. Esta versión cierra la evasión silenciosa y el objetivo R1 de reacquisición en P0 respecto a v2.0; la boca exterior alternativa sigue pendiente de selección geométrica. Los SVG describen el objetivo arquitectónico; geometría, colisiones, cámara, navegación y transición a Fase 2 siguen pendientes de validación en Godot. No declarar la fase aceptada por documentación o revisión estática.
 
 ## 1. Intención arquitectónica
 
