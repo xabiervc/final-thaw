@@ -433,7 +433,7 @@ func _build_controls_and_fixtures() -> void:
 
 	_visual_box("EStatusPanelBoard", Vector3(2.5, 1.15, 0.16), Vector3(15.5, 4.55, -8.15), materials.get_material("screen_dark"))
 	_status_panel_label = _label3d("EStatusPanelText", "", Vector3(15.5, 4.55, -8.05), Color(0.78, 0.92, 0.95), 19, 0.0025)
-		_visual_box("RearmButtonBody", Vector3(0.32, 0.22, 0.18), Vector3(15.5, 3.5, -8.15), _flat_material(Color(0.2, 0.55, 0.3), 0.4, 0.0, 0.8))
+	_visual_box("RearmButtonBody", Vector3(0.32, 0.22, 0.18), Vector3(15.5, 3.5, -8.15), _flat_material(Color(0.2, 0.55, 0.3), 0.4, 0.0, 0.8))
 	_label3d("RearmButtonLabel", "REARME", Vector3(15.5, 3.8, -8.05), Color(0.8, 1.0, 0.8), 17, 0.003)
 
 	_visual_box("ArchiveStatusBoard", Vector3(0.12, 0.9, 0.8), Vector3(8.55, 3.8, -7.0), materials.get_material("screen_dark"))
