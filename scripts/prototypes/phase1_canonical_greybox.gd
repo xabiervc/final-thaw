@@ -37,7 +37,6 @@ var _lift_deck_button: MeshInstance3D
 var _switch_lamp: MeshInstance3D
 var _archive_status_label: Label3D
 var _status_panel_label: Label3D
-var _indicator_label: Label3D
 var _inner_door: StaticBody3D
 var _outer_door: StaticBody3D
 var _outer_door_shape: CollisionShape3D
@@ -373,8 +372,7 @@ func _build_controls_and_fixtures() -> void:
 
 	_visual_box("EStatusPanelBoard", Vector3(2.5, 1.15, 0.16), Vector3(15.5, 4.55, -8.15), materials.get_material("screen_dark"))
 	_status_panel_label = _label3d("EStatusPanelText", "", Vector3(15.5, 4.55, -8.05), Color(0.78, 0.92, 0.95), 19, 0.0025)
-	_indicator_label = _label3d("EIndicatorReadout", "", Vector3(15.5, 4.08, -8.05), Color(0.94, 0.82, 0.48), 16, 0.0026)
-	_visual_box("RearmButtonBody", Vector3(0.32, 0.22, 0.18), Vector3(15.5, 3.5, -8.15), _flat_material(Color(0.2, 0.55, 0.3), 0.4, 0.0, 0.8))
+		_visual_box("RearmButtonBody", Vector3(0.32, 0.22, 0.18), Vector3(15.5, 3.5, -8.15), _flat_material(Color(0.2, 0.55, 0.3), 0.4, 0.0, 0.8))
 	_label3d("RearmButtonLabel", "REARME", Vector3(15.5, 3.8, -8.05), Color(0.8, 1.0, 0.8), 17, 0.003)
 
 	_visual_box("ArchiveStatusBoard", Vector3(0.12, 0.9, 0.8), Vector3(8.55, 3.8, -7.0), materials.get_material("screen_dark"))
@@ -637,19 +635,16 @@ func _refresh_state_fixtures() -> void:
 	if _status_panel_label == null:
 		return
 	var info: Dictionary = circuit.inspect()
-	_status_panel_label.text = "DESTINO  %s\nENSAYO  %s\nPROTECCIÓN  %s\nÚLTIMO DISPARO  %s" % [
+	var output: Dictionary = circuit.outputs()
+	_status_panel_label.text = "DESTINO  %s\\nARCHIVO %s · ENSAYO %s\\nPROTECCIÓN  %s\\nÚLTIMO DISPARO  %s" % [
 		str(info["destination"]),
-		" AISLADO" if circuit.trial_isolated else " CONECTADO",
+		"ESTABLE" if bool(output["archive"]) else "NO DISPONIBLE",
+		"AISLADO" if circuit.trial_isolated else "CONECTADO",
 		"DISPONIBLE" if circuit.protection_available else "DISPARADA",
 		"DEMANDA_SIMULTANEA" if str(info["last_trip"]) != "" else "NINGUNO"
 	]
-	var output: Dictionary = circuit.outputs()
-	_indicator_label.text = "ARCHIVO %s  ·  ENSAYO %s" % [
-		"ESTABLE" if bool(output["archive"]) else "NO DISPONIBLE",
-		"ALIMENTADO" if bool(output["trial"]) else "SIN ALIMENTACIÓN"
-	]
 	if _archive_status_label != null:
-		_archive_status_label.text = "SUMINISTRO\nESTABLE" if bool(output["archive"]) else "NO\nDISPONIBLE"
+		_archive_status_label.text = "SUMINISTRO\\nESTABLE" if bool(output["archive"]) else "NO\\nDISPONIBLE"
 		_archive_status_label.modulate = Color(0.45, 1.0, 0.65) if bool(output["archive"]) else Color(1.0, 0.63, 0.35)
 
 
