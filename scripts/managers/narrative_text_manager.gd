@@ -102,6 +102,66 @@ static func get_end_button_menu() -> String:
 static func get_end_button_restart() -> String:
 	return _text("end_button_restart", "Restart Demo")
 
+## Shelter vertical-slice text. Fallbacks keep the scene usable while the
+## ES/EN NarrativeText resources are expanded.
+static func get_shelter_intro() -> String:
+	return _text("shelter_intro", "E: generator, valves, rescue and exit. WASD/arrows to move. ESC: menu.")
+
+static func get_shelter_scan() -> String:
+	return _text("shelter_scan", "Route: generator -> valves -> optional rescue -> exit.")
+
+static func get_shelter_power_restored() -> String:
+	return _text("shelter_power_restored", "Generator activated.")
+
+static func get_shelter_power_already_on() -> String:
+	return _text("shelter_power_already_on", "Generator already active.")
+
+static func get_shelter_valves_opened() -> String:
+	return _text("shelter_valves_opened", "Valves open. Oxygen is draining.")
+
+static func get_shelter_valves_need_power() -> String:
+	return _text("shelter_valves_need_power", "Activate the generator first.")
+
+static func get_shelter_civilian_rescued() -> String:
+	return _text("shelter_civilian_rescued", "Civilian rescued. Civilian aid increased; game saved.")
+
+static func get_shelter_civilian_blocked() -> String:
+	return _text("shelter_civilian_blocked", "Open the valves to reach the civilian.")
+
+static func get_shelter_exit_blocked() -> String:
+	return _text("shelter_exit_blocked", "The exit is still blocked. Activate the generator and open the valves.")
+
+static func get_shelter_oxygen_empty() -> String:
+	return _text("shelter_oxygen_empty", "Out of oxygen. Restarting from the entrance; your saved rescue remains.")
+
+static func get_shelter_exit_title(rescued: bool, civilian_aid: int) -> String:
+	var rescued_text := _text("shelter_yes", "YES") if rescued else _text("shelter_no", "NO")
+	return _text(
+		"shelter_exit_title",
+		"SHELTER CLEARED\nCivilian rescued: %s\nCivilian aid: %d/10\nPress E to return to menu"
+	) % [rescued_text, civilian_aid]
+
+static func get_shelter_exit_prompt(can_exit: bool) -> String:
+	return _text("shelter_exit_ready", "Exit") if can_exit else _text("shelter_exit_locked", "Exit locked")
+
+static func get_shelter_state_power(is_on: bool) -> String:
+	return _text("shelter_state_on", "ON") if is_on else _text("shelter_state_off", "OFF")
+
+static func get_shelter_state_valves(is_open: bool) -> String:
+	return _text("shelter_state_open", "OPEN") if is_open else _text("shelter_state_closed", "CLOSED")
+
+static func get_shelter_hud(power_on: bool, valves_open: bool, oxygen: float, civilian_aid: int) -> String:
+	var template := _text(
+		"shelter_hud",
+		"FINAL THAW | Generator %s | Valves %s | Oxygen %.0fs | Civilian aid %d/10"
+	)
+	return template % [
+		get_shelter_state_power(power_on),
+		get_shelter_state_valves(valves_open),
+		oxygen,
+		civilian_aid,
+	]
+
 ## Claves de texto del puzle de registros y cableado. Cada clave debe existir y no estar vacia en ES y EN.
 const CONTROL_ROOM_KEYS: Array[String] = [
 	"cr_log_before_title",
