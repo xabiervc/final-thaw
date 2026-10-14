@@ -35,7 +35,7 @@ Las coordenadas de la galería de evacuación y la boca de servicio son **extens
 
 ### Handoff geométrico con Fase 2
 
-La boca de servicio se sitúa aproximadamente en `(X=34, Z=4,5..7,5)`, con la galería de evacuación llegando desde X=28..34 y Z=4,5..7,5. El plano de parking define un sistema local separado: el umbral está en `(X_local≈5,3, Z_local≈21,8)` y el bolsillo interior de aparición en `(X_local≈6,8, Z_local≈21,8)`. La transformación candidata es `X_mundo = X_local + 28,7 m` y `Z_mundo = Z_local − 15,8 m`. Sitúa el plano del umbral en `(X≈34, Z≈6)` y el spawn seguro en `(X≈35,5, Z≈6)`. Esta transformación es una hipótesis de coordinación, no un dato de runtime: antes de aceptarla hay que comprobar el ancho/orientación de la boca, la altura de suelo y el volumen de colisión en los SVG y la escena canónica. La planta de Fase 2 no debe desplazarse para acomodar el checkpoint antiguo del prototipo.
+Se elimina como restricción el transform candidato `X+28,7 / Z−15,8`: se había deducido para hacer coincidir la planta local de parking con una boca provisional de P−1, antes de cerrar el recorrido narrativo. La ruta de huida puede atravesar otras salas de trabajo y terminar en otra boca exterior, si el plano, la sección y el grafo justifican esa solución. El contrato invariable es continuidad física y visual desde el umbral exterior finalmente seleccionado hasta el parking. Cuando se apruebe la topología completa, se mide la boca real, se decide orientación/cota y se deriva un único transform; no se altera el edificio solo para encajar el prototipo.
 
 ## Grafo de circulación
 
@@ -66,15 +66,15 @@ ENTRADA OESTE → túnel → A → B ─────→ galería de servicio ─
 - Desde el rellano superior de S1: retorno por perímetro sur/este y galería de servicio; el jugador no necesita saltar el hueco.
 - Galería de servicio ↔ elevador P0↔M; la llegada superior desemboca en la sala de bombas, no en control.
 - M ↔ galería de observación ↔ S2 ↔ P2; E ↔ F ↔ G.
-- **Ruta de huida:** al abrir la compuerta exterior de G, la amenaza entra por ese umbral y Elena retrocede por la puerta interior a F/E; después vuelve por S2/M, desciende por el elevador a P0, baja por S1 a P−1 y sale por la galería de evacuación hacia el aparcamiento. G no es la salida final.
-- La galería de evacuación conecta D2 con el exterior este. No conecta con el túnel de entrada ni crea una escalera vertical nueva.
+- **Ruta de huida:** abrir G inicia Containment, pero no un sprint ininterrumpido. Elena retrocede por la puerta interior a F/E y atraviesa un primer tramo de evasión silenciosa por áreas de trabajo potencialmente ocupadas. Después, en un umbral expuesto registrado en el grafo, la unidad reacquiere a Elena y comienza la carrera. La ruta vuelve por conexiones verticales existentes y sale por una boca alternativa elegida desde el layout completo. G no es la salida final.
+- La galería final de servicio conecta el último espacio interior aprobado con el exterior elegido. No conecta con el túnel de entrada ni crea una escalera vertical nueva. Si la salida cambia de lado, hay que dibujar el tramo completo en planta/sección antes de implementarlo.
 
 ## No-aristas y restricciones
 
 - La escalera dañada P0↔P2 permanece bloqueada.
 - No hay parada de elevador en P2.
 - No se añade un segundo elevador ni una escalera secreta.
-- G no es una salida exterior instantánea; abrirla inicia la huida.
+- G no es una salida exterior instantánea; abrirla inicia Containment. El tramo silencioso y el trigger de transición a carrera deben tener nodos/aristas y condiciones de percepción explícitos.
 - La entrada oeste no se reutiliza como salida final.
 - Los accesos cerrados deben corresponder a puertas/colliders, daños físicos o seguridad diegética; no a límites invisibles.
 - La ruta exterior debe ser un corredor físico con suelo, techo/estructura cuando proceda, paredes, altura libre y continuidad de colisión hasta el exterior.
@@ -87,6 +87,6 @@ ENTRADA OESTE → túnel → A → B ─────→ galería de servicio ─
 4. El retorno S1→perímetro sur/este→galería de servicio existe en colisión, no solo en el dibujo.
 5. Elevador, S1 y S2 tienen destinos correctos, superficies caminables y protecciones.
 6. La ruta de ida y la ruta de huida se distinguen; la huida se completa sin teletransporte, saltos imposibles ni atajos no dibujados.
-7. La galería de evacuación y la salida exterior conectan físicamente con el aparcamiento y son distintas del acceso inicial.
+7. El tramo de evasión silenciosa y la carrera son legibles y verificables; la salida exterior finalmente elegida conecta físicamente con el aparcamiento y es distinta del acceso inicial.
 8. Se prueban cámara, oclusiones, altura libre, puertas, anchura de paso y obstáculos con la cápsula real de Elena.
 9. Se registra evidencia de ejecución Godot; los planos y los tests estáticos no prueban aceptación de runtime.
