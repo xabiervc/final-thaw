@@ -3,6 +3,7 @@ extends Node
 ## Run: godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
 
 const CanonicalScene = preload("res://scenes/prototypes/phase1_canonical_greybox.tscn")
+const ParkingChaseScene = preload("res://scenes/prototypes/phase2_parking_chase.tscn")
 var passed: int = 0
 var failed: int = 0
 var completed: bool = false
@@ -21,6 +22,9 @@ func _watchdog() -> void:
 
 func _run() -> void:
 	print("Godot: ", Engine.get_version_info()["string"])
+	var parking_chase = ParkingChaseScene.instantiate()
+	_expect(parking_chase.initial_checkpoint_index == 2, "G→H handoff enters the parking checkpoint, not the start of the standalone corridor prototype")
+	parking_chase.free()
 	var scene = CanonicalScene.instantiate()
 	add_child(scene)
 	await get_tree().physics_frame
