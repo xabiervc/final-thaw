@@ -18,6 +18,11 @@ Expected effect: preserve industrial lighting rhythm while reducing the number a
 
 This is a hypothesis until measured. A sparse light pattern may create visibly uneven pools; the owner must compare screenshots and restore/tune the constants if the light rhythm becomes distracting.
 
+### Lighting restraint pass
+
+- Environment glow intensity was reduced from 0.50 to 0.32 and the HDR threshold raised from 1.00 to 1.15. The intent is to keep emissive accents readable without allowing the bloom to dominate edges and nearby surfaces.
+- This is a tuning hypothesis for the Compatibility renderer, not a verified improvement. Compare the same camera frame before/after and confirm the scanner, terminal, hazard accents, and door state remain easy to read.
+
 ### HUD hierarchy pass
 
 - The objective font was reduced from 22 to 18 px (still scaled by the existing accessibility setting), and long objective text now wraps within a 510 px content width.
