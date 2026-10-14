@@ -1,10 +1,10 @@
-# FINAL THAW — Fase 1: grafo espacial (v0.1)
+# FINAL THAW — Fase 1: grafo espacial (v0.2)
 
-Estado: DISEÑO PARA REVISIÓN. Revisión estática de documentos; no se ha ejecutado Godot ni validado ningún recorrido. No autoriza construcción, dimensiones nuevas, habitaciones nuevas ni cambios en `FASE1_LOGIC_CONTRACT.md`, guardado o escenas existentes.
+Estado: DISEÑO PARA REVISIÓN (v0.2). Revisión estática de documentos; no se ha ejecutado Godot ni validado ningún recorrido. No autoriza construcción, dimensiones nuevas, habitaciones nuevas ni cambios en `FASE1_LOGIC_CONTRACT.md`, guardado o escenas existentes.
 
 Fuentes: `fase1_fase2_mapa_progresion.md` (v0.3), `FASE1_GREYBOX_SPEC.md`, `FASE1_LOGIC_CONTRACT.md`.
 
-Convención: **[R]** = existe en la especificación del greybox. **[P]** = propuesta, no es una capacidad disponible. Distancias: longitud aproximada sobre las coordenadas del greybox (m), medida por la línea de recorrido; son estimaciones de diseño, no mediciones en escena. El ascensor sigue sin validar y la rampa es PROVISIONAL.
+Convención: **[R]** = existe en la especificación del greybox. **[P]** = propuesta, no es una capacidad disponible. Distancias: estimaciones de longitud de recorrido calculadas a partir de las coordenadas y superficies descritas en el greybox; no son mediciones en escena. Cuando no se proporciona el desglose de tramos, la cifra se marca como no reproducible y no se considera criterio de aceptación. El ascensor sigue sin validar y la rampa es PROVISIONAL.
 
 ## 1. Nodos y aristas existentes [R]
 
@@ -66,7 +66,7 @@ Entrada -> ruta sur -> pasillo oeste -> explanada -> ruta este -> rellano inferi
 | Pistas del foso antes de operar el circuito | Sí | No |
 | Orden natural por el recorrido | Sí: la boca del foso está en el camino | No: exige pasar de largo |
 
-Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda permitido como orden alternativo con coste de retorno asumido. No se añade ninguna estructura para reducir ese coste. Si en pruebas con jugadores B resulta frecuente y penaliza, se abrirá una decisión aparte sobre una conexión nueva, con medición del retorno.
+Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda permitido como orden alternativo con coste de retorno asumido. No se añade ninguna estructura para reducir ese coste. El coste cualitativo está respaldado por la topología; la cifra de distancia queda pendiente de un desglose reproducible. Si en pruebas con jugadores B resulta frecuente y penaliza, se abrirá una decisión aparte sobre una conexión nueva, con medición del retorno.
 
 ## 5. Comprobaciones puntuales
 
@@ -93,7 +93,7 @@ Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda
 - Salida fija local al nivel principal: la misma escalera, de vuelta a la explanada [R]. El foso es un callejón sin salida, no una ruta intermedia.
 - Conexión hacia el circuito: explanada, ruta este, rellano inferior, ascensor (o rampa provisional), pasarela [R]. Esta conexión es indirecta, ≈ 25 m desde la cima del foso.
 - Recuperación de un fallo del circuito: ocurre en la pasarela, entre selector y aislador (7 m entre ambos). El disparo queda visible en los indicadores de la pasarela. El terminal completo está a 7 m del selector y 14 m del aislador.
-- Falta ubicar el rearme: el contrato define la operación de rearme, pero el greybox no sitúa ningún control de rearme. [P] Colocarlo en la pasarela, junto a selector y aislador, para que corregir un fallo no obligue a ir al archivo. Decisión abierta.
+- Falta definir cómo se representa la operación de rearme en el escenario: el contrato lógico define la operación, pero el greybox no sitúa un control físico. [P] Propuesta: situar el punto de interacción en la pasarela, junto al selector y el aislador, para mantener la recuperación local. Esto no implica que exista ya un mando ni modifica las reglas de rearme. Debe conservarse la distinción entre estado actual y último disparo registrado. Decisión abierta.
 
 ### 5.4 Salida de F hacia G
 
@@ -107,7 +107,7 @@ Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda
 | Llegar al interruptor sin depender del circuito de recuperación | Cumple en el greybox (escalera fija y suelo del foso). Pendiente de visibilidad sin luces de servicio |
 | Saber si el archivo tiene suministro antes de consultar | Parcial. Necesita el indicador local [P] |
 | Corregir un fallo del circuito localmente | Parcial. Falta ubicar el rearme [P] |
-| No retroceder largos tramos | Cumple en A. B tiene un retorno ≈ 70 m aceptado como coste |
+| No retroceder largos tramos | Cumple en A. B implica retorno largo; distancia exacta pendiente de desglose |
 | Sin dependencias narrativas o técnicas no aprobadas | Pendientes: plataforma, rearme, indicador F, esclusa G, ascensor sin validar |
 
 ## 7. Decisiones abiertas
@@ -120,3 +120,12 @@ Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda
 6. Punto de conexión de G (guion).
 
 Ninguna de estas decisiones exige cambiar `FASE1_LOGIC_CONTRACT.md`, el guardado o las escenas existentes. Si una la exige, se documenta como decisión separada.
+
+
+## 8. Correcciones de v0.2 y límites de validación
+
+- La cifra de ≈ 70 m para el retorno de B queda registrada como estimación previa no reproducible, no como medición validada. Para confirmarla se requiere desglose por arista y ruta concreta.
+- Se distingue entre trayectos verticales del ascensor y «cruces»; el documento no usa el conteo anterior como criterio hasta definirlo.
+- El indicador de F y la interacción de rearme siguen siendo propuestas [P]. La coincidencia de coordenadas no acredita visibilidad y la operación lógica de rearme no acredita la existencia de un control físico.
+- La ubicación de la plataforma sigue abierta. La salida fija del foso permanece independiente de mantenimiento.
+- No se ha ejecutado Godot ni se ha validado colisión, cámara, ascensor, rampa, visibilidad o experiencia de juego.
