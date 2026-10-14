@@ -1,6 +1,6 @@
 # FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v1.0)
 
-**Estado:** recorrido y estructura de la experiencia revisados según la dirección arquitectónica de edificio completo, puzle distribuido y huida por una salida alternativa. La escena actual aún no demuestra este recorrido: la nueva galería de evacuación, la persecución interior y el handoff al aparcamiento requieren implementación y pruebas. Los beats narrativos concretos de Helix/Containment siguen pendientes de cierre; no presentarlos como canon sin aprobación.
+**Estado:** recorrido y estructura de la experiencia revisados según la dirección arquitectónica de edificio completo, puzle distribuido y huida por una salida alternativa. La escena actual aún no demuestra este recorrido: la nueva galería de evacuación, la persecución interior y el handoff al aparcamiento requieren implementación y pruebas. El inicio narrativo y sus beats/diálogos provisionales se especifican en `docs/narrative_complete.md`; no son canon completo aprobado. La automatización del evento y la identidad concreta del operador/unidad siguen abiertas.
 
 **Autoridad:** `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`, `FASE1_SPATIAL_GRAPH.md v1.0`, `FASE1_GREYBOX_SPEC.md`, `FASE1_FUNCTIONAL_SPEC.md` y `FASE1_LOGIC_CONTRACT.md`. El contrato lógico del circuito no cambia con este mapa.
 
@@ -59,6 +59,8 @@ La lista definitiva de obstáculos y sus estados se cierra en la especificación
 
 El aparcamiento incluye contexto legible —acceso de servicio, carriles, plazas, pilares y vehículos inmóviles— y una ruta que recibe al jugador desde la boca este. Se reutiliza `scenes/prototypes/phase2_parking_chase.tscn` si sus contratos de checkpoint, percepción y navegación lo permiten. La versión standalone del corredor conserva su punto de inicio original.
 
+El plano conceptual del parking y la sección se encuentran en `docs/design/assets/phase2_parking/parking_plan_concept.svg` y `docs/design/assets/phase2_parking/section_parking_concept.svg`; la especificación de arquitectura/rutas/encuentros está en `docs/LEVEL_STRUCTURE.md`. La transformación candidata para revisión es X mundo = X local + 27,2 m y Z mundo = Z local − 15,8 m, alineando el centro de la entrada conceptual con la boca de servicio aproximada (34, 6). No es coordenada aprobada hasta confirmar la huella real del umbral.
+
 El handoff se acepta solo cuando:
 1. G inicia la huida interior.
 2. Elena atraviesa la ruta interior con el perseguidor activo.
@@ -73,7 +75,8 @@ El handoff se acepta solo cuando:
 - **Dirección fijada:** laboratorio completo y explorable en gran parte; puzle integrado en el edificio; G abre la huida interior; persecución antes de salir; salida alternativa a parking.
 - **Contrato existente que se conserva:** circuito, estados iniciales, recuperación reversible, escáner, mantenimiento y elevador P0↔M.
 - **Diseño por cerrar en plano/greybox:** huella final de la galería de evacuación, medidas del recorrido de persecución, posiciones de obstáculos, puertas y estados de seguridad.
-- **Narrativa pendiente:** evento exacto recibido por Helix, auditoría de F, percepción de Elena, causa y timing de Containment, identidad/entrada de la amenaza y destino posterior.
+- **Narrativa especificada para el opening (propuesta):** mantenimiento encola `SERVICE_OVERRIDE`; cruzar el umbral exterior de G envía la auditoría y activa el protocolo de recuperación; el registro revela que el resultado fue retenido y la recomendación de despliegue suprimida.
+- **Narrativa aún abierta:** motivo de la supresión, cadena de mando concreta, identidad final/arte de la unidad, cronología completa, papel de Iris/Selene en esta secuencia y destino posterior. Ver `docs/narrative_complete.md`.
 - **Validación pendiente:** ejecución de todas las escenas, colisiones, cámara, navegación, secuencia de huida, salida física y transición al aparcamiento.
 
 ## Orden de trabajo
