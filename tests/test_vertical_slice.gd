@@ -5,6 +5,10 @@ var failed: int = 0
 
 func _ready() -> void:
 	_check_rules()
+	_check_rule_signals()
+	_check_oxygen_states()
+	_check_state_restore()
+	_check_shelter_text_fallbacks()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -29,8 +33,70 @@ func _check_rules() -> void:
 	_expect(not rules.rescue(), "Rescue cannot be repeated")
 	rules.drain_oxygen(30.0)
 	_expect(rules.oxygen == 0.0 and not rules.can_exit(), "Oxygen expires and blocks exit")
+	_expect(not rules.rescue(), "Rescue blocked without oxygen")
 	rules.reset()
 	_expect(rules.oxygen == rules.oxygen_max and not rules.power_on and not rules.rescued, "Retry resets room")
+
+func _check_rule_signals() -> void:
+	var rules = Rules.new()
+	var power_count := 0
+	var valve_count := 0
+	var rescue_count := 0
+	var depleted_count := 0
+	var reset_count := 0
+
+	rules.power_activated.connect(func(): power_count += 1)
+	rules.valves_opened.connect(func(): valve_count += 1)
+	rules.civilian_rescued.connect(func(): rescue_count += 1)
+	rules.oxygen_depleted.connect(func(): depleted_count += 1)
+	rules.state_reset.connect(func(): reset_count += 1)
+
+	rules.activate_power()
+	rules.activate_power()
+	rules.open_valves()
+	rules.open_valves()
+	rules.rescue()
+	rules.rescue()
+	rules.drain_oxygen(30.0)
+	rules.reset()
+
+	_expect(power_count == 1, "Power signal emitted once")
+	_expect(valve_count == 1, "Valve signal emitted once")
+	_expect(rescue_count == 1, "Rescue signal emitted once")
+	_expect(depleted_count == 1, "Oxygen depletion signal emitted once")
+	_expect(reset_count == 1, "Reset signal emitted once")
+
+func _check_oxygen_states() -> void:
+	var rules = Rules.new()
+	_expect(rules.oxygen_state() == "normal", "Full oxygen is normal")
+	rules.oxygen = rules.oxygen_max * 0.4
+	_expect(rules.oxygen_state() == "warning", "Forty percent oxygen is warning")
+	rules.oxygen = rules.oxygen_max * 0.2
+	_expect(rules.oxygen_state() == "critical", "Twenty percent oxygen is critical")
+	rules.oxygen = 0.0
+	_expect(rules.oxygen_state() == "critical", "Empty oxygen is critical")
+
+func _check_state_restore() -> void:
+	var rules = Rules.new()
+	rules.restore(true, true, true)
+	_expect(rules.power_on and rules.valves_open and rules.rescued, "Shelter state restores from persistent flags")
+	_expect(rules.can_exit(), "Restored state permits exit")
+
+func _check_shelter_text_fallbacks() -> void:
+	_expect(not NarrativeTextManager.get_shelter_intro().is_empty(), "Shelter intro fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_scan().is_empty(), "Shelter scan fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_power_restored().is_empty(), "Power restored fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_power_already_on().is_empty(), "Power already-on fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_valves_opened().is_empty(), "Valves opened fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_valves_need_power().is_empty(), "Valves need-power fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_civilian_rescued().is_empty(), "Civilian rescued fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_civilian_blocked().is_empty(), "Civilian blocked fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_exit_blocked().is_empty(), "Exit blocked fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_oxygen_empty().is_empty(), "Oxygen empty fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_exit_prompt(false).is_empty(), "Locked exit prompt fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_exit_prompt(true).is_empty(), "Ready exit prompt fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_hud(true, true, 12.0, 3).is_empty(), "Shelter HUD fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_exit_title(true, 3).is_empty(), "Shelter exit title fallback exists")
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid
