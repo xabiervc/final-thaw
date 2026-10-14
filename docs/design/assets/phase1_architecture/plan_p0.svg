@@ -27,7 +27,7 @@
   <line x1="0" y1="25" x2="50" y2="25" stroke="#7be0b8" stroke-width="3" marker-end="url(#arrow)"/><text x="64" y="29" class="small">Recorrido de esta planta</text>
   <line x1="0" y1="53" x2="50" y2="53" stroke="#f4c968" stroke-width="3" stroke-dasharray="7 5"/><text x="64" y="57" class="small">Conexión vertical</text>
   <rect x="0" y="71" width="22" height="17" fill="url(#blocked)" stroke="#efa17e"/><text x="34" y="84" class="small">Bloqueado / dañado</text>
-  <line x1="0" y1="98" x2="50" y2="98" stroke="#7be0b8" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#arrow)"/><text x="64" y="102" class="small">Retorno tras S1</text>
+  <line x1="0" y1="98" x2="50" y2="98" stroke="#7be0b8" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#arrow)"/><text x="64" y="102" class="small">Retorno por perímetro sur/este</text>
   </g>
   <text x="30" y="758" font-size="13" fill="#a9c0cc">Plano esquemático acotado · metros · norte arriba</text>
   <text x="30" y="779" font-size="10" fill="#7893a1">DISEÑO CONCEPTUAL v1.1 · COORDINADO CON GEOMETRÍA; COLISIONES PENDIENTES</text>
