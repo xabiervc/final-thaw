@@ -1,57 +1,59 @@
-# Fase 1 — Contrato lógico
+# Phase 1 — Logic contract
 
-Estado: lógica acordada; documento para revisión previa a implementar. No ejecutado ni validado manualmente. Sustituye las reglas eléctricas de MISSION1_GHOST_PROTOCOL.md para el nuevo prototipo; el prototipo anterior no cumple este contrato.
+Status: agreed logic with review corrections; specification only. Reference model not executed; no Godot or manual validation. Supersedes the electrical rules in MISSION1_GHOST_PROTOCOL.md for the new prototype; the earlier prototype does not implement this contract. Paths remain unchanged.
 
-## Alcance
+## Scope
 
-Solo distribución, protección, diagnóstico y consulta. Sin escena de misión, narrativa definitiva, extracción protegida implementada, contención ni migración de guardado.
+Distribution, protection, diagnostics and archive consultation only. No mission scene, final narrative, protected extraction implementation, containment or save migration.
 
-## Grafo definitivo
+## Definitive topology
 
 ```text
-Fuente auxiliar
-|-- Emergencia ------------------------------> diagnóstico
-|-- Interruptor mantenimiento ---------------> luz de servicio y plataforma
-`-- Protección recuperación --> selector exclusivo
-                                |-- ENSAYO --------------------> T
-                                `-- ARCHIVO --> A --> archivo   |
-                                                `-- puente ---> T
-                                                               |
-                                                seccionador ensayo
-                                                               |
-                                                     maquinaria
-                                                     interbloqueada
+Auxiliary source
+|-- Emergency --------------------------------> diagnostic panel
+|-- Maintenance switch -----------------------> service lights and platform
+`-- Recovery protection --> exclusive selector
+                            |-- ENSAYO --------------------> T
+                            `-- ARCHIVO --> A --> archive    |
+                                            `-- bridge ----> T
+                                                             |
+                                                     trial isolator
+                                                             |
+                                                     trial machinery
+                                                     start interlock
 ```
 
-El puente intervenido es fijo. Ambas rutas hacia maquinaria convergen en T antes del seccionador. Archivo sale de A antes del seccionador. El selector nunca conecta ambos destinos. Es una abstracción lógica, no un simulador eléctrico.
+The tampered bridge is fixed. Both machinery feeds converge at T upstream of the isolator. Archive supply leaves A upstream of the isolator. The selector never connects both destinations. This is a deterministic gameplay abstraction, not an electrical simulator.
 
-## Estado y salidas
+## State and outputs
 
-Inicial: mantenimiento apagado; selector ENSAYO; seccionador conectado; protección disponible; sin último fallo.
+Initial: maintenance off, selector ENSAYO, trial connected, recovery protection available, no last recorded trip. ENSAYO and ARCHIVO remain the model's technical identifiers.
 
-Fallo presente = selector ARCHIVO y seccionador conectado. Al existir esa condición con protección disponible, dispara inmediatamente. Protección disparada corta toda recuperación. Abrir seccionador o cambiar selector no rearma. Rearmar solo tiene éxito sin fallo presente.
+Fault present = selector ARCHIVO and trial connected. If protection is available under that condition, it trips immediately. A trip cuts all recovery supply, not emergency diagnostics or maintenance. Opening the isolator or changing destination does not rearm protection. Rearm succeeds only when the fault is absent. Reconnecting trial while ARCHIVO is selected also trips available protection.
 
-Archivo estable = protección disponible y selector ARCHIVO y seccionador aislado. Mantenimiento no influye. Diagnóstico siempre operativo. Maquinaria nunca arranca: el interbloqueo permanece activo y no es manipulable en este hito.
+Archive stable = protection available AND selector ARCHIVO AND trial isolated. Effective trial supply = protection available AND selector ENSAYO AND trial connected. This explicitly represents selector dependence, even for manually constructed inconsistent test states. Demand recorded before a trip is not effective supply after the trip.
 
-Registrar por separado destino solicitado, fallo presente, protección, suministro efectivo y último fallo. El diagnóstico conserva el último fallo aunque se corrija y rearme. No confundir demanda registrada antes del disparo con suministro efectivo posterior: tras disparar no hay alimentación de recuperación.
+Machinery never starts: its start interlock stays active and cannot be manipulated in this milestone. Maintenance independently powers service lights and enables the platform; its mechanical power-loss behavior belongs to the separate platform test, not this electrical model.
 
-## Operaciones
+## Operations and history
 
-- set_maintenance(on): solo modifica mantenimiento.
-- select(destination): conserva posición solicitada y evalúa protección.
-- set_isolated(on): modifica seccionador y evalúa protección. Reconectar ensayo con ARCHIVO seleccionado también dispara.
-- rearm(): si hay fallo, rechaza sin cambiar posiciones ni historial; en otro caso deja protección disponible.
-- inspect(): siempre disponible físicamente al alcanzar el panel.
-- consult(): solo con archivo estable; perder suministro impide nuevas consultas, no borra conocimiento ya adquirido.
-- extract(): fuera de implementación. Requerirá suministro estable y autorización externa por definir en guion; no inferir autorización de consultar.
+- set maintenance: only changes maintenance.
+- select destination: retains the requested position and evaluates protection.
+- set isolated: changes the isolator and evaluates protection.
+- rearm: rejects while fault is present without changing positions or history; otherwise makes protection available. Repeated valid rearm is harmless.
+- inspect: physically available at the terminal regardless of recovery supply.
+- consult: available only with stable archive supply. Reading a clue creates persistent acquired knowledge within the model session. Loss of supply interrupts further consultation but does not erase acquired knowledge. This is not a save-format implementation.
+- extract: outside implementation scope; requires stable supply and an external authorization condition still to be defined by scriptwriting. Consultation never implies extraction authorization.
 
-## Diagnósticos
+Use the term last recorded trip exclusively for last_trip. It stores the protection-trip reason, not every diagnostic or rejected operation. Correcting, rearming, inspecting and consulting never clear it. Current diagnostic state is derived independently; present both current state and last recorded trip together. No event log is required.
 
-Estado actual y último evento se muestran separados. Sin fallo histórico: «Sin disparos registrados». Selector ENSAYO: «Archivo sin suministro. Destino seleccionado: ensayo». Protección disparada: «Recuperación interrumpida. Último disparo: demanda simultánea en archivo y ensayo». Condición corregida: añadir «Rearme pendiente». Archivo estable: «Alimentación de archivo estable. Consulta disponible». Rearme rechazado: «Persiste la condición de disparo». Nunca indicar qué control accionar.
+## Diagnostic presentation
 
-## Modelo de referencia ejecutable
+Current state priority: protection tripped with fault -> RECOVERY_TRIPPED_FAULT_PRESENT; protection tripped without fault -> RECOVERY_TRIPPED_REARM_PENDING; available with stable archive -> ARCHIVE_STABLE; otherwise -> ARCHIVE_UNPOWERED. Display selected destination separately. last_trip is either null (No trips recorded) or DEMANDA_SIMULTANEA (Simultaneous archive/trial demand recorded). These are proposed diagnostic labels, not final localized UI copy. No message names the control to operate.
 
-Python estándar; cada prueba crea un modelo nuevo salvo las secuencias indicadas. Es un oráculo para portar a GDScript, no evidencia de ejecución en Godot.
+## Executable reference and tests
+
+Copy the entire Python block and run with standard Python without optimization (-O disables assert). This is a reference oracle to port to GDScript, not game runtime code or proof of Godot execution. T1-T9 map to the nine agreed cases; X1/X2 are cross-cutting checks. No execution is claimed in this document.
 
 ```python
 class Circuit:
@@ -60,7 +62,8 @@ class Circuit:
         self.d = 'ENSAYO'
         self.i = False
         self.p = True
-        self.last = None
+        self.last_trip = None
+        self.knowledge = set()
 
     def fault(self):
         return self.d == 'ARCHIVO' and not self.i
@@ -68,13 +71,14 @@ class Circuit:
     def evaluate(self):
         if self.p and self.fault():
             self.p = False
-            self.last = 'DEMANDA_SIMULTANEA'
+            self.last_trip = 'DEMANDA_SIMULTANEA'
 
     def maintenance(self, on):
         self.m = on
 
     def select(self, destination):
-        assert destination in ('ENSAYO', 'ARCHIVO')
+        if destination not in ('ENSAYO', 'ARCHIVO'):
+            raise ValueError(destination)
         self.d = destination
         self.evaluate()
 
@@ -91,53 +95,77 @@ class Circuit:
     def outputs(self):
         return dict(diagnostic=True, maintenance=self.m,
                     archive=self.p and self.d == 'ARCHIVO' and self.i,
-                    trial=self.p and not self.i, machine_running=False)
+                    trial=self.p and self.d == 'ENSAYO' and not self.i,
+                    machine_running=False)
+
+    def inspect(self):
+        if not self.p:
+            current = ('RECOVERY_TRIPPED_FAULT_PRESENT' if self.fault()
+                       else 'RECOVERY_TRIPPED_REARM_PENDING')
+        else:
+            current = ('ARCHIVE_STABLE' if self.outputs()['archive']
+                       else 'ARCHIVE_UNPOWERED')
+        return dict(current=current, destination=self.d,
+                    last_trip=self.last_trip)
+
+    def consult(self):
+        if not self.outputs()['archive']:
+            return False
+        self.knowledge.add('REFERENCE_CLUE')
+        return True
 
     def snapshot(self):
-        return self.m, self.d, self.i, self.p, self.last
+        return (self.m, self.d, self.i, self.p, self.last_trip,
+                frozenset(self.knowledge))
 
-# T1: inicial
+# T1: initial state and available diagnostics
 s = Circuit()
-assert s.snapshot() == (False, 'ENSAYO', False, True, None)
+assert s.snapshot() == (False, 'ENSAYO', False, True, None, frozenset())
 assert s.outputs() == dict(diagnostic=True, maintenance=False,
                           archive=False, trial=True, machine_running=False)
-# T2: seleccionar archivo dispara y registra
+assert s.inspect() == dict(current='ARCHIVE_UNPOWERED',
+                           destination='ENSAYO', last_trip=None)
+# T2: selecting archive while connected trips and records cause
 s.select('ARCHIVO')
-assert not s.p and s.last == 'DEMANDA_SIMULTANEA'
+assert not s.p and s.last_trip == 'DEMANDA_SIMULTANEA'
 assert not s.outputs()['archive'] and not s.outputs()['trial']
-# T3: aislar elimina fallo, no rearma
+assert s.inspect()['current'] == 'RECOVERY_TRIPPED_FAULT_PRESENT'
+# T3: isolation clears fault, not trip latch
 s.isolate(True)
 assert not s.fault() and not s.p and not s.outputs()['archive']
-# T4: rearme correcto
+assert s.inspect()['current'] == 'RECOVERY_TRIPPED_REARM_PENDING'
+# T4: successful rearm preserves trip cause in the panel
 assert s.rearm() and s.outputs()['archive']
-assert s.last == 'DEMANDA_SIMULTANEA'
-# T5: rearme rechazado con fallo presente
+assert s.inspect() == dict(current='ARCHIVE_STABLE',
+                           destination='ARCHIVO', last_trip='DEMANDA_SIMULTANEA')
+# T5: rejected rearm preserves state and history
 t = Circuit(); t.select('ARCHIVO'); before = t.snapshot()
 assert not t.rearm() and t.snapshot() == before
-# T6: aislar primero evita disparo
+# T6: isolate first, select archive: no trip
 u = Circuit(); u.isolate(True); u.select('ARCHIVO')
-assert u.p and u.outputs()['archive'] and u.last is None
-# T7: seleccionar ensayo corta archivo; interbloqueo sigue activo
+assert u.p and u.outputs()['archive'] and u.last_trip is None
+# T7: selecting trial cuts archive; start interlock remains active
 u.select('ENSAYO')
 assert not u.outputs()['archive'] and not u.outputs()['machine_running']
 u.isolate(False)
 assert u.outputs()['trial'] and not u.outputs()['machine_running']
-# T8: mantenimiento independiente
+# T8: maintenance changes do not affect archive or diagnostics
 s.maintenance(True); s.maintenance(False)
 assert not s.outputs()['maintenance']
 assert s.outputs()['archive'] and s.outputs()['diagnostic']
-# T9: operaciones repetidas preservan coherencia e historial
+# T9: repeated valid actions preserve state/history
 before = s.snapshot()
 for _ in range(10):
     s.isolate(True); s.select('ARCHIVO'); s.maintenance(False)
     assert s.rearm()
+    assert s.inspect()['last_trip'] == 'DEMANDA_SIMULTANEA'
 assert s.snapshot() == before
-# X1: ambos órdenes producen igual estado funcional, no igual historial
+# X1: both orders have equal functional endpoints, different histories
 v = Circuit(); v.isolate(True); v.select('ARCHIVO')
 assert s.outputs() == v.outputs()
 assert (s.m, s.d, s.i, s.p) == (v.m, v.d, v.i, v.p)
-assert s.last != v.last
-# X2: idempotencia también en estado inicial y disparado
+assert s.last_trip != v.last_trip
+# X2: idempotence in initial and tripped states
 for tripped in (False, True):
     w = Circuit()
     if tripped: w.select('ARCHIVO')
@@ -146,13 +174,25 @@ for tripped in (False, True):
         w.maintenance(False); w.isolate(False); w.select(w.d)
         assert w.rearm() == (not tripped)
     assert w.snapshot() == before
-# Regresión: reconectar ensayo con archivo seleccionado dispara
+# Additional: explicit selector dependence, even without evaluate()
+for isolated in (False, True):
+    w = Circuit(); w.d = 'ARCHIVO'; w.i = isolated
+    assert not w.outputs()['trial']
+# Additional: reconnecting trial with archive selected trips
 v.isolate(False)
-assert not v.p and v.last == 'DEMANDA_SIMULTANEA'
+assert not v.p and v.last_trip == 'DEMANDA_SIMULTANEA'
+# Additional: interrupted consultation preserves acquired knowledge
+assert s.consult()
+known = s.knowledge.copy()
+s.select('ENSAYO')
+assert not s.consult() and s.knowledge == known
+assert s.inspect()['last_trip'] == 'DEMANDA_SIMULTANEA'
+s.select('ARCHIVO')
+assert s.consult() and s.knowledge == known
 ```
 
-## Prueba de deducción y evidencia
+## Deduction test and reporting
 
-Esquema: distribución prevista. Puente: discrepancia física. Indicadores: demanda simultánea registrada. Terminal: confirmación del estado, no instrucción. Antes de ayudas explícitas preguntar qué anomalía encontró el jugador, por qué aisló ensayo y qué esperaba observar. Registrar acciones, pistas, ayudas y explicación. Completar probando combinaciones no equivale a comprender; no bloquear soluciones correctas por no haber leído una pista.
+Schematic: intended distribution. Bridge: physical discrepancy. Indicators: simultaneous demand recorded. Terminal: state verification, never an instruction. Before explicit hints ask which anomaly the player found, why trial must be isolated, and what result they predict. Record actions, clues, hints and explanation. Successful brute force does not establish understanding; do not gate correct operations on mandatory clue reading.
 
-Informe separado: inspeccionado / ejecutado (entorno, comando, resultado) / validado manualmente (observaciones). Tests del modelo no validan espacio, persistencia o diversión.
+Report separately: inspected; executed (environment, exact command, output); manually validated (observations). Oracle tests do not validate space, persistence, animation or enjoyment. Existing scenes and save contracts remain unchanged.
