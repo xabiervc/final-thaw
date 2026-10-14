@@ -1,3 +1,39 @@
+> **Design status update — 2026-10-14:** This file preserves the earlier full-campaign narrative as historical source material. The 16-phase dual-protagonist structure, Marcus combat arc, fixed timeline, final-boss sequence and three-ending system are **under review**, not binding requirements for the current prototype. The active opening hypothesis is an Elena-led investigation/system puzzle followed by a third-person traversal and escape sequence. See [VISION.md](VISION.md), [DESIGN_PIVOT_PROTOTYPE_BRIEF.md](DESIGN_PIVOT_PROTOTYPE_BRIEF.md) and [MOTION_CHASE_PROTOTYPE.md](design/MOTION_CHASE_PROTOTYPE.md). Do not silently discard established character or world facts; reconcile them after the prototype playtest.
+
+## Current opening narrative hypothesis (not yet implemented)
+
+### Mission 1 — The Ghost Protocol
+
+Elena returns to a Helix facility to understand what happened to an Aster test. Physical evidence should carry the story: inconsistent power routing, a machine state that does not match the official record, a hidden trace or partial transmission. The player should infer that the system or its test result was manipulated rather than receive a complete explanation in a long log.
+
+The emotional anchor is Elena's relationship with Iris and the unresolved influence of Selene. The first mission should reveal one specific contradiction in Helix's account, not explain the whole conspiracy. Preserve ambiguity about Selene's exact responsibility until the larger narrative has been deliberately reconciled.
+
+The player solves a compact system puzzle. The solution restores a subsystem and exposes a new piece of evidence, but it also triggers containment. The transition into Mission 2 must be caused by the player's action.
+
+### Mission 2 — Containment
+
+The recovery unit begins searching the facility. Elena must escape using the physical space: gaps, a low duct, an authored climb/catwalk, cover, sound discipline and the scanner's temporary tactical information.
+
+The pursuer is a physical threat and a narrative sign that Helix is trying to suppress what Elena has found. It should behave as an operational unit with limited information, not as an omniscient monster. The player's escape establishes that Elena can act on the truth, but should not yet resolve the entire conspiracy.
+
+### Narrative principles for the opening
+
+- Put story information in environmental evidence, machine behavior, audio and short, purposeful text.
+- Let the player discover one meaningful contradiction before explaining the broader Aster/Helix plot.
+- Tie the puzzle's mechanical outcome to containment and the chase.
+- Use Iris as emotional subtext through a specific memory or association, not repeated exposition.
+- Introduce Selene through a trace, recording or personal detail before staging a direct confrontation.
+- Do not require Marcus to appear in the opening prototype. His ultimate role is a full-game design decision still under review.
+- Avoid making the recovery unit a generic enemy-wave encounter; its behavior should express Helix's surveillance and containment logic.
+
+---
+
+# LEGACY FULL-CAMPAIGN NARRATIVE — UNDER REVIEW
+
+The material below documents an earlier 16-phase campaign direction. It is retained so that character history, themes, dialogue ideas and continuity details are not lost during redesign. Its phase order, timings, character roles, canon claims, state variables and ending rules are not approved requirements for the current prototype. Where this legacy material conflicts with the opening hypothesis above, use the opening hypothesis for prototype work and record unresolved canon questions for owner review.
+
+---
+
 # FINAL THAW — Complete Narrative Documentation
 
 ## 1. Arco Completo de la Campaña
