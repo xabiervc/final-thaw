@@ -43,12 +43,15 @@ La persecución comienza **dentro** del edificio al abrir G. No se debe implemen
 
 Requisitos del segmento interior:
 - La amenaza tiene un punto de entrada y una línea de persecución explicables por el edificio.
-- El primer obstáculo se presenta con anticipación y se entiende sin texto tutorial obligatorio.
+- O1: estantería caída en F/P2, centro aproximado (7,0; 3,0; −6,75), volumen 1,6 × 1,1 × 2,0 m. La solución es rodearla por el paso visible, con un ancho libre objetivo de 1,2 m.
+- O2: bastidor de tuberías desplazado en M, centro aproximado (18,0; 1,5; −3,0), volumen 2,0 × 0,8 × 1,2 m. La solución es rodearlo sin invadir el acceso a S2 o elevador.
+- O3: bandeja desprendida en la galería P0, centro aproximado (25,0; 0,0; −0,5), volumen 1,2 × 0,8 × 0,6 m. La solución es usar el paso lateral claramente visible, manteniendo acceso a S1.
+- Estas ubicaciones son una primera propuesta de layout; los SVG y el builder deben coincidir antes de construir colliders definitivos. Si el playtest revela una maniobra injusta, corregir plano, geometría y test juntos.
 - Cada obstáculo tiene colisión, ruta de aproximación y recuperación ante fallo; la dificultad no se basa en un collider invisible.
 - La cámara de tercera persona mantiene lectura de bordes, escalones, huecos y perseguidor.
 - La velocidad y el ritmo permiten percibir la arquitectura; el recorrido no puede depender de conocer de memoria la ruta.
-- El retorno por S2/M/elevador/S1 debe ser continuo. Si el elevador no está disponible en ese momento, el contrato narrativo y espacial debe ofrecer una solución ya representada en planos; no improvisar una escalera nueva.
-- La galería de evacuación tiene un cambio claro de acústica/luz/espacio al salir al exterior, con continuidad visual al aparcamiento.
+- El retorno por S2/M/elevador/S1 debe ser continuo. El estado del elevador al abrir G debe estar definido y probado; no improvisar una escalera nueva.
+- La galería de evacuación tiene un cambio claro de luz/espacio al salir al exterior, con continuidad visual al aparcamiento.
 
 La lista definitiva de obstáculos y sus estados se cierra en la especificación de greybox y se cubre con pruebas de comportamiento. No añadir combate obligatorio.
 
