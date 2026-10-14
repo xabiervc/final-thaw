@@ -8,18 +8,18 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_ar
 
 ## Cambios de esta reconstrucción
 
-- P0 conserva su perímetro, acceso, nave, taller y rutas contractuales; se añaden particiones con pasos anchos, bandejas, armarios y estructura de cubierta.
-- P−1 ahora reserva un hueco continuo para D1/D2 (X=10..28, Z=1..8), con suelo de mantenimiento, bombas/sumidero, señalización y protección perimetral. S1 conserva su abertura.
+- P0 conserva su perímetro, acceso, nave, taller y rutas contractuales; B queda en X=7..20, Z=−9..1 y el pasillo A→B discurre por X=7..10, Z=1..8. Se añaden particiones con pasos anchos, bandejas, armarios y estructura de cubierta.
+- P−1 tiene suelo continuo D1/D2 (X=10..28, Z=1..8) a Y=−2. El hueco P0 coincide con esa huella y S1 conserva su abertura; B termina en Z=1, por lo que nave y vacío no se solapan.
 - M/P2 mantienen sus cotas, huecos de elevador y S2, pasarela, archivo, control y esclusa G.
 - La instancia de misión usa el elevador Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. La compuerta fija superior se alinea con el borde del hueco en M.
 - Las barandillas del foso están sobre la losa P0, no enterradas; la abertura de S1 se mantiene deliberadamente.
 - El banco del taller no invade el paso B↔C y la marca del pasillo de servicio queda sobre suelo sólido, no suspendida sobre el foso.
-- El test de integración añade aserciones para estos puntos de regresión.
+- El test de integración comprueba cotas, suelo y huecos, apoyos del Aster/equipos, separación del taller, puertas y pérdida de energía del elevador de misión.
 - Se conservan circuito, jugador, HUD, rutas de recursos, inputs y guardado; no se altera el contrato lógico.
 
 ## Correcciones de revisión estática ya aplicadas
 
-La auditoría geométrica encontró cuatro defectos concretos antes de ejecutar Godot: barandillas del foso con el centro vertical por debajo de P0, banco del taller invadiendo el umbral y solapando un armario, marca del pasillo sobre el vacío, columna Aster suspendida sobre el suelo, y compuerta superior del elevador desalineada respecto al plano. Se corrigieron y se añadieron aserciones de integración. También se apoyaron sobre el suelo el puente manipulado y el alojamiento del interruptor de mantenimiento. Esta revisión de código no demuestra todavía el comportamiento físico.
+La auditoría geométrica encontró defectos antes de ejecutar Godot: barandillas del foso con el centro vertical por debajo de P0, banco del taller invadiendo el umbral/armario, marca del pasillo sobre el vacío, columna Aster suspendida, compuerta superior desalineada y trazador T desplazado de Aster. Se corrigieron y se añadieron aserciones. También se coordinaron las huellas para que el pasillo A→B no cruce el foso, se extendió la pasarela P2 hasta la barandilla y se apoyaron sobre el suelo el puente manipulado, el alojamiento de mantenimiento, el sumidero y las bombas. Esta revisión estática no demuestra todavía el comportamiento físico. Se corrigieron y se añadieron aserciones de integración. También se apoyaron sobre el suelo el puente manipulado y el alojamiento del interruptor de mantenimiento. Esta revisión de código no demuestra todavía el comportamiento físico.
 
 ## Límites
 
