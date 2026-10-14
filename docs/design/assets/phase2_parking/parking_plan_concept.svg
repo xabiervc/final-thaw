@@ -132,7 +132,7 @@
     <rect x="0" y="124" width="22" height="18" class="car"/><text x="32" y="137" class="small">Vehículo estático / cobertura</text>
     <rect x="0" y="154" width="22" height="18" class="column"/><text x="32" y="167" class="small">Pilar / soporte de rack aéreo</text>
     <rect x="0" y="184" width="22" height="18" class="obstacle"/><text x="32" y="197" class="small">Obstáculo de encuentro</text>
-    <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cobertura</text><circle cx="11" cy="250" r="7" fill="#fff" stroke="#263849" stroke-width="1.5"/><text x="32" y="254" class="small">CP: recuperación, no spawn inicial</text>
+    <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cobertura</text><circle cx="11" cy="230" r="7" fill="#fff" stroke="#263849" stroke-width="1.5"/><text x="32" y="234" class="small">CP: recuperación, no spawn inicial</text>
     <rect x="0" y="244" width="22" height="18" fill="#f0d88b" fill-opacity=".3" stroke="#c5a54f" stroke-dasharray="4 4"/><text x="32" y="257" class="small">Zona de iluminación conceptual</text>
     <circle cx="11" cy="275" r="8" fill="#fff" stroke="#278c83" stroke-width="2"/><text x="11" y="278" class="tiny" text-anchor="middle">1</text><text x="28" y="279" class="small">Checkpoint provisional</text>
     <text x="0" y="306" class="label">ESTADO</text>
