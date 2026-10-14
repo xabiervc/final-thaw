@@ -8,7 +8,7 @@
 
 **Design ownership:** architecture, level design, progression, narrative/script, visual/audio direction, documentation consistency and acceptance criteria are specified in the design sources. Programming is implemented by the programming owner. Design documents define intended behavior; they do not claim code completion or runtime validation.
 
-The current Phase 2 parking design has been raised from a mechanics-only description to an initial level contract. `docs/LEVEL_STRUCTURE.md` contains the architectural and encounter requirements; `docs/design/assets/phase2_parking/parking_plan_concept.svg` is a provisional 48 × 30 m concept plan, not yet reconciled with the Godot world. `docs/narrative_complete.md` now separates the current opening script proposal and unresolved decisions from the legacy full-campaign archive. The opening story is not locked full-game canon.
+The Phase 2 design package now contains a provisional 48 × 30 m plan, transverse section, spatial graph, route-clearance contract, obstacle register, conceptual sightline/light overlays, and a provisional opening script/trigger table. The plan's candidate transform aligns its entry with the Phase 1 mouth at approximately (X=34, Z=6), but the current prototype starts near (34.5, 0) and has only a 14 m corridor width; this mismatch is explicitly documented for the programming owner. The drawings are design proposals, not approved production geometry. `docs/narrative_complete.md` separates the opening script proposal and unresolved decisions from the legacy campaign archive; full-game canon is not locked.
 
 ## Sources of truth
 
@@ -38,15 +38,16 @@ The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S
 - **Documented:** revised architectural program, spatial graph, progression contract, functional spec and greybox requirements; existing SVGs now show the P−1 evacuation gallery, G pursuit trigger, and initial O1/O2/O3 obstacle footprints.
 - **Previously present in code, not runtime-verified:** west entrance tunnel, P0 rooms/perimeter, D1/D2 lower floor and P0 void, south/east return route, S1/S2, mission lift P0↔M, control/archive fixtures and safety rails.
 - **Not yet implemented/verified against the revised architecture:** P−1 evacuation gallery and exterior mouth, G as the start of an interior chase, the obstacle sequence, the full chase traversal back through existing vertical connections, physical continuity into parking, and the end-to-end handoff.
-- **Narrative decisions still open:** exact Helix event, audit status of F, Elena’s perception, Containment cause/timing, pursuer identity/entry and post-parking destination.
+- **Narrative direction specified as a proposal:** maintenance queues `SERVICE_OVERRIDE`; crossing G sends the queued audit and starts the facility recovery protocol. The Aster record states that the result was retained and the deployment recommendation suppressed.
+- **Narrative decisions still open:** suppression motive, exact event recipient/supervision, final recovery-unit identity/visual design, Elena/Iris/Selene chronology in this moment, Marcus's role and post-parking destination.
 - **Runtime status:** the previous editing environment did not have a Godot executable. No claim is made that recent GDScript, SVGs, or tests have been executed. CI status must be checked from the actual run before claiming green.
 
 ## Mandatory design work
 
-1. Reconcile the provisional Phase 2 plan against the exact P−1 exterior mouth and parking-entry world coordinates; then produce a dimensioned plan, section and spatial graph with consistent dimensions.
-2. Replace illustrative Phase 2 obstacles with a measured obstacle register, route alternatives, sightline/threat overlay, lighting landmarks and checkpoint locations.
-3. Review the proposed opening script and decide the unresolved story points listed in `docs/narrative_complete.md`; do not silently promote proposals to canon.
-4. Cross-check every Phase 1 plan, section, spatial graph, greybox footprint and progression beat; update the existing sources of truth rather than creating duplicates.
+1. Confirm the candidate Phase 2 world transform against the exact Phase 1 mouth width/orientation/elevation; then lock dimensions across plan, section and graph.
+2. Add a final threat/patrol and landmark/lighting overlay with sightline endpoints tied to measured cover, then review the three provisional obstacle envelopes.
+3. Complete a cross-document consistency pass across Phase 1 plans, section, spatial graph, greybox, progression and the new parking handoff.
+4. Review and approve/revise the proposed opening script, particularly the suppression reveal and the end-of-parking beat; retain unresolved full-campaign decisions explicitly.
 
 ## Mandatory implementation work (programming owner)
 
