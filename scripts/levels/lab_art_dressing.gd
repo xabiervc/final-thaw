@@ -21,8 +21,8 @@ const SUN_ENERGY := 0.6
 const FOG_DENSITY := 0.006
 ## Lighting pass (all visual-only; gl_compatibility has no SSAO/SDFGI/volumetric fog, so the look comes from
 ## colour grading, glow, soft fixture lights and a cool sun/warm accent contrast).
-const GLOW_INTENSITY := 0.5
-const GLOW_THRESHOLD := 1.0
+const GLOW_INTENSITY := 0.32
+const GLOW_THRESHOLD := 1.15
 const CONTRAST := 1.06
 const SATURATION := 0.92
 ## Keep local lights sparse on Compatibility / integrated GPUs. The lamps remain visible meshes;
