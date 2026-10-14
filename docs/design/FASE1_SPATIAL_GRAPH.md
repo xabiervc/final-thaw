@@ -1,9 +1,9 @@
-# FINAL THAW — Fase 1: grafo espacial (v0.4)
+# FINAL THAW — Fase 1: grafo espacial (v0.5)
 
 **Estado:** decisiones espaciales cerradas para construir el slice; validación de escena pendiente. No se afirma que haya recorridos, colisiones, cámara o jugabilidad validados en Godot.
 
 **Autoridad funcional:** FASE1_FUNCTIONAL_SPEC.md v1.0.  
-**Geometría base:** FASE1_GREYBOX_SPEC.md v1.1.  
+**Geometría base:** FASE1_GREYBOX_SPEC.md v1.2.  
 **Lógica eléctrica:** FASE1_LOGIC_CONTRACT.md.  
 **Primera escena implementada, no ejecutada:** `scenes/prototypes/phase1_canonical_greybox.tscn`; ver `FASE1_CANONICAL_BUILD.md`.
 
@@ -92,4 +92,5 @@ Registrar versión de Godot, commit, resolución, renderer, dispositivo de entra
 - Se unifica el transporte en la plataforma de la huella original del elevador.
 - Se retiran la reserva X=30..34, la rampa provisional y la variante B.
 - Se decide posición del panel E, rearme, indicador F y compuerta exterior.
+- Se añade el interbloqueo de las dos compuertas fijas de rellano con el estado de acoplamiento del elevador.
 - Se cierra la causa funcional de Containment mediante sincronización de auditoría en la salida.
