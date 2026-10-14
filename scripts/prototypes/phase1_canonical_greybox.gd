@@ -70,7 +70,7 @@ func _ready() -> void:
 	_build_doors()
 	_build_player_and_hud()
 	_refresh_state_fixtures()
-	_log("slice_ready", "Fase 1 canónica v0.4")
+	_log("slice_ready", "Fase 1 canónica v0.5")
 
 
 func _exit_tree() -> void:
@@ -123,9 +123,9 @@ func _build_environment() -> void:
 	add_child(sun)
 	_add_room_light(Vector3(14.0, 3.4, 0.0), 1.0, 16.0, Color(0.74, 0.84, 0.94))
 	_add_room_light(Vector3(6.0, 5.0, -7.0), 1.0, 10.0, Color(0.7, 0.86, 1.0))
-	var pit_light := _add_room_light(Vector3(24.0, -0.7, 4.0), 0.75, 9.0, Color(0.7, 0.82, 0.9))
+	var pit_light := _add_room_light(Vector3(24.0, -0.7, 4.0), 0.12, 9.0, Color(0.7, 0.82, 0.9))
 	_service_lights.append(pit_light)
-	var switch_light := _add_room_light(Vector3(26.0, -1.0, 2.0), 0.45, 3.0, Color(0.3, 0.95, 0.9))
+	var switch_light := _add_room_light(Vector3(26.0, -1.0, 2.0), 0.12, 3.0, Color(0.3, 0.95, 0.9))
 	_service_lights.append(switch_light)
 
 
