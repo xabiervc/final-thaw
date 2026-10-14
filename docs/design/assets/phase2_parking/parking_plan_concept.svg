@@ -84,7 +84,7 @@
     <rect x="410" y="160" width="78" height="48" class="service"/>
     <text x="449" y="179" class="small" text-anchor="middle">JAULA</text><text x="449" y="192" class="small" text-anchor="middle">TÉCNICA</text>
     <rect x="596" y="196" width="15" height="22" class="obstacle"/><rect x="629" y="196" width="15" height="22" class="obstacle"/>
-    <text x="620" y="189" class="tiny" text-anchor="middle">O3 / O3 · BARRERA</text><text x="620" y="211" class="tiny" text-anchor="middle">1,3 m libre</text>
+    <text x="620" y="178" class="tiny" text-anchor="middle">O3 · BARRERA</text><text x="620" y="191" class="tiny" text-anchor="middle">1,3 m libre</text>
     <rect x="496" y="224" width="42" height="28" class="obstacle"/>
     <text x="517" y="241" class="tiny" text-anchor="middle">O2</text>
     <!-- cover blocks -->
@@ -132,7 +132,7 @@
     <rect x="0" y="124" width="22" height="18" class="car"/><text x="32" y="137" class="small">Vehículo estático / cobertura</text>
     <rect x="0" y="154" width="22" height="18" class="column"/><text x="32" y="167" class="small">Pilar / soporte de rack aéreo</text>
     <rect x="0" y="184" width="22" height="18" class="obstacle"/><text x="32" y="197" class="small">Obstáculo de encuentro</text>
-    <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cubierta</text>
+    <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cobertura</text><circle cx="11" cy="250" r="7" fill="#fff" stroke="#263849" stroke-width="1.5"/><text x="32" y="254" class="small">CP: recuperación, no spawn inicial</text>
     <rect x="0" y="244" width="22" height="18" fill="#f0d88b" fill-opacity=".3" stroke="#c5a54f" stroke-dasharray="4 4"/><text x="32" y="257" class="small">Zona de iluminación conceptual</text>
     <circle cx="11" cy="275" r="8" fill="#fff" stroke="#278c83" stroke-width="2"/><text x="11" y="278" class="tiny" text-anchor="middle">1</text><text x="28" y="279" class="small">Checkpoint provisional</text>
     <text x="0" y="306" class="label">ESTADO</text>
