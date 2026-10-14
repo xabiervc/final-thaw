@@ -37,6 +37,14 @@ Las coordenadas de la galería de evacuación y la boca de servicio son **extens
 
 Se elimina como restricción el transform candidato `X+28,7 / Z−15,8`: se había deducido para hacer coincidir la planta local de parking con una boca provisional de P−1, antes de cerrar el recorrido narrativo. La ruta de huida puede atravesar otras salas de trabajo y terminar en otra boca exterior, si el plano, la sección y el grafo justifican esa solución. El contrato invariable es continuidad física y visual desde el umbral exterior finalmente seleccionado hasta el parking. Cuando se apruebe la topología completa, se mide la boca real, se decide orientación/cota y se deriva un único transform; no se altera el edificio solo para encajar el prototipo.
 
+## Estados de sigilo y transición a carrera (contrato provisional)
+
+| Estado | Zona de referencia | Qué hace el jugador | Condición de salida | Requisito espacial |
+|---|---|---|---|---|
+| Evasión silenciosa | F/E → pasarela → S2/M; áreas de trabajo conectadas | Evita líneas de visión, ruido y atención de personal que puede seguir trabajando. | Elena cruza un umbral expuesto y la unidad de recuperación la reacquiere por LOS real o evento diegético claramente señalizado. | Marcar cobertura real, campos de visión, rutas de patrulla, refugios y rutas alternativas en los planos; NPC no bloquean pasillos como props. |
+| Carrera interior | Propuesta inicial: salida del elevador hacia circulación P0/taller | Corre, interpreta obstáculos y elige el retorno hacia la salida alternativa. | Cruza el umbral exterior elegido. | El trigger debe ser visible/anticipable, sin corte de cámara, bloqueo de input ni detección omnisciente. Su posición es provisional hasta revisar los planos juntos. |
+| Transición a parking | Umbral exterior seleccionado | Continúa el movimiento hacia la zona de servicio/aparcamiento. | El checkpoint integrado de Phase 2 toma el control una sola vez. | Transform local-mundo derivado después de fijar la salida real; no reutilizar la transformación provisional retirada. |
+
 ## Grafo de circulación
 
 ~~~text
