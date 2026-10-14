@@ -36,10 +36,9 @@ godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
 godot --headless --path . res://tests/test_service_lift.tscn
 godot --headless --path . res://tests/test_service_lift_transport.tscn
 godot --headless --path . res://tests/test_phase1_circuit_model.tscn
-godot --headless --path . res://tests/test_phase0.tscn
 ```
 
-Use the repository's exact test scene names if they differ; the currently inspected Phase 0 scene is `tests/test_phase_0.tscn`, so its command is:
+Phase 0 regression command:
 
 ```sh
 godot --headless --path . res://tests/test_phase_0.tscn
