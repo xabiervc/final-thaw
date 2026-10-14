@@ -30,6 +30,9 @@ Cada decisión afecta a quienes dependen de ti.
 @export var hud_objective_valves_open: String = "Objetivo: Decide si rescatas a la civil antes de alcanzar la salida."
 @export var hud_objective_exit: String = "Objetivo: Alcanza la salida del refugio."
 
+@export var hud_demo_completed: String = "Demo completada - %s"
+@export var hud_demo_failed: String = "Demo fallida - Elena no sobrevivió"
+
 ## Interacciones
 @export_group("Interactions")
 @export var interact_power_console_off: String = "Activar generador"
