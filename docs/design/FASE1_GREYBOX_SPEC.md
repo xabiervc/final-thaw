@@ -19,8 +19,8 @@
 | D1 · Galería de achique | X=10..20, Z=1..8 | Bombas, sumidero, colector, marcas de nivel y acceso de S1. |
 | D2 · Distribución | X=20..28, Z=1..8 | Esquema, puente A→T manipulado, switch de mantenimiento; espacio caminable alrededor de equipo. |
 | S1 inferior | X=24..26, Z=8..11 | Boca de escalera abierta en suelo, llegada segura y orientación a D1/D2. |
-| Galería de evacuación | X=28..34, Z=4,5..7,5 (propuesta acotada) | Corredor de servicio con ancho libre ≥2 m, paredes y techo donde proceda; suelo continuo desde D2 a la boca exterior. |
-| Boca de servicio | X≈34, Z=4,5..7,5 | Umbral exterior físicamente abierto a zona de servicio/aparcamiento; no teletransporte. |
+| Galería de evacuación | X=28..34, Z=4,5..7,5 (propuesta heredada, no bloqueante) | Corredor de servicio con ancho libre ≥2 m, paredes y techo donde proceda. Conservarlo solo si la ruta completa lo justifica; si la salida se traslada, dibujar el corredor nuevo y retirar esta huella de los planos antes de implementar. |
+| Boca de servicio | X≈34, Z=4,5..7,5 (propuesta heredada, no bloqueante) | Umbral exterior físicamente conectado al parking. Su coordenada no obliga a fijar el recorrido interior. |
 
 La extensión hacia el este es una decisión arquitectónica nueva respecto a v1.1. Los planos y la sección deben incluirla. Si la topografía requiere pendiente, rampa o escalones, dibujarlos y comprobar que son transitables. La galería no debe parecer un túnel secreto añadido al final: integrar canaletas, colectores, compuerta de mantenimiento, señalización de descarga y huellas de uso.
 
@@ -79,9 +79,11 @@ Estas posiciones son la primera propuesta de layout de persecución y deben dibu
 2. Validar perímetro, huellas, suelo y huecos de P0/P−1.
 3. Recorrer S1, elevador y S2 en ambos sentidos sin saltos no diseñados.
 4. Verificar retorno sur/este y la galería de servicio.
-5. Verificar que G abre hacia el corredor de huida y no al exterior directo.
-6. Recorrer la persecución interior, elevador, S1, galería de evacuación y salida alternativa.
-7. Confirmar continuidad visual/física al aparcamiento y handoff al checkpoint correcto.
+5. Verificar que G abre hacia el corredor interior y no al exterior directo.
+6. Recorrer la sección silenciosa con NPC, percepción, cobertura y ruido verificables.
+7. Verificar el trigger de reacquisición propuesto en la salida del elevador a P0 y la transición continua a carrera.
+8. Recorrer la persecución, conexiones verticales y salida alternativa seleccionada.
+9. Confirmar continuidad visual/física al aparcamiento y handoff al checkpoint derivado de la boca real.
 8. Ejecutar regresión Fase 0 y tests existentes; registrar versión, renderer, commit, resultados, errores/warnings y QA manual.
 
 Un plano no se considera excelente por estética aislada: debe ser acotado, consistente entre cotas, legible, verificable y capaz de dirigir la implementación sin contradicciones.
