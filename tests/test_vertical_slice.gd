@@ -9,6 +9,7 @@ func _ready() -> void:
 	_check_oxygen_states()
 	_check_state_restore()
 	_check_shelter_text_fallbacks()
+	_check_menu_text_contract()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -97,6 +98,10 @@ func _check_shelter_text_fallbacks() -> void:
 	_expect(not NarrativeTextManager.get_shelter_exit_prompt(true).is_empty(), "Ready exit prompt fallback exists")
 	_expect(not NarrativeTextManager.get_shelter_hud(true, true, 12.0, 3).is_empty(), "Shelter HUD fallback exists")
 	_expect(not NarrativeTextManager.get_shelter_exit_title(true, 3).is_empty(), "Shelter exit title fallback exists")
+
+func _check_menu_text_contract() -> void:
+	_expect(not NarrativeTextManager.get_shelter_civilian_state_short().is_empty(), "Menu civilian state fallback exists")
+	_expect(not NarrativeTextManager.get_shelter_previous_state().is_empty(), "Menu previous-state fallback exists")
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid

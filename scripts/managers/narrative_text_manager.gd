@@ -151,10 +151,10 @@ static func get_shelter_state_valves(is_open: bool) -> String:
 	return _text("shelter_state_open", "OPEN") if is_open else _text("shelter_state_closed", "CLOSED")
 
 static func get_shelter_civilian_state_short() -> String:
-	return _text("shelter_state_civilian_rescued", "Shelter: civilian rescued.")
+	return _text("shelter_state_civilian_rescued", "Civilian rescued")
 
 static func get_shelter_previous_state() -> String:
-	return _text("shelter_previous_state", "Previous state:")
+	return _text("shelter_previous_state", "Previous shelter run:")
 
 static func get_shelter_hud(power_on: bool, valves_open: bool, oxygen: float, civilian_aid: int) -> String:
 	var template := _text(
