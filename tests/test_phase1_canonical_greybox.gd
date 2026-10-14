@@ -114,7 +114,10 @@ func _run() -> void:
 	_expect(not lower_gate_shape.disabled and upper_gate_shape.disabled and lower_gate_mesh.visible and not upper_gate_mesh.visible, "upper landing gate opens only when the deck docks upper")
 
 	# Mission-specific safety gate: power loss mid-travel must crawl to the nearest landing.
+	# Clear the docking dwell deterministically and step the lift manually to avoid a physics/test race.
 	scene.lift.set_physics_process(false)
+	for i in range(31):
+		scene.lift.step(0.1)
 	_expect(scene.lift.call_to("lower"), "lift accepts a return call from M")
 	scene.lift.step(0.5)
 	_expect(scene.lift.moving and scene.lift.platform_y > 0.75, "power-loss scenario starts above the halfway point")
