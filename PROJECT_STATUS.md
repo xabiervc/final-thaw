@@ -2,7 +2,7 @@
 
 ## Current phase
 
-**Phase 1 — architectural direction closed; the current greybox must be rebuilt to match it.** Existing circuit/lift components and motion/chase prototype v2 remain. These plans are a design decision, not a claim that new floors already exist in Godot.
+**Phase 1 — canonical scene rebuilt in code to the four-elevation design; runtime verification pending.** Existing circuit/lift components and motion/chase prototype v2 remain. These plans are a design decision, not a claim that new floors already exist in Godot.
 
 ## Sources of truth
 
@@ -24,7 +24,7 @@ Unique vertical routes: S1 P0↔P−1; elevator P0↔M; S2 M↔P2; direct P0↔P
 
 ## Implementation status
 
-The canonical scene still reflects the previous geometry: lift to Y=3 and return stair in G. Rebuild the room partitions, M/S2/G, and set the mission lift to Y=1.5. Generic 3 m tests remain; add a 1.5 m mission test. No Godot execution or manual playtest is claimed.
+The canonical scene builder now constructs P−1, P0, M (+1.5 m) and P2 (+3 m), configures the mission lift to +1.5 m, adds M/S2, and removes the return stair from G. A dedicated .tscn resource and integration assertions are included. Godot execution and manual playtest are still pending; do not treat static changes as runtime validation.
 
 ## Next verification
 

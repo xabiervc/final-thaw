@@ -2,7 +2,7 @@ extends Node
 ## Smoke/integration tests for the canonical Phase 1 scene. Not a substitute for spatial/camera playtest.
 ## Run: godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
 
-const CanonicalScene = preload("res://scripts/prototypes/phase1_canonical_greybox.gd")
+const CanonicalScene = preload("res://scenes/prototypes/phase1_canonical_greybox.tscn")
 var passed: int = 0
 var failed: int = 0
 var completed: bool = false
@@ -21,13 +21,17 @@ func _watchdog() -> void:
 
 func _run() -> void:
 	print("Godot: ", Engine.get_version_info()["string"])
-	var scene = CanonicalScene.new()
+	var scene = CanonicalScene.instantiate()
 	add_child(scene)
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 
 	_expect(scene.circuit != null, "canonical scene owns a circuit model")
 	_expect(scene.lift != null and scene.player != null, "scene creates player and service lift")
+	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 1.5), "mission lift connects P0 to mezzanine M at +1.5 m")
+	_expect(scene.get_node_or_null("MezzanineFloor_00") != null, "intermediate mezzanine floor is present")
+	_expect(scene.get_node_or_null("PumpSkidA") != null and scene.get_node_or_null("ControlStairsS2CollisionRamp") != null, "pump room and S2 stairs connect mezzanine to control")
+	_expect(scene.get_node_or_null("WestShortcutStairsCollisionRamp") == null, "exterior airlock has no stair return to P0")
 	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
 	_expect(scene._service_lights.size() == 2 and scene._service_lights[0].light_energy < 0.2 and scene._service_lights[1].light_energy < 0.2, "service lights start at safe ambient minimum while maintenance is off")
 	var lower_gate_shape := scene.get_node("LiftSafetyGateLower").get_child(0) as CollisionShape3D
@@ -87,10 +91,10 @@ func _run() -> void:
 	_expect(not lower_gate_shape.disabled and upper_gate_shape.disabled and lower_gate_mesh.visible and not upper_gate_mesh.visible, "upper landing gate opens only when the deck docks upper")
 
 	# The F→G door and exterior hatch are controllable from their intended sides.
-	scene.player.global_position = Vector3(3.0, 3.2, -7.5)
+	scene.player.global_position = Vector3(4.0, 3.2, -7.5)
 	scene._unlock_shortcut()
 	_expect(scene._shortcut_unlocked, "inner shortcut unlocks from the cabin side")
-	scene.player.global_position = Vector3(1.0, 3.2, -7.5)
+	scene.player.global_position = Vector3(2.0, 3.2, -7.5)
 	scene._open_outer_hatch()
 	_expect(scene._outer_hatch_open, "outer hatch opens from the west vestibule")
 

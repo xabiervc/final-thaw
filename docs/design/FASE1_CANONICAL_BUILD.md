@@ -1,6 +1,6 @@
 # Phase 1 — Canonical build and verification
 
-**Estado:** arquitectura v1.0 definida; la escena actual refleja la geometría anterior. Requiere reconstrucción; ningún test se declara ejecutado o superado.
+**Estado:** reconstrucción de la escena canónica implementada en GDScript y recurso .tscn; ejecución de pruebas y playtest pendientes.
 
 ## Autoridad
 
@@ -8,7 +8,7 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.0; FASE1_SPATIAL_GRAPH.md v0.6; FASE1_GREYBOX_S
 
 ## Estado de la escena
 
-La escena canónica actual sube elevador de Y=0 a 3 y tiene escalera de retorno en G; ambas contradicen el nuevo plano. Reconstruir superficies/particiones, configurar elevador P0↔M (+1,5 m), construir M/S2 y eliminar la escalera de G. Reutilizar circuito, elevador, jugador, HUD y materiales. No borrar prototipos históricos ni alterar contratos.
+El builder canónico construye ahora las cuatro cotas, M/S2, salas funcionales y una esclusa G horizontal. La instancia del elevador usa Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. Se ha añadido un recurso .tscn explícito y el test de integración lo instancia. Reutiliza circuito, jugador, HUD y materiales; no modifica persistencia ni inputs.
 
 ## Orden
 
@@ -28,4 +28,4 @@ godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
 godot --headless --path . res://tests/test_phase_0.tscn
 ~~~
 
-El test genérico puede usar 3 m; el test de misión debe verificar 1,5 m, S2, puertas y pérdida de energía. No puedo ejecutar Godot desde este entorno; registra versión, commit, comandos, salida y exit code cuando se ejecute. Test automático no sustituye playtest.
+El test genérico puede usar 3 m; el test de misión debe verificar 1,5 m, S2, puertas y pérdida de energía. Godot no está instalado en el entorno de edición; registra versión, commit, comandos, salida y exit code al ejecutar localmente. Test automático no sustituye playtest.

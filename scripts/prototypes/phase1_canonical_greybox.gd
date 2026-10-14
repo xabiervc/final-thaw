@@ -1,5 +1,5 @@
 extends Node3D
-## Canonical Phase 1 slice following FASE1_SPATIAL_GRAPH.md v0.5.
+## Canonical Phase 1 slice following FASE1_ARCHITECTURAL_LAYOUT.md v1.0 and FASE1_SPATIAL_GRAPH.md v0.6.
 ## This scene deliberately does not alter the preserved six-room comparison prototype.
 ## Logic comes from phase1_circuit_model.gd; lift mechanics come from service_lift.gd.
 const Player = preload("res://scripts/prototypes/phase1_spatial_player.gd")
@@ -70,7 +70,7 @@ func _ready() -> void:
 	_build_doors()
 	_build_player_and_hud()
 	_refresh_state_fixtures()
-	_log("slice_ready", "Fase 1 canónica v0.5")
+	_log("slice_ready", "Fase 1 canónica v1.0 · cuatro cotas")
 
 
 func _exit_tree() -> void:
@@ -258,29 +258,25 @@ func _build_ground_floor() -> void:
 
 
 func _build_fixed_geometry() -> void:
-	# Outer shell. The west wall has an upper-level hatch aperture only; its ground-level wall remains solid.
+	# Outer shell. The west hatch is upper-only; the ground-level opening stays sealed.
 	_wall_x("OuterWestLowerA", 0.0, -10.0, -8.25, 0.0, 5.4)
 	_wall_x("OuterWestLowerB", 0.0, -6.75, 12.0, 0.0, 5.4)
 	_wall_x("OuterWestHatchLower", 0.0, -8.25, -6.75, 0.0, 3.0)
 	_wall_x("OuterWestHatchLintel", 0.0, -8.25, -6.75, 5.2, 5.4)
 	_wall_z("OuterNorth", -10.0, 0.0, 30.0, 0.0, 5.4)
 	_wall_x("OuterEast", 30.0, -10.0, 12.0, 0.0, 4.5)
-	# Main south edge: entry aperture x=2..4. The stair opening is inside the floor, not an outside doorway.
 	_wall_z("OuterSouthWest", 12.0, 0.0, 2.0, 0.0, 4.5)
 	_wall_z("OuterSouthMiddle", 12.0, 4.0, 30.0, 0.0, 4.5)
 
-	# Central machine block: it is scenery/obstacle, never a running machine.
-	_body_box("CentralTestRig", Vector3(6.0, 2.0, 4.0), Vector3(14.5, 1.0, 0.5), materials.get_material("machine"))
-	_visual_box("TestRigTopMarker", Vector3(1.3, 0.12, 1.1), Vector3(14.5, 2.08, 0.5), _flat_material(Color(0.3, 0.8, 0.8), 0.45, 0.2, 1.2))
-	_label3d("TestRigLabel", "ASTER · NODO T", Vector3(14.5, 2.4, 0.5), Color(0.5, 0.92, 0.9), 26)
-
-	# Blocked direct stairs: the one-metre missing span is not a jump challenge.
-	_build_sloped_stairs("BrokenApproachStairs", 2.0, 4.0, -3.0, 3.0, 3.0, 0.0)
+	# Damaged direct stair remains visible but has no traversable collision ramp.
+	var damaged_stair := _visual_box("BrokenApproachStairVisual", Vector3(2.0, 0.18, 6.0), Vector3(3.0, 1.5, 0.0), materials.get_material("grate"))
+	damaged_stair.rotation.x = -atan2(3.0, 6.0)
 	_add_floor_rect(Rect2(Vector2(2.0, -4.0), Vector2(2.0, 1.0)), 3.0, "BrokenStairUpperLanding", materials.get_material("grate"))
-	_wall_z("BrokenStairBlockedGap", -4.5, 2.0, 4.0, 3.0, 5.4, materials.get_material("safety_paint"))
-	_visual_box("BrokenApproachWarning", Vector3(1.5, 0.16, 0.08), Vector3(3.0, 3.35, -4.48), _flat_material(Color(0.95, 0.54, 0.12), 0.45, 0.0, 1.1))
+	_wall_z("BrokenStairBlockedGap", -3.55, 1.7, 4.3, 0.0, 3.6, materials.get_material("safety_paint"))
+	_visual_box("BrokenApproachWarning", Vector3(2.2, 0.16, 0.08), Vector3(3.0, 2.8, -3.48), _flat_material(Color(0.95, 0.54, 0.12), 0.45, 0.0, 1.1))
+	_label3d("BrokenStairSign", "ESCALERA COLAPSADA · NO PASAR", Vector3(3.0, 3.2, -3.45), Color(1.0, 0.66, 0.25), 16, 0.003)
 
-	# Service-apron guardrail around the pit; leave the fixed stair mouth open.
+	# Pit protection. The S1 stair mouth stays open.
 	var rail := _flat_material(Color(0.55, 0.58, 0.6), 0.5, 0.7)
 	_body_box("PitRailWest", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(19.94, RAIL_HEIGHT * 0.5, 4.5), rail)
 	_body_box("PitRailEast", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(28.06, RAIL_HEIGHT * 0.5, 4.5), rail)
@@ -288,7 +284,15 @@ func _build_fixed_geometry() -> void:
 	_body_box("PitRailSouthWest", Vector3(4.0, RAIL_HEIGHT, 0.12), Vector3(22.0, RAIL_HEIGHT * 0.5, 8.06), rail)
 	_body_box("PitRailSouthEast", Vector3(2.0, RAIL_HEIGHT, 0.12), Vector3(27.0, RAIL_HEIGHT * 0.5, 8.06), rail)
 
-	# Service paths are painted into the ground slab and stay lit independently of maintenance.
+	# Distinct functional areas and the Aster column make the industrial volume readable.
+	_body_box("AsterVerticalColumn", Vector3(0.58, 3.4, 0.58), Vector3(14.5, 2.7, 0.5), materials.get_material("steel_light"))
+	_visual_box("AsterColumnBeacon", Vector3(0.8, 0.12, 0.8), Vector3(14.5, 4.45, 0.5), _flat_material(Color(0.3, 0.8, 0.8), 0.45, 0.2, 1.2))
+	_label3d("AsterColumnLabel", "ASTER · COLUMNA DE CALIBRACIÓN", Vector3(14.5, 4.7, 0.5), Color(0.5, 0.92, 0.9), 19)
+	_body_box("WorkshopBench", Vector3(2.8, 0.16, 0.8), Vector3(22.0, 0.85, -7.2), materials.get_material("steel"))
+	_body_box("WorkshopCabinet", Vector3(0.75, 1.6, 0.65), Vector3(23.1, 0.8, -8.4), materials.get_material("steel_light"))
+	_body_box("WorkshopPipeRack", Vector3(2.4, 0.18, 0.18), Vector3(22.0, 2.1, -8.7), materials.get_material("steel"))
+	_label3d("WorkshopLabel", "C · TALLER TÉCNICO", Vector3(22.0, 1.4, -7.2), Color(0.7, 0.85, 0.9), 16, 0.003)
+	_label3d("AccessLabel", "A · ACCESO / EVACUACIÓN", Vector3(3.0, 0.08, 9.0), Color(0.9, 0.82, 0.62), 18, 0.003)
 	_label3d("SouthRouteMark", "PASILLO DE SERVICIO", Vector3(13.0, 0.06, 6.0), Color(0.7, 0.82, 0.86), 20, 0.003)
 	_label3d("PitApproachMark", "FOSO DE SERVICIO ↓", Vector3(21.8, 0.06, 9.7), Color(0.9, 0.74, 0.35), 20, 0.003)
 
@@ -382,59 +386,87 @@ func _build_sloped_stairs(label: String, x0: float, x1: float, z0: float, z1: fl
 
 
 func _build_upper_route() -> void:
-	# The cabin and public walkway share Y=3. Their floor slabs meet edge-to-edge.
-	_add_floor_rect(Rect2(Vector2(2.0, -9.0), Vector2(7.0, 4.0)), 3.0, "ArchiveCabinFloor")
-	_add_floor_rect(Rect2(Vector2(0.0, -9.0), Vector2(2.0, 3.0)), 3.0, "WestVestibuleFloor", materials.get_material("grate"))
-	_add_floor_rect(Rect2(Vector2(9.0, -8.0), Vector2(17.0, 2.0)), 3.0, "PublicControlWalkway", materials.get_material("grate"))
-	_add_floor_rect(Rect2(Vector2(24.0, -7.0), Vector2(4.0, 2.5)), 3.0, "UpperLiftLanding", materials.get_material("grate"))
+	# P2: archive F, control E, and the west airlock G. G exits horizontally only.
+	_add_floor_rect(Rect2(Vector2(3.0, -9.0), Vector2(6.0, 4.5)), 3.0, "ArchiveCabinFloor")
+	_add_floor_rect(Rect2(Vector2(0.0, -9.0), Vector2(3.0, 4.5)), 3.0, "ExteriorAirlockFloor", materials.get_material("grate"))
+	_add_floor_rect(Rect2(Vector2(9.0, -9.0), Vector2(15.0, 4.5)), 3.0, "ControlRoomFloor")
+	var walkway_regions: Array = [Rect2(Vector2(9.0, -4.5), Vector2(17.0, 2.5))]
+	for hole in [Rect2(Vector2(9.0, -4.5), Vector2(4.0, 2.5))]:
+		var next_walkway_regions: Array = []
+		for region in walkway_regions:
+			next_walkway_regions.append_array(_subtract_rect(region, hole))
+		walkway_regions = next_walkway_regions
+	for i in walkway_regions.size():
+		_add_floor_rect(walkway_regions[i], 3.0, "PublicControlWalkway_%02d" % i, materials.get_material("grate"))
 
-	# Cabin shell/partitions. Openings remain 2 m clear; the inner west door is controlled separately.
-	_wall_z("CabinNorthWall", -9.0, 2.0, 9.0, 3.0, 5.4)
-	_wall_z("CabinSouthWall", -5.0, 2.0, 9.0, 3.0, 5.4)
+	# F cabin, with an opening into control E.
+	_wall_z("CabinNorthWall", -9.0, 3.0, 9.0, 3.0, 5.4)
+	_wall_z("CabinSouthWall", -4.5, 3.0, 9.0, 3.0, 5.4)
 	_wall_x("CabinEastNorthPier", 9.0, -9.0, -8.0, 3.0, 5.4)
-	_wall_x("CabinEastSouthPier", 9.0, -6.0, -5.0, 3.0, 5.4)
+	_wall_x("CabinEastSouthPier", 9.0, -6.0, -4.5, 3.0, 5.4)
 	_wall_x("CabinEastLintel", 9.0, -8.0, -6.0, 5.2, 5.4)
-	_wall_x("CabinWestPierNorth", 2.0, -9.0, -8.5, 3.0, 5.4)
-	_wall_x("CabinWestPierSouth", 2.0, -6.5, -5.0, 3.0, 5.4)
 
-	# Guardrails around walkable upper edges, not across cabin entrances.
+	# G is a horizontal airlock, not a vertical shortcut.
+	_wall_z("VestibuleNorthWall", -9.0, 0.0, 3.0, 3.0, 5.4)
+	_wall_z("VestibuleSouthWall", -4.5, 0.0, 3.0, 3.0, 5.4)
+	_wall_x("VestibuleDoorPierNorth", 3.0, -9.0, -8.0, 3.0, 5.4)
+	_wall_x("VestibuleDoorPierSouth", 3.0, -6.0, -4.5, 3.0, 5.4)
+	_wall_x("VestibuleDoorLintel", 3.0, -8.0, -6.0, 5.2, 5.4)
+
+	# M is a real intermediate floor. Keep the lift shaft and S2 stairwell open.
+	var mezz_regions: Array = [Rect2(Vector2(9.0, -9.0), Vector2(19.0, 7.5))]
+	var mezz_holes: Array = [
+		Rect2(Vector2(24.5, -4.5), Vector2(3.0, 3.0)),
+		Rect2(Vector2(9.0, -4.5), Vector2(4.0, 3.0))
+	]
+	for hole in mezz_holes:
+		var next_regions: Array = []
+		for region in mezz_regions:
+			next_regions.append_array(_subtract_rect(region, hole))
+		mezz_regions = next_regions
+	for i in mezz_regions.size():
+		_add_floor_rect(mezz_regions[i], 1.5, "MezzanineFloor_%02d" % i, materials.get_material("grate"))
+
+	_body_box("PumpSkidA", Vector3(2.2, 0.85, 0.9), Vector3(17.0, 1.95, -7.3), materials.get_material("steel"))
+	_body_box("PumpSkidB", Vector3(2.2, 0.85, 0.9), Vector3(21.0, 1.95, -7.3), materials.get_material("steel"))
+	_body_box("PumpManifold", Vector3(0.22, 1.1, 5.0), Vector3(23.2, 2.25, -5.0), materials.get_material("steel_light"))
+	_body_box("PumpBench", Vector3(2.0, 0.15, 0.6), Vector3(19.0, 2.35, -2.8), materials.get_material("steel"))
+	_label3d("PumpRoomLabel", "M · SALA DE BOMBAS", Vector3(18.5, 2.5, -8.5), Color(0.72, 0.88, 0.95), 18, 0.003)
+	_label3d("ObservationGalleryLabel", "GALERÍA DE OBSERVACIÓN", Vector3(10.8, 2.0, -8.4), Color(0.72, 0.88, 0.95), 16, 0.003)
+
 	var rail := _flat_material(Color(0.55, 0.58, 0.6), 0.45, 0.7)
-	_body_box("WalkwayRailSouth", Vector3(17.0, RAIL_HEIGHT, 0.1), Vector3(17.5, 3.0 + RAIL_HEIGHT * 0.5, -6.02), rail)
-	_body_box("WalkwayRailNorth", Vector3(15.0, RAIL_HEIGHT, 0.1), Vector3(16.5, 3.0 + RAIL_HEIGHT * 0.5, -7.98), rail)
-	_body_box("UpperLandingOuterRail", Vector3(2.0, RAIL_HEIGHT, 0.1), Vector3(27.0, 3.0 + RAIL_HEIGHT * 0.5, -7.02), rail)
-	_body_box("UpperLandingEastRail", Vector3(0.1, RAIL_HEIGHT, 2.5), Vector3(28.02, 3.0 + RAIL_HEIGHT * 0.5, -5.75), rail)
+	_body_box("MezzanineNorthRail", Vector3(18.8, RAIL_HEIGHT, 0.1), Vector3(18.4, 1.5 + RAIL_HEIGHT * 0.5, -9.02), rail)
+	_body_box("MezzanineEastRail", Vector3(0.1, RAIL_HEIGHT, 7.0), Vector3(28.02, 1.5 + RAIL_HEIGHT * 0.5, -5.0), rail)
+	_body_box("MezzanineSouthRailWest", Vector3(10.0, RAIL_HEIGHT, 0.1), Vector3(14.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
+	_body_box("MezzanineSouthRailEast", Vector3(11.0, RAIL_HEIGHT, 0.1), Vector3(22.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
 
-	# The west vestibule is bounded by the external hatch at x=0 and the inner F→G door at x=2.
-	_wall_z("VestibuleNorthWall", -9.0, 0.0, 2.0, 3.0, 5.4)
-	# Keep outer west lower wall and lintel as already built; only the upper door is movable.
-
-	# Stairs from vestibule to ground are a secondary return route. They don't lead to H.
-	_build_sloped_stairs("WestShortcutStairs", 0.0, 2.0, -6.0, 0.0, 3.0, 0.0)
-	# Railings on stairwell edges, outside the two-metre clear stairway.
-	_body_box("ShortcutRailWest", Vector3(0.1, 1.1, 6.0), Vector3(-0.12, 1.9, -3.0), rail)
-	_body_box("ShortcutRailEast", Vector3(0.1, 1.1, 6.0), Vector3(2.12, 1.9, -3.0), rail)
+	# S2 joins M (z=-1.5, y=1.5) to P2 (z=-4.5, y=3).
+	_build_sloped_stairs("ControlStairsS2", 9.0, 13.0, -4.5, -1.5, 3.0, 1.5)
+	_body_box("S2RailWest", Vector3(0.1, 1.1, 3.0), Vector3(8.88, 2.8, -3.0), rail)
+	_body_box("S2RailEast", Vector3(0.1, 1.1, 3.0), Vector3(13.12, 2.8, -3.0), rail)
 
 
 func _build_lift() -> void:
 	lift = ServiceLift.new()
 	lift.name = "ServiceLift"
 	lift.position = Vector3(26.0, 0.0, -3.0)
+	lift.lower_y = 0.0
+	lift.upper_y = 1.5
 	lift.powered = false
 	add_child(lift)
 	lift.state_changed.connect(_on_lift_state_changed)
-	# Fixed landing gates are separate from the gates carried by the deck: the shaft stays protected when the deck is elsewhere.
+	# Fixed landing gates protect the shaft when the deck is elsewhere.
 	_lower_lift_gate = _body_box("LiftSafetyGateLower", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 0.55, -1.1), materials.get_material("safety_paint"))
 	_lower_lift_gate_shape = _lower_lift_gate.get_child(0) as CollisionShape3D
 	_lower_lift_gate_mesh = _lower_lift_gate.get_child(1) as MeshInstance3D
-	_upper_lift_gate = _body_box("LiftSafetyGateUpper", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 3.55, -4.9), materials.get_material("safety_paint"))
+	_upper_lift_gate = _body_box("LiftSafetyGateUpper", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 2.05, -4.9), materials.get_material("safety_paint"))
 	_upper_lift_gate_shape = _upper_lift_gate.get_child(0) as CollisionShape3D
 	_upper_lift_gate_mesh = _upper_lift_gate.get_child(1) as MeshInstance3D
 	_refresh_stationary_lift_gates()
-	# No ramp or second platform: the original lift shaft is the one canonical transport.
 	_lift_lower_button = _visual_box("LiftCallLower", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 0.28, -0.2), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
-	_label3d("LiftCallLowerLabel", "LLAMAR · NIVEL INFERIOR", Vector3(26.7, 0.72, -0.2), Color(0.95, 0.8, 0.4), 16, 0.003)
-	_lift_upper_button = _visual_box("LiftCallUpper", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 3.28, -6.1), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
-	_label3d("LiftCallUpperLabel", "LLAMAR · NIVEL SUPERIOR", Vector3(26.8, 3.72, -6.1), Color(0.95, 0.8, 0.4), 16, 0.003)
+	_label3d("LiftCallLowerLabel", "LLAMAR · P0", Vector3(26.7, 0.72, -0.2), Color(0.95, 0.8, 0.4), 16, 0.003)
+	_lift_upper_button = _visual_box("LiftCallUpper", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 1.78, -6.1), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
+	_label3d("LiftCallUpperLabel", "LLAMAR · MEZZANINE", Vector3(26.8, 2.22, -6.1), Color(0.95, 0.8, 0.4), 16, 0.003)
 	_lift_deck_button = _visual_box("LiftDeckButton", Vector3(0.25, 0.08, 0.2), Vector3(26.0, float(lift.platform_y) + 0.06, -3.0), _flat_material(Color(0.25, 0.9, 0.6), 0.4, 0.0, 1.2))
 	_lift_deck_label = _label3d("LiftDeckButtonLabel", "ENVIAR AL OTRO NIVEL", Vector3(26.0, float(lift.platform_y) + 0.32, -3.0), Color(0.6, 1.0, 0.75), 14, 0.0028)
 
@@ -482,7 +514,7 @@ func _build_controls_and_fixtures() -> void:
 
 
 func _build_doors() -> void:
-	_inner_door = _body_box("ShortcutInnerDoor", Vector3(0.2, 2.2, 2.0), Vector3(2.0, 4.1, -7.5), materials.get_material("safety_paint"))
+	_inner_door = _body_box("ShortcutInnerDoor", Vector3(0.2, 2.2, 2.0), Vector3(3.0, 4.1, -7.5), materials.get_material("safety_paint"))
 	_inner_door_mesh = _inner_door.get_child(1) as MeshInstance3D
 	_outer_door = _body_box("OuterHatch", Vector3(0.2, 2.2, 1.5), Vector3(0.0, 4.1, -7.5), materials.get_material("safety_paint"))
 	_outer_door_shape = _outer_door.get_child(0) as CollisionShape3D
@@ -514,7 +546,7 @@ func _current_hotspots() -> Array:
 		{"id":"schematic", "at":Vector3(27.0, -1.0, 6.0), "verb":"Examinar", "name":"Esquema de distribución"},
 		{"id":"bridge", "at":Vector3(22.0, -1.0, 4.0), "verb":"Examinar", "name":"Conexión manipulada"},
 		{"id":"lift_lower", "at":Vector3(26.0, 0.25, -0.25), "verb":"Llamar", "name":"Elevador · nivel inferior"},
-		{"id":"lift_upper", "at":Vector3(26.0, 3.25, -6.2), "verb":"Llamar", "name":"Elevador · nivel superior"},
+		{"id":"lift_upper", "at":Vector3(26.0, 1.7, -6.2), "verb":"Llamar", "name":"Elevador · mezzanine"},
 		{"id":"lift_deck", "at":deck_at, "verb":"Enviar", "name":"Elevador · otro nivel"},
 		{"id":"selector", "at":Vector3(12.0, 3.0, -7.0), "verb":"Accionar", "name":"Selector de recuperación"},
 		{"id":"isolator", "at":Vector3(19.0, 3.0, -7.0), "verb":"Accionar", "name":"Aislador de ensayo"},
@@ -522,7 +554,7 @@ func _current_hotspots() -> Array:
 		{"id":"rearm", "at":Vector3(15.5, 3.5, -8.15), "verb":"Rearmar", "name":"Protección de recuperación"},
 		{"id":"diagnostic", "at":Vector3(7.25, 3.1, -6.0), "verb":"Inspeccionar", "name":"Terminal de diagnóstico"},
 		{"id":"archive", "at":Vector3(5.0, 3.1, -7.0), "verb":"Consultar", "name":"Archivo restringido"},
-		{"id":"shortcut", "at":Vector3(2.0, 3.0, -7.5), "verb":"Desbloquear", "name":"Puerta del vestíbulo oeste"},
+		{"id":"shortcut", "at":Vector3(3.0, 3.0, -7.5), "verb":"Desbloquear", "name":"Puerta de la esclusa exterior"},
 		{"id":"outer_hatch", "at":Vector3(0.45, 3.1, -7.5), "verb":"Abrir", "name":"Compuerta exterior"},
 	]
 
@@ -545,9 +577,9 @@ func _update_interaction_prompt() -> void:
 func _hotspot_available(id: String) -> bool:
 	match id:
 		"shortcut":
-			return not _shortcut_unlocked and player.global_position.x > 2.15
+			return not _shortcut_unlocked and player.global_position.x > 3.15
 		"outer_hatch":
-			return _shortcut_unlocked and not _outer_hatch_open and player.global_position.x < 1.8
+			return _shortcut_unlocked and not _outer_hatch_open and player.global_position.x < 2.8
 		"lift_deck":
 			return absf(player.global_position.x - 26.0) < 1.7 and absf(player.global_position.z + 3.0) < 1.7 and absf(player.global_position.y - float(lift.platform_y)) < 1.0
 		_:
@@ -658,7 +690,7 @@ func _consult_archive() -> void:
 
 
 func _unlock_shortcut() -> void:
-	if _shortcut_unlocked or player.global_position.x <= 2.15:
+	if _shortcut_unlocked or player.global_position.x <= 3.15:
 		return
 	_shortcut_unlocked = true
 	if _inner_door != null:
@@ -671,7 +703,7 @@ func _unlock_shortcut() -> void:
 
 
 func _open_outer_hatch() -> void:
-	if not _shortcut_unlocked or player.global_position.x >= 1.8:
+	if not _shortcut_unlocked or player.global_position.x >= 2.8:
 		return
 	_outer_hatch_open = true
 	if _outer_door_shape != null:
@@ -759,7 +791,9 @@ func _update_safe_point() -> void:
 		return
 	var p: Vector3 = player.global_position
 	if p.y > 2.7:
-		_safe_point = Vector3(26.0, 3.2, -6.2)
+		_safe_point = Vector3(6.0, 3.2, -7.0)
+	elif p.y > 1.2 and p.y < 2.7:
+		_safe_point = Vector3(18.0, 1.7, -7.0)
 	elif p.y < -1.55 and p.y > -3.0:
 		_safe_point = Vector3(25.0, -1.8, 7.0)
 	elif absf(p.y) < 0.45:
