@@ -29,6 +29,12 @@ func _run() -> void:
 	_expect(scene.circuit != null, "canonical scene owns a circuit model")
 	_expect(scene.lift != null and scene.player != null, "scene creates player and service lift")
 	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
+	var lower_gate_shape := scene.get_node("LiftSafetyGateLower").get_child(0) as CollisionShape3D
+	var lower_gate_mesh := scene.get_node("LiftSafetyGateLower").get_child(1) as MeshInstance3D
+	var upper_gate_shape := scene.get_node("LiftSafetyGateUpper").get_child(0) as CollisionShape3D
+	var upper_gate_mesh := scene.get_node("LiftSafetyGateUpper").get_child(1) as MeshInstance3D
+	_expect(lower_gate_shape.disabled and not lower_gate_mesh.visible, "lower landing gate is open only because the lift is docked there")
+	_expect(not upper_gate_shape.disabled and upper_gate_mesh.visible, "upper landing gate protects the empty shaft")
 	_expect(scene.circuit.destination == "ENSAYO" and not scene.circuit.trial_isolated and scene.circuit.protection_available, "circuit starts in the contract initial state")
 	_expect(scene.get_node_or_null("SelectorBody") != null and scene.get_node_or_null("IsolatorBody") != null, "selector and isolator fixtures exist")
 	_expect(scene.get_node_or_null("EStatusPanelBoard") != null and scene.get_node_or_null("ArchiveStatusBoard") != null, "E panel and local F indicator fixtures exist")
@@ -71,6 +77,12 @@ func _run() -> void:
 	_expect(scene.circuit.maintenance_on and scene.lift.powered, "maintenance enables the service lift")
 	_expect(scene.circuit.outputs()["diagnostic"], "diagnostics remain available with maintenance on")
 	_expect(scene._audit_events.has("SERVICE_OVERRIDE"), "maintenance queues SERVICE_OVERRIDE")
+	scene._call_lift("upper")
+	await get_tree().physics_frame
+	_expect(not lower_gate_shape.disabled and not upper_gate_shape.disabled and lower_gate_mesh.visible and upper_gate_mesh.visible, "both fixed shaft gates close during travel")
+	scene.lift.step(3.0)
+	await get_tree().physics_frame
+	_expect(not lower_gate_shape.disabled and upper_gate_shape.disabled and lower_gate_mesh.visible and not upper_gate_mesh.visible, "upper landing gate opens only when the deck docks upper")
 
 	# The F→G door and exterior hatch are controllable from their intended sides.
 	scene.player.global_position = Vector3(3.0, 3.2, -7.5)
