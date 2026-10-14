@@ -72,7 +72,7 @@ All lines below are proposed Spanish source copy for the prototype. They must be
 | N1-02 | Player scans the A→T bridge after first seeing the diagram | Optional Elena reaction: “Este puente no figura en el esquema.” | Only once; no repeat spam; can be omitted if environmental cue is clear | Reinforce physical manipulation |
 | N1-03 | Player reads restricted record | Terminal: “ENSAYO ASTER — RESULTADO RETENIDO. RECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.” | Static readable text, accessible again from archive during Mission 1; not required during chase | State the specific contradiction |
 | N1-04 | Opening G's exterior leaf after maintenance queued SERVICE_OVERRIDE | No mandatory spoken line. Alarm changes state; status light changes; exterior door mechanism is audible/visible | Gameplay continues; no forced camera | Make cause and consequence legible |
-| N2-01 | Recovery unit becomes audible/visible beyond G | Elena: “Han recibido la auditoría.” | Trigger only after line of sight or audio establishes the unit; subtitle; skippable | Connect the audit to the response without naming an operator |
+| N2-01 | Recovery unit becomes audible/visible beyond G | Elena: “La auditoría ha activado Containment.” | Trigger only after line of sight or audio establishes the unit; subtitle; skippable | Connect the audit to the response without naming an operator |
 | N2-02 | Elena reaches P−1 service gallery and the threat loses sight | No dialogue required; pump/ventilation bed gives way to exterior ambience | Audio transition with visual threshold | Create breath and spatial transition |
 | N2-03 | First view of parking exit/perimeter | No mandatory line. A service reader displays “PROTOCOLO DE CONTENCIÓN: ACTIVO / SECTOR EXTERIOR” while perimeter lights/access states change in sequence | Environmental storytelling; readable without sound; no forced stop or log interaction | Show coordinated facility response without naming an operator or explaining the motive |
 | N2-04 | Escape boundary crossed | Elena: “Fuera del perímetro. Eso no significa que haya terminado.” | One short, skippable subtitle after control is safe | Deliver temporary release, preserve stakes |
@@ -94,7 +94,7 @@ All lines below are proposed Spanish source copy for the prototype. They must be
 | Decision | Current status | Required owner decision |
 |---|---|---|
 | Why the Aster result was suppressed | The suppression is evidenced; motive is open | Decide the minimum truth revealed in the opening |
-| Who receives/acts on `SERVICE_OVERRIDE` | Opening G's exterior leaf sends the queued audit and triggers Containment; the specific chain of command is open | Decide whether response is automated, remotely supervised or both |
+| Who supervises the response | The facility-level recovery protocol is the recommended baseline; the audit is sent when G opens | Keep the exact recipient and degree of remote supervision unresolved until full-campaign reconciliation |
 | Recovery-unit identity | Recovery unit exists in prototype; final identity is open | Decide visual/story identity before final art and VO |
 | Elena's relationship to Iris in this exact moment | Emotional history exists in legacy material; opening beat is not locked | Choose one specific, restrained personal reaction or omit it |
 | Selene's responsibility | Open | Preserve ambiguity until full campaign reconciliation |
