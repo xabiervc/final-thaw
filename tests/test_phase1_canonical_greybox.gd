@@ -38,6 +38,10 @@ func _run() -> void:
 	var tunnel_floor_shape := tunnel_floor.get_child(0) as CollisionShape3D
 	var tunnel_floor_box := tunnel_floor_shape.shape as BoxShape3D
 	_expect(is_equal_approx(tunnel_floor.position.y + tunnel_floor_box.size.y * 0.5, 0.0), "entrance tunnel floor is flush with P0")
+	_expect(is_equal_approx(tunnel_floor.position.x, -1.5) and is_equal_approx(tunnel_floor.position.z, 6.0) and is_equal_approx(tunnel_floor_box.size.x, 3.0) and is_equal_approx(tunnel_floor_box.size.z, 3.0), "entry tunnel matches the canonical footprint X=-3..0, Z=4.5..7.5")
+	_expect(scene.get_node_or_null("AccessTunnelSouth") != null and scene.get_node_or_null("AccessTunnelNorth") != null, "entry tunnel has both side walls")
+	_expect(scene.get_node_or_null("OuterSouthAccessLintel") == null, "the ground-level entry is not accidentally placed in the south wall")
+	_expect(is_equal_approx(scene.player.global_position.x, -2.3) and is_equal_approx(scene.player.global_position.z, 6.0), "Elena spawns at the documented point inside the west entry tunnel")
 	_expect(scene.player.global_position.x < 0.0, "the canonical slice starts in the entrance tunnel before entering A")
 	_expect(is_equal_approx(scene.player.visual.rotation.y, PI * 0.5), "Elena faces the opening into A at the initial spawn")
 	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 1.5), "mission lift connects P0 to mezzanine M at +1.5 m")
