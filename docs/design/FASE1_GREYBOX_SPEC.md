@@ -60,8 +60,8 @@ The final slice uses one powered platform in the existing lift shaft. Do not bui
 
 - Isolator interaction centre (19,3,-7), selector interaction centre (12,3,-7). Do not move these contractual positions. Their housings must be slim/inset so they do not block the two-metre passage or require leaning over a void.
 - Observation point (15,3,-7); this is not the physical position of the status display.
-- Status panel on the north edge of the walkway, centre (15.5,4.25,-5.85), face toward +Z (south). Display destination, trial connection, protection state and last-trip presence. Text/symbol redundancy; no colour-only encoding.
-- Rearm interaction (15.5,3.5,-5.85), on the same north-side support, visibly and interactively separate from the panel and both circuit controls. Reach from the passage without narrowing the clear rectangle Z=-8..-6. Support/collider remains north of the clear passage.
+- Status panel on the north edge of the walkway, centre (15.5,4.55,-8.15), face toward +Z (south). Display destination, trial connection, protection state and last-trip presence. Text/symbol redundancy; no colour-only encoding.
+- Rearm interaction (15.5,3.5,-8.15), on the same north-side support, visibly and interactively separate from the panel and both circuit controls. Reach from the passage without narrowing the clear rectangle Z=-8..-6. Support/collider remains north of the clear passage.
 - Local archive supply indicator (8.55,3.8,-7), inside the east entrance, facing +X towards the public walkway. Exact states: SUMINISTRO ESTABLE / NO DISPONIBLE. It must not state which control to operate.
 - Complete diagnostic terminal remains inside cabin; physically inspectable regardless of recovery-power state.
 
