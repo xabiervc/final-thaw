@@ -114,20 +114,29 @@ func _apply_accessibility() -> void:
 	_condition.add_theme_font_size_override("font_size", int(16 * scale))
 	_prompt.add_theme_font_size_override("font_size", int(24 * scale))
 
-	if GameManager.get_flag("accessibility_high_contrast"):
-		_objective.add_theme_color_override("font_color", Color.WHITE)
-		_hint.add_theme_color_override("font_color", Color(1.0, 0.95, 0.6))
-		_instructions.add_theme_color_override("font_color", Color(0.9, 0.95, 1.0))
-		_status.add_theme_color_override("font_color", Color(0.7, 1.0, 1.0))
-		_condition.add_theme_color_override("font_color", Color.WHITE)
-		_prompt.add_theme_color_override("font_color", Color(0.7, 1.0, 0.9))
-	else:
-		_objective.add_theme_color_override("font_color", Color(0.94, 0.96, 0.95))
-		_hint.add_theme_color_override("font_color", Color(0.95, 0.88, 0.55))
-		_instructions.add_theme_color_override("font_color", Color(0.72, 0.8, 0.84))
-		_status.add_theme_color_override("font_color", Color(0.6, 0.92, 0.95))
-		_condition.add_theme_color_override("font_color", Color(0.85, 0.95, 0.92))
-		_prompt.add_theme_color_override("font_color", Color(0.55, 0.9, 0.82))
+	var high_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
+	var text_color := Color.WHITE if high_contrast else Color(0.94, 0.96, 0.95)
+	var hint_color := Color(1.0, 0.95, 0.65) if high_contrast else Color(0.95, 0.88, 0.55)
+	var instructions_color := Color(0.9, 0.95, 1.0) if high_contrast else Color(0.72, 0.8, 0.84)
+	var prompt_color := Color(0.75, 1.0, 0.95) if high_contrast else Color(0.55, 0.9, 0.82)
+
+	_objective.add_theme_color_override("font_color", text_color)
+	_hint.add_theme_color_override("font_color", hint_color)
+	_instructions.add_theme_color_override("font_color", instructions_color)
+	_prompt.add_theme_color_override("font_color", prompt_color)
+
+func _style_alpha() -> float:
+	return 0.98 if GameManager.get_flag("accessibility_high_contrast") else 0.88
+
+func _style(alpha: float) -> StyleBoxFlat:
+	var s := StyleBoxFlat.new()
+	s.bg_color = Color(0.03, 0.05, 0.07, _style_alpha())
+	s.set_corner_radius_all(6)
+	s.content_margin_left = 14.0
+	s.content_margin_right = 14.0
+	s.content_margin_top = 8.0
+	s.content_margin_bottom = 8.0
+	return s
 
 func _process(_delta: float) -> void:
 	var p := get_tree().get_first_node_in_group("player")
@@ -180,13 +189,12 @@ func set_prompt(text: String) -> void:
 	_last_prompt = text
 	if _tween != null:
 		_tween.kill()
+
 	if GameManager.get_flag("accessibility_reduced_motion"):
-		if text.is_empty():
-			_prompt.modulate.a = 0.0
-		else:
-			_prompt.text = text
-			_prompt.modulate.a = 1.0
+		_prompt.text = text
+		_prompt.modulate.a = 1.0 if not text.is_empty() else 0.0
 		return
+
 	_tween = create_tween()
 	if text.is_empty():
 		_tween.tween_property(_prompt, "modulate:a", 0.0, 0.2)
