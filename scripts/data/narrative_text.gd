@@ -98,6 +98,34 @@ No todos pueden ser salvados. Eso también es una decisión.
 @export var prompt_condition: String = "AGUANTE %d%%  |  %s"
 @export var prompt_aster_load: String = "Carga del Aster"
 
+## HUD de las salas 3D y señalización de la bahía de pruebas
+@export_group("Room HUD")
+@export var hud_directive_header: String = "DIRECTIVA  ·  ASTER"
+@export var hud_completed_header: String = "OBJETIVO COMPLETADO"
+@export var hud_ctrl_move: String = "mover"
+@export var hud_ctrl_interact: String = "interactuar"
+@export var hud_ctrl_scan: String = "escanear"
+@export var hud_ctrl_jump: String = "saltar"
+@export var hud_ctrl_save: String = "guardar"
+@export var hud_ctrl_load: String = "cargar"
+@export var hud_ctrl_menu: String = "menú"
+@export var hud_key_space: String = "Espacio"
+@export var hud_power_restored_title: String = "ENERGÍA RESTAURADA"
+@export var hud_power_restored_body: String = "Generador auxiliar en línea. La esclusa B-4 tiene corriente."
+@export var hud_power_lost_title: String = "SIN ENERGÍA"
+@export var hud_power_lost_body: String = "El generador se ha detenido. La puerta de salida vuelve a bloquearse."
+@export var hud_room_cleared_title: String = "SALA SUPERADA"
+@export var hud_room_cleared_body: String = "Bahía de pruebas B: sistemas restaurados."
+@export var test_room_sign_access: String = "B-1  ACCESO"
+@export var test_room_sign_flood: String = "B-2  CONTROL DE INUNDACIONES"
+@export var test_room_sign_generator: String = "B-3  GENERADOR"
+@export var test_room_sign_airlock: String = "B-4  ESCLUSA"
+@export var test_room_sign_shutter: String = "COMPUERTA 2 — SELLADA"
+@export var test_room_gauge_mark: String = "MÁX. 14/03"
+@export var test_room_sign_warming: String = "PUNTO DE CALOR"
+@export var test_room_sign_gen_warning: String = "GENERADOR AUXILIAR — ACCESO POR EL ESTE  →"
+@export var test_room_sign_lab: String = "LABORATORIO  →"
+
 ## Opciones
 @export_group("Options")
 @export var options_text_scale: String = "Escala de texto: %.2f"

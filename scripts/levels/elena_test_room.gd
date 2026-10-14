@@ -14,6 +14,7 @@ const HudScript = preload("res://scripts/ui/prompt_hud.gd")
 const StationScript = preload("res://scripts/components/stamina_station.gd")
 const LowObstacleScript = preload("res://scripts/components/low_obstacle.gd")
 const TraceScript = preload("res://scripts/components/conduit_trace.gd")
+const MarkerScript = preload("res://scripts/components/target_marker.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const NEXT_PATH := "res://scenes/levels/abandoned_lab_art.tscn"
@@ -59,6 +60,7 @@ var completed: bool = false
 var hint_level: int = 1
 
 var _zone: int = -1
+var _loading: bool = false
 var _shown: Array = []
 
 func _ready() -> void:
@@ -228,6 +230,10 @@ func _build_player() -> void:
 	manager.actor = elena
 	add_child(manager)
 
+	var marker = MarkerScript.new()
+	marker.manager = manager
+	add_child(marker)
+
 	scanner = ScanScript.new()
 	scanner.actor = elena
 	add_child(scanner)
@@ -310,6 +316,14 @@ func _on_door_a_opened() -> void:
 func _on_lever_toggled(on: bool) -> void:
 	door.call("set_locked", not on)
 	_refresh_objective()
+	if _loading:
+		return
+	if on:
+		hud.call("show_banner", NarrativeTextManager.get_option("hud_power_restored_title", "ENERGÍA RESTAURADA"),
+			NarrativeTextManager.get_option("hud_power_restored_body", ""), Color(0.45, 0.95, 0.65))
+	else:
+		hud.call("show_banner", NarrativeTextManager.get_option("hud_power_lost_title", "SIN ENERGÍA"),
+			NarrativeTextManager.get_option("hud_power_lost_body", ""), Color(1.0, 0.4, 0.3))
 
 ## The first scan of the feed cable explains where the exit door's power comes from (once, while it is off).
 func _on_feed_scanned(_trace_id: String) -> void:
@@ -328,6 +342,8 @@ func _complete_room() -> void:
 	completed = true
 	elena.input_enabled = false
 	hud.call("set_objective", "SALA SUPERADA  /  Energía restaurada")
+	hud.call("show_banner", NarrativeTextManager.get_option("hud_room_cleared_title", "SALA SUPERADA"),
+		NarrativeTextManager.get_option("hud_room_cleared_body", ""), Color(0.45, 0.95, 0.65), 4.5)
 	panel.call("show_message", "Primer sistema restaurado. Continuando hacia el laboratorio abandonado...", 6.0)
 	GameManager.current_checkpoint_id = "elena_test_room_exit"
 	_save_room()
@@ -359,10 +375,12 @@ func _load_room() -> void:
 	completed = false
 	elena.input_enabled = true
 	manager.active = true
+	_loading = true
 	for n in get_tree().get_nodes_in_group("interactables"):
 		var sid := str(n.get("save_id"))
 		if sid != "" and data.has(sid):
 			n.call("apply_state", data[sid])
+	_loading = false
 	door_a.call("set_locked", not terminal.accessed)
 	door.call("set_locked", not lever.is_on)
 	var p = data.get("player", null)
