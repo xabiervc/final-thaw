@@ -26,8 +26,8 @@
     <!-- 30 m clear yard, measured between inside faces of perimeter walls -->
     <line x1="0" y1="320" x2="960" y2="320" stroke="#344657" stroke-width="3"/>
     <rect x="0" y="320" width="960" height="22" fill="#dce2e7" stroke="#344657" stroke-width="1"/>
-    <rect x="-10" y="243" width="10" height="77" class="concrete"/><line x1="15" y1="243" x2="15" y2="320" class="dim"/><text x="23" y="284" class="label">2,4 m</text>
-    <rect x="960" y="243" width="10" height="77" class="concrete"/>
+    <rect x="-13" y="243" width="13" height="77" class="concrete"/><line x1="15" y1="243" x2="15" y2="320" class="dim"/><text x="23" y="284" class="label">2,4 m</text>
+    <rect x="960" y="243" width="13" height="77" class="concrete"/>
     <text x="0" y="230" class="small" text-anchor="start">MURO DE CONTENCIÓN</text>
     <text x="960" y="230" class="small" text-anchor="end">MURO PERIMETRAL</text>
     <!-- South and north parking bays: 5 m deep, 4.5 m vehicle envelopes -->
