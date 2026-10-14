@@ -20,6 +20,7 @@ The earlier `phase1_spatial_greybox.tscn` is preserved as a six-room comparison 
 - Ground slab split around the lift shaft, service pit and fixed pit stair opening.
 - Pit schematic, tampered A→T bridge, maintenance switch and service lights.
 - Original-shaft service lift, unpowered initially and wired to the maintenance state.
+- The upper-landing protective rail stops at X=26, leaving the X=24..26 overlap clear for lift-to-walkway transfer.
 - Upper walkway and archive cabin, selector, trial isolator, diagnostic panel and independent rearm interaction.
 - Local F archive-status display and a separate consultation control.
 - F→G inner door unlocked once from the cabin side; G→H outer hatch; queued audit and a delayed transition to the existing motion/chase prototype after crossing outside.
