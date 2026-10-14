@@ -39,7 +39,7 @@ Elena is a scientist, not a soldier. Combat, firearms and elaborate melee are no
 Elena investigates a Helix facility to reconstruct what happened to an Aster test. The player combines environmental clues and infers a system configuration. The result changes the environment, reveals one meaningful contradiction in Helix's account and triggers a containment response.
 
 ### Mission 2 — Containment (prototype foundation exists)
-Elena traverses an industrial facility while a recovery unit searches for her. She jumps gaps, crouches through a duct, uses a defined climb, manages noise and line of sight, and chooses between routes the unit cannot all use.
+Elena traverses the laboratory and service forecourt while a recovery unit searches for her. The mechanics prototype currently tests gaps, a low duct, an authored climb, noise and line of sight; these are candidate mechanics, not a mandatory checklist for the canonical level. The final architectural plan determines which are retained, and each retained traversal must be justified by the physical site and measured in the greybox.
 
 **Code boundary:** the isolated motion/chase prototype implements movement, jump, crouch, a defined climb, scanner reveal, checkpoints and a recovery-unit state machine. It does not yet implement Mission 1's inference puzzle or the narrative bridge. See `docs/design/MOTION_CHASE_PROTOTYPE.md`.
 
