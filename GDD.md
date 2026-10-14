@@ -1,3 +1,7 @@
+> **LEGACY DESIGN — UNDER REVIEW (2026-10-14).** This document describes the previous fixed 16-phase, dual-protagonist / combat-arena direction. Preserve it as historical source material, but do not treat its campaign structure, durations, character mechanics, thresholds or acceptance metrics as requirements for the current motion/chase prototype. For current direction and actual implementation boundaries, read [the working vision](VISION.md), [the design pivot brief](DESIGN_PIVOT_PROTOTYPE_BRIEF.md), [the motion/chase prototype](design/MOTION_CHASE_PROTOTYPE.md), and [project status](../PROJECT_STATUS.md). Reconcile this document after the combined investigation/escape prototype has been playtested and the owner approves the full-game direction.
+
+---
+
 # FINAL THAW — Game Design Document
 ## Award-Winning Quality Standard
 
