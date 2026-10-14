@@ -47,6 +47,11 @@
 | P−1 evacuation gallery reaches a distinct exterior mouth | `FASE1_ARCHITECTURAL_LAYOUT.md` | Plan/section and physical scene walkthrough |
 | Parking entry is continuous and starts at the integration checkpoint | `LEVEL_STRUCTURE.md` | Handoff test with no duplicate player or replayed corridor |
 
+| Quiet evasion uses real cover and STAFF-M1 perception | `FASE1_FUNCTIONAL_SPEC.md`, `FASE1_SPATIAL_GRAPH.md`, M plan SVG | STAFF-M1 patrol, C1 pump-bank cover and O2 rack footprint are marked; sightlines respect solid geometry | Manual LOS/noise playtest, staff-state test, route-clearance check |
+| Staff alert reports last-known position only | `FASE1_FUNCTIONAL_SPEC.md` | NPC callout/withdrawal and bounded report | Test LOS loss, alert, search and no wall tracking |
+| R1 starts running chase in P0 after the existing lift | `FASE1_SPATIAL_GRAPH.md`, `FASE1_FUNCTIONAL_SPEC.md`, P0 plan and vertical section SVG | Unit follows through the same lift and reacquires Elena at the P0 service-gallery/east-return threshold (X≈29, Z≈1) | Test physical route, actual LOS, no teleport/spawn ahead, early reacquisition only on real LOS |
+| Chase continues through existing S1/P−1 circulation | `FASE1_SPATIAL_GRAPH.md`, `FASE1_GREYBOX_SPEC.md`, progression map | R1 → P0 east return → S1 → P−1 → alternative service gallery | Walk full route, test collisions, camera, recovery, and physical exit-to-parking handoff |
+
 ## 4. Phase 2 parking design traceability (specified as design requirements; not verified in code)
 
 | Requirement ID | Design intent | Design evidence required | Implementation/test evidence required |
