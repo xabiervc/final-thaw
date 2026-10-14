@@ -102,6 +102,16 @@ func _run() -> void:
 	time = _run_to_dock(lift)
 	_expect(time > 0.0 and time <= 3.0 / (1.2 * 0.3) + 0.2 and lift.state_key() == "docked_lower", "it docks within the worst-case emergency time (%.2f s)" % time)
 	_expect(lift.gates_open()["south"], "and opens the end facing that landing")
+	# Exact midpoint is a deterministic tie: the implementation chooses the upper landing.
+	var midpoint = _new_lift()
+	_expect(midpoint.call_to("upper"), "midpoint test starts a normal upward trip")
+	for i in 25:
+		midpoint.step(DT)
+	_expect(is_equal_approx(midpoint.platform_y, 1.5), "midpoint case is exactly halfway between landings")
+	midpoint.set_powered(false)
+	_expect(midpoint.crawling and midpoint.target == "upper", "exact midpoint resolves to the upper landing")
+	_run_to_dock(midpoint)
+	_expect(midpoint.state_key() == "docked_upper", "midpoint emergency stop completes at the upper landing")
 	# Invalid input.
 	lift.set_powered(true)
 	_expect(not lift.call_to("basement"), "an unknown landing is refused")
