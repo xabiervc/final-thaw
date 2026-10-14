@@ -84,7 +84,7 @@ La consulta del archivo no es necesaria para operar los controles ni para abrir 
 
 ## 8. Alcance, criterios de aceptación y prueba
 
-Fase 1 está funcionalmente especificada y tiene una primera escena en `scenes/prototypes/phase1_canonical_greybox.tscn`; el código aún requiere ejecución y validación. La escena debe seguir el grafo v0.4 y el greybox v1.1.
+Fase 1 está funcionalmente especificada y tiene una primera escena en `scenes/prototypes/phase1_canonical_greybox.tscn`; el código aún requiere ejecución y validación. La escena debe seguir el grafo v0.5 y el greybox v1.2.
 
 Aceptar la implementación solo si:
 0. Mantener `scan` 0,9 s revela únicamente las trazas de A/puente A→T/T durante 3 s; después se ocultan y el escáner entra en recarga de 4 s.
