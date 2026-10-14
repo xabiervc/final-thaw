@@ -2,42 +2,43 @@
 
 ## Current phase
 
-**Phase 1 — architectural greybox reconstruction in progress; runtime verification pending.** The canonical scene builder has been expanded to represent a connected industrial facility across four elevations. This is implementation work, not proof that the scene runs or that the traversal is accepted.
+**Phase 1 — architectural redesign and canonical greybox reconciliation. Runtime verification pending.** The design now defines a complete clandestine/semi-abandoned industrial research facility, a building-wide investigation puzzle, an interior chase triggered by opening G, and a physically distinct service exit to the parking area. Documentation and SVG plans have been updated to this direction; the canonical Godot scene has not yet been reconciled to the full new route.
 
 ## Sources of truth
 
-Los documentos existentes se mantienen como fuentes coordinadas; no crear duplicados. Distinguir decisiones conceptuales, propuestas narrativas y validación empírica en cada cambio.
+Keep existing documents coordinated; do not create duplicates.
 
-- Architecture: docs/design/FASE1_ARCHITECTURAL_LAYOUT.md v1.1.
-- Plans and section: docs/design/assets/phase1_architecture/ (existing SVGs).
-- Spatial graph: FASE1_SPATIAL_GRAPH.md v0.7.
-- Greybox: FASE1_GREYBOX_SPEC.md v1.4.
-- Functional spec: FASE1_FUNCTIONAL_SPEC.md v1.1.
-- Progression: fase1_fase2_mapa_progresion.md v0.9.
-- Lift: FASE1_LIFT_GATE.md v1.1.
-- Circuit: FASE1_LOGIC_CONTRACT.md (unchanged).
-- Build protocol: FASE1_CANONICAL_BUILD.md.
+- Architecture and program: `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v2.0.
+- Plans and vertical section: `docs/design/assets/phase1_architecture/`.
+- Spatial graph: `docs/design/FASE1_SPATIAL_GRAPH.md` v1.0.
+- Greybox footprints/collisions: `docs/design/FASE1_GREYBOX_SPEC.md` v2.0.
+- Functional experience: `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.0.
+- Phase 1/2 progression: `docs/design/fase1_fase2_mapa_progresion.md` v1.0.
+- Circuit logic: `docs/design/FASE1_LOGIC_CONTRACT.md` (unchanged).
+- Build and verification protocol: `docs/design/FASE1_CANONICAL_BUILD.md`.
 
-## Architectural decision
+## Architectural target
 
-P−1 maintenance void D1/D2 at Y=−2 m; P0 exterior approach tunnel, access/test hall and workshop at Y=0 m; M pumps/observation mezzanine Y=+1.5 m; P2 control/archive/exterior vestibule Y=+3 m. G opens horizontally to H and transitions to the parking-entry variant of the chase prototype. The standalone corridor prototype retains its own start checkpoint.
+The facility is one coherent building with access/decontamination, Aster test hall, workshop, service galleries, lower pumping/distribution level, pump mezzanine, control, archive and a door G that initiates an interior escape. The final route returns through S2/M, the existing lift to P0, S1 to P−1 and a new evacuation gallery to an exterior service mouth connected to the parking area. This exit differs from the west entrance tunnel.
 
-Unique vertical routes: S1 P0↔P−1; elevator P0↔M; S2 M↔P2; direct P0↔P2 stair blocked. No return stair from G.
+The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S2 M↔P2; collapsed P0↔P2 stair remains blocked. Do not add a second lift or arbitrary secret stair.
 
-## Implementation status
+## Implemented vs planned
 
-The canonical builder adds room boundaries and industrial fixtures at P0, an open D1/D2 maintenance void with continuous lower floor, sloped handrails on S1/S2, lateral protection at both lift landings, and guardrails on exposed M/P2 edges. A static audit also corrected a plan/code mismatch that had placed the entry tunnel on the south wall instead of the specified west wall; the integration test now asserts the documented tunnel footprint and spawn. The mission lift remains P0↔M (+1.5 m); G→H targets a dedicated parking-entry point in the existing chase script. The existing scene wrapper and regression tests are preserved; a parking-entry scene variant and dedicated smoke test exist. These are code/documentation facts, not acceptance evidence: the latest edits have not been executed in Godot. Visual scale, collision clearances, floor holes, camera readability, continuous south/east return route and G→H handoff remain unverified. Specific Helix/Containment beats remain proposals pending narrative approval. No Godot executable is available in the current editing environment, so the updated GDScript and tests have not been executed here.
+- **Documented:** revised architectural program, spatial graph, progression contract, functional spec and greybox requirements; existing SVGs annotated/revised for the new alternate exit.
+- **Previously present in code, not runtime-verified:** west entrance tunnel, P0 rooms/perimeter, D1/D2 lower floor and P0 void, south/east return route, S1/S2, mission lift P0↔M, control/archive fixtures and safety rails.
+- **Not yet implemented/verified against the revised architecture:** P−1 evacuation gallery and exterior mouth, G as the start of an interior chase, the obstacle sequence, the full chase traversal back through existing vertical connections, physical continuity into parking, and the end-to-end handoff.
+- **Narrative decisions still open:** exact Helix event, audit status of F, Elena’s perception, Containment cause/timing, pursuer identity/entry and post-parking destination.
+- **Runtime status:** the previous editing environment did not have a Godot executable. No claim is made that recent GDScript, SVGs, or tests have been executed. CI status must be checked from the actual run before claiming green.
 
-## Automated regression
+## Mandatory next work
 
-A GitHub Actions workflow now imports project resources and runs Phase 0, the existing vertical slice, circuit, generic lift, lift transport and canonical integration tests with Godot 4.7.1. The actual GitHub Actions run result has not been verified in this review; CI is not claimed green.
+1. Inspect and freeze exact footprints, clear widths, door swings/states, obstacles and the P−1 exit in every SVG and section.
+2. Reconcile `scripts/prototypes/phase1_canonical_greybox.gd` and its scene to the plans; keep all coordinates traceable.
+3. Implement G → interior chase → S2/M → lift/P0 → S1/P−1 → evacuation gallery → exterior parking.
+4. Add integration tests for navigation, doors, chase state, lift state, exit mouth and parking checkpoint.
+5. Run circuit, lift, transport, canonical integration, parking-entry, vertical-slice and Phase 0 tests under Godot 4.7.x/Compatibility.
+6. Manually play the full route, inspect camera/collisions/clearances and verify the puzzle is inferable without mandatory text collection.
+7. Record commit SHA, engine version, renderer, commands, exit codes, output, warnings/errors, manual QA and evidence.
 
-## Next verification
-
-1. Run circuit, generic lift, transport, canonical integration, parking-entry smoke test, existing vertical-slice regression and Phase 0 regression under Godot 4.7.x/Compatibility.
-2. Fix parse/runtime/test failures before adding detail.
-3. Manually traverse A→B→D1/D2→B→service gallery→M→S2→E→F→G→H.
-4. Inspect sightlines, camera, collisions, clearances, doors, lift power loss and clues.
-5. Verify parking context and chase transition as a separate integration gate.
-
-Preserve inputs/autoloads/resource paths, JSON/CRC32 saves and Compatibility renderer. Keep old scenes. Distinguish code, automated tests, run results and human validation.
+Preserve existing autoloads, InputMap action names/remaps, resource paths, JSON/CRC32 save compatibility and Compatibility renderer. No feature is accepted from documentation or static tests alone.
