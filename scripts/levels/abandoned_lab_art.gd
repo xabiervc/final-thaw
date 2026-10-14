@@ -4,6 +4,7 @@ extends Node3D
 
 const LEVEL_SCENE := "res://scenes/levels/abandoned_lab.tscn"
 const DressingScript := preload("res://scripts/levels/lab_art_dressing.gd")
+const ComponentsScript := preload("res://scripts/levels/lab_art_components.gd")
 
 
 func _ready() -> void:
@@ -13,3 +14,4 @@ func _ready() -> void:
 	var dressing := DressingScript.new()
 	dressing.profile = "lab"
 	add_child(dressing)
+	add_child(ComponentsScript.new())
