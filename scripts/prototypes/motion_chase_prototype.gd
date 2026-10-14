@@ -755,11 +755,15 @@ func _build_level() -> void:
 		var paint: Color = car_paint[car_index % car_paint.size()]
 		_add_box(Vector3(3.8, 1.15, 1.65), Vector3(car_x, 0.72, car_z), paint, true)
 		_add_box(Vector3(2.0, 0.48, 1.42), Vector3(car_x - 0.25, 1.45, car_z), paint.lightened(0.12), true)
-		_add_box(Vector3(0.65, 0.16, 0.05), Vector3(car_x + 1.82, 0.72, car_z - 0.42), Color(0.72, 0.18, 0.12), false)
-		_add_box(Vector3(0.65, 0.16, 0.05), Vector3(car_x + 1.82, 0.72, car_z + 0.42), Color(0.72, 0.18, 0.12), false)
-		# Parking-bay lane marks use non-colliding floor strips.
-		_add_box(Vector3(0.08, 0.025, 3.2), Vector3(car_x - 2.1, 0.015, car_z), Color(0.72, 0.68, 0.48), false)
-		_add_box(Vector3(0.08, 0.025, 3.2), Vector3(car_x + 2.1, 0.015, car_z), Color(0.72, 0.68, 0.48), false)
+		var tail_light := BoxMesh.new()
+		tail_light.size = Vector3(0.65, 0.16, 0.05)
+		_add_visual_mesh(self, tail_light, Vector3(car_x + 1.82, 0.72, car_z - 0.42), Color(0.72, 0.18, 0.12), 0.2)
+		_add_visual_mesh(self, tail_light, Vector3(car_x + 1.82, 0.72, car_z + 0.42), Color(0.72, 0.18, 0.12), 0.2)
+		# Parking-bay lane marks are visual-only meshes: they must not create collision lips.
+		var bay_line := BoxMesh.new()
+		bay_line.size = Vector3(0.08, 0.025, 3.2)
+		_add_visual_mesh(self, bay_line, Vector3(car_x - 2.1, 0.015, car_z), Color(0.72, 0.68, 0.48), 0.0)
+		_add_visual_mesh(self, bay_line, Vector3(car_x + 2.1, 0.015, car_z), Color(0.72, 0.68, 0.48), 0.0)
 
 	_add_box(Vector3(6.0, 0.3, 3.4), Vector3(46.0, CLIMB_HEIGHT - 0.15, 5.3), FLOOR_COLOR, true)
 	_add_box(Vector3(0.4, CLIMB_HEIGHT - 0.3, 0.4), Vector3(48.6, (CLIMB_HEIGHT - 0.3) * 0.5, 6.6), WALL_COLOR, true)
