@@ -1,7 +1,7 @@
 # FINAL THAW — Fases 1 y 2: mapa de progresión verificable
 
-Estado: BORRADOR DE DISEÑO v0.3. No autoriza construir ni ampliar escenarios.
-Esta revisión incorpora los cuatro bloqueos técnicos de la revisión de v0.2; no cierra el guion ni aprueba geometría.
+Estado: BORRADOR DE DISEÑO v0.4. No autoriza construir ni ampliar escenarios.
+Esta revisión incorpora el grafo espacial v0.2 como referencia de revisión, pero no cierra el guion ni aprueba geometría ni recorrido en escena.
 Todo lo marcado como PENDIENTE DE GUION no debe rellenarse con hechos narrativos no aprobados.
 
 ## 1. Intención y límites
@@ -33,7 +33,7 @@ No se debe asumir que el orden espacial obliga a una única secuencia de descubr
 
 A Acceso y recepción → B Observación → C Nave de ensayo → D Servicios y foso → E Distribución y control → F Archivo → G Esclusa → H Primer encuentro exterior.
 
-Esta secuencia es una hipótesis de trabajo. El orden relativo entre D (foso) y E (circuito) queda abierto a pruebas en el grafo antes de fijar la ruta definitiva. Para que D pueda explorarse antes de E, el interruptor de mantenimiento se ubica provisionalmente en D, junto al acceso inferior del foso y en un punto accesible desde la escalera fija. Alimenta de forma independiente las luces de servicio y habilita la plataforma; no depende del circuito de recuperación. Esta ubicación es una decisión funcional provisional que debe reflejarse en el plano y validarse espacialmente.
+Esta secuencia es la variante A propuesta como orden previsto: el foso se inspecciona antes de operar el circuito. La variante B (circuito primero y foso después) sigue permitida, pero implica un retorno largo por la topología actual; su distancia exacta no se considera validada hasta disponer de un desglose reproducible por arista en `FASE1_SPATIAL_GRAPH.md`. El interruptor de mantenimiento está provisionalmente en el recorrido del foso, en (26,-2,2), a unos 6 m al norte del pie de la escalera fija (25,-2,8), no inmediatamente junto a la entrada. Alimenta de forma independiente las luces de servicio y habilita la plataforma; no depende del circuito de recuperación. La plataforma aún no está ubicada ni validada.
 
 ### Tipos de conexión que deben aparecer en el grafo
 
@@ -94,9 +94,9 @@ Antes de autorizar la construcción de un espacio, completar su ficha. Cuando un
 
 - En F debe existir un indicador visible en el punto de consulta que muestre si el suministro del archivo está estable o no disponible, antes de que el jugador intente consultar. Debe reflejar el estado real del contrato; no prescribe qué control accionar ni sustituye el diagnóstico completo de E.
 - La consulta en F solo se permite con suministro estable. F permite consultar; no implica extraer, autorizar una extracción ni desencadenar por sí sola una respuesta de Helix.
-- El diagnóstico de E informa del estado actual y del último disparo; no prescribe qué control accionar.
-- El terminal de diagnóstico sigue siendo accesible aunque se pierda la alimentación de recuperación.
-- El interruptor de mantenimiento se ubica provisionalmente en D, junto al acceso inferior del foso, para que mantenimiento y plataforma estén disponibles al llegar a esa zona. Sus luces y la plataforma son independientes del circuito de recuperación; su comportamiento mecánico al perder energía se valida en la prueba independiente de la plataforma.
+- Los indicadores físicos y controles de E permiten leer las señales locales del circuito; el terminal completo de diagnóstico está en la cabina F e informa del estado actual y del último disparo, sin prescribir qué control accionar.
+- El terminal de diagnóstico de la cabina sigue siendo accesible aunque se pierda la alimentación de recuperación.
+- El interruptor de mantenimiento se ubica provisionalmente en el recorrido del foso, a unos 6 m al norte del pie de la escalera fija, según `FASE1_SPATIAL_GRAPH.md`. Sus luces y la plataforma son independientes del circuito de recuperación. La ubicación y función de la plataforma siguen pendientes; su comportamiento mecánico ante pérdida de energía debe validarse por separado.
 - Una acción correcta no se bloquea por no haber leído una pista concreta.
 - Una solución funcional no demuestra por sí sola comprensión; la validación de la deducción se evalúa aparte.
 - La pérdida de alimentación no debe borrar el conocimiento ya adquirido durante la sesión.
@@ -169,11 +169,12 @@ Condiciones:
 
 No se autoriza ampliar escenarios por el mero hecho de que este documento exista. Cada espacio debe tener una función verificable y la revisión de diseño debe aprobar el grafo y las dependencias antes de pasar a construcción.
 
-## 10. Correcciones incorporadas tras la revisión de v0.2
+## 10. Estado de las correcciones y dependencias espaciales
 
-- F: indicador local visible de disponibilidad del suministro del archivo, separado del diagnóstico completo de E.
-- D: interruptor de mantenimiento ubicado provisionalmente junto al acceso inferior del foso; habilita luces y plataforma con independencia del circuito de recuperación.
-- F/G: sustituir «recuperar evidencia» por «consultar información» hasta que el guion y un contrato separado autoricen cualquier extracción.
+- F: el indicador local de suministro es una propuesta, no un elemento existente del greybox. Debe mostrar suministro estable/no disponible y superar una prueba de visibilidad y legibilidad antes de darse por aceptado. No sustituye los indicadores físicos de la pasarela ni el terminal de diagnóstico de la cabina.
+- D: el interruptor de mantenimiento está en el recorrido del foso, a unos 6 m al norte del pie de la escalera fija; no está inmediatamente junto al acceso inferior. La plataforma sigue sin ubicación ni función espacial aprobadas.
+- F/G: el alcance actual es consultar información; no implica extraer evidencia ni autoriza una respuesta de Helix. Cualquier extracción requiere un contrato narrativo y técnico separado.
 - Guardado: no se añade guardado intermedio en este prototipo. Cualquier necesidad futura exige una revisión de compatibilidad independiente antes de implementar checkpoints.
 - Pruebas: el modelo de referencia debe portarse a GDScript y ejecutarse; T1–T9 son el mínimo, con X1/X2 y comprobaciones adicionales también requeridas.
-- Terminología: usar «esquema de distribución» en lugar de «Schematic»; D especifica que la salida fija es local desde el foso al nivel principal, sin retorno obligatorio por el mismo camino.
+- Terminología: usar «esquema de distribución» en lugar de «Schematic»; la salida fija desde el foso al nivel principal es la escalera existente y no depende de mantenimiento.
+- El grafo espacial v0.2 propone A como orden previsto y B como alternativa costosa. La distancia de retorno de B no está validada y debe calcularse por arista. El ascensor, la rampa, el indicador local, el rearme y la plataforma siguen sin validación en escena.
