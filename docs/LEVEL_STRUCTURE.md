@@ -67,6 +67,7 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 | Marked bay | 3.0 m wide × 5.0 m deep | Wider than a minimum stall to permit readable cover routes; validate total bay count and circulation |
 | Parked car envelope | approx. 1.9 × 3.6 m | Static cover; doors/bonnets do not create walkable space |
 | Structural column | 1.0 × 1.0 m footprint | Must not intrude into the required clear route or hide a required landing |
+| Technical cage | approx. 5.6 × 3.4 m at local centre (32.6, 12.8) | Fixed service enclosure; route B passes east/north of it with ≥1.5 m target clearance; no route through the cage |
 | Main central apron | approx. 17.3 m between the two parking rows | Deliberately a service/maneuvering apron, not a standard aisle; use the technical cage, cover clusters and exposed crossing to break the open area |
 | Pedestrian pinch | target ≥1.2 m | Only at one clearly telegraphed, non-jump pinch; prefer ≥1.5 m for a fast turn |
 | Primary route | target ≥2.0 m clear | Measured between collision surfaces, not visual prop bounds |
@@ -102,7 +103,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 | P2-A4 South-east turn | (40.7, 19.6) | Exposed 90-degree turn south of O2 before convergence | To P2-JOIN; keep 2.0 m clear and visible from approach |
 | P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
 | P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
-| P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal east of the technical cage; does not pass through the cage | To P2-JOIN; maintain ≥1.2 m clearance from the cage envelope |
+| P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal east of the technical cage; does not pass through the cage | To P2-JOIN; maintain ≥1.5 m target clearance from the cage envelope |
 | P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05A |
 | P2-05A Barrier approach | (44.3, 16.8) | Clear approach south of the barrier, with the 1.3 m aperture visible ahead | To P2-05; keep the approach collision-free |
 | P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
@@ -137,7 +138,7 @@ All positions below use the local plan coordinates. These are design placements,
 |---|---:|---|---|
 | L1 / S1 Service mouth | (6.8, 21.8) | Stable cool spill light; pump/ventilation sound recedes as exterior ambience emerges | The player can orient toward the apron and identify the facility facade behind them |
 | L2 / S2 Central apron | (22.0, 15.0) | Hard, stable security-light pools; a short relay/actuator cue may signal a state change | The direct route is exposed; lighting does not imply that the illuminated route is safe |
-| L3 / S3 Technical cage | (37.1, 12.1) | Restrained amber service indicator; local electrical/mechanical hum | The covered route has a real operational purpose and is not a decorative dead end |
+| L3 / S3 Technical-cage bypass | (37.1, 12.1) | Restrained amber service indicator east of the cage; local electrical/mechanical hum | The covered route has a real operational purpose and is not a decorative dead end |
 | L4 / S4 Bottleneck | (44.3, 14.8) | Barrier state has both a visible position and an audible actuator/denial cue | The player understands the available aperture and bypass before committing |
 | L5 / S5 Egress landmark | (42.8, 1.8) | Clear silhouette/backlight with no overexposed bloom; gate/perimeter sound | The goal is inferable early, but crossing the boundary is still a physical action |
 
