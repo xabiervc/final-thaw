@@ -22,7 +22,7 @@ El componente genérico conserva lower_y=0 y upper_y=3 en tests unitarios. La in
 
 Una detención entre niveles, caída, paso al hueco o rescate manual es fallo de aceptación.
 
-Centros orientativos de compuertas fijas: inferior (26,0.55,−1.1), superior (26,2.05,−4.49) alineada con M. No abrir al hueco cuando el deck no está acoplado.
+Centros de compuertas fijas: inferior (26,0.55,−1.49), superior (26,2.05,−4.49), alineadas con los bordes del hueco en P0 y M. Barandillas laterales fijas protegen ambos lados del hueco en las dos cotas; los pasamanos de S1/S2 siguen la pendiente. No abrir al hueco cuando el deck no está acoplado.
 
 ~~~sh
 godot --headless --path . res://tests/test_service_lift.tscn
