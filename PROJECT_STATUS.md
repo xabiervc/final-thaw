@@ -74,6 +74,35 @@ Status: **assets and visual wrappers exist and import in Godot; none is final, n
 - **Not verified** — manual playtest of any dressed level, animation/posed characters, FPS or memory (no profiling), grayscale readability, the Marcus model in a scene. The renderer is still `gl_compatibility` (no SSAO, GI, volumetrics); a Forward+ move is an owner decision.
 - **Known visual gaps vs. the concept art** — face likeness (generic tuned heads), strand-level hair, fabric folds, boot toes, collar detail; decor has no colliders; hazard zones, prototype carrier and tutorial barriers have no art.
 
+### Elena test room transformation (2026-10-14, branch `feat/godot-vertical-slice`)
+
+Scope: `scenes/levels/elena_test_room_art.tscn` (main-menu entry). Gameplay rules unchanged except the fixes below.
+Evidence: Godot 4.7.2, Intel HD 630 (GL Compatibility via ANGLE), captures and benchmarks with
+`tools/capture/scene_capture.tscn`; images kept outside the repo in `D:/Projects/evidence/final-thaw/transform_2026-10-14/`.
+
+- **Art direction (VERIFIED in captures):** the room is dressed as Helix test bay B, a flood-control wing evacuated
+  during the thaw (`scripts/levels/test_room_art/`, `assets/shaders/facility_*.gdshader`, `hazard_paint.gdshader`):
+  meltwater tide line on every wall, flood barriers, frosted shutter, pump and gauge, warming station, generator
+  landmark, airlock; emergency light rig and a generator circuit that comes online with the lever.
+- **Fixes (VERIFIED by tests):** interaction targeting requires line of sight (the generator lever could be pulled
+  through its wall); the alcove wall dithers away while Elena is behind it (she was fully hidden).
+- **Investigation (VERIFIED by tests):** a scan in the generator bay reveals the feed cable to the hidden lever, with
+  a one-time explanation; inspect points have specific names.
+- **HUD (VERIFIED in captures at 1886x1061 and 1280x720):** objective card, amber key-cap prompt using the live
+  `interact` binding, condition card, banners, input-map control legend, subtitle bar, world target marker.
+- **Audio (IMPLEMENTED, not listened to):** deterministic synthesized soundscape (`scripts/audio/sfx_synth.gd`).
+  Streams and player state are tested; mix and tone need a listening pass.
+- **Elena pose (VERIFIED in captures/tests):** procedural rest pose, walk, air tuck and landing dip on the MPFB rig.
+- **Performance (MEASURED, 3 interleaved rounds vs a worktree of 569f61e, 1280x720):** idle 11.2-11.6 ms vs
+  13.0-14.2 ms; powered generator bay 11.1-13.8 vs 13.9-14.3; walking 13.1-14.0 vs 13.7-14.4. 1080p window:
+  19.9-21.6 vs 26.8-27.0. Draw calls 184-213 vs 391-434. No Web export was profiled.
+- **Tests:** `test_interaction_targeting` (15 checks) and `test_room_presentation` (27) added; all suites exit 0.
+- **Not verified:** a manual hands-on playtest with keyboard, audio by ear, high-contrast/large-UI screenshots,
+  Web export. The ES locale of the room's in-level dialogue is still hard-coded Spanish (no EN for that room).
+- **Design direction changed on 2026-10-14** (two-mission redesign, 3D chase prototype first). This room's art
+  pass does not pre-empt that decision; reusable parts are the LOS targeting, HUD, synthesized audio, pose layer,
+  wall cutaway and capture harness.
+
 ## Verified evidence
 
 - Engine: Godot 4.7.2.stable.official.ed1daf0bf.
