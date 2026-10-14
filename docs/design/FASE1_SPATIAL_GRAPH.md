@@ -1,43 +1,88 @@
-# FINAL THAW — Fase 1: grafo espacial (v0.7)
+# FINAL THAW — Fase 1: grafo espacial (v1.0)
 
-**Estado:** topología espacial aprobada conceptualmente; primera reconstrucción geométrica ampliada en código, aún sin validación de runtime. Autoridad: FASE1_ARCHITECTURAL_LAYOUT.md v1.1 y planos SVG; footprints en FASE1_GREYBOX_SPEC.md v1.4; función en FASE1_FUNCTIONAL_SPEC.md v1.1. FASE1_LOGIC_CONTRACT.md no cambia.
+**Estado:** grafo revisado para la dirección arquitectónica de edificio completo + huida interior + salida alternativa. La topología es el objetivo de diseño; footprints/colliders y navegación aún requieren verificación en Godot. Autoridad: `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`. Los contratos funcionales y lógicos gobiernan el puzle, no las aristas del grafo.
 
-| Nodo | Cota | Huella/posición | Función |
+## Nodos y huellas de referencia
+
+Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte arriba. Se conserva la base de coordenadas del greybox existente y se extiende el perímetro este donde la nueva salida de servicio lo necesita.
+
+| Nodo | Cota | Huella/posición de referencia | Acceso / función |
 |---|---:|---|---|
-| Túnel exterior | 0 m | X −3..0, Z 4,5..7,5; umbral X 0..1 | Aproximación cubierta y entrada física a A. |
-| A · Acceso | 0 m | X 1..7, Z 4..10 | Esclusa y orientación. |
-| B · Nave | 0 m | X 7..20, Z −9..1 | Columna Aster, rig central y circulación. |
-| C · Taller | 0 m | X 20..24, Z −9..−2 | Cuadros, banco y colectores. |
-| S1 · Escalera | 0↔−2 m | X 24..26, Z 8..11 | Conexión fija al foso. |
-| D1 · Achique | −2 m | X 10..20, Z 1..8 (hueco abierto P0) | Bombas, sumidero y colector. |
-| D2 · Distribución | −2 m | X 20..28, Z 1..8 | Esquema, puente A→T y mantenimiento. |
-| Elevador | 0↔+1,5 m | X 24,5..27,5, Z −4,5..−1,5 | Transporte al mezzanine. |
-| M · Bombas | +1,5 m | X 13..24, Z −9..−1,5 | Bombas y ruta a S2. |
-| Galería observación | +1,5 m | X 9..13, Z −9..−1,5 | Vista de B y comienzo S2. |
-| S2 · Escalera | +1,5↔+3 m | X 9..13, Z −4,5..−1,5 | Subida operativa a P2. |
-| E · Control | +3 m | X 9..24, Z −8,5..−4,5 | Selector, aislador, panel/rearme. |
-| F · Archivo | +3 m | X 3..9, Z −9..−4,5 | Consulta y terminal. |
-| G · Esclusa | +3 m | X 0..3, Z −9..−4,5 | Salida horizontal a H. |
-| Pasarela | +3 m | X 9..26, Z −4,5..−1,5 (hueco S2 X 9..13) | Vista de B y llegada S2. |
-| H · Exterior | exterior | Oeste de G | Umbral de salida a la zona de aparcamiento/Containment. |
+| Exterior de entrada | 0 | Oeste de X=−3 | Entrada inicial, fuera del perímetro. |
+| Túnel de entrada | 0 | X −3..0, Z 4,5..7,5 | Entrada cubierta hacia A. No es salida final. |
+| A · Esclusa | 0 | X 1..7, Z 4..10 | Control de acceso y orientación. |
+| B · Nave Aster | 0 | X 7..20, Z −9..1 | Nave de ensayo; circulación alrededor del rig. |
+| C · Taller | 0 | X 20..24, Z −9..−2 | Taller y cuadros auxiliares. |
+| Galería de servicio P0 | 0 | X 20..30, Z −2..1 | Conecta C, el elevador y el retorno. |
+| Retorno este P0 | 0 | X 28..30, Z 1..8 | Pasillo de 2 m, al este del hueco D1/D2. |
+| Hueco D1/D2 | abierto desde P0 | X 10..28, Z 1..8 | Vacío protegido; acceso inferior por S1. |
+| S1 · Escalera fija | 0↔−2 | X 24..26, Z 8..11 | P0 a P−1, siempre utilizable. |
+| D1 · Achique | −2 | X 10..20, Z 1..8 | Bombas, sumidero y colector. |
+| D2 · Distribución | −2 | X 20..28, Z 1..8 | Esquema, puente A→T y mantenimiento. |
+| Galería de evacuación | −2 | X 28..34, Z 4,5..7,5 (extensión de diseño) | Ruta final hacia una salida exterior nueva; no se ha construido/validado. |
+| Boca de servicio | variable | X≈34, Z≈6 | Salida al exterior de servicio y conexión con aparcamiento. |
+| Elevador | 0↔+1,5 | X 24,5..27,5, Z −4,5..−1,5 | Transporte P0↔M, habilitado por mantenimiento. |
+| Galería de observación | +1,5 | X 9..13, Z −9..−1,5 | Vista a B y llegada de S2. |
+| M · Bombas | +1,5 | X 13..24, Z −9..−1,5 | Bombas, colectores y paso al elevador. |
+| S2 · Escalera fija | +1,5↔+3 | X 9..13, Z −4,5..−1,5 | M a P2, independiente de alimentación. |
+| E · Control | +3 | X 9..24, Z −8,5..−4,5 | Selector, aislador, diagnóstico y rearme. |
+| F · Archivo | +3 | X 3..9, Z −9..−4,5 | Consulta con ARCHIVO estable. |
+| G · Puerta/interbloqueo de huida | +3 | X 0..3, Z −9..−4,5 | Abre hacia el recorrido interior de huida; no conecta directamente al exterior. |
+| Pasarela superior | +3 | X 9..26, Z −4,5..−1,5, con hueco S2 | Circulación y observación protegidas. |
+| Aparcamiento | exterior | Al este de la boca de servicio | Inicio del tramo exterior de Fase 2. |
+
+Las coordenadas de la galería de evacuación y la boca de servicio son **extensión de diseño**, no geometría ya implementada. Los planos deben reflejarlas; si el ancho o el desnivel requieren más espacio, ampliar el perímetro de forma coherente en vez de estrechar el paso.
+
+## Grafo de circulación
 
 ~~~text
-A ── B ── galería de servicio ── elevador inferior
-    │                                      │
-    └─ S1 ↓ D1/D2                          │ P0 ↔ M (+1,5 m)
-        esquema → puente →                 │
-        mantenimiento ON                    └─ bombas → galería → S2 ↑
-                                                       E (+3 m) ─ F ─ G ─ H → aparcamiento
+ENTRADA OESTE → túnel → A → B ─────→ galería de servicio ─→ elevador ↑ M
+                              │                              │             │
+                              S1                             │             S2 ↑
+                              ↓                              │             E → F → G
+                         D1 ↔ D2                             │                  │
+                              │                              │             inicio huida
+                              └─ galería de evacuación       │                  ↓
+                                   → boca de servicio        └─ elevador ↓ P0 ← S2
+                                      → aparcamiento                         │
+                                                                           S1 ↓
+                                                                              P−1
+                                                                              │
+                                                                   galería evacuación
+                                                                              ↓
+                                                                         aparcamiento
 ~~~
 
-Aristas espaciales de referencia: exterior↔túnel↔A↔pasillo oeste↔B; B↔D por S1; desde el rellano superior de S1, D↔perímetro sur↔retorno este↔galería de servicio↔elevador; B↔galería de servicio; P0↔M solo por elevador, después de mantenimiento; M↔P2 por S2; E↔F; F↔G; G↔H. La arista de retorno desde S1 por el perímetro sur y el pasillo este es crítica y sigue pendiente de validación física.
+## Aristas contractuales
 
-D1 y D2 comparten un hueco vertical abierto en P0 (X=10..28, Z=1..8), con suelo continuo a Y=−2. B termina en Z=1, de modo que no se superponen suelo jugable y vacío. El pasillo A→B ocupa X=7..10, Z=1..8 y bordea la barandilla oeste del hueco.
+- Entrada ↔ túnel oeste ↔ A ↔ pasillo de acceso ↔ B.
+- B ↔ taller C y galería de servicio por pasos claramente señalizados.
+- B ↔ P−1 mediante S1; el hueco de D1/D2 no se atraviesa por la superficie P0.
+- D1 ↔ D2 por suelo continuo a Y=−2; la diferenciación se hace con maquinaria, tuberías y señalización, no con una pared que impida la investigación.
+- Desde el rellano superior de S1: retorno por perímetro sur/este y galería de servicio; el jugador no necesita saltar el hueco.
+- Galería de servicio ↔ elevador P0↔M; la llegada superior desemboca en la sala de bombas, no en control.
+- M ↔ galería de observación ↔ S2 ↔ P2; E ↔ F ↔ G.
+- **Ruta de huida:** G inicia el segmento de persecución dentro del edificio; la ruta regresa por circulación técnica a S2/M, desciende por el elevador a P0, baja por S1 a P−1 y sale por la galería de evacuación hacia el aparcamiento. El orden exacto de obstáculos se fija en progresión y greybox.
+- La galería de evacuación conecta D2 con el exterior este. No conecta con el túnel de entrada ni crea una escalera vertical nueva.
 
-No son aristas: escalera colapsada P0↔P2; escalera desde G a P0; rampa paralela; segunda plataforma; parada de elevador en P2; puertas secretas.
+## No-aristas y restricciones
 
-Los controles conservan posiciones lógicas de referencia: selector (12,3,-7), aislador (19,3,-7), panel (15.5,4.55,-8.15), rearme (15.5,3.5,-8.15), consola (5,3,-7), indicador F (8.55,3.8,-7). Ajustar montajes, no reglas.
+- La escalera dañada P0↔P2 permanece bloqueada.
+- No hay parada de elevador en P2.
+- No se añade un segundo elevador ni una escalera secreta.
+- G no es una salida exterior instantánea; abrirla inicia la huida.
+- La entrada oeste no se reutiliza como salida final.
+- Los accesos cerrados deben corresponder a puertas/colliders, daños físicos o seguridad diegética; no a límites invisibles.
+- La ruta exterior debe ser un corredor físico con suelo, techo/estructura cuando proceda, paredes, altura libre y continuidad de colisión hasta el exterior.
 
-La aceptación requiere que B quede al norte del foso, el pasillo A→B bordee el hueco sin cruzarlo, que los bordes abiertos de M/P2 y ambos lados del hueco del elevador estén protegidos, y que M se lea como sala de bombas, el elevador termine en M, S2 llegue a P2, G conduzca al exterior, la escalera dañada no se atraviese, la huella D1 exista realmente en P−1, la orientación entre cotas sea legible y el retorno desde S1 hasta la galería de servicio sea continuo y transitable. Planos no validan cámara ni colisiones.
+## Condiciones de aceptación espacial
 
-El grafo define conectividad espacial; no convierte por sí mismo los beats narrativos propuestos para Helix/Containment en canon aprobado. Véase el mapa de progresión para distinguir decisiones conceptuales, propuestas y validaciones pendientes.
+1. El plano y la escena usan el mismo sistema de coordenadas y footprints.
+2. Las áreas A, B, C, D1, D2, M, E, F y G se identifican y se pueden recorrer; las zonas auxiliares tienen función ambiental o de navegación.
+3. El vacío P0 sobre D1/D2 es real; S1 mantiene su boca libre y protegida.
+4. El retorno S1→perímetro sur/este→galería de servicio existe en colisión, no solo en el dibujo.
+5. Elevador, S1 y S2 tienen destinos correctos, superficies caminables y protecciones.
+6. La ruta de ida y la ruta de huida se distinguen; la huida se completa sin teletransporte, saltos imposibles ni atajos no dibujados.
+7. La galería de evacuación y la salida exterior conectan físicamente con el aparcamiento y son distintas del acceso inicial.
+8. Se prueban cámara, oclusiones, altura libre, puertas, anchura de paso y obstáculos con la cápsula real de Elena.
+9. Se registra evidencia de ejecución Godot; los planos y los tests estáticos no prueban aceptación de runtime.
