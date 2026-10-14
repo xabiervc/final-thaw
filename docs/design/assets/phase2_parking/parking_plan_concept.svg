@@ -41,7 +41,7 @@
     <text x="37" y="190" class="label" text-anchor="middle" transform="rotate(-90 37 190)">FACADE LABORATORIO</text>
     <rect x="74" y="284" width="42" height="42" class="service"/>
     <text x="95" y="300" class="tiny" text-anchor="middle">BOCA</text><text x="95" y="312" class="tiny" text-anchor="middle">SERVICIO</text>
-    <path d="M74 284 H116 M74 326 H116" stroke="#278c83" stroke-width="3"/>
+    <path d="M74 284 H116 M74 326 H116" stroke="#278c83" stroke-width="3"/><path d="M74 284 V326" stroke="#278c83" stroke-width="3" stroke-dasharray="3 2"/><text x="95" y="322" class="tiny" text-anchor="middle">3 m libres</text>
     <!-- north boundary and egress -->
     <rect x="0" y="0" width="672" height="18" class="wall"/>
     <rect x="574" y="0" width="50" height="18" fill="#ffffff" stroke="#263849" stroke-width="1.5"/>
