@@ -592,7 +592,7 @@ func _begin_handoff() -> void:
 	if _handoff_started:
 		return
 	_handoff_started = true
-	var transmitted := ", ".join(_audit_events)
+	var transmitted := ", ".join(PackedStringArray(_audit_events))
 	_log("audit_transmitted", transmitted)
 	_log("containment_trigger", "outer_hatch_crossed")
 	hud.call("set_objective", "OBJETIVO  /  Sobrevive a la respuesta de Helix")
@@ -636,7 +636,7 @@ func _refresh_state_fixtures() -> void:
 		return
 	var info: Dictionary = circuit.inspect()
 	var output: Dictionary = circuit.outputs()
-	_status_panel_label.text = "DESTINO  %s\\nARCHIVO %s · ENSAYO %s\\nPROTECCIÓN  %s\\nÚLTIMO DISPARO  %s" % [
+	_status_panel_label.text = "DESTINO  %s\nARCHIVO %s · ENSAYO %s\nPROTECCIÓN  %s\nÚLTIMO DISPARO  %s" % [
 		str(info["destination"]),
 		"ESTABLE" if bool(output["archive"]) else "NO DISPONIBLE",
 		"AISLADO" if circuit.trial_isolated else "CONECTADO",
@@ -644,7 +644,7 @@ func _refresh_state_fixtures() -> void:
 		"DEMANDA_SIMULTANEA" if str(info["last_trip"]) != "" else "NINGUNO"
 	]
 	if _archive_status_label != null:
-		_archive_status_label.text = "SUMINISTRO\\nESTABLE" if bool(output["archive"]) else "NO\\nDISPONIBLE"
+		_archive_status_label.text = "SUMINISTRO\nESTABLE" if bool(output["archive"]) else "NO\nDISPONIBLE"
 		_archive_status_label.modulate = Color(0.45, 1.0, 0.65) if bool(output["archive"]) else Color(1.0, 0.63, 0.35)
 
 
