@@ -13,18 +13,33 @@ This document separates current design direction, actual implementation evidence
 | Core gameplay and narrative loop | `docs/CORE_LOOP.md` | Active design contract for the opening; implementation state is separately tracked |
 | Opening level structure and Phase 2 spatial design | `docs/LEVEL_STRUCTURE.md` plus `docs/design/assets/phase2_parking/` | Design authority for route, concept v0.3 plan/section, edge clearances, obstacle register and selected handoff transform; dimensions/colliders require runtime reconciliation |
 | Mission 1 puzzle | `docs/design/MISSION1_GHOST_PROTOCOL.md` plus `docs/design/FASE1_LOGIC_CONTRACT.md` | Puzzle design and logic contract; implementation and integration must be evidenced |
-| Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v2.0 | Current spatial intent; plans, graph and scene must remain aligned |
+| Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v2.1 | Current spatial intent; plans, graph and scene must remain aligned |
 | Phase 1 plans and section | `docs/design/assets/phase1_architecture/` | Current drawing authority for Phase 1; physical alignment remains pending verification |
-| Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v1.0 | Current target topology; verify footprints and traversability in Godot |
-| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.0 | Target measurements and collision contract, not proof of built geometry |
-| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.0 | Target interactions, puzzle and escape flow; some escape requirements are not implemented |
+| Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v1.1 | Current target topology; verify footprints and traversability in Godot |
+| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.1 | Target measurements and collision contract, not proof of built geometry |
+| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.1 | Target interactions, puzzle and escape flow; some escape requirements are not implemented |
 | Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v1.1 | Quiet evasion → perceptible reacquisition → running chase → selected exit and physical parking handoff; implementation pending |
 | Movement/chase prototype mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus current code | Prototype behavior and known limits; v2 test/playtest status must be recorded |
 | Requirement-to-evidence mapping | `docs/TRACEABILITY_MATRIX.md` | Maps intended behavior to implementation, tests and verification gaps |
 | Implementation status | `PROJECT_STATUS.md`, current scene/script/test state and recorded results | Source of truth for what exists and what was actually verified |
-| Narrative legacy archive | `docs/narrative_complete.md` and explicitly marked legacy documents | Historical source material only where it conflicts with the active prototype direction |
+| Opening script and legacy narrative archive | `docs/narrative_complete.md` | Opening beats N2-01…N2-06 and unresolved decisions at the top are current proposals; the legacy full-campaign material below is historical where it conflicts with the active prototype direction |
 | Technical/workflow contracts | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Protected engineering, testing and evidence requirements |
 | Asset provenance | `docs/art/PROVENANCE.md` | Active source/licence record |
+
+## Selected opening design decisions
+
+These decisions are the current design baseline for the opening. **Selected** means the design direction is chosen; it does not mean the scene has been implemented or runtime-verified.
+
+| Decision | Selected baseline | Remaining gate |
+|---|---|---|
+| Phase 1 exterior route | P−1 east service mouth at world X=34, Z=4.5..7.5, Y=−2.0 m; 3 m clear opening through a 6 × 3 m gallery. It is distinct from the west entrance. | Verify physical route, wall opening, elevation and collision continuity in the canonical scene. |
+| Phase 1 → Phase 2 transform | Parking local frame maps with X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. Entry threshold maps to world (34, 6, −2); recovery checkpoint to (35.5, 6, −2); far egress beyond the north wall to (71.5, −16.2, −2). | Verify the actual local/world transform, gate crossing, player capsule and camera; update all drawings together if the scene differs. |
+| Chase pacing | Quiet evasion through F/E and M with STAFF-M1 perception; R1 in P0 triggers full running chase after the recovery unit follows through the existing lift and reacquires Elena by real line of sight; route continues via S1/P−1 to the east gallery and parking. | Verify NPC perception, R1 volume, chase transition and continuous route in Godot. |
+| Parking footprint | Combined facade/site envelope 48 × 30 m, including the 5.3 m facade band; clear parking yard is 42.7 m east of the service threshold. Entry opening 3.0 m; north egress gate 3.6 m. | Verify dimensions and clearances against the real player/threat capsules. |
+| Parking vertical language | Open-air central apron, no continuous canopy; two overhead service pipe racks at the inner parking-row edges with 2.8 m clear below. Pavement datum matches P−1 at Y=−2.0 m. | Verify wall height, rack supports, camera clearance, collision and lighting in the actual renderer. |
+| Parking obstacle contracts | P2-O1: static 1.9 × 2.1 m, 1.1 m high; P2-O2: static 3 × 2 m, 1.4 m high, low cover only when crouched; P2-O3: fixed leaves with a 1.3 × 2.2 m clear aperture, no timed movement and no bypass in the baseline. | Verify each envelope, the O1 pinch and O3 passage for Elena and the recovery unit. |
+| Parking checkpoint | P2-01 is the continuous scene handoff threshold. P2-CP is a recovery-only checkpoint 1.5 m inside the vestibule; it is not the initial spawn. | Test initial handoff and repeated failure recovery without teleport, state loss or direct unfair detection. |
+| Containment trigger | Maintenance queues SERVICE_OVERRIDE; opening the exterior leaf of G sends the queued audit and starts Containment. Reading the restricted record alone is not the trigger. | Verify the exact event fires once; the specific recipient/command chain remains an open narrative decision. |
 
 ## Legacy specifications under review
 
@@ -34,7 +49,7 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 
 ## Conflict resolution
 
-1. For Phase 1 spatial intent, use `FASE1_ARCHITECTURAL_LAYOUT.md` v2.0, the current plan/section SVGs, `FASE1_SPATIAL_GRAPH.md` v1.0 and `FASE1_GREYBOX_SPEC.md` v2.0. Older references to v1.0/v0.6 are superseded.
+1. For Phase 1 spatial intent, use `FASE1_ARCHITECTURAL_LAYOUT.md` v2.1, the current plan/section SVGs, `FASE1_SPATIAL_GRAPH.md` v1.1 and `FASE1_GREYBOX_SPEC.md` v2.1. Older references to v1.0/v0.6 are superseded.
 2. For the opening's player-facing behavior and mission boundaries, use `DESIGN_PIVOT_PROTOTYPE_BRIEF.md`, `CORE_LOOP.md` and `LEVEL_STRUCTURE.md`.
 3. For Phase 1 circuit behavior, `FASE1_LOGIC_CONTRACT.md` remains authoritative unless a specific change is explicitly approved.
 4. For what exists, inspect current code, scenes and tests. Design documentation does not prove implementation.

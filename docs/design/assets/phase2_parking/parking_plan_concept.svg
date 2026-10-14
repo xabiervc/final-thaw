@@ -26,9 +26,9 @@
   </defs>
   <rect width="1120" height="760" fill="#ffffff"/>
   <text x="48" y="42" class="title">FINAL THAW · PHASE 2 PARKING — CONCEPT PLAN</text>
-  <text x="48" y="64" class="subtitle">Concept v0.3 · reconciled route geometry, schematic coordinates · not yet reconciled with the Godot builder or player capsule</text>
+  <text x="48" y="64" class="subtitle">Concept v0.3 · selected handoff baseline, local coordinates; runtime verification pending · not yet reconciled with the Godot builder or player capsule</text>
   <g transform="translate(120 112)">
-    <rect x="0" y="0" width="672" height="420" fill="url(#grid)" stroke="#263849" stroke-width="2.5"/>
+    <rect x="0" y="0" width="672" height="420" fill="url(#grid)" stroke="none"/>
     <!-- dimensions -->
     <line x1="0" y1="-24" x2="672" y2="-24" class="dimline"/>
     <line x1="0" y1="-18" x2="0" y2="-4" class="thin"/><line x1="672" y1="-18" x2="672" y2="-4" class="thin"/>
@@ -37,17 +37,17 @@
     <line x1="-18" y1="0" x2="-4" y2="0" class="thin"/><line x1="-18" y1="420" x2="-4" y2="420" class="thin"/>
     <text x="-36" y="210" class="label" text-anchor="middle" transform="rotate(-90 -36 210)">30 m (provisional)</text>
     <!-- boundary/service building -->
-    <rect x="0" y="0" width="74" height="420" class="wall"/>
+    <rect x="0" y="0" width="74" height="284" class="wall"/><rect x="0" y="326" width="74" height="94" class="wall"/>
     <text x="37" y="190" class="label" text-anchor="middle" transform="rotate(-90 37 190)">FACADE LABORATORIO</text>
     <rect x="74" y="284" width="42" height="42" class="service"/>
-    <text x="95" y="300" class="tiny" text-anchor="middle">BOCA</text><text x="95" y="312" class="tiny" text-anchor="middle">SERVICIO</text>
+    <circle cx="95" cy="305" r="7" fill="#ffffff" stroke="#263849" stroke-width="2"/><text x="95" y="309" class="tiny" text-anchor="middle">CP</text><text x="130" y="291" class="tiny">BOCA 3,0 m LIBRE</text>
     <path d="M74 284 H116 M74 326 H116" stroke="#278c83" stroke-width="3"/><path d="M74 284 V326" stroke="#278c83" stroke-width="3" stroke-dasharray="3 2"/><text x="95" y="322" class="tiny" text-anchor="middle">3 m libres</text>
     <!-- north boundary and egress -->
-    <rect x="0" y="0" width="672" height="18" class="wall"/>
+    <rect x="74" y="-6" width="500" height="6" class="wall"/><rect x="624" y="-6" width="48" height="6" class="wall"/>
     <rect x="574" y="0" width="50" height="18" fill="#ffffff" stroke="#263849" stroke-width="1.5"/>
     <text x="599" y="-4" class="tiny" text-anchor="middle">EGRESS · 3,6 m</text>
-    <rect x="654" y="18" width="18" height="402" class="wall"/>
-    <rect x="0" y="402" width="672" height="18" class="wall"/>
+    <rect x="672" y="0" width="6" height="420" class="wall"/>
+    <rect x="74" y="420" width="598" height="6" class="wall"/>
     <!-- bays north row -->
     <g stroke="#94a2ad" stroke-width="1" fill="none">
       <path d="M120 18V88 M162 18V88 M204 18V88 M246 18V88 M288 18V88 M330 18V88 M372 18V88 M414 18V88 M456 18V88 M498 18V88 M540 18V88 M582 18V88 M624 18V88"/>
@@ -84,13 +84,13 @@
     <rect x="410" y="160" width="78" height="48" class="service"/>
     <text x="449" y="179" class="small" text-anchor="middle">JAULA</text><text x="449" y="192" class="small" text-anchor="middle">TÉCNICA</text>
     <rect x="596" y="196" width="15" height="22" class="obstacle"/><rect x="629" y="196" width="15" height="22" class="obstacle"/>
-    <text x="620" y="189" class="tiny" text-anchor="middle">O3 / BARRERA</text><text x="620" y="211" class="tiny" text-anchor="middle">1,3 m libre</text>
+    <text x="620" y="178" class="tiny" text-anchor="middle">O3 · BARRERA</text><text x="620" y="191" class="tiny" text-anchor="middle">1,3 m libre</text>
     <rect x="496" y="224" width="42" height="28" class="obstacle"/>
     <text x="517" y="241" class="tiny" text-anchor="middle">O2</text>
     <!-- cover blocks -->
     
     <rect x="228" y="215" width="58" height="34" class="service"/><text x="257" y="236" class="tiny" text-anchor="middle">COVER</text>
-    <rect x="336" y="155" width="52" height="36" class="service"/><text x="362" y="177" class="tiny" text-anchor="middle">COVER</text>
+    <rect x="336" y="160" width="52" height="36" class="service"/><text x="362" y="182" class="tiny" text-anchor="middle">COVER</text>
     
     <!-- O1 obstruction -->
     <rect x="173" y="173" width="27" height="30" class="obstacle"/><text x="186" y="191" class="tiny" text-anchor="middle">O1</text>
@@ -100,21 +100,21 @@
     <ellipse cx="245" cy="190" rx="64" ry="36" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <ellipse cx="445" cy="190" rx="70" ry="38" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <!-- routes -->
-    <path d="M95 305 L130 305 L150 305 L150 270 L200 270 L270 270 L320 270 L405 270 L475 275 L535 275 L570 275 L570 235 L620 235 L620 218 L620 70 L599 25" class="routeA"/>
-    <path d="M95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218 L620 70 L599 25" class="routeB"/>
+    <path d="M74 305 L95 305 L130 305 L150 305 L150 270 L200 270 L270 270 L320 270 L405 270 L475 275 L535 275 L570 275 L570 235 L620 235 L620 218 L620 70 L599 25 L599 0 L599 -6" class="routeA"/>
+    <path d="M74 305 L95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218 L620 70 L599 25 L599 0 L599 -6" class="routeB"/>
     <!-- threat path -->
-    <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218" class="threat"/>
+    <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218 L620 70 L599 25 L599 0 L599 -6" class="threat"/>
     <!-- route graph waypoints; coordinates correspond to LEVEL_STRUCTURE.md -->
     <circle cx="535" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="520" y="295" class="tiny" text-anchor="middle">A3</text>
     <circle cx="570" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="563" y="295" class="tiny" text-anchor="middle">A4</text>
-    <!-- provisional checkpoints: entry is the integration spawn; CP1 and CP2 are retry anchors -->
+    <!-- P2-01 is the continuous handoff threshold; CP is recovery-only, never the initial scene spawn -->
     <circle cx="95" cy="305" r="9" fill="#ffffff" stroke="#263849" stroke-width="2.2"/><text x="95" y="308" class="tiny" text-anchor="middle">S</text>
     <circle cx="570" cy="235" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="570" y="238" class="tiny" text-anchor="middle">1</text>
     <circle cx="620" cy="70" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="620" y="73" class="tiny" text-anchor="middle">2</text>
     <!-- labels -->
     <text x="78" y="344" class="tiny">UMBRAL GALLERY → PARKING</text><text x="130" y="320" class="label">ENTRADA / DECISIÓN</text>
     <text x="308" y="255" class="label" fill="#b94e30">A · DIRECTA / EXPUESTA</text>
-    <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / CUBIERTA</text>
+    <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / COBERTURA PARCIAL</text>
     <text x="365" y="205" class="small" text-anchor="middle">APRON / CRUCE EXPUESTO · 17,3 m</text>
     <text x="599" y="300" class="small" text-anchor="middle">EMBUDO DE SALIDA</text>
     <text x="450" y="53" class="small" text-anchor="middle">FILAS DE APARCAMIENTO</text>
@@ -126,22 +126,22 @@
   <g transform="translate(830 130)">
     <text x="0" y="0" class="label">LEYENDA</text>
     <line x1="0" y1="24" x2="44" y2="24" class="routeA"/><text x="56" y="28" class="small">Ruta A: rápida/expuesta</text>
-    <line x1="0" y1="52" x2="44" y2="52" class="routeB"/><text x="56" y="56" class="small">Ruta B: cubierta/estrecha</text>
+    <line x1="0" y1="52" x2="44" y2="52" class="routeB"/><text x="56" y="56" class="small">Ruta B: servicio/cobertura parcial</text>
     <line x1="0" y1="80" x2="44" y2="80" class="threat"/><text x="56" y="84" class="small">Ruta de presión del perseguidor</text>
     <rect x="0" y="94" width="44" height="18" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-dasharray="4 4"/><text x="56" y="106" class="small">Cono visual conceptual</text>
     <rect x="0" y="124" width="22" height="18" class="car"/><text x="32" y="137" class="small">Vehículo estático / cobertura</text>
-    <rect x="0" y="154" width="22" height="18" class="column"/><text x="32" y="167" class="small">Pilar estructural</text>
+    <rect x="0" y="154" width="22" height="18" class="column"/><text x="32" y="167" class="small">Pilar / soporte de rack aéreo</text>
     <rect x="0" y="184" width="22" height="18" class="obstacle"/><text x="32" y="197" class="small">Obstáculo de encuentro</text>
-    <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cubierta</text>
+    <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cobertura</text><circle cx="11" cy="230" r="7" fill="#fff" stroke="#263849" stroke-width="1.5"/><text x="32" y="234" class="small">CP: recuperación, no spawn inicial</text>
     <rect x="0" y="244" width="22" height="18" fill="#f0d88b" fill-opacity=".3" stroke="#c5a54f" stroke-dasharray="4 4"/><text x="32" y="257" class="small">Zona de iluminación conceptual</text>
     <circle cx="11" cy="275" r="8" fill="#fff" stroke="#278c83" stroke-width="2"/><text x="11" y="278" class="tiny" text-anchor="middle">1</text><text x="28" y="279" class="small">Checkpoint provisional</text>
     <text x="0" y="306" class="label">ESTADO</text>
     <text x="0" y="327" class="small">Propuesta espacial, no plano de obra.</text>
     <text x="0" y="346" class="small">Dimensiones por validar con cápsula,</text>
     <text x="0" y="363" class="small">cámara, colisiones y flujo real.</text>
-    <text x="0" y="393" class="label">DECISIONES ABIERTAS</text>
-    <text x="0" y="414" class="small">• Cota y pendiente del acceso</text>
-    <text x="0" y="432" class="small">• Altura de cubierta / pilares</text>
+    <text x="0" y="393" class="label">VERIFICACIÓN PENDIENTE</text>
+    <text x="0" y="414" class="small">• Verificar cota Y=−2 y conexión física</text>
+    <text x="0" y="432" class="small">• Altura de racks y cámara</text>
     <text x="0" y="450" class="small">• Footprints definitivos de obstáculos</text>
     <text x="0" y="468" class="small">• Ruta final del perseguidor</text>
     <text x="0" y="496" class="label">REGLAS</text>
@@ -149,6 +149,7 @@
     <text x="0" y="535" class="small">Toda alternativa debe tener un coste real.</text>
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
-  <text x="48" y="710" class="small">Selected design baseline: Phase 1 P−1 service gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m. Parking local coordinates: X east/right, Z south/down, origin northwest inside corner, 14 px/m. Transform: world X = local X + 28.7 m; world Z = local Z − 15.8 m. The 3.0 m threshold plane (local X≈5.3, Z≈21.8) maps to world (34, 6); safe spawn (local X≈6.8, Z≈21.8) maps to (35.5, 6); far egress (local X≈42.8, Z≈1.8) maps to (71.5, −14). Pavement datum Y=−2.0 m. Verify against scene geometry before implementation.</text>
-  <text x="48" y="730" class="small">Local concept only. Do not force Phase 1 to match this entrance coordinate; derive the world transform from the final selected exit after the complete route is approved.</text>
+  <text x="48" y="700" class="small">Coordinate frame: X east/right, Z south/down; origin at NW corner of combined facade/site plan; 48 × 30 m measured to inside faces of north/south/east walls.</text>
+  <text x="48" y="720" class="small">Selected transform: X_world=X_local+28.7, Z_world=Z_local−15.8, Y=−2.0 m. Entry handoff (34,6,−2); recovery checkpoint (35.5,6,−2), not initial spawn; far egress beyond north wall (71.5,−16.2,−2).</text>
+  <text x="48" y="740" class="small">Clearance targets: O1 bypass ≥1.2 m; O2 route ≥1.5 m; service-cage bypass ≈2.6 m; O3 aperture 1.3 × 2.2 m. Verify capsule, camera and scene before implementation.</text>
 </svg>

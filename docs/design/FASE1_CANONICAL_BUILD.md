@@ -28,7 +28,7 @@ Distinguir siempre diseño objetivo, código implementado, test automatizado y v
 
 La reconstrucción anterior contiene túnel oeste, perímetro/salas P0, hueco D1/D2, retorno sur/este, elevador P0↔M, S1/S2, control/archivo y protecciones. Esas modificaciones siguen pendientes de ejecución Godot.
 
-**Brecha principal contra arquitectura v2.0:** el constructor y la escena aún no implementan de forma completa la evasión silenciosa en áreas potencialmente ocupadas, la reacquisición que inicia la carrera, los obstáculos de huida, la ruta completa de descenso y la salida física al aparcamiento. Los SVG marcan O1 (estantería caída), O2 (bastidor de tuberías) y O3 (bandeja desprendida) como footprints iniciales medibles; son posiciones de diseño, no implementación ni evidencia de runtime. No afirmar que el código esté coordinado hasta reconstruir la geometría y las pruebas.
+**Brecha principal contra arquitectura v2.1:** el constructor y la escena aún no implementan de forma completa la evasión silenciosa en áreas potencialmente ocupadas, la reacquisición que inicia la carrera, los obstáculos de huida, la ruta completa de descenso y la salida física al aparcamiento. Los SVG marcan O1 (estantería caída), O2 (bastidor de tuberías) y O3 (bandeja desprendida) como footprints iniciales medibles; son posiciones de diseño, no implementación ni evidencia de runtime. No afirmar que el código esté coordinado hasta reconstruir la geometría y las pruebas.
 
 ## Secuencia de implementación obligatoria
 

@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="820" viewBox="0 0 1200 820">
+<defs>
+<pattern id="grid" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M12 0H0V12" fill="none" stroke="#e4e9ed" stroke-width=".6"/></pattern>
+<marker id="dim" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse"><path d="M0,0 L7,3.5 L0,7 Z" fill="#536273"/></marker>
+<style>
+text{font-family:Arial,Helvetica,sans-serif;fill:#182533}.title{font-size:23px;font-weight:700}.sub{font-size:13px;fill:#536273}.h{font-size:15px;font-weight:700}.label{font-size:12px;font-weight:600}.small{font-size:10px}.tiny{font-size:9px}.dim{stroke:#536273;stroke-width:1;marker-start:url(#dim);marker-end:url(#dim)}.ob{fill:#e7c27a;stroke:#94691e;stroke-width:1.5}.route{fill:none;stroke:#278c83;stroke-width:3;stroke-dasharray:6 4}.blocked{fill:#d4dbe2;stroke:#344657;stroke-width:1.5}
+</style></defs>
+<rect width="1200" height="820" fill="#fff"/>
+<text x="42" y="42" class="title">FINAL THAW · PHASE 2 — OBSTACLE DETAIL SHEET</text>
+<text x="42" y="64" class="sub">Design baseline v0.3 · local coordinates · final collision/camera fit requires runtime verification</text>
+<line x1="42" y1="82" x2="1158" y2="82" stroke="#d5dde4"/>
+<!-- O1 -->
+<rect x="42" y="102" width="545" height="280" rx="8" fill="#f8fafb" stroke="#d5dde4"/>
+<text x="62" y="130" class="h">P2-O1 · MAINTENANCE CART / PALLET</text>
+<text x="62" y="149" class="small">Local centre ≈ (13.3, 13.4) · static obstruction on Route B approach</text>
+<g transform="translate(70 175)">
+<text x="0" y="0" class="label">PLAN</text><rect x="0" y="18" width="152" height="168" fill="url(#grid)" stroke="#b7c2cb"/>
+<rect x="48" y="56" width="46" height="50" class="ob"/><text x="71" y="84" class="label" text-anchor="middle">O1</text>
+<path d="M18 145H46 M96 145H130" class="route"/>
+<line x1="48" y1="43" x2="94" y2="43" class="dim"/><text x="71" y="36" class="small" text-anchor="middle">1.9 m</text>
+<line x1="108" y1="56" x2="108" y2="106" class="dim"/><text x="118" y="84" class="small">2.1 m</text>
+<text x="0" y="203" class="tiny">Bypass clear width ≥1.2 m</text></g>
+<g transform="translate(280 175)">
+<text x="0" y="0" class="label">ELEVATION</text><line x1="0" y1="186" x2="260" y2="186" stroke="#344657" stroke-width="2"/>
+<rect x="54" y="142" width="124" height="44" class="ob"/><path d="M65 153H167 M65 164H167 M65 175H167" stroke="#94691e" stroke-width="1"/>
+<line x1="193" y1="142" x2="193" y2="186" class="dim"/><text x="202" y="167" class="label">1.1 m</text>
+<text x="54" y="128" class="small">No climb / no physics motion</text><text x="0" y="203" class="tiny">Crouch breaks LOS only if geometry actually occludes</text></g>
+<!-- O2 -->
+<rect x="613" y="102" width="545" height="280" rx="8" fill="#f8fafb" stroke="#d5dde4"/>
+<text x="633" y="130" class="h">P2-O2 · DISPLACED SERVICE RACK</text>
+<text x="633" y="149" class="small">Local centre ≈ (36.9, 17.0) · between Route A and Route B</text>
+<g transform="translate(640 175)">
+<text x="0" y="0" class="label">PLAN</text><rect x="0" y="18" width="152" height="168" fill="url(#grid)" stroke="#b7c2cb"/>
+<rect x="42" y="64" width="72" height="48" class="ob"/><text x="78" y="91" class="label" text-anchor="middle">O2</text><path d="M8 140H142" class="route"/>
+<line x1="42" y1="51" x2="114" y2="51" class="dim"/><text x="78" y="44" class="small" text-anchor="middle">3.0 m</text>
+<line x1="128" y1="64" x2="128" y2="112" class="dim"/><text x="132" y="91" class="small">2.0 m</text>
+<text x="0" y="203" class="tiny">Route A south; Route B east/north</text></g>
+<g transform="translate(850 175)">
+<text x="0" y="0" class="label">ELEVATION</text><line x1="0" y1="186" x2="260" y2="186" stroke="#344657" stroke-width="2"/>
+<rect x="54" y="130" width="124" height="56" class="ob"/><path d="M54 145H178 M54 160H178 M54 175H178" stroke="#94691e" stroke-width="1"/>
+<line x1="193" y1="130" x2="193" y2="186" class="dim"/><text x="202" y="159" class="label">1.4 m</text>
+<text x="54" y="116" class="small">Low cover, not climbable</text><text x="0" y="203" class="tiny">Crouched player can hide; standing upper body remains visible</text></g>
+<!-- O3 -->
+<rect x="42" y="404" width="1116" height="270" rx="8" fill="#f8fafb" stroke="#d5dde4"/>
+<text x="62" y="432" class="h">P2-O3 · FIXED SERVICE-SHUTTER LEAVES — SINGLE CLEAR APERTURE</text>
+<text x="62" y="451" class="small">Local centre ≈ (44.3, 14.8) · no moving shutter, interaction, timed slide or alternate bypass in this baseline</text>
+<g transform="translate(80 475)">
+<text x="0" y="0" class="label">PLAN / APPROACH</text><rect x="0" y="20" width="500" height="150" fill="url(#grid)" stroke="#b7c2cb"/>
+<path d="M15 96H485" class="route"/><rect x="150" y="64" width="136" height="64" class="blocked"/><rect x="192" y="64" width="52" height="64" fill="#dcefe9" stroke="#278c83" stroke-width="1.5" stroke-dasharray="5 4"/><path d="M192 96H244" class="route"/>
+<rect x="150" y="64" width="42" height="64" class="ob"/><rect x="244" y="64" width="42" height="64" class="ob"/><text x="218" y="100" class="label" text-anchor="middle">O3</text>
+<line x1="150" y1="49" x2="286" y2="49" class="dim"/><text x="218" y="42" class="small" text-anchor="middle">3.4 m overall</text>
+<line x1="192" y1="140" x2="244" y2="140" class="dim"/><text x="218" y="154" class="small" text-anchor="middle">1.3 m clear</text></g>
+<g transform="translate(650 475)">
+<text x="0" y="0" class="label">FRONT ELEVATION / CLEAR ENVELOPE</text><line x1="0" y1="170" x2="430" y2="170" stroke="#344657" stroke-width="2"/>
+<rect x="48" y="82" width="42" height="88" class="ob"/><rect x="142" y="82" width="42" height="88" class="ob"/>
+<rect x="90" y="82" width="52" height="88" fill="#dcefe9" stroke="#278c83" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="116" y="128" class="label" text-anchor="middle">PASO LIBRE</text>
+<line x1="48" y1="55" x2="184" y2="55" class="dim"/><text x="116" y="47" class="small" text-anchor="middle">3.4 m overall</text>
+<line x1="90" y1="72" x2="142" y2="72" class="dim"/><text x="116" y="66" class="small" text-anchor="middle">1.3 m</text>
+<line x1="200" y1="82" x2="200" y2="170" class="dim"/><text x="208" y="123" class="label">2.2 m</text>
+<text x="48" y="190" class="tiny">Hojas fijas a ambos lados · mantener la apertura despejada</text></g>
+<line x1="42" y1="700" x2="1158" y2="700" stroke="#d5dde4"/>
+<text x="42" y="726" class="label">REGLAS DE ACEPTACIÓN</text>
+<text x="42" y="748" class="small">1. Elena y la unidad atraviesan O3 sin roce/cámara atrapada; la abertura real nunca baja de 1.3 × 2.2 m.</text>
+<text x="42" y="766" class="small">2. O1/O2 son estáticos. Cualquier cambio de footprint, altura o bypass exige actualizar planta, sección, grafo y esta ficha.</text>
+<text x="42" y="784" class="small">3. Este dibujo especifica intención, no prueba de colisiones ni runtime. Verificar medidas con jugador/cámara reales en Godot.</text>
+</svg>

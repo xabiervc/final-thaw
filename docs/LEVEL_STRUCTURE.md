@@ -30,7 +30,7 @@ The architecture should communicate:
 - a far-side egress target that is visible or inferable early, but not immediately safe;
 - one or more service features (loading shutter, maintenance cage, drainage channel, barrier or security kiosk) that give the site a specific industrial identity.
 
-**Continuity rule — selected design baseline:** the Phase 1 P−1 gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m, through a 3 m opening. The parking vestibule begins at the same threshold; the selected transform is world X=local X+28.7 m, world Z=local Z−15.8 m, Y=−2.0 m. This maps the threshold to local (5.3, 21.8), safe spawn to world (35.5, 6), and far-side egress to (71.5, −14). These are design-baseline coordinates, not runtime evidence. Validate the actual gallery, opening, elevation, colliders and camera in Godot; if the scene differs, update all affected drawings together. Never teleport Elena into the parking lot.
+**Continuity rule — selected design baseline:** the Phase 1 P−1 gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m, through a 3 m opening. The parking vestibule begins at the same threshold; the selected transform is world X=local X+28.7 m, world Z=local Z−15.8 m, Y=−2.0 m. This maps the threshold to local (5.3, 21.8), the recovery checkpoint to world (35.5, 6), and the far-side egress beyond the north gate to (71.5, −16.2). Initial handoff stays at the threshold; the checkpoint is for recovery only. These are design-baseline coordinates, not runtime evidence. Validate the actual gallery, opening, elevation, colliders and camera in Godot; if the scene differs, update all affected drawings together. Never teleport Elena into the parking lot.
 
 ### 2.2 Greybox scale and coordinate contract
 
@@ -63,56 +63,58 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 
 | Element | Concept dimension | Design intent / check |
 |---|---:|---|
-| Site boundary | 48 × 30 m | Retain only if service operations and two routes justify the footprint |
+| Combined facade/site envelope | 48 × 30 m | Includes the 5.3 m facade band; clear parking yard is 42.7 m east of the service threshold. The 30 m Z depth is clear between inner north/south wall faces |
 | Marked bay | 3.0 m wide × 5.0 m deep | Wider than a minimum stall to permit readable cover routes; validate total bay count and circulation |
 | Parked car envelope | approx. 1.9 × 4.5 m | Static cover; doors/bonnets do not create walkable space |
-| Structural column | 1.0 × 1.0 m footprint | Must not intrude into the required clear route or hide a required landing |
+| Pipe-rack support column | 1.0 × 1.0 m footprint at each inner parking-row edge | Supports overhead service pipes; no continuous canopy. Maintain 2.8 m clear below rack and keep the central apron open |
 | Technical cage | approx. 5.6 × 3.4 m at local centre (32.1, 13.1) | Fixed service enclosure; route B passes east/north of it with ≥1.5 m target clearance; no route through the cage |
 | Main central apron | approx. 17.3 m between the two parking rows | Deliberately a service/maneuvering apron, not a standard aisle; use the technical cage, cover clusters and exposed crossing to break the open area |
 | Pedestrian pinch | target ≥1.2 m | Only at one clearly telegraphed, non-jump pinch; prefer ≥1.5 m for a fast turn |
 | Primary route | target ≥2.0 m clear | Measured between collision surfaces, not visual prop bounds |
-| Canopy headroom | 2.8 m shown in section | Optional design element; remove if unsupported by the facility program, but retain route and threat readability |
-| Perimeter | wall/fence shown schematically | Height, gate opening, climbability and boundary collision remain to be specified against the threat and exit behavior |
+| Overhead service pipe racks | At the inner edges of the two parking rows; 2.8 m clear below | Two linear pipe racks supported by the column rows; the central apron remains open-air, with no continuous canopy |
+| Perimeter walls | 0.3–0.5 m thick; 2.4 m high above pavement | Non-climbable in the baseline; the 3.6 m north egress is the only far-side opening. Verify collision and gate continuity in Godot |
 
-Before design lock, add dimension strings for the narrowest clear passage on each route, the service-cage bypass and the final gate. The current SVGs now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron, the 1.3 m O3 aperture and the 3.6 m far-side egress; they still do not prove every internal clearance or the Phase 1 exterior threshold.
+The drawings now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron, O1/O2 footprints, the 1.3 × 2.2 m O3 aperture and the 3.6 m far-side egress. The plan records target clearances of O1 ≥1.2 m, O2 route ≥1.5 m and a 2.6 m nominal service-cage bypass; these are geometric targets, not verified collision envelopes, and must be checked against the actual player capsule and camera before production lock.
 
 ### 2.3 Required plan and section views
 
 The selected spatial baseline is recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg), with companion section, threat and landmark/lighting overlays. All four drawings form **concept package v0.3**: the 48 × 30 m envelope, routes, sightline sectors, light zones and prop placements are design proposals, not approved production geometry and not a representation of the current Godot scene. The entry threshold is a 3 m opening matched to the selected P−1 service mouth. The plan's local origin and scale are mapped to the selected world transform stated above; runtime verification is still required. Their purpose is to expose route topology and reviewable spatial questions. The programming owner must not treat these coordinates as runtime-verified until the selected exit, physical connection, clearances and elevation have been checked against the canonical scene.
 
 The parking layout is not accepted from a prose description alone. Its design package must contain:
-1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and patrol/sightline overlays.
-2. **Section B–B:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a dimensioned north–south section through representative parking rows, the 17.3 m service apron, optional canopy and 2.8 m headroom target. It does not cut the service mouth or north egress gate; those are defined in plan. The selected datum is Y=−2.0 m, continuous with P−1; no ramp or step is intended at the service mouth. Verify the elevation in Godot.
+1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and pursuit/sightline overlays.
+2. **Section B–B:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a dimensioned north–south section at local X≈36 m through representative vehicles, both overhead pipe-rack supports, O2 and the 17.3 m open service apron; 2.8 m clearance is measured below the racks. No continuous canopy is part of the baseline. It does not cut the service mouth or north egress gate; those are defined in plan. The selected datum is Y=−2.0 m, continuous with P−1; no ramp or step is intended at the service mouth. Verify the elevation in Godot.
 3. **Spatial graph:** nodes, traversable edges, directed drops/climbs, blocked edges and route alternatives.
-4. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
-5. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
+4. **Obstacle detail sheet:** [obstacle_detail_sheet.svg](design/assets/phase2_parking/obstacle_detail_sheet.svg) defines the plan/elevation envelopes for O1, O2 and O3, including the 1.3 × 2.2 m O3 aperture.
+5. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
+6. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
 
-The Phase 2 asset family now includes the plan, north–south section, threat/sightline overlay and lighting/landmark overlay in concept v0.3. They share local coordinates and the selected world transform; the next revision must validate all clearances, the final gate and Y=−2.0 m continuity in Godot. Do not present a screenshot of the prototype as an architectural plan.
+The Phase 2 asset family now includes the plan, north–south section, O1/O2/O3 detail sheet, threat/sightline overlay and lighting/landmark overlay. The four core spatial drawings are concept v0.3; the companion obstacle detail sheet records the measured apertures and footprints. They share local coordinates and the selected world transform; the next revision must validate all clearances, the final gate and Y=−2.0 m continuity in Godot. Do not present a screenshot of the prototype as an architectural plan.
 
 ### 2.4 Provisional spatial graph
 
-The following coordinates are derived from the concept plan only. Origin is the northwest inside corner; X increases east, Z increases south. Values are approximate metres and must not be copied into the production builder before a coordinate transform and Phase 1 handoff review.
+The parking graph uses local metres with origin at the northwest corner of the combined facade/site plan; X increases east and Z increases south. The 48 × 30 m envelope is measured to the inside faces of the north/south/east perimeter walls; the 5.3 m facade band is included in X. The selected design-baseline transform is X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. Values remain approximate and must not be copied into the production builder until the physical handoff is verified against the canonical scene.
 
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
-| P2-01 Service threshold | (5.3, 21.8) local | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; world orientation/transform remain unlocked until Phase 1 exit is selected |
-| P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
+| P2-01 Service threshold | local (5.3, 21.8); world (34, 6, −2) | Exterior mouth plane at the west edge of the entry vestibule | Continuous handoff from P−1; preserve player position/orientation here, no scene-spawn teleport |
+| P2-CP Recovery checkpoint | local (6.8, 21.8); world (35.5, 6, −2) | Safe pocket inside vestibule, 1.5 m beyond the mouth | Recovery-only checkpoint after fair failure; not the initial integration spawn |
+| P2-02 Route decision | local (9.3, 21.8); world (38, 6, −2) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (14.3, 19.3) | Short exposed path; turns north around the first column | To P2-A2; keep ≥1.2 m clear west of the column |
 | P2-A2 Exposed crossing | (22.9, 19.3) | High-risk central-apron crossing | To P2-A3; retain recovery cover nearby |
 | P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-A4; minimum clear width 2.0 m |
 | P2-A4 South-east turn | (40.7, 19.6) | Exposed 90-degree turn south of O2 before convergence | To P2-JOIN; keep 2.0 m clear and visible from approach |
-| P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
+| P2-B1 Service lane | (11.1, 13.9) | Service-side route with intermittent cover from vehicles, columns and equipment; no continuous roof | To P2-B2; narrower clearances |
 | P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
-| P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal east of the technical cage; does not pass through the cage | To P2-JOIN; maintain ≥1.5 m target clearance from the cage envelope |
+| P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal north/east of the closed technical cage; does not pass through it | To P2-JOIN; 2.6 m nominal gap at the cover/column row, with O2 the tighter ≥1.5 m passage; verify actual capsule clearance |
 | P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05A |
 | P2-05A Barrier approach | (44.3, 16.8) | Clear approach south of the barrier, with the 1.3 m aperture visible ahead | To P2-05; keep the approach collision-free |
-| P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
+| P2-05 Service bottleneck | (44.3, 14.8) | Fixed service-shutter leaves with a 1.3 m wide × 2.2 m high clear aperture | To P2-06 through the aperture; no interaction, timed slide or moving collision across a player already inside |
 | P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
-| P2-EXIT Boundary | (42.8, 1.8) | Physical escape threshold | Mission completion only after crossing actual boundary |
+| P2-EXIT Boundary | local (42.8, −0.4); world (71.5, −16.2, −2) | Far-side threshold beyond the north wall; 3.6 m clear opening | Mission completion only after crossing the gate and its wall thickness |
 
 **Graph constraints:** all edges are bidirectionally traversable unless explicitly marked otherwise; no drop, climb, jump or squeeze is implied by a line alone. For every edge, the final graph must state clear width, elevation, traversal verb, threat accessibility, sightline condition, fail/recovery behavior and whether it is part of the intended fast route. The current concept has no approved one-way drop.
 
-The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). The selected transform `X_world=X_local+28.7 / Z_world=Z_local−15.8`, at `Y=−2.0 m`, aligns the P−1 east mouth at world (34, 4.5..7.5, −2) with the parking threshold local (5.3, 21.8); the safe spawn is world (35.5, 6) and the far-side egress is (71.5, −14). The current prototype starts near `(X=34.5, Z=0)` and its builder has only a 14 m corridor half-width of 7 m; these are implementation facts to reconcile, not reasons to force the architecture to the old prototype. The selected transform remains a design baseline until scene geometry, elevation, collision and camera continuity are verified.
+The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). The selected transform `X_world=X_local+28.7 / Z_world=Z_local−15.8`, at `Y=−2.0 m`, aligns the P−1 east mouth at world (34, 4.5..7.5, −2) with the parking threshold local (5.3, 21.8); the recovery checkpoint is world (35.5, 6) and the far-side egress beyond the north wall is (71.5, −16.2). The current prototype starts near `(X=34.5, Z=0)` and its builder has only a 14 m corridor half-width of 7 m; these are implementation facts to reconcile, not reasons to force the architecture to the old prototype. The selected transform remains a design baseline until scene geometry, elevation, collision and camera continuity are verified.
 
 ### 2.5 Provisional edge and clearance contract
 
@@ -120,7 +122,8 @@ These are design targets for the concept graph, not measured clearances in the c
 
 | Edge | Traversal | Target clear width | Sightline / exposure | Recovery and threat rule |
 |---|---|---:|---|---|
-| P2-01 → P2-02 | Walk/run, no jump | ≥2.0 m | Entry is briefly sheltered by facade | Threat enters only through the actual connected Phase 1 exit; no spawn in front of Elena |
+| P2-01 → P2-CP | Walk/run through vestibule, no jump | 3.0 m clear opening; 1.5 m to checkpoint | Entry is briefly sheltered by facade | Preserve player transform at the threshold; CP is recovery-only, not the initial spawn |
+| P2-CP → P2-02 | Walk/run through vestibule, no jump | 3.0 m clear opening; 2.5 m to decision | Read the direct/service split before committing | Checkpoint must not reset story state or place Elena in threat LOS |
 | P2-02 → P2-A1 → P2-A2 | Direct walk/run | ≥3.5 m at aisle; ≥1.5 m at turns | High exposure across the central aisle | Nearest cover cluster remains reachable; threat may pursue only along visible, traversable aisle |
 | P2-02 → P2-B1 → P2-B2 | Walk/crouch where needed | ≥1.2 m at the single authored pinch; otherwise ≥1.5 m | Broken sightline behind parked vehicles | No required jump; player can retreat to P2-02 until the final commitment |
 | P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
@@ -138,8 +141,8 @@ All positions below use the local plan coordinates. These are design placements,
 |---|---:|---|---|
 | L1 / S1 Service mouth | (6.8, 21.8) | Stable cool spill light; pump/ventilation sound recedes as exterior ambience emerges | The player can orient toward the apron and identify the facility facade behind them |
 | L2 / S2 Central apron | (22.0, 15.0) | Hard, stable security-light pools; a short relay/actuator cue may signal a state change | The direct route is exposed; lighting does not imply that the illuminated route is safe |
-| L3 / S3 Technical-cage bypass | (37.1, 12.1) | Restrained amber service indicator east of the cage; local electrical/mechanical hum | The covered route has a real operational purpose and is not a decorative dead end |
-| L4 / S4 Bottleneck | (44.3, 14.8) | Barrier state has both a visible position and an audible actuator/denial cue | The player understands the available aperture and bypass before committing |
+| L3 / S3 Technical-cage bypass | (37.1, 12.1) | Restrained amber service indicator east of the cage; local electrical/mechanical hum | The service-side route has a real operational purpose and is not a decorative dead end |
+| L4 / S4 Bottleneck | (44.3, 14.8) | Fixed open service-shutter leaves, safety marking and a clear 1.3 m aperture | The player sees the aperture before committing; no timed mechanism |
 | L5 / S5 Egress landmark | (42.8, 1.8) | Clear silhouette/backlight with no overexposed bloom; gate/perimeter sound | The goal is inferable early, but crossing the boundary is still a physical action |
 
 Lighting must preserve dark adaptation and camera readability. No strobing alarm, colour-only threat cue or pitch-black required route. Critical sounds (unit entering, barrier movement, alert state) need visual equivalents; critical visual state changes need an audio or text alternative where feasible. Use sound to reinforce distance and state, never to provide the only route instruction.
@@ -150,7 +153,7 @@ The concept plan marks three provisional anchors: **S** at the service entry, **
 
 | Anchor | Local coordinate (X, Z) | Purpose | Activation rule |
 |---|---:|---|---|
-| S / entry spawn pocket | (6.8, 21.8) local; target world (35.5, 6) | Safe spawn point 1.5 m inside the 3 m service threshold | Set by the integrated scene; do not spawn on the threshold collider or replay the standalone corridor |
+| P2-CP / recovery checkpoint | local (6.8, 21.8); world (35.5, 6, −2) | Recovery-only anchor 1.5 m inside the 3 m service threshold | Not the initial spawn. Preserve the entry transform at P2-01; use CP only after fair failure |
 | CP1 | (40.7, 16.8) | Avoid replaying both route branches after the player has completed the main traversal | Activate only after Elena physically enters the convergence pocket |
 | CP2 | (44.3, 5.0) | Keep the final bottleneck/egress attempt short after the player reaches the last safe approach | Activate before the final committed crossing, not after an untelegraphed hazard |
 
@@ -171,7 +174,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 ### Beat P2-02 — First cover decision
 **Player action:** choose between a more direct exposed aisle and a slower route through parked vehicles/columns.  
 **Design purpose:** teach that cover blocks line of sight but not necessarily sound.  
-**Fairness:** silhouettes, column rhythm, headlight/security-light contrast and the enemy's facing direction must communicate risk. The direct route must remain possible for a confident player; the covered route must be useful, not mandatory busywork.
+**Fairness:** silhouettes, column rhythm, headlight/security-light contrast and the enemy's facing direction must communicate risk. The direct route must remain possible for a confident player; the partially covered service route must be useful, not mandatory busywork.
 
 ### Beat P2-03 — Vehicle-row traversal
 **Player action:** thread through vehicle bays, columns and one clearly signposted service obstruction.  
@@ -184,16 +187,16 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Rules:** the threat's detection cone, alert buildup and audio tell must be understandable. Do not require frame-perfect timing. At least one recovery option must exist if the player is detected early.
 
 ### Beat P2-05 — Service bottleneck
-**Player action:** pass through the fixed, visibly open 1.3 m aperture in the service barrier. The current concept does not include a separate bypass; do not make the aperture close dynamically or require a timed slide.  
+**Player action:** pass through the fixed, visibly open 1.3 m aperture in the service barrier. The selected baseline does not include a separate bypass; do not make the aperture close dynamically or require a timed slide.  
 **Design purpose:** a final physical decision tied to the site's logistics.  
 **Rules:** the obstacle must have a plausible architectural cause and a clear interaction affordance. Avoid a key hunt, a new unrelated puzzle or an unannounced dead end.
 
 ### Beat P2-06 — Escape and aftermath
 **Player action:** cross the actual boundary and reach a safe transition point.  
 **Design purpose:** deliver release without implying that the larger conflict is resolved.  
-**Narrative result:** the immediate recovery unit is evaded; Helix's ability to identify and track Elena remains a threat. End with a short, authored beat that changes the player's understanding or stakes, not a generic “level complete” message.
+**Narrative result:** the immediate recovery unit is evaded; Helix's ability to identify and track Elena remains a threat. After crossing the north gate, a service reader displays “PROTOCOLO DE CONTENCIÓN: ACTIVO / SECTOR EXTERIOR” while perimeter lights/access states change in sequence. Elena's proposed line is “Fuera del perímetro. Eso no significa que haya terminado.” Deliver it as one short, skippable subtitle after the gate crossing, without pausing control. This suggests a coordinated response without naming an operator or resolving the wider conspiracy.
 
-The plan labels O1/O2/O3 correspond to provisional register entries P2-O1/P2-O2/P2-O3. Their IDs are stable design references, but their placements and dimensions are not production-locked until plan, section, graph and actual collision envelopes are reconciled. The design no longer assumes the player arrives from a specific Phase 1 coordinate; the final parking entry is to be transformed or redrawn around the selected exit, not vice versa. The final number and placement of physical obstacles remain subject to playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
+The plan labels O1/O2/O3 correspond to register entries P2-O1/P2-O2/P2-O3. Their footprints and baseline dimensions are defined in plan and the obstacle detail sheet; final collision envelopes, camera behavior and traversal clearances still require reconciliation against the actual player capsule. The selected handoff transform is X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. If the canonical scene differs, update the affected plans/section/graph and record the deviation; do not introduce a teleport or silently force the old prototype checkpoint. Final collision behavior remains subject to playtest. The dimensioned [obstacle detail sheet](design/assets/phase2_parking/obstacle_detail_sheet.svg) records plan/elevation envelopes for O1/O2/O3. Each final obstacle must have a stable ID, measured footprint, approach, intended solution, recovery behavior, collision envelope, camera risks, narrative function and acceptance test.
 
 ## 4. Route alternatives and threat fairness
 
@@ -221,9 +224,9 @@ These entries turn the concept symbols into reviewable design proposals. Their p
 
 | ID | Approx. position (X, Z) | Proposed physical element | Intended decision | Fairness and recovery contract |
 |---|---:|---|---|---|
-| P2-O1 | (13.3, 13.4) | Abandoned maintenance cart/pallet, approx. 1.9 × 2.1 m footprint, intruding into the covered service lane | Read the remaining side clearance and choose to walk around rather than sprint blindly | Keep a visibly continuous passage of at least 1.2 m; no hidden collision protrusions; route remains recoverable if detected |
-| P2-O2 | (36.9, 17.0) | Displaced service equipment rack, approx. 3.0 × 2.0 m footprint, between the routes near convergence | Use it as cover; Route A passes south of it while Route B approaches from the north-east | Must not intersect either route's minimum clear envelope; it changes sightline but does not block route connectivity |
-| P2-O3 | (44.3, 14.8) | Partially lowered service barrier; plan shows a fixed 1.3 m clear aperture | Read the opening and pass through without a timed slide | Validate player/camera/threat clearance; aperture never closes on a character; any impassable variant needs a dimensioned bypass in plan and graph |
+| P2-O1 | (13.3, 13.4) | Static maintenance cart/pallet, 1.9 × 2.1 m footprint, 1.1 m high | Read the remaining side clearance and choose to walk around rather than sprint blindly | Low cover only when crouched and only if actual geometry blocks LOS; not climbable or movable; passage ≥1.2 m |
+| P2-O2 | (36.9, 17.0) | Displaced service rack, 3.0 × 2.0 m footprint and 1.4 m high, between the routes near convergence | Low cover only while crouched; a standing Elena remains partly visible. Route A passes south, Route B passes east/north | Must not intersect either route's minimum clear envelope; no climbing or physics movement; see obstacle detail sheet |
+| P2-O3 | (44.3, 14.8) | Fixed service-shutter leaves with a 1.3 m wide × 2.2 m high clear aperture | Read the opening and pass through; no interaction or timed slide | Leaves remain fixed open during gameplay; keep the aperture clear for player and threat. No bypass exists in this baseline; see obstacle detail sheet |
 
 No obstacle is approved merely because it appears in the SVG. Before implementation, the design owner must review each item's measured footprint, approach view, collision shape, camera behavior, player and enemy traversability, audio/visual tell, alternative, checkpoint relationship and acceptance test. If an obstacle changes, update the plan, section/overlay, graph, register and traceability together.
 
@@ -302,7 +305,7 @@ Any voice line must have a trigger, exact text or approved intent, delivery timi
 The canonical handoff is:
 `G → quiet evasion through F/E and potentially occupied work areas → mapped reacquisition threshold → running chase through service circulation → approved alternative exterior exit → parking entry → parking chase → far-side egress`.
 
-This is the intended narrative/spatial sequence. The existing parking prototype's standalone start and checkpoints are test infrastructure, not proof of this integrated route. The integrated scene must spawn Elena at the parking entry checkpoint and must not replay the earlier corridor or reset mission evidence without an explicit persistence decision.
+This is the intended narrative/spatial sequence. The existing parking prototype's standalone start and checkpoints are test infrastructure, not proof of this integrated route. The integrated scene must preserve Elena's world transform/orientation at P2-01 through the physical handoff; P2-CP is recovery-only, not the initial spawn. Do not replay the earlier corridor or reset mission evidence without an explicit persistence decision.
 
 ## 7. Functional contract and failure recovery
 

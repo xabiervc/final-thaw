@@ -36,7 +36,7 @@ The design authority for parking architecture, route topology, encounter beats, 
 
 The existing motion/chase prototype is the foundation, not yet validated or campaign-integrated. It includes a third-person camera, movement, jumps, crouch, a defined climb, scanner, checkpoints and a patrol/investigate/alert/chase/search/return recovery unit. It has no navigation mesh, crouch/climb animations are provisional, and detection/noise values need playtesting.
 
-The current canonical scene contains a provisional G→H handoff into the existing motion/chase scene so the boundary can be tested end to end. Do not accept the combined slice or tune campaign pacing until the Phase 1 scene/tests are stable, the v2 motion/chase test has run, and a hands-on chase playtest is recorded.
+The current canonical scene contains a provisional G→H handoff into the existing motion/chase scene so the boundary can be tested end to end. This is a temporary prototype integration boundary, not the final Phase 1 → Phase 2 handoff. The final design preserves Elena's world transform at P2-01 (the P−1 service threshold); P2-CP is a recovery-only checkpoint, not the initial spawn. Do not accept the combined slice or tune campaign pacing until the Phase 1 scene/tests are stable, the v2 motion/chase test has run, and a hands-on chase playtest is recorded.
 
 ## Implementation order
 

@@ -26,8 +26,8 @@
     <!-- 30 m clear yard, measured between inside faces of perimeter walls -->
     <line x1="0" y1="320" x2="960" y2="320" stroke="#344657" stroke-width="3"/>
     <rect x="0" y="320" width="960" height="22" fill="#dce2e7" stroke="#344657" stroke-width="1"/>
-    <rect x="-10" y="243" width="10" height="77" class="concrete"/>
-    <rect x="960" y="243" width="10" height="77" class="concrete"/>
+    <rect x="-13" y="243" width="13" height="77" class="concrete"/><line x1="15" y1="243" x2="15" y2="320" class="dim"/><text x="23" y="284" class="label">2,4 m</text>
+    <rect x="960" y="243" width="13" height="77" class="concrete"/>
     <text x="0" y="230" class="small" text-anchor="start">MURO DE CONTENCIÓN</text>
     <text x="960" y="230" class="small" text-anchor="end">MURO PERIMETRAL</text>
     <!-- South and north parking bays: 5 m deep, 4.5 m vehicle envelopes -->
@@ -65,13 +65,13 @@
     <text x="758" y="268" class="label">2,8 m</text>
     <text x="758" y="282" class="tiny">libres bajo rack</text>
     <!-- Dimensions: 5 m bay / 17.3 m apron / 5 m bay -->
-    <line x1="42" y1="355" x2="202" y2="355" class="dim"/>
+    <line x1="0" y1="355" x2="42" y2="355" class="dim"/><text x="21" y="348" class="tiny" text-anchor="middle">1,3 m</text><line x1="42" y1="355" x2="202" y2="355" class="dim"/>
     <text x="122" y="348" class="label" text-anchor="middle">5,0 m</text>
     <line x1="202" y1="370" x2="758" y2="370" class="dim"/>
     <text x="480" y="363" class="label" text-anchor="middle">17,3 m · APRON CENTRAL</text>
     <line x1="758" y1="355" x2="918" y2="355" class="dim"/>
     <text x="838" y="348" class="label" text-anchor="middle">5,0 m</text>
-    <line x1="0" y1="385" x2="960" y2="385" class="dim"/>
+    <line x1="918" y1="355" x2="960" y2="355" class="dim"/><text x="939" y="348" class="tiny" text-anchor="middle">1,3 m</text><line x1="0" y1="385" x2="960" y2="385" class="dim"/>
     <line x1="0" y1="347" x2="0" y2="398" class="guide"/><line x1="960" y1="347" x2="960" y2="398" class="guide"/>
     <text x="480" y="378" class="label" text-anchor="middle">30,0 m · FONDO INTERIOR TOTAL</text>
     <text x="24" y="415" class="tiny">SUR</text><text x="936" y="415" class="tiny" text-anchor="end">NORTE</text>
