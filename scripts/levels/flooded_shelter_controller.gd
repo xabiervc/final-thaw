@@ -8,6 +8,7 @@ class_name FloodedShelterController
 @export var valve_station_left: ValveStation
 @export var valve_station_right: ValveStation
 @export var flood_gate_exit: FloodGate
+@export var shelter_light: ShelterLight
 
 @export var oxygen_refill_on_power: float = 40.0
 @export var oxygen_refill_on_valves: float = 30.0
@@ -57,6 +58,8 @@ func _on_power_activated() -> void:
 	has_power = true
 	if elena:
 		elena.add_oxygen(oxygen_refill_on_power)
+	if shelter_light:
+		shelter_light.set_power(true)
 	power_restored.emit()
 
 func _on_valve_opened() -> void:
@@ -110,6 +113,8 @@ func restore_from_persistence() -> void:
 		valve_station_left.restore_state(valves_open >= 1)
 	if valve_station_right:
 		valve_station_right.restore_state(valves_open >= 2)
+	if shelter_light:
+		shelter_light.set_power(has_power)
 
 	if valves_open >= 2 and flood_gate_exit:
 		flood_gate_exit.open_gate()

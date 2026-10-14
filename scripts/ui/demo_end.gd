@@ -12,12 +12,20 @@ var rescued: bool = false
 
 func _ready() -> void:
 	visible = false
+	shelter = get_tree().get_first_node_in_group("flooded_shelter") as FloodedShelterController
+
 	if menu_button:
 		menu_button.text = NarrativeTextManager.get_end_button_menu()
 		menu_button.pressed.connect(_on_menu_pressed)
 	if restart_button:
 		restart_button.text = NarrativeTextManager.get_end_button_restart()
 		restart_button.pressed.connect(_on_restart_pressed)
+
+	NarrativeTextManager.language_changed.connect(_on_language_changed)
+
+func _exit_tree() -> void:
+	if NarrativeTextManager.language_changed.is_connected(_on_language_changed):
+		NarrativeTextManager.language_changed.disconnect(_on_language_changed)
 
 func show_end(success_result: bool, rescued_civilian: bool) -> void:
 	success = success_result
@@ -49,6 +57,14 @@ func _update_text() -> void:
 			lines.append(NarrativeTextManager.get_end_civilian_not_rescued())
 
 	summary_label.text = "\n".join(lines.filter(func(line: String) -> bool: return not line.is_empty()))
+
+func _on_language_changed(_locale: String) -> void:
+	if menu_button:
+		menu_button.text = NarrativeTextManager.get_end_button_menu()
+	if restart_button:
+		restart_button.text = NarrativeTextManager.get_end_button_restart()
+	if visible:
+		_update_text()
 
 func _on_menu_pressed() -> void:
 	get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")

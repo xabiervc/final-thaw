@@ -36,6 +36,7 @@ power_console = NodePath("../PowerRoom/PowerConsole")
 valve_station_left = NodePath("../ValveRoom/ValveLeft")
 valve_station_right = NodePath("../ValveRoom/ValveRight")
 flood_gate_exit = NodePath("../RescueRoom/FloodGateExit")
+shelter_light = NodePath("../PowerRoom/ShelterLight")
 
 [node name="Background" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.2, 0.2)
@@ -129,4 +130,3 @@ shape = SubResource("win_shape")
 [connection signal="civilian_rescued" from="Civilian" to="ShelterController" method="_on_civilian_rescued"]
 [connection signal="oxygen_changed" from="Elena" to="DemoHUD" method="update_oxygen"]
 [connection signal="level_completed" from="ShelterController" to="DemoEnd" method="show_end"]
-[connection signal="player_died" from="Elena" to="ShelterController" method="complete_level"]
