@@ -52,7 +52,7 @@ Ruta de referencia: G → F/E → pasarela superior → S2 ↓ M → sala de bom
 
 | ID | Cota/centro aproximado | Volumen de referencia | Lectura y solución | Aceptación geométrica |
 |---|---|---|---|---|
-| O1 · Estantería caída | P2: (7,0; 3,0; −6,75) | 1,6 × 1,1 × 2,0 m | Estantería de archivo vencida hacia el paso. Rodear por el lateral abierto, con aproximación visible desde F. | Mantener al menos 1,2 m de paso continuo; no tapar la puerta ni ocultar el acceso a E. |
+| O1 · Estantería caída | P2: (6,8; 3,0; −5,6) | 1,6 × 1,1 × 2,0 m | Estantería de archivo vencida hacia el paso. Rodear por el lateral abierto, con aproximación visible desde F. | Mantener al menos 1,2 m de paso continuo; no tapar la puerta ni ocultar el acceso a E. |
 | O2 · Bastidor de tuberías | M: (18,0; 1,5; −3,0) | 2,0 × 0,8 × 1,2 m | Bastidor desplazado durante la evacuación; rodear siguiendo las líneas de servicio. | Dejar un recorrido ≥2,0 m entre maquinaria/barandillas; no invadir el acceso a elevador ni S2. |
 | O3 · Bandeja desprendida | P0: (25,0; 0,0; −0,5) | 1,2 × 0,8 × 0,6 m | Bandeja/canaleta caída en la galería de servicio; el paso lateral debe ser obvio y estable. | Dejar ≥1,2 m libres a ambos lados donde el trazado lo permita; no bloquear la llegada al elevador ni S1. |
 
