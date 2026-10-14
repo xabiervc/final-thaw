@@ -20,13 +20,21 @@ func _ready() -> void:
 
 	context_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	context_label.custom_minimum_size = Vector2(620, 170)
-	context_label.add_theme_font_size_override("font_size", 18)
+	_apply_font_scale()
 
 	lang_es_button.pressed.connect(_on_lang_es_pressed)
 	lang_en_button.pressed.connect(_on_lang_en_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	start_button.grab_focus()
 	_apply_language(current_locale)
+
+func _apply_font_scale() -> void:
+	var scale := clampf(GameManager.font_scale, 0.75, 2.0)
+	title_label.add_theme_font_size_override("font_size", int(48.0 * scale))
+	context_label.add_theme_font_size_override("font_size", int(18.0 * scale))
+	start_button.add_theme_font_size_override("font_size", int(22.0 * scale))
+	lang_es_button.add_theme_font_size_override("font_size", int(18.0 * scale))
+	lang_en_button.add_theme_font_size_override("font_size", int(18.0 * scale))
 
 func _apply_language(locale: String) -> void:
 	current_locale = locale
@@ -66,26 +74,14 @@ func _refresh_context() -> void:
 	if game_state != null:
 		var prior: Array[String] = []
 		if game_state.get_flag("shelter_power_restored", false):
-			prior.append(_refuge_power_text())
+			prior.append(NarrativeTextManager.get_shelter_state_power(true))
 		if game_state.get_flag("shelter_valves_opened", false):
-			prior.append(_refuge_valves_text())
+			prior.append(NarrativeTextManager.get_shelter_state_valves(true))
 		if game_state.get_flag("shelter_civilian_rescued", false):
-			prior.append(_refuge_civilian_text())
+			prior.append(NarrativeTextManager.get_shelter_civilian_state_short())
 		if not prior.is_empty():
-			lines.append(_state_prev_text() + "\n" + "\n".join(prior))
+			lines.append(NarrativeTextManager.get_shelter_previous_state() + "\n" + "\n".join(prior))
 	context_label.text = "\n\n".join(lines)
-
-func _refuge_power_text() -> String:
-	return "Refugio: energía restaurada." if current_locale == "es" else "Shelter: power restored."
-
-func _refuge_valves_text() -> String:
-	return "Refugio: válvulas abiertas." if current_locale == "es" else "Shelter: valves opened."
-
-func _refuge_civilian_text() -> String:
-	return "Refugio: civil rescatada." if current_locale == "es" else "Shelter: civilian rescued."
-
-func _state_prev_text() -> String:
-	return "Estado previo:" if current_locale == "es" else "Previous state:"
 
 func _on_lang_es_pressed() -> void:
 	_apply_language("es")
