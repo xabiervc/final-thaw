@@ -742,8 +742,24 @@ func _build_level() -> void:
 	_add_box(Vector3(duct_width, CEILING_BOTTOM, 0.3), Vector3(duct_center, CEILING_BOTTOM * 0.5, -3.8), WALL_COLOR, true)
 	_add_box(Vector3(duct_width, 0.35, 3.2), Vector3(duct_center, CEILING_BOTTOM + 0.175, -5.4), WALL_COLOR, true)
 
-	for pillar in [Vector3(40.0, 1.5, 2.5), Vector3(46.0, 1.5, -2.5), Vector3(52.0, 1.5, 2.5), Vector3(57.0, 1.5, -2.5)]:
+	# The second half reads as a service parking garage: marked bays, parked vehicles and concrete columns.
+	for pillar in [Vector3(40.0, 1.5, 2.5), Vector3(46.0, 1.5, -2.5), Vector3(52.0, 1.5, 2.5), Vector3(57.0, 1.5, -2.5), Vector3(64.0, 1.5, 2.5), Vector3(72.0, 1.5, -2.5)]:
 		_add_box(Vector3(1.2, 3.0, 1.2), pillar, WALL_COLOR, true)
+
+	# Parked cars are solid cover, but their placement leaves a readable central escape lane.
+	var car_paint := [Color(0.16, 0.21, 0.25), Color(0.31, 0.19, 0.15), Color(0.38, 0.39, 0.36), Color(0.12, 0.16, 0.19)]
+	var bay_x := [38.0, 47.0, 56.0, 65.0, 74.0]
+	for car_index in range(bay_x.size()):
+		var car_x: float = float(bay_x[car_index])
+		var car_z: float = -4.55 if car_index % 2 == 0 else 4.55
+		var paint: Color = car_paint[car_index % car_paint.size()]
+		_add_box(Vector3(3.8, 1.15, 1.65), Vector3(car_x, 0.72, car_z), paint, true)
+		_add_box(Vector3(2.0, 0.48, 1.42), Vector3(car_x - 0.25, 1.45, car_z), paint.lightened(0.12), true)
+		_add_box(Vector3(0.65, 0.16, 0.05), Vector3(car_x + 1.82, 0.72, car_z - 0.42), Color(0.72, 0.18, 0.12), false)
+		_add_box(Vector3(0.65, 0.16, 0.05), Vector3(car_x + 1.82, 0.72, car_z + 0.42), Color(0.72, 0.18, 0.12), false)
+		# Parking-bay lane marks use non-colliding floor strips.
+		_add_box(Vector3(0.08, 0.025, 3.2), Vector3(car_x - 2.1, 0.015, car_z), Color(0.72, 0.68, 0.48), false)
+		_add_box(Vector3(0.08, 0.025, 3.2), Vector3(car_x + 2.1, 0.015, car_z), Color(0.72, 0.68, 0.48), false)
 
 	_add_box(Vector3(6.0, 0.3, 3.4), Vector3(46.0, CLIMB_HEIGHT - 0.15, 5.3), FLOOR_COLOR, true)
 	_add_box(Vector3(0.4, CLIMB_HEIGHT - 0.3, 0.4), Vector3(48.6, (CLIMB_HEIGHT - 0.3) * 0.5, 6.6), WALL_COLOR, true)
