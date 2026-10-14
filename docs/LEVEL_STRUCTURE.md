@@ -74,7 +74,7 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 | Overhead service pipe racks | At the inner edges of the two parking rows; 2.8 m clear below | Two linear pipe racks supported by the column rows; the central apron remains open-air, with no continuous canopy |
 | Perimeter walls | 0.3–0.5 m thick; 2.4 m high above pavement | Non-climbable in the baseline; the 3.6 m north egress is the only far-side opening. Verify collision and gate continuity in Godot |
 
-The drawings now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron, O1/O2 footprints, the 1.3 × 2.2 m O3 aperture and the 3.6 m far-side egress. The route table defines minimum target widths, but the service-cage bypass and each route's tightest collision envelope still require explicit measurement against the actual player capsule and camera before production lock.
+The drawings now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron, O1/O2 footprints, the 1.3 × 2.2 m O3 aperture and the 3.6 m far-side egress. The plan records target clearances of O1 ≥1.2 m, O2 route ≥1.5 m and a 2.6 m nominal service-cage bypass; these are geometric targets, not verified collision envelopes, and must be checked against the actual player capsule and camera before production lock.
 
 ### 2.3 Required plan and section views
 
@@ -85,10 +85,10 @@ The parking layout is not accepted from a prose description alone. Its design pa
 2. **Section B–B:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a dimensioned north–south section at local X≈36 m through representative vehicles, both overhead pipe-rack supports, O2 and the 17.3 m open service apron; 2.8 m clearance is measured below the racks. No continuous canopy is part of the baseline. It does not cut the service mouth or north egress gate; those are defined in plan. The selected datum is Y=−2.0 m, continuous with P−1; no ramp or step is intended at the service mouth. Verify the elevation in Godot.
 3. **Spatial graph:** nodes, traversable edges, directed drops/climbs, blocked edges and route alternatives.
 4. **Obstacle detail sheet:** [obstacle_detail_sheet.svg](design/assets/phase2_parking/obstacle_detail_sheet.svg) defines the plan/elevation envelopes for O1, O2 and O3, including the 1.3 × 2.2 m O3 aperture.
-4. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
-5. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
+5. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
+6. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
 
-The Phase 2 asset family now includes the plan, north–south section, threat/sightline overlay and lighting/landmark overlay in concept v0.3. They share local coordinates and the selected world transform; the next revision must validate all clearances, the final gate and Y=−2.0 m continuity in Godot. Do not present a screenshot of the prototype as an architectural plan.
+The Phase 2 asset family now includes the plan, north–south section, O1/O2/O3 detail sheet, threat/sightline overlay and lighting/landmark overlay. The four core spatial drawings are concept v0.3; the companion obstacle detail sheet records the measured apertures and footprints. They share local coordinates and the selected world transform; the next revision must validate all clearances, the final gate and Y=−2.0 m continuity in Godot. Do not present a screenshot of the prototype as an architectural plan.
 
 ### 2.4 Provisional spatial graph
 
@@ -105,7 +105,7 @@ The parking graph uses local metres with origin at the northwest corner of the c
 | P2-A4 South-east turn | (40.7, 19.6) | Exposed 90-degree turn south of O2 before convergence | To P2-JOIN; keep 2.0 m clear and visible from approach |
 | P2-B1 Service lane | (11.1, 13.9) | Service-side route with intermittent cover from vehicles, columns and equipment; no continuous roof | To P2-B2; narrower clearances |
 | P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
-| P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal east of the technical cage; does not pass through the cage | To P2-JOIN; maintain ≥1.5 m target clearance from the cage envelope |
+| P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal north/east of the closed technical cage; does not pass through it | To P2-JOIN; 2.6 m nominal gap at the cover/column row, with O2 the tighter ≥1.5 m passage; verify actual capsule clearance |
 | P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05A |
 | P2-05A Barrier approach | (44.3, 16.8) | Clear approach south of the barrier, with the 1.3 m aperture visible ahead | To P2-05; keep the approach collision-free |
 | P2-05 Service bottleneck | (44.3, 14.8) | Fixed service-shutter leaves with a 1.3 m wide × 2.2 m high clear aperture | To P2-06 through the aperture; no interaction, timed slide or moving collision across a player already inside |
