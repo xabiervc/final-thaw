@@ -435,7 +435,7 @@ func _build_upper_route() -> void:
 	# P2: archive F, control E, and the west airlock G. G exits horizontally only.
 	_add_floor_rect(Rect2(Vector2(3.0, -9.0), Vector2(6.0, 4.5)), 3.0, "ArchiveCabinFloor")
 	_add_floor_rect(Rect2(Vector2(0.0, -9.0), Vector2(3.0, 4.5)), 3.0, "ExteriorAirlockFloor", materials.get_material("grate"))
-	_add_floor_rect(Rect2(Vector2(9.0, -9.0), Vector2(15.0, 4.5)), 3.0, "ControlRoomFloor")
+	_add_floor_rect(Rect2(Vector2(9.0, -8.5), Vector2(15.0, 4.0)), 3.0, "ControlRoomFloor")
 	var walkway_regions: Array = [Rect2(Vector2(9.0, -4.5), Vector2(17.0, 3.0))]
 	for hole in [Rect2(Vector2(9.0, -4.5), Vector2(4.0, 3.0))]:
 		var next_walkway_regions: Array = []
@@ -451,6 +451,8 @@ func _build_upper_route() -> void:
 	_wall_x("CabinEastNorthPier", 9.0, -9.0, -8.0, 3.0, 5.4)
 	_wall_x("CabinEastSouthPier", 9.0, -6.0, -4.5, 3.0, 5.4)
 	_wall_x("CabinEastLintel", 9.0, -8.0, -6.0, 5.2, 5.4)
+	# E panel is mounted on the north wall; its center remains at the functional-contract coordinate.
+	_wall_z("ControlRoomNorthWall", -8.35, 9.0, 24.0, 3.0, 5.4)
 
 	# G is a horizontal airlock, not a vertical shortcut.
 	_wall_z("VestibuleNorthWall", -9.0, 0.0, 3.0, 3.0, 5.4)
@@ -489,8 +491,8 @@ func _build_upper_route() -> void:
 	# S2 is walkable in both directions and has handrails that follow the actual slope.
 	_build_sloped_stairs("ControlStairsS2", 9.0, 13.0, -4.5, -1.5, 3.0, 1.5)
 	# E's north/east edges and the east spur of the observation walkway overlook the atrium.
-	_body_box("P2ControlNorthRail", Vector3(15.0, RAIL_HEIGHT, 0.1), Vector3(16.5, 3.0 + RAIL_HEIGHT * 0.5, -9.02), rail)
-	_body_box("P2ControlEastRail", Vector3(0.1, RAIL_HEIGHT, 4.5), Vector3(24.02, 3.0 + RAIL_HEIGHT * 0.5, -6.75), rail)
+
+	_body_box("P2ControlEastRail", Vector3(0.1, RAIL_HEIGHT, 4.0), Vector3(24.02, 3.0 + RAIL_HEIGHT * 0.5, -6.5), rail)
 	_body_box("P2WalkwayNorthRailEast", Vector3(2.0, RAIL_HEIGHT, 0.1), Vector3(25.0, 3.0 + RAIL_HEIGHT * 0.5, -4.49), rail)
 	_body_box("P2WalkwaySouthRail", Vector3(13.0, RAIL_HEIGHT, 0.1), Vector3(19.5, 3.0 + RAIL_HEIGHT * 0.5, -1.52), rail)
 	_body_box("P2WalkwayEastRail", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(26.02, 3.0 + RAIL_HEIGHT * 0.5, -3.0), rail)
