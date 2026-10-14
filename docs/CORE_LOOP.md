@@ -63,9 +63,9 @@ These are design requirements; their presence in code must be separately tested 
 
 The intended continuous sequence is:
 
-`Solve Aster system → consult restricted record → open exterior leaf of G → recovery unit enters → Elena retreats through F/E → S2 → mezzanine M → existing lift to P0 → S1 → P−1 → service evacuation gallery → exterior mouth → parking entry → parking chase`.
+`Solve Aster system → consult restricted record → open exterior leaf of G → audit sent / Containment starts → quiet evasion through F/E and potentially occupied work areas → recovery unit reacquires Elena at a mapped exposed threshold → running interior chase → selected alternative exit → parking entry → parking chase`.
 
-The exterior door at G starts the interior pursuit; it does not teleport Elena into the parking lot. The parking prototype's entry checkpoint is an integration boundary, not a substitute for the missing interior route. The standalone corridor start must remain usable for mechanics testing.
+The exterior door at G starts Containment, not an immediate uninterrupted sprint; a quiet evasion section precedes the running pursuit. G does not teleport Elena into the parking lot. The parking prototype's entry checkpoint is an integration boundary, not a substitute for the missing interior route. The standalone corridor start must remain usable for mechanics testing.
 
 The design does not yet establish whether the recovery unit is a human, robot or other specific entity beyond the current prototype's recovery-unit presentation. Keep identity and command chain open until the story decision is made.
 
