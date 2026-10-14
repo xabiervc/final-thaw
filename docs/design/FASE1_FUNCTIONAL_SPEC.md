@@ -32,7 +32,7 @@ Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protecció
 - Si se selecciona ARCHIVO con ENSAYO conectado, la protección dispara inmediatamente y registra `DEMANDA_SIMULTANEA`. No hay muerte ni bloqueo permanente. Aislar ENSAYO y rearmar permite recuperarse.
 - Cambiar selector o aislador no rearma por sí solo. Rearme solo tiene éxito con el fallo ausente.
 - El diagnóstico permanece disponible en cualquier estado y muestra estado actual y último disparo como datos separados.
-- Mantenimiento activa iluminación/elevador, pero no alimenta la protección de recuperación. La interacción encola además el flag de misión `SERVICE_OVERRIDE` como efecto narrativo separado; no altera el modelo de circuito ni inicia Containment hasta que se abre G.
+- Mantenimiento activa iluminación/elevador, pero no alimenta la protección de recuperación. En la transición OFF → ON, la interacción encola el flag de misión `SERVICE_OVERRIDE` como efecto narrativo separado; no altera el modelo de circuito. El flag persiste durante la misión aunque mantenimiento vuelva a OFF, y no se encola más de una vez.
 - Consultar F solo está disponible cuando ARCHIVO está estable. El conocimiento adquirido se conserva durante la sesión aunque después se pierda alimentación; no se escribe en el guardado persistente en este hito.
 
 ## 4. Función de cada sector en la investigación
@@ -51,7 +51,7 @@ Las pistas ambientales deben poder leerse en el espacio real y desde la cámara.
 
 ## 5. Huida interior
 
-El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_OVERRIDE` encolado por la interacción de mantenimiento. Esta bandera pertenece al flujo de misión, no al modelo eléctrico de `FASE1_LOGIC_CONTRACT.md`; no modifica sus salidas ni su historial. Abrir G envía la auditoría y activa Containment una sola vez. Consultar el archivo añade `RESTRICTED_RECORD_READ`, pero no dispara la persecución. Sin `SERVICE_OVERRIDE`, G devuelve una respuesta diegética de bloqueo y no inicia la huida.
+El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_OVERRIDE` encolado por la interacción de mantenimiento. Esta bandera pertenece al flujo de misión, no al modelo eléctrico de `FASE1_LOGIC_CONTRACT.md`; no modifica sus salidas ni su historial. Abrir G envía la auditoría, marca el evento como enviado y activa Containment una sola vez. Las llamadas repetidas no duplican el evento ni reinician la persecución. Consultar el archivo añade `RESTRICTED_RECORD_READ`, pero no dispara la persecución. Sin `SERVICE_OVERRIDE`, G devuelve una respuesta diegética de bloqueo y no inicia la huida. Reiniciar la misión restablece ambos flags; no se escriben en el guardado persistente.
 
 - La transición de exploración a huida debe ser perceptible mediante respuesta audiovisual del edificio y cambio de comportamiento de la amenaza.
 - La persecución sucede dentro del laboratorio. La escena del aparcamiento no debe cargarse hasta que Elena alcance la boca de servicio.
