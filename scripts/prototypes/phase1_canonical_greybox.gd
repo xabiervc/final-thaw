@@ -259,7 +259,7 @@ func _build_ground_floor() -> void:
 
 
 func _build_fixed_geometry() -> void:
-	# Outer shell. The west hatch is upper-only; the ground-level opening stays sealed.
+	# Outer shell. The north-west hatch is upper-only; the separate south opening is the framed entry tunnel.
 	_wall_x("OuterWestLowerA", 0.0, -10.0, -8.25, 0.0, 5.4)
 	_wall_x("OuterWestLowerB", 0.0, -6.75, 4.5, 0.0, 5.4)
 	_wall_x("OuterWestLowerC", 0.0, 7.5, 12.0, 0.0, 5.4)
