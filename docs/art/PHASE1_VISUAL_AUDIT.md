@@ -18,6 +18,13 @@ Expected effect: preserve industrial lighting rhythm while reducing the number a
 
 This is a hypothesis until measured. A sparse light pattern may create visibly uneven pools; the owner must compare screenshots and restore/tune the constants if the light rhythm becomes distracting.
 
+### Physical scene-detail pass
+
+- Added four batched visual-only mesh groups in `lab_art_dressing.gd`: muted safety-lane dashes on the floor, dark metallic wall skirting, and alternating amber/dark caution blocks at divider openings.
+- The detail geometry has no collision, scripts, or interaction behavior. It is generated from the existing `layout` data, so both `phase1` and `lab` profiles receive markings aligned to their actual floor rectangles and divider X positions.
+- Repeated details use `MultiMeshInstance3D` groups instead of one scene node per marking, keeping the implementation light. MultiMesh is intended for efficient repeated mesh instances; its whole-group visibility behavior still needs to be checked in scene. <https://docs.godotengine.org/en/stable/tutorials/performance/using_multimesh.html>
+- Inspect at the gameplay camera: confirm marks sit on top of the floor without z-fighting, do not look like a racing track, and do not obscure props or Elena. If the floor marking contrast is too strong, lower the amber tint rather than adding more glow.
+
 ### Lighting restraint pass
 
 - Environment glow intensity was reduced from 0.50 to 0.32 and the HDR threshold raised from 1.00 to 1.15. The intent is to keep emissive accents readable without allowing the bloom to dominate edges and nearby surfaces.
