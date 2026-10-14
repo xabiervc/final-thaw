@@ -2,13 +2,20 @@ name: Godot headless tests
 
 on:
   workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - feat/godot-vertical-slice
+  push:
+    branches:
+      - main
+      - feat/godot-vertical-slice
 
 permissions:
   contents: read
 
 jobs:
   headless-tests:
-    if: false
     name: Import project and run regression suite
     runs-on: ubuntu-latest
     timeout-minutes: 20
