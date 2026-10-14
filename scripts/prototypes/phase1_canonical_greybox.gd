@@ -492,7 +492,7 @@ func _build_lift() -> void:
 	_lower_lift_gate = _body_box("LiftSafetyGateLower", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 0.55, -1.1), materials.get_material("safety_paint"))
 	_lower_lift_gate_shape = _lower_lift_gate.get_child(0) as CollisionShape3D
 	_lower_lift_gate_mesh = _lower_lift_gate.get_child(1) as MeshInstance3D
-	_upper_lift_gate = _body_box("LiftSafetyGateUpper", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 2.05, -4.9), materials.get_material("safety_paint"))
+	_upper_lift_gate = _body_box("LiftSafetyGateUpper", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 2.05, -4.49), materials.get_material("safety_paint"))
 	_upper_lift_gate_shape = _upper_lift_gate.get_child(0) as CollisionShape3D
 	_upper_lift_gate_mesh = _upper_lift_gate.get_child(1) as MeshInstance3D
 	_refresh_stationary_lift_gates()
