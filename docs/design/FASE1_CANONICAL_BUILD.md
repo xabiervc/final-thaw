@@ -61,7 +61,7 @@ Se añadió `.github/workflows/godot-headless-tests.yml` para importar recursos 
 2. Corregir errores de parseo/runtime antes de ampliar el slice.
 3. Recorrer A→B→D1/D2→B→galería de servicio→M→S2→E→F→G→H a mano.
 4. Revisar cámara, sightlines, colisiones, anchos, puertas y pérdida de energía.
-5. Comprobar que el umbral exterior ofrece contexto para iniciar la escena de aparcamiento/Containment.
+5. Comprobar que G carga `phase2_parking_chase.tscn` en el checkpoint de entrada al aparcamiento (X=34,5), no al inicio del prototipo standalone, y que la unidad no detecta a Elena automáticamente al cargar.
 6. Validar el prototipo motion/chase v2 por separado y después la transición combinada.
 
 ~~~sh
