@@ -66,21 +66,22 @@ func _test_structure(proto) -> void:
 	_expect(hidden, "los marcadores del escaner empiezan ocultos")
 
 
+## Probe column x = 43: no parked car, pillar or catwalk post between the unit and the test positions.
 func _test_detection(proto) -> void:
 	proto.set_physics_process(false)
-	proto.enemy.global_position = Vector3(46.0, 0.0, 0.0)
+	proto.enemy.global_position = Vector3(43.0, 0.0, 0.0)
 	proto.enemy_visual.rotation.y = 0.0
-	_expect(proto.enemy_cone_contains(Vector3(46.0, 0.0, 5.0)), "el cono de vision cubre lo que tiene delante (+Z)")
-	_expect(not proto.enemy_cone_contains(Vector3(46.0, 0.0, -5.0)), "el cono de vision no cubre lo que tiene detras")
-	_expect(not proto.enemy_cone_contains(Vector3(51.0, 0.0, 0.0)), "el cono de vision no cubre su costado")
-	proto.player.global_position = Vector3(46.0, 0.1, 7.0)
+	_expect(proto.enemy_cone_contains(Vector3(43.0, 0.0, 5.0)), "el cono de vision cubre lo que tiene delante (+Z)")
+	_expect(not proto.enemy_cone_contains(Vector3(43.0, 0.0, -5.0)), "el cono de vision no cubre lo que tiene detras")
+	_expect(not proto.enemy_cone_contains(Vector3(48.0, 0.0, 0.0)), "el cono de vision no cubre su costado")
+	proto.player.global_position = Vector3(43.0, 0.1, 6.3)  # z = 7 is already the side wall face
 	proto.crouching = false
-	_expect(proto.can_enemy_see_player(), "ve a Elena de pie a 7 m dentro del cono")
+	_expect(proto.can_enemy_see_player(), "ve a Elena de pie a 6,3 m dentro del cono")
 	proto.crouching = true
-	_expect(not proto.can_enemy_see_player(), "agachada a 7 m queda fuera de su alcance de vision")
+	_expect(not proto.can_enemy_see_player(), "agachada a 6,3 m queda fuera de su alcance de vision")
 	proto.crouching = false
 	proto.enemy_visual.rotation.y = PI
-	proto.player.global_position = Vector3(46.0, 0.1, -5.5)
+	proto.player.global_position = Vector3(43.0, 0.1, -5.5)
 	_expect(proto.enemy_cone_contains(proto.player.global_position), "el conducto queda dentro del cono cuando la unidad mira hacia el")
 	_expect(not proto.can_enemy_see_player(), "aun asi no la ve a traves de la pared del conducto")
 	proto.enemy_visual.rotation.y = 0.0
@@ -89,12 +90,12 @@ func _test_detection(proto) -> void:
 func _test_awareness_and_memory(proto) -> void:
 	proto.set_physics_process(false)
 	proto.crouching = false
-	proto.enemy.global_position = Vector3(46.0, 0.0, 0.0)
+	proto.enemy.global_position = Vector3(43.0, 0.0, 0.0)
 	proto.enemy_visual.rotation.y = 0.0
 	proto.enemy_state = "patrol"
 	proto.awareness = 0.0
 	proto.patrol_wait_left = 5.0
-	var seen_at := Vector3(46.0, 0.1, 5.0)
+	var seen_at := Vector3(43.0, 0.1, 5.0)
 	proto.player.global_position = seen_at
 	var saw_alert := false
 	for i in 80:
@@ -105,7 +106,7 @@ func _test_awareness_and_memory(proto) -> void:
 			break
 	_expect(saw_alert, "la deteccion pasa por una alerta antes de la persecucion")
 	_expect(proto.enemy_state == "chase", "tras la alerta la unidad persigue")
-	proto.player.global_position = Vector3(46.0, 0.1, -5.5)
+	proto.player.global_position = Vector3(43.0, 0.1, -5.5)
 	proto.crouching = true
 	var reached_search := false
 	for i in 400:

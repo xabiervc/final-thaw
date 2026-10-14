@@ -79,7 +79,10 @@ func _run() -> void:
 	var other = Model.new()
 	other.set_isolated(true)
 	other.select_destination(Model.ARCHIVE)
-	_expect(other.protection_available and other.outputs() == ix.circuit.outputs(), "isolating first reaches the same supply state without tripping")
+	# Compare the recovery branch only: maintenance was switched on in `ix` earlier and is independent (contract X1).
+	var a: Dictionary = other.outputs()
+	var b: Dictionary = ix.circuit.outputs()
+	_expect(other.protection_available and a["archive"] == b["archive"] and a["trial"] == b["trial"], "isolating first reaches the same supply state without tripping")
 	# Hint ladder: three steps, never more, never naming a control.
 	for i in 5:
 		ix.request_hint()

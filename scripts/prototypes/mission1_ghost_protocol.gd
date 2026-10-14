@@ -9,7 +9,7 @@ extends Node3D
 const B = preload("res://scripts/components/build_util.gd")
 const ElenaScript = preload("res://scripts/characters/elena_controller.gd")
 const CameraScript = preload("res://scripts/components/follow_camera.gd")
-const ScanSfx = preload("res://scripts/audio/sfx_synth.gd")
+const SfxSynth = preload("res://scripts/audio/sfx_synth.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const ROOM_ID := "mission1_ghost_protocol"
@@ -61,7 +61,6 @@ var b_diverted: bool = true
 var power_on: bool = false
 var record_read: bool = false
 var evidence_found: bool = false
-var door_open: bool = false
 var finished: bool = false
 var elapsed: float = 0.0
 var wrong_attempts: int = 0
@@ -189,6 +188,16 @@ func _apply_power() -> void:
 	door_mesh.material_override = _emissive_material(SAFE_GREEN, 1.5)
 
 
+## Registers an input action at runtime only if the project does not define it (InputSetup normally does).
+func _ensure_action(action: String, keycode: Key) -> void:
+	if InputMap.has_action(action):
+		return
+	InputMap.add_action(action)
+	var event := InputEventKey.new()
+	event.physical_keycode = keycode
+	InputMap.action_add_event(action, event)
+
+
 func door_open() -> bool:
 	return power_on and not b_diverted
 
@@ -226,14 +235,19 @@ func _update_scan(delta: float) -> void:
 	if Input.is_action_pressed("scan") and scan_cooldown_left <= 0.0 and not finished:
 		scan_charge += delta
 		if scan_charge >= SCAN_CHARGE_TIME:
-			scan_charge = 0.0
-			scan_reveal_left = SCAN_REVEAL_TIME
-			scan_cooldown_left = SCAN_COOLDOWN
-			_play_sfx(scan_stream, -4.0)
-			for marker in scan_markers:
-				marker.visible = true
+			trigger_scan_reveal()
 	else:
 		scan_charge = 0.0
+
+
+## Starts the 3 s reveal and the 4 s cooldown (also used by tests).
+func trigger_scan_reveal() -> void:
+	scan_charge = 0.0
+	scan_reveal_left = SCAN_REVEAL_TIME
+	scan_cooldown_left = SCAN_COOLDOWN
+	_play_sfx(scan_stream, -4.0)
+	for marker in scan_markers:
+		marker.visible = true
 
 
 # --- Construccion --------------------------------------------------------------------------------------
@@ -367,7 +381,7 @@ func _make_marker(pos: Vector3, color: Color, radius: float) -> MeshInstance3D:
 
 
 func _build_audio() -> void:
-	scan_stream = ScanSfx.scan_pulse()
+	scan_stream = SfxSynth.scan_pulse()
 	denied_stream = SfxSynth.denied()
 	power_up_stream = SfxSynth.power_up()
 	chime_stream = SfxSynth.complete_chime()
