@@ -123,7 +123,7 @@ These are design targets for the concept graph, not measured clearances in the c
 | Edge | Traversal | Target clear width | Sightline / exposure | Recovery and threat rule |
 |---|---|---:|---|---|
 | P2-01 → P2-CP | Walk/run through vestibule, no jump | 3.0 m clear opening; 1.5 m to checkpoint | Entry is briefly sheltered by facade | Preserve player transform at the threshold; CP is recovery-only, not the initial spawn |
-| P2-CP → P2-02 | Walk/run through vestibule, no jump | 3.0 m clear opening; 1.8 m to decision | Read the direct/service split before committing | Checkpoint must not reset story state or place Elena in threat LOS |
+| P2-CP → P2-02 | Walk/run through vestibule, no jump | 3.0 m clear opening; 2.5 m to decision | Read the direct/service split before committing | Checkpoint must not reset story state or place Elena in threat LOS |
 | P2-02 → P2-A1 → P2-A2 | Direct walk/run | ≥3.5 m at aisle; ≥1.5 m at turns | High exposure across the central aisle | Nearest cover cluster remains reachable; threat may pursue only along visible, traversable aisle |
 | P2-02 → P2-B1 → P2-B2 | Walk/crouch where needed | ≥1.2 m at the single authored pinch; otherwise ≥1.5 m | Broken sightline behind parked vehicles | No required jump; player can retreat to P2-02 until the final commitment |
 | P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
