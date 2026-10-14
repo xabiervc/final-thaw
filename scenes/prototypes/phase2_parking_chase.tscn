@@ -5,3 +5,4 @@
 [node name="Phase2ParkingChase" type="Node3D"]
 script = ExtResource("1_chase")
 initial_checkpoint_index = 2
+parking_entry_mode = true
