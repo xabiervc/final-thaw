@@ -41,7 +41,7 @@ The player's emotional progression is: **curiosity → doubt → inference → c
    *Dialogue proposal, only if a quiet window exists:* “Han recibido la auditoría.”  
    This line is provisional and must not explain a fact already made obvious by the world.
 
-9. **Reacquisition / running chase.** The first running segment begins at an exposed threshold, provisionally the lift opening onto the P0 service/workshop circulation: the recovery unit reacquires Elena through actual line of sight or a clearly signalled facility event. The trigger and NPC positions must be authored on the plan and graph; no omniscient detection or camera cut.
+9. **Reacquisition / running chase.** The first running segment begins at R1, the transition from P0 service gallery to the east return corridor (reference X≈29, Z≈1). Elena has descended in the existing lift; the recovery unit follows through the same lift and reacquires her by actual line of sight. R1 is the default transition; earlier reacquisition is allowed only through real LOS. The trigger and NPC positions must be authored on the plan and graph; no omniscient detection or camera cut.
 
 10. **Vertical escape.** The player returns through existing vertical/service circulation toward P0/P−1 and the selected alternative exit. The level must never invent a new stair or lift to make the script work.
 
