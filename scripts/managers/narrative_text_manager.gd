@@ -130,6 +130,33 @@ static func get_prompt_condition(stamina: int, state: String, aster_loaded: bool
 		text += "  |  " + _text("prompt_aster_load", "Aster load")
 	return text
 
+static func get_options_text_scale() -> String:
+	return _text("options_text_scale", "Text scale: %.2f")
+
+static func get_options_back_button() -> String:
+	return _text("options_back_button", "Back")
+
+static func get_options_high_contrast() -> String:
+	return _text("options_high_contrast", "High contrast")
+
+static func get_options_reduced_motion() -> String:
+	return _text("options_reduced_motion", "Reduce motion")
+
+static func get_options_subtitle_background() -> String:
+	return _text("options_subtitle_background", "Subtitle background")
+
+static func get_options_subtitle_none() -> String:
+	return _text("options_subtitle_none", "None")
+
+static func get_options_subtitle_dim() -> String:
+	return _text("options_subtitle_dim", "Dim")
+
+static func get_options_subtitle_solid() -> String:
+	return _text("options_subtitle_solid", "Solid")
+
+static func get_credits_title() -> String:
+	return _text("credits_title", "FINAL THAW\nPhase 0 Prototype")
+
 ## Shelter vertical-slice text. Fallbacks keep the scene usable while the
 ## ES/EN NarrativeText resources are expanded.
 static func get_shelter_intro() -> String:
@@ -195,15 +222,6 @@ static func get_shelter_hud(power_on: bool, valves_open: bool, oxygen: float, ci
 		oxygen,
 		civilian_aid,
 	]
-
-static func get_options_text_scale() -> String:
-	return _text("options_text_scale", "Text scale: %.2f")
-
-static func get_options_back_button() -> String:
-	return _text("options_back_button", "Back")
-
-static func get_credits_title() -> String:
-	return _text("credits_title", "FINAL THAW\nPhase 0 Prototype")
 
 ## Claves de texto del puzle de registros y cableado. Cada clave debe existir y no estar vacia en ES y EN.
 const CONTROL_ROOM_KEYS: Array[String] = [

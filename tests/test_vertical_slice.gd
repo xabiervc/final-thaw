@@ -12,6 +12,7 @@ func _ready() -> void:
 	_check_menu_text_contract()
 	_check_hud_text_contract()
 	_check_prompt_text_contract()
+	_check_accessibility_text_contract()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -120,6 +121,14 @@ func _check_prompt_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_prompt_instructions().is_empty(), "Prompt instructions fallback exists")
 	_expect(not NarrativeTextManager.get_prompt_condition(80, "estable", false).is_empty(), "Prompt condition fallback exists")
 	_expect(not NarrativeTextManager.get_prompt_condition(20, "critica", true).is_empty(), "Loaded critical condition fallback exists")
+
+func _check_accessibility_text_contract() -> void:
+	_expect(not NarrativeTextManager.get_options_high_contrast().is_empty(), "High contrast fallback exists")
+	_expect(not NarrativeTextManager.get_options_reduced_motion().is_empty(), "Reduced motion fallback exists")
+	_expect(not NarrativeTextManager.get_options_subtitle_background().is_empty(), "Subtitle background fallback exists")
+	_expect(not NarrativeTextManager.get_options_subtitle_none().is_empty(), "Subtitle none fallback exists")
+	_expect(not NarrativeTextManager.get_options_subtitle_dim().is_empty(), "Subtitle dim fallback exists")
+	_expect(not NarrativeTextManager.get_options_subtitle_solid().is_empty(), "Subtitle solid fallback exists")
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid
