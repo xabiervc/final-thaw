@@ -32,6 +32,10 @@ This is a hypothesis until measured. A sparse light pattern may create visibly u
 
 ### HUD hierarchy pass
 
+- Rebuilt the objective panel as a mission-directive card: a compact cyan `DIRECTIVA DE MISIÓN / ASTER` header, a contrasting left rail, and objective text without the redundant `OBJETIVO /` prefix. Completion changes the header to `OBJETIVO COMPLETADO`.
+- Retained the existing hint/instruction rows, status/condition controls, prompt animation, UI scale and high-contrast support. In high-contrast mode the new section header becomes white.
+- Validate the card at 1280×720 and narrow sizes; check long Spanish objectives, high-contrast mode and large UI scale for clipping/overlap.
+
 - The objective font was reduced from 22 to 18 px (still scaled by the existing accessibility setting), and long objective text now wraps within a 510 px content width.
 - Hint and instruction text now wrap within the same width; the hint font is 15 px and instructions 13 px before accessibility scaling. This removes the former 820 px hint minimum that could dominate a 1280x720 view.
 - Status, condition, and interaction prompt typography were reduced modestly; the right-side HUD width was narrowed from 360 to 320 px. Existing accessibility scaling, high-contrast colours, prompt animation, and gameplay setters remain in place.
