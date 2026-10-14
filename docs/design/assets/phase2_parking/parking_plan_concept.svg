@@ -28,7 +28,7 @@
   <text x="48" y="42" class="title">FINAL THAW · PHASE 2 PARKING — CONCEPT PLAN</text>
   <text x="48" y="64" class="subtitle">Concept v0.3 · selected handoff baseline, local coordinates; runtime verification pending · not yet reconciled with the Godot builder or player capsule</text>
   <g transform="translate(120 112)">
-    <rect x="0" y="0" width="672" height="420" fill="url(#grid)" stroke="#263849" stroke-width="2.5"/>
+    <rect x="0" y="0" width="672" height="420" fill="url(#grid)" stroke="none"/>
     <!-- dimensions -->
     <line x1="0" y1="-24" x2="672" y2="-24" class="dimline"/>
     <line x1="0" y1="-18" x2="0" y2="-4" class="thin"/><line x1="672" y1="-18" x2="672" y2="-4" class="thin"/>
@@ -37,7 +37,7 @@
     <line x1="-18" y1="0" x2="-4" y2="0" class="thin"/><line x1="-18" y1="420" x2="-4" y2="420" class="thin"/>
     <text x="-36" y="210" class="label" text-anchor="middle" transform="rotate(-90 -36 210)">30 m (provisional)</text>
     <!-- boundary/service building -->
-    <rect x="0" y="0" width="74" height="420" class="wall"/>
+    <rect x="0" y="0" width="74" height="284" class="wall"/><rect x="0" y="326" width="74" height="94" class="wall"/>
     <text x="37" y="190" class="label" text-anchor="middle" transform="rotate(-90 37 190)">FACADE LABORATORIO</text>
     <rect x="74" y="284" width="42" height="42" class="service"/>
     <text x="95" y="300" class="tiny" text-anchor="middle">BOCA</text><text x="95" y="312" class="tiny" text-anchor="middle">SERVICIO</text>
@@ -100,8 +100,8 @@
     <ellipse cx="245" cy="190" rx="64" ry="36" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <ellipse cx="445" cy="190" rx="70" ry="38" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <!-- routes -->
-    <path d="M95 305 L130 305 L150 305 L150 270 L200 270 L270 270 L320 270 L405 270 L475 275 L535 275 L570 275 L570 235 L620 235 L620 218 L620 70 L599 25" class="routeA"/>
-    <path d="M95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218 L620 70 L599 25" class="routeB"/>
+    <path d="M95 305 L130 305 L150 305 L150 270 L200 270 L270 270 L320 270 L405 270 L475 275 L535 275 L570 275 L570 235 L620 235 L620 218 L620 70 L599 25 L599 0 L599 -6" class="routeA"/>
+    <path d="M74 305 L95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218 L620 70 L599 25" class="routeB"/>
     <!-- threat path -->
     <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218" class="threat"/>
     <!-- route graph waypoints; coordinates correspond to LEVEL_STRUCTURE.md -->
@@ -149,6 +149,6 @@
     <text x="0" y="535" class="small">Toda alternativa debe tener un coste real.</text>
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
-  <text x="48" y="710" class="small">Selected design baseline: Phase 1 P−1 service gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m. Parking local coordinates: X east/right, Z south/down, origin northwest inside corner, 14 px/m. Transform: world X = local X + 28.7 m; world Z = local Z − 15.8 m. The 3.0 m threshold plane (local X≈5.3, Z≈21.8) maps to world (34, 6); safe spawn (local X≈6.8, Z≈21.8) maps to (35.5, 6); far egress (local X≈42.8, Z≈1.8) maps to (71.5, −14). Pavement datum Y=−2.0 m. Verify against scene geometry before implementation.</text>
+  <text x="48" y="710" class="small">Selected design baseline: Phase 1 P−1 service gallery exits east at world X=34, Z=4.5..7.5, Y=−2.0 m. Parking local coordinates: X east/right, Z south/down, origin northwest corner of the combined facade/site plan, 14 px/m; the 48 × 30 m envelope is measured to the inside faces of the north/south/east perimeter walls. Transform: world X = local X + 28.7 m; world Z = local Z − 15.8 m. The 3.0 m threshold plane (local X≈5.3, Z≈21.8) maps to world (34, 6); recovery checkpoint (local X≈6.8, Z≈21.8) maps to (35.5, 6); entry handoff remains at the threshold (34, 6); far egress threshold (local X≈42.8, Z≈−0.4) maps to (71.5, −16.2). Pavement datum Y=−2.0 m. Verify against scene geometry before implementation.</text>
   <text x="48" y="730" class="small">Local concept only. Do not force Phase 1 to match this entrance coordinate; derive the world transform from the final selected exit after the complete route is approved.</text>
 </svg>
