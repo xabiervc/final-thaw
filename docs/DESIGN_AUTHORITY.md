@@ -11,7 +11,7 @@ This document separates current design direction, actual implementation evidence
 | Working vision | `docs/VISION.md` | Active working vision; full-game canon is not locked |
 | Prototype scope and boundaries | `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Active brief for the opening prototype |
 | Core gameplay and narrative loop | `docs/CORE_LOOP.md` | Active design contract for the opening; implementation state is separately tracked |
-| Opening level structure and Phase 2 spatial design | `docs/LEVEL_STRUCTURE.md` | Design authority for the two-mission route and the parking-level requirements; the parking design is not yet runtime-verified |
+| Opening level structure and Phase 2 spatial design | `docs/LEVEL_STRUCTURE.md` plus `docs/design/assets/phase2_parking/` | Design authority for route, provisional plan/section, edge clearances and obstacle register; dimensions and handoff transform require reconciliation before lock |
 | Mission 1 puzzle | `docs/design/MISSION1_GHOST_PROTOCOL.md` plus `docs/design/FASE1_LOGIC_CONTRACT.md` | Puzzle design and logic contract; implementation and integration must be evidenced |
 | Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v2.0 | Current spatial intent; plans, graph and scene must remain aligned |
 | Phase 1 plans and section | `docs/design/assets/phase1_architecture/` | Current drawing authority for Phase 1; physical alignment remains pending verification |
@@ -41,7 +41,7 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 5. For test status, require the exact command and observed result. A test file is not evidence that the test ran; a passing headless test is not a substitute for a manual playtest.
 6. Preserve Phase 0 input actions/remaps, autoloads/public signals, resource paths, JSON/CRC32 save compatibility and Compatibility renderer assumptions unless impact analysis and explicit approval authorize a change.
 7. When a legacy campaign document conflicts with the active prototype brief, the brief wins for prototype scope only. Record the conflict; do not silently declare the whole campaign redesigned.
-8. Separate established story facts from proposals. The exact Helix event, recovery-unit identity/command chain, Containment cause and timing, Marcus's role, chronology and endings remain open unless explicitly reconciled and approved.
+8. Separate established story facts from proposals. The opening proposal now defines the causal beat (maintenance queues `SERVICE_OVERRIDE`; crossing G sends the audit and starts Containment) and recommends a facility-automated recovery protocol. The exact recipient/supervision, final recovery-unit identity, suppression motive, Marcus's role, chronology and endings remain open; do not promote proposals to full-game canon without owner approval.
 9. Do not invent architectural connections to solve a gameplay beat. All routes must be present in plan, section, spatial graph and acceptance criteria before implementation.
 
 ## Required review gates
@@ -52,7 +52,7 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 - Verify the reveal triggers Containment exactly once and only under the agreed event contract.
 
 ### Mission 2 — Containment and parking
-- Review dimensioned plan, section, spatial graph, obstacle register and threat overlay as a consistent package.
+- Review the provisional plan, section, spatial graph, edge-clearance contract, obstacle register and conceptual threat/light overlays as a consistent package; reconcile the local-to-world transform with the Phase 1 mouth and current builder before locking dimensions.
 - Run `godot --headless --path . res://tests/test_motion_chase_prototype.tscn` and `godot --headless --path . res://tests/test_phase_0.tscn`.
 - Run the scene manually; review movement, jump range, crouch clearance, climb, camera occlusion, enemy sight/hearing/search, cover routes, catches, checkpoints, exit and handoff.
 - Verify the Phase 1 interior pursuit and distinct P−1 service exit before accepting the parking integration.
