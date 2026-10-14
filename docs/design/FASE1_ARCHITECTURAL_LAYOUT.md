@@ -42,6 +42,8 @@ No añadir rampas, elevadores adicionales ni conexiones secretas. Las rutas vert
 | G · Esclusa exterior | +3 m | Puerta desde F, compuerta exterior y señal de sincronización. |
 | H · Exterior | transición | Salida legible hacia aparcamiento; inicio de persecución en Fase 2. |
 
+**Coordinación de huellas:** B ocupa X=7..20, Z=−9..1. El pasillo A→B ocupa X=7..10, Z=1..8 y bordea el hueco abierto de D2 (X=20..28, Z=1..8). D1 (X=10..20, Z=1..8) queda cubierto por la losa de P0; es una galería inferior accesible desde D2, no un vacío que se superpone al suelo de la nave. La altura libre de D1 debe validarse con la cápsula y la cámara reales antes de aceptar el recorrido.
+
 No añadir coleccionables, llaves, puzzles nuevos ni salas de relleno. Taller, galería y sala de bombas tienen función industrial/orientativa, no nuevas barreras de progreso.
 
 ## Recorrido narrativo
