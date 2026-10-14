@@ -1,7 +1,7 @@
-# FASE1 — Especificación funcional de implementación (v1.0)
+# FASE1 — Especificación funcional de implementación (v1.1)
 
 **Estado:** decisiones de diseño y comportamiento cerradas para construir el primer slice. Las pruebas de escena, cámara, colisiones y jugabilidad siguen pendientes; este documento no afirma validación en Godot.  
-**Autoridad funcional:** este documento define la experiencia de Fase 1; el contrato lógico define las reglas del circuito; el grafo espacial y el greybox definen su geometría.
+**Autoridad funcional:** este documento define la experiencia de Fase 1; el contrato lógico define las reglas del circuito; la arquitectura espacial y el greybox definen su geometría. Autoridad espacial: FASE1_ARCHITECTURAL_LAYOUT.md v1.0, FASE1_SPATIAL_GRAPH.md v0.6 y FASE1_GREYBOX_SPEC.md v1.3.
 
 ## 1. Objetivo jugable
 
@@ -11,30 +11,26 @@ La experiencia se basa en inferencia ambiental, no en una secuencia arbitraria d
 
 ## 2. Recorrido definitivo
 
-Recorrido obligatorio por dependencias físicas, no por una puerta de pista:
+1. Entrada A en P0: observar la nave B y la columna vertical de calibración Aster.
+2. Rodear el rig hasta la escalera fija S1.
+3. Bajar a D (Y=−2 m); comparar esquema y puente A→T y activar mantenimiento.
+4. Volver por S1 y llegar por la galería de servicio al elevador.
+5. Subir desde P0 (Y=0) a M, sala de bombas (Y=+1,5 m). El elevador termina aquí, no en control.
+6. Cruzar M y la galería de observación; subir por S2 a E/P2 (Y=+3 m).
+7. Operar el circuito en E, consultar F con suministro estable, atravesar G y salir a H.
 
-1. Entrada y observación del acceso roto y la máquina central.
-2. Ruta sur, pasillo oeste y explanada.
-3. Descenso al foso por la escalera fija; inspección del esquema, el puente manipulado y el interruptor de mantenimiento.
-4. Activación de mantenimiento. Esto alimenta la iluminación de servicio y la plataforma elevadora; no altera el circuito de recuperación.
-5. Regreso por la misma escalera fija y ascenso por la plataforma elevadora al rellano superior.
-6. Pasarela E: selector, aislador, panel de estado y rearme.
-7. Entrada este a F, indicador local y consola de archivo.
-8. Desbloqueo del acceso oeste desde el lado de la cabina; vestíbulo G; apertura de la salida exterior y transición a H.
-
-No hay rampa paralela en el slice final. La variante B —subir antes de visitar el foso— queda retirada: con mantenimiento inicialmente apagado y sin rampa, la plataforma no puede subir. Esto evita dos soluciones de transporte y hace coherente la dependencia física de la visita al foso. No se exige leer una pista concreta para accionar el circuito una vez que se llega a E.
+La escalera directa P0→P2 está colapsada y bloqueada. G no contiene escalera de retorno a P0. Las salas explican la infraestructura; no se exige leer todas las pistas para que funcionen los controles.
 
 ## 3. Plataforma elevadora y mantenimiento
 
-- **Ubicación:** huella existente del ascensor, X=24.5..27.5, Z=-4.5..-1.5; suelo de plataforma Y=0 en el rellano inferior y Y=3 en el superior.
-- **Inicialización:** plataforma detenida en el rellano inferior; mantenimiento apagado. No se guarda estado de plataforma en el archivo de partida ni se cambia el esquema de persistencia.
-- **Uso normal:** pulsador de llamada en ambos rellanos; solo responde con mantenimiento activo. Viaje de una terminal a la otra en 2.5 s, con arranque y frenado suaves. Las compuertas móviles del deck se cierran durante el viaje. Además hay compuertas fijas de seguridad en los rellanos inferior (centro aproximado `(26,0.55,-1.1)`) y superior (`(26,3.55,-4.9)`); cada una se abre solo cuando el deck está acoplado en ese nivel. La compuerta fija del rellano abandonado se cierra al iniciar el movimiento, por lo que el hueco nunca queda accesible desde la plataforma de llegada.
-- **Mantenimiento apagado estando parada:** permanece en su rellano, no acepta llamadas ni inicia movimiento.
-- **Pérdida de mantenimiento en movimiento:** activa la reserva de seguridad, reduce velocidad y llega al rellano más cercano; si la posición está exactamente a mitad de camino, el destino es el rellano superior (regla ya implementada en `service_lift.gd`). Se detiene allí y queda deshabilitada. Nunca cae ni deja a Elena entre niveles.
-- La reserva de seguridad se considera parte obligatoria del mecanismo, no una segunda rama de comportamiento: la implementación debe garantizar la llegada al rellano más cercano. Si la prueba induce una detención entre niveles o requiere un rescate manual, la prueba falla y la plataforma no se acepta; no se añade un minijuego de rescate ni una ruta alternativa.
-- **Interruptor:** posición (26,-2,2). Las luces de servicio y la plataforma comparten el estado de mantenimiento. La escalera fija del foso no depende de electricidad. La iluminación ambiental mínima conserva legible la ruta con mantenimiento apagado.
+- **Paradas de misión:** P0 Y=0 y M Y=+1,5 m; huella X=24,5..27,5, Z=−4,5..−1,5.
+- **Inicialización:** deck acoplado abajo; mantenimiento apagado. No se guarda estado del elevador.
+- **Uso normal:** llamada desde ambos rellanos, solo con mantenimiento activo. A 1,2 m/s, los 1,5 m de movimiento duran aprox. 1,25 s, más espera de puertas.
+- **Mantenimiento OFF:** si está acoplado permanece quieto y rechaza llamadas.
+- **Pérdida de energía en movimiento:** la reserva de seguridad lleva el deck a la parada más cercana a velocidad reducida; empate exacto elige M (+1,5 m). Nunca cae ni deja a Elena entre niveles.
+- S1 es la escalera fija P0↔P−1, usable sin electricidad. S2 conecta M↔P2 y no depende de alimentación.
 
-La rampa provisional y la reserva de plataforma X=30..34 se eliminan del diseño implementable. No construirlas ni medirlas como rutas alternativas.
+La rampa provisional y el anexo X=30..34 quedan eliminados. El componente service_lift.gd conserva sus tests genéricos de 3 m; la instancia de misión usa upper_y=1.5 y debe tener prueba de integración específica.
 
 ## 4. Contrato del circuito aplicado a la experiencia
 
@@ -52,8 +48,8 @@ Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protecció
 
 Los controles contractuales mantienen sus centros de interacción: selector (12,3,-7), aislador (19,3,-7). No se mueven para acomodar la arquitectura.
 
-- Panel de estado: montado en el borde norte de la pasarela, centro aproximado (15.5,4.55,-8.15), orientado al sur hacia el punto de observación (15,3,-7). Expone únicamente valores actuales: destino seleccionado, ensayo conectado/aislado, protección disponible/disparada y existencia de último disparo. No da instrucciones ni marca una secuencia correcta.
-- Rearme: botón/asa independiente en (15.5,3.5,-8.15), en el mismo soporte pero claramente separado del panel y de los controles selector/aislador. Se interactúa desde la pasarela; el soporte y su collider quedan fuera del rectángulo libre Z=-8..-6, al norte de la pasarela (Z más negativo).
+- Panel de estado: montado en el muro norte de la sala E, orientado a la zona de operación, centro aproximado (15.5,4.55,-8.15), orientado al sur hacia el punto de observación (15,3,-7). Expone únicamente valores actuales: destino seleccionado, ensayo conectado/aislado, protección disponible/disparada y existencia de último disparo. No da instrucciones ni marca una secuencia correcta.
+- Rearme: botón/asa independiente en (15.5,3.5,-8.15), en el mismo soporte pero claramente separado del panel y de los controles selector/aislador. Se interactúa desde el espacio libre de E; no invade la circulación hacia pasarela ni la puerta F.
 - El panel usa texto/símbolos redundantes; el color nunca es el único canal. La aceptación de legibilidad se probará con la cámara real.
 
 ## 5. Archivo F y evidencia
@@ -65,7 +61,7 @@ Los controles contractuales mantienen sus centros de interacción: selector (12,
 
 ## 6. Salida G y causa de Containment
 
-G es el vestíbulo de salida al oeste de la cabina. La puerta F→G se desbloquea una sola vez desde el lado de la cabina y después es bidireccional. La pared oeste del vestíbulo contiene la compuerta exterior hacia H; la escalera de retorno a Y=0 es una salida secundaria, no el camino de transición de Fase 2. No se simula presurización.
+G es una esclusa exterior compacta al oeste de F. La puerta F→G se desbloquea una sola vez desde F y después es bidireccional. La pared oeste contiene la compuerta exterior a H. G no tiene escalera ni conexión interna a P0.
 
 El interruptor de mantenimiento crea un evento de auditoría local **SERVICE_OVERRIDE** en la sesión. El acceso al registro del archivo, si se consultó, se añade como **RESTRICTED_RECORD_READ**. Ambos quedan en cola local mientras Elena permanece dentro. Al cruzar la compuerta exterior G, el relé de salida transmite los eventos; Helix detecta el uso de mantenimiento y activa Containment. Así se explica la respuesta sin vigilancia omnisciente ni una extracción automática al consultar el archivo.
 
@@ -84,24 +80,24 @@ La consulta del archivo no es necesaria para operar los controles ni para abrir 
 
 ## 8. Alcance, criterios de aceptación y prueba
 
-Fase 1 está funcionalmente especificada y tiene una primera escena en `scenes/prototypes/phase1_canonical_greybox.tscn`; el código aún requiere ejecución y validación. La escena debe seguir el grafo v0.5 y el greybox v1.2.
+Fase 1 está funcionalmente especificada y tiene una primera escena en `scenes/prototypes/phase1_canonical_greybox.tscn`; el código aún requiere ejecución y validación. La escena de destino debe seguir FASE1_ARCHITECTURAL_LAYOUT.md v1.0, el grafo v0.6 y el greybox v1.3. La escena actual refleja geometría anterior y debe reconstruirse.
 
 Aceptar la implementación solo si:
 0. Mantener `scan` 0,9 s revela únicamente las trazas de A/puente A→T/T durante 3 s; después se ocultan y el escáner entra en recarga de 4 s.
-1. No se puede ascender por la plataforma hasta activar mantenimiento en el foso; la escalera del foso sigue siendo utilizable sin electricidad.
-2. El ascensor/plataforma conecta ambos rellanos, acepta llamadas desde ambos extremos y nunca deja a Elena atrapada o en caída ante una pérdida de energía.
+1. No se puede subir de P0 a M hasta activar mantenimiento en el foso; S1 permanece utilizable sin electricidad.
+2. El elevador conecta Y=0 con Y=+1,5 m y no llega a P2; S2 conecta M con P2 y no depende de energía.
 3. El contrato cumple T1–T9, X1/X2 y las comprobaciones adicionales del documento lógico, incluido recuperar un disparo y conservar last_trip.
 4. El panel de E muestra estado actual e historial por separado; rearme con fallo presente se rechaza sin modificar historial.
 5. El indicador F refleja exactamente la condición ARCHIVO estable y es legible desde la aproximación con la cámara de juego.
 6. No se puede consultar con suministro inestable; la consulta guarda el conocimiento en sesión y no equivale a extracción.
 7. Cruzar G transmite el registro de servicio y activa la transición a H; la unidad externa usa su máquina de estados ordinaria.
-8. No hay huecos transitables involuntarios, bloqueo de la escalera, colisión que reduzca el pasillo libre, desvíos a la rampa eliminada ni rutas a una salida exterior inexistente.
+8. No hay huecos transitables, colisión que reduzca el paso, paso por la escalera dañada, acceso a P2 desde elevador ni escalera de retorno en G.
 
 Registrar versión de Godot, commit, resolución, renderer, entrada, comandos exactos, salida de pruebas, fallos y evidencia manual. No declarar aceptación por inspección documental solamente.
 
 ## 9. Decisiones cerradas / límites de evidencia
 
-Cerradas para implementación: topología A, plataforma sin rampa paralela, comportamiento mecánico de pérdida de energía, estado inicial y solución recuperable del circuito, posición y significado de indicadores, interacción de rearme, registro de evidencia y desencadenante de Containment.
+Cerradas: cuatro cotas; S1 P0↔D, elevador P0↔M, S2 M↔P2, G horizontal a H; comportamiento seguro del elevador, circuito recuperable, indicadores, rearme, evidencia y Containment.
 
-Pendiente por definición: ninguna decisión de diseño dentro de este slice.  
+Pendiente por definición: ninguna decisión arquitectónica o funcional dentro del slice. La escena existente aún no refleja la nueva arquitectura.  
 Pendiente por evidencia: ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. Véase `FASE1_CANONICAL_BUILD.md`.

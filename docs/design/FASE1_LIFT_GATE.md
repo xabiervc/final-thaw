@@ -1,50 +1,32 @@
-# Phase 1 — Lift gate (mission integration decision closed)
+# Phase 1 — Lift gate (mission integration decision closed, v1.1)
 
-**Status:** the service lift is approved for integration into the canonical Phase 1 slice. The existing isolated component is reused; the older question about whether to include it is superseded. No Godot execution or manual validation is claimed.
+**Estado:** se conserva el componente genérico y se decide una parada de misión distinta al prototipo actual. Sin ejecución ni validación física claimada.
 
-**Authorities:** `FASE1_FUNCTIONAL_SPEC.md` v1.0 and `FASE1_SPATIAL_GRAPH.md` v0.5.  
-**Implementation component:** `scripts/prototypes/service_lift.gd`.  
-**Mission integration, not yet executed:** `scenes/prototypes/phase1_canonical_greybox.tscn`.  
-**Existing tests:** `tests/test_service_lift.tscn` and `tests/test_service_lift_transport.tscn`.
+## Decisión
 
-## Decision
+Un único elevador X=24,5..27,5, Z=−4,5..−1,5, entre P0 (Y=0) y M (Y=+1,5). No sube a P2 (+3 m); S2 conecta M con control. Mantenimiento empieza OFF; el switch en D lo habilita. No construir rampa ni plataforma extra.
 
-Use exactly one elevator/platform in the canonical lift shaft, footprint X=24.5..27.5, Z=-4.5..-1.5, travelling from Y=0 to Y=3. Maintenance starts OFF; the player must activate the maintenance switch in the pit before the elevator can be called. The fixed stairs out of the pit are always usable. Do not build the provisional ramp or the former X=30..34 annex platform. The separate six-room prototype remains a preserved comparison build, not the authority for this route.
+El componente genérico conserva lower_y=0 y upper_y=3 en tests unitarios. La instancia de misión fija lower_y=0 y upper_y=1.5 antes de entrar al árbol. Añadir test de misión para 1,5 m.
 
-## Locked component behaviour
-
-| Rule | Value |
+| Regla | Valor |
 |---|---|
-| Landings | `lower` at Y=0 and `upper` at Y=3 |
-| Speed | 1.2 m/s; 3 m trip ≈ 2.5 s |
-| Docking | Deck flush with the reached landing |
-| Gates | Each end opens only when docked at that end; both close while moving |
-| Calls | Calls at either landing; calls made during a trip are queued and served after docking/dwell |
-| Dwell | 3 s after docking, giving a rider time to disembark |
-| Power loss while docked | Remains docked; landing-facing gate stays open; calls are rejected until power returns |
-| Power loss while moving | Completes travel at 30% speed to the nearest landing, then remains there and rejects calls until power returns |
-| Exact midpoint | Upper landing, matching `platform_y >= midpoint` in the existing component |
-| Initial mission state | Docked at lower landing, maintenance OFF and lift unpowered |
+| Paradas | P0 Y=0; M Y=+1,5 |
+| Velocidad | 1,2 m/s; viaje de 1,5 m ≈ 1,25 s |
+| Puertas | Solo abre lado acoplado; cierran durante movimiento |
+| Llamadas | En ambos rellanos; llamadas durante viaje encoladas |
+| Espera | 3 s |
+| Mantenimiento OFF | Permanece acoplado y rechaza llamadas |
+| Pérdida de energía en viaje | Reserva de seguridad hasta la parada más cercana |
+| Punto medio | M (+1,5 m) |
+| Estado inicial | P0; mantenimiento OFF |
 
-If safety behaviour fails during testing, the implementation fails acceptance; do not add rescue mini-games, damage, falls or alternative routes to compensate.
+Una detención entre niveles, caída, paso al hueco o rescate manual es fallo de aceptación.
 
-The mission adds **fixed landing safety gates**, separate from the moving deck's own gates: lower centre `(26,0.55,-1.1)`, upper centre `(26,3.55,-4.9)`. Both fixed gates close as soon as the deck leaves a landing and remain closed during movement. Only the fixed gate at the docked landing may open. On power loss mid-trip, both remain closed until the emergency crawl docks the deck at its selected landing. This gate interlock is part of mission integration, not the isolated lift component.
+Centros orientativos de compuertas fijas: inferior (26,0.55,−1.1), superior (26,2.05,−4.49) alineada con M. No abrir al hueco cuando el deck no está acoplado.
 
-## Wiring into the mission
-
-The mission calls `set_powered(maintenance_on)` when the independent maintenance state changes. The platform itself does not own electrical logic and does not write persistence. Place the controller buttons at the lower landing and the upper landing; interact requests `call_to("upper")` or `call_to("lower")`. No automatic movement begins merely because maintenance turns on.
-
-The lift deck is centred at world position (26,0,-3), with the north end aligned to the upper landing and the south end aligned to the lower connector. The player must board and leave by walking, not by jumping. The scene listens to the lift's state change and mirrors `gates_open()` into the stationary landing-gate colliders and meshes. Verify there is no overlap between stationary and deck gates and no gap through which the player can enter the shaft while the deck is absent.
-
-## Existing tests and remaining validation
-
-Run both commands in Godot 4.7.x / Compatibility:
-
-```sh
+~~~sh
 godot --headless --path . res://tests/test_service_lift.tscn
 godot --headless --path . res://tests/test_service_lift_transport.tscn
-```
+~~~
 
-Record exact engine version, output, exit code and commit. Then validate manually: calls from both landings; ten round trips; cut power while docked and near the start, exact midpoint and near the destination; board/ride/disembark without jumping; no sliding or fall; both fixed landing gates and the moving deck gates open/close in the correct order; no walkable gap into the shaft; camera comfort while riding. The midpoint case is added to acceptance explicitly.
-
-Until these runs are recorded, the component behaviour is specified and implemented in code, but not validated.
+Mantener tests genéricos a 3 m; añadir test de misión a 1,5 m, test canónico actualizado y regresión de tests/test_phase_0.tscn. Registrar engine, commit, salida y exit code. Hasta entonces está especificado, no verificado.

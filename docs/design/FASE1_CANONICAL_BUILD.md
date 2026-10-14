@@ -1,60 +1,31 @@
 # Phase 1 — Canonical build and verification
 
-**Status:** first canonical scene and integration test are present in code. Neither has been run in Godot in this change, and neither has been manually playtested. This document distinguishes implementation from verified behavior.
+**Estado:** arquitectura v1.0 definida; la escena actual refleja la geometría anterior. Requiere reconstrucción; ningún test se declara ejecutado o superado.
 
-## Canonical scene
+## Autoridad
 
-Open `scenes/prototypes/phase1_canonical_greybox.tscn` and press F6. Its builder is `scripts/prototypes/phase1_canonical_greybox.gd`.
+FASE1_ARCHITECTURAL_LAYOUT.md v1.0; FASE1_SPATIAL_GRAPH.md v0.6; FASE1_GREYBOX_SPEC.md v1.3; FASE1_FUNCTIONAL_SPEC.md v1.1; FASE1_LOGIC_CONTRACT.md (sin cambios); mapa v0.8.
 
-This is the only scene that implements the current Phase 1 design authority:
-- `FASE1_FUNCTIONAL_SPEC.md` v1.0
-- `FASE1_SPATIAL_GRAPH.md` v0.5
-- `FASE1_GREYBOX_SPEC.md` v1.2
-- `fase1_fase2_mapa_progresion.md` v0.6
-- `FASE1_LOGIC_CONTRACT.md`
+## Estado de la escena
 
-The earlier `phase1_spatial_greybox.tscn` is preserved as a six-room comparison prototype. It uses another coordinate plan and must not be judged as an implementation of the current graph. The expanded exploration build is also non-canonical. Nothing in this migration deletes or overwrites those prototypes.
+La escena canónica actual sube elevador de Y=0 a 3 y tiene escalera de retorno en G; ambas contradicen el nuevo plano. Reconstruir superficies/particiones, configurar elevador P0↔M (+1,5 m), construir M/S2 y eliminar la escalera de G. Reutilizar circuito, elevador, jugador, HUD y materiales. No borrar prototipos históricos ni alterar contratos.
 
-## Implemented in the canonical scene (not yet verified)
+## Orden
 
-- Ground slab split around the lift shaft, service pit and fixed pit stair opening.
-- Pit schematic, tampered A→T bridge, maintenance switch and service lights.
-- Original-shaft service lift, unpowered initially and wired to the maintenance state.
-- Fixed safety gates at both landings, interlocked to the service-lift state; the empty shaft is blocked while the deck travels or is docked at the opposite level.
-- The upper-landing protective rail stops at X=26, leaving the X=24..26 overlap clear for lift-to-walkway transfer.
-- Upper walkway and archive cabin, selector, trial isolator, diagnostic panel and independent rearm interaction.
-- Local F archive-status display and a separate consultation control.
-- Hold-to-scan continuity reveal (0.9 s charge, 3 s visible, 4 s cooldown) at schematic A, physical A→T bridge and node T; it does not point at an interaction.
-- F→G inner door unlocked once from the cabin side; G→H outer hatch; queued audit and a delayed transition to the existing motion/chase prototype after crossing outside.
-- Reuses `phase1_circuit_model.gd`, `service_lift.gd`, `phase1_spatial_player.gd`, `prompt_hud.gd` and the shared FacilityMaterials palette. No save-format, autoload, input-action or renderer changes.
+1. Reconstruir P0/P−1: A/B/C, columna, galerías, D1/D2 y S1.
+2. Reconfigurar elevador a upper_y=1.5; ajustar compuerta y añadir test de misión.
+3. Construir mezzanine M y S2.
+4. Construir E/F/G y pasarela sin escaleras a P0.
+5. Reintegrar fixtures/interacciones.
+6. Actualizar pruebas y ejecutar regresión Fase 0.
+7. Probar el recorrido a mano antes de Containment.
 
-These bullets describe the code's intended behavior, not successful Godot execution.
-
-## Automated checks
-
-Run under Godot 4.7.x with the Compatibility renderer:
-
-```sh
-godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
+~~~sh
+godot --headless --path . res://tests/test_phase1_circuit_model.tscn
 godot --headless --path . res://tests/test_service_lift.tscn
 godot --headless --path . res://tests/test_service_lift_transport.tscn
-godot --headless --path . res://tests/test_phase1_circuit_model.tscn
-```
-
-Phase 0 regression command:
-
-```sh
+godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
 godot --headless --path . res://tests/test_phase_0.tscn
-```
+~~~
 
-Record Godot version, commit, exact command, output, and exit code. Any script parse error, failed assertion or timeout is a blocker.
-
-## Manual gate
-
-Open the canonical scene with F6 and test in sequence: enter; inspect the broken access and central rig; descend and leave the pit with maintenance off; operate maintenance; return through the fixed stairs; summon, board, ride and leave the lift from both ends; verify that fixed landing gates open only at the docked floor; cut power while docked and at early, midpoint and late positions; solve and deliberately trip the circuit; inspect diagnostics before and after rearm; consult archive only with stable supply; unlock F→G; open and cross G→H.
-
-Capture camera and collision issues, whether the status panel and F indicator are readable without approaching the wrong control, whether the lift gates read clearly, whether the player can pass every opening without jumping, and whether the circuit is inferred instead of brute-forced. A human playtest with a new player remains mandatory.
-
-## Known verification boundary
-
-No Godot executable was available in the editing environment, so none of the commands above are claimed as run. Scene geometry, collision, camera, visual readability, lift physics, transition behavior and player comprehension remain pending evidence.
+El test genérico puede usar 3 m; el test de misión debe verificar 1,5 m, S2, puertas y pérdida de energía. No puedo ejecutar Godot desde este entorno; registra versión, commit, comandos, salida y exit code cuando se ejecute. Test automático no sustituye playtest.

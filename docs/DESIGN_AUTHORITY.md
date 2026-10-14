@@ -12,7 +12,8 @@ This document separates the current working direction, actual implementation evi
 | Next prototype scope and acceptance | `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Active brief for the opening prototype only |
 | Current movement/chase mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus code | Active prototype specification; v2 test not yet recorded as run |
 | Core loop | `docs/CORE_LOOP.md` | Active loop for the motion/chase prototype and proposed investigation mission |
-| Level structure | `docs/LEVEL_STRUCTURE.md` | Active prototype map and proposed two-mission opening |
+| Phase 1 architecture | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md`, plan SVGs, `FASE1_SPATIAL_GRAPH.md`, `FASE1_GREYBOX_SPEC.md` | Canonical layout for Phase 1; scene rebuild and validation pending |
+| Level structure (legacy) | `docs/LEVEL_STRUCTURE.md`, `FASE1_ROOM_COMPLEX.md`, `FASE1_GRAND_DESIGN.md` | Historical material; retain story intent only where reconciled with current layout |
 | Implementation status | `PROJECT_STATUS.md` plus current code and test evidence | Source for what exists and what has actually been verified |
 | Prototype traceability | `docs/TRACEABILITY_MATRIX.md` | Active mapping of code/test coverage and unimplemented requirements |
 | Narrative source | `docs/narrative_complete.md` | Existing story details preserved; full campaign structure under review |
@@ -32,12 +33,13 @@ Do not implement those assumptions as requirements for the current prototype. Do
 
 ## Conflict resolution
 
-1. For **the next prototype's intended behavior**, use the working brief and prototype specification.
-2. For **what exists**, inspect the code and scene files. Documentation is not proof of implementation.
-3. For **test status**, require an exact command and observed result. Automated checks do not replace a manual playtest.
-4. For **Phase 0 technical contracts**, preserve input actions, autoloads, resource paths, save JSON/CRC32 and project assumptions unless an impact review and explicit approval authorize a change.
-5. When a legacy campaign document conflicts with the current prototype brief, the brief wins for prototype scope only. Record the conflict; do not silently declare the full campaign redesigned.
-6. Promote the new direction to full-game canon only after owner review of the combined puzzle/escape prototype and explicit reconciliation of narrative, progression, accessibility, platforms and endings.
+1. For **Phase 1 spatial architecture**, use FASE1_ARCHITECTURAL_LAYOUT.md v1.0, plan SVGs, FASE1_SPATIAL_GRAPH.md v0.6 and FASE1_GREYBOX_SPEC.md v1.3. They supersede older single-bay geometry but not the logic contract.
+2. For **the next prototype's intended behavior**, use the functional spec and working brief.
+3. For **what exists**, inspect code and scene files. Documentation is not proof of implementation.
+4. For **test status**, require an exact command and observed result. Automated checks do not replace a manual playtest.
+5. For **Phase 0 technical contracts**, preserve input actions, autoloads, resource paths, save JSON/CRC32 and project assumptions unless an impact review and explicit approval authorize a change.
+6. When a legacy campaign document conflicts with the current prototype brief, the brief wins for prototype scope only. Record the conflict; do not silently declare the full campaign redesigned.
+7. Promote the new direction to full-game canon only after owner review of the combined puzzle/escape prototype and explicit reconciliation of narrative, progression, accessibility, platforms and endings.
 
 ## Required review gates
 

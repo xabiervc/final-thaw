@@ -2,60 +2,36 @@
 
 ## Current phase
 
-**Phase 1 implementation — design decisions closed; first canonical scene and integration checks are present, not yet executed.** The active branch retains the motion/chase prototype v2 and earlier comparison prototypes. Phase 1 now has one functional spec, reconciled geometry references, a canonical greybox scene and an integration test.
+**Phase 1 — architectural direction closed; the current greybox must be rebuilt to match it.** Existing circuit/lift components and motion/chase prototype v2 remain. These plans are a design decision, not a claim that new floors already exist in Godot.
 
-## Phase 1 sources of truth
+## Sources of truth
 
-- Functional behaviour and narrative handoff: `docs/design/FASE1_FUNCTIONAL_SPEC.md` (v1.0).
-- Spatial graph: `docs/design/FASE1_SPATIAL_GRAPH.md` (v0.5).
-- Greybox geometry: `docs/design/FASE1_GREYBOX_SPEC.md` (v1.2).
-- Progression map: `docs/design/fase1_fase2_mapa_progresion.md` (v0.7).
-- Electrical logic: `docs/design/FASE1_LOGIC_CONTRACT.md`.
+- Architecture: docs/design/FASE1_ARCHITECTURAL_LAYOUT.md v1.0.
+- Plans and section: docs/design/assets/phase1_architecture/ (SVG).
+- Spatial graph: FASE1_SPATIAL_GRAPH.md v0.6.
+- Greybox: FASE1_GREYBOX_SPEC.md v1.3.
+- Functional spec: FASE1_FUNCTIONAL_SPEC.md v1.1.
+- Progression: fase1_fase2_mapa_progresion.md v0.8.
+- Lift: FASE1_LIFT_GATE.md v1.1.
+- Circuit: FASE1_LOGIC_CONTRACT.md (unchanged).
+- Build protocol: FASE1_CANONICAL_BUILD.md.
 
-No design alternative remains open inside the Phase 1 slice. Scene, collision, camera, timing and playtest results remain unverified.
+## Architectural decision
 
-## Phase 1 current implementation
+P−1 maintenance pit Y=−2 m; P0 access/test hall/workshop Y=0 m; M pumps/observation mezzanine Y=+1.5 m; P2 control/archive/exterior vestibule Y=+3 m.
 
-- Canonical scene: `scenes/prototypes/phase1_canonical_greybox.tscn`.
-- Builder/interactions: `scripts/prototypes/phase1_canonical_greybox.gd`.
-- Integration test: `tests/test_phase1_canonical_greybox.tscn` / `tests/test_phase1_canonical_greybox.gd`.
-- Reused circuit model: `scripts/prototypes/phase1_circuit_model.gd`.
-- Reused service elevator: `scripts/prototypes/service_lift.gd`.
+Unique vertical routes: S1 P0↔P−1; elevator P0↔M; S2 M↔P2; direct P0↔P2 stair blocked. G exits horizontally to H, with no stair back to P0.
 
-The scene connects the new single-bay geometry to the circuit model, maintenance-controlled lift, timed scanner trace reveal, archive consultation, live status fixtures, and a provisional G→H handoff. This is code presence, not verified behavior.
+## Implementation status
 
-## Phase 1 next steps
+The canonical scene still reflects the previous geometry: lift to Y=3 and return stair in G. Rebuild the room partitions, M/S2/G, and set the mission lift to Y=1.5. Generic 3 m tests remain; add a 1.5 m mission test. No Godot execution or manual playtest is claimed.
 
-1. Run canonical scene integration test and service-lift state-machine/physics tests; fix all parse/runtime failures.
-2. Run circuit model tests and Phase 0 regression.
-3. Play the canonical scene manually: check floor continuity, missing stair barrier, pit exit, shaft gates, rider transport, camera, reachability and indicator readability.
-4. Fix defects in the existing canonical scene before adding final art or expanding scope.
-5. Run the existing motion/chase v2 test and play that prototype manually; then confirm the G→H handoff before considering the combined slice accepted.
+## Next verification
 
-## Existing motion/chase prototype v2
+1. Rebuild geometry without changing circuit behavior.
+2. Add mission checks for graph and 1.5 m elevator.
+3. Run circuit, lift, transport, canonical integration, and Phase 0 regression under Godot 4.7.x/Compatibility.
+4. Manually check sightlines, camera, clearance, gates, lift power loss, clues and G→H.
+5. Validate motion/chase v2 separately before accepting the combined slice.
 
-The canonical scene currently reaches the chase scene through a provisional handoff. This boundary is available for end-to-end testing, but it is not accepted until the following v2 test and a hands-on chase playtest pass.
-
-Files:
-- Scene: `scenes/prototypes/motion_chase_prototype.tscn`
-- Code: `scripts/prototypes/motion_chase_prototype.gd`
-- Test: `tests/test_motion_chase_prototype.tscn` and `tests/test_motion_chase_prototype.gd`
-
-Code inspection shows third-person camera orbit/fading, walk/run/crouch/jump, a defined climb, scanner reveal, checkpoints, and a recovery-unit state machine. These are implementation facts, not proof of validated gameplay quality. The prototype specification states v2 and its automated test have not yet been run.
-
-Commands to run before accepting the H handoff:
-
-```sh
-godot --headless --path . res://tests/test_motion_chase_prototype.tscn
-godot --headless --path . res://tests/test_phase_0.tscn
-```
-
-Then run the scene manually and log movement, camera, detection fairness, failures and retries. The historical Phase 0 result (11 passed, 0 failed) does not verify later changes.
-
-## Technical and regression boundaries
-
-Preserve Phase 0 input/autoload/resource-path contracts, save JSON/CRC32 behaviour, and Compatibility renderer assumptions unless an explicit impact review authorizes a change. Keep legacy scenes until the new slice passes human review. The current assets remain a prototype library; verify the MPFB/MakeHuman base-mesh licence before shipping derivatives.
-
-## Reporting rule
-
-Distinguish design specified, code present, automated test coverage, test executed successfully, manual playtest, and production readiness. Never claim one based on another.
+Preserve inputs/autoloads/resource paths, JSON/CRC32 saves and Compatibility renderer. Keep old scenes. Distinguish code, automated tests, run results and human validation.
