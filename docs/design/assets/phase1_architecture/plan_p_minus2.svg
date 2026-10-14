@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 800" role="img" aria-label="PLANTA D · FOSO DE MANTENIMIENTO">
   <defs><marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7be0b8"/></marker>
-  <marker id="vertical" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f4c968"/></marker>
+  <marker id="vertical" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#f4c968"/></marker><marker id="escape" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e9a078"/></marker>
   <pattern id="blocked" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M0,0L9,9M9,0L0,9" stroke="#efa17e" stroke-width="1.2" opacity=".7"/></pattern>
   <pattern id="void" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0,0L12,12M12,0L0,12" stroke="#64808e" stroke-width="1" opacity=".45"/></pattern></defs>
   <style>text{font-family:Inter,Arial,sans-serif}.title{font-size:26px;font-weight:750;fill:#eef4f7;letter-spacing:.5px}.sub{font-size:15px;fill:#a9c0cc}.level{font-size:17px;font-weight:750;fill:#7be0b8}.room{font-size:13px;fill:#eaf2f6}.small{font-size:11px;fill:#d0dde4}.muted{font-size:11px;fill:#8fa9b5}</style>
@@ -26,7 +26,7 @@
   <g transform="translate(850 630)"><text x="0" y="0" font-size="14" font-weight="750" fill="#7be0b8">LEYENDA</text>
   <line x1="0" y1="25" x2="50" y2="25" stroke="#7be0b8" stroke-width="3" marker-end="url(#arrow)"/><text x="64" y="29" class="small">Recorrido de esta planta</text>
   <line x1="0" y1="53" x2="50" y2="53" stroke="#f4c968" stroke-width="3" stroke-dasharray="7 5"/><text x="64" y="57" class="small">Conexión vertical</text>
-  <rect x="0" y="71" width="22" height="17" fill="url(#blocked)" stroke="#efa17e"/><text x="34" y="84" class="small">Bloqueado / dañado</text>
+  <rect x="0" y="71" width="22" height="17" fill="url(#blocked)" stroke="#efa17e"/><text x="34" y="84" class="small">Bloqueado / dañado</text><line x1="0" y1="98" x2="50" y2="98" stroke="#e9a078" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#escape)"/><text x="64" y="102" class="small">Salida alternativa al parking</text>
   </g>
   <text x="30" y="758" font-size="13" fill="#a9c0cc">Plano esquemático acotado · metros · norte arriba</text>
   <text x="30" y="779" font-size="10" fill="#7893a1">DISEÑO ARQUITECTÓNICO v2.0 · GALERÍA DE EVACUACIÓN PROPUESTA; COLISIONES PENDIENTES</text>
