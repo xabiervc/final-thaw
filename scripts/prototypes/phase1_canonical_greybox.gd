@@ -588,7 +588,7 @@ func _build_player_and_hud() -> void:
 	hud.name = "PromptHUD"
 	add_child(hud)
 	hud.call("set_objective", "OBJETIVO  /  Investiga la anomalía y accede al archivo")
-	hud.call("set_hint", "Baja al foso. El esquema y la conexión física describen cosas distintas.")
+	hud.call("set_hint", "La documentación describe una distribución que no parece coincidir con el estado físico.")
 	hud.call("set_status", "Fase 1 · The Ghost Protocol")
 
 
