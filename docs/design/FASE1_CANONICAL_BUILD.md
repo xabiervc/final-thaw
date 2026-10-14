@@ -9,9 +9,10 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_ar
 ## Cambios de esta reconstrucción
 
 - P0 conserva su perímetro, acceso, nave, taller y rutas contractuales; B queda en X=7..20, Z=−9..1 y el pasillo A→B discurre por X=7..10, Z=1..8. Se añaden particiones con pasos anchos, bandejas, armarios y estructura de cubierta.
+- El arranque incluye un túnel exterior físico de 3 m (X=−3..0, Z=4,5..7,5), con suelo, paredes, techo de 2,2 m y umbral a A; Elena aparece orientada hacia la entrada.
 - El arranque incluye un túnel físico exterior de 3 m con suelo, paredes, techo y abertura alineada con A; Elena aparece en el túnel orientada hacia la entrada.
 - P−1 tiene suelo continuo D1/D2 (X=10..28, Z=1..8) a Y=−2. El hueco P0 coincide con esa huella y S1 conserva su abertura; B termina en Z=1, por lo que nave y vacío no se solapan.
-- M/P2 mantienen sus cotas, huecos de elevador y S2, pasarela, archivo, control y esclusa G.
+- M/P2 mantienen sus cotas, huecos de elevador y S2, pasarela, archivo, control y esclusa G. El panel E conserva su coordenada contractual y tiene pared de soporte real; se protegen los laterales del elevador, el borde oeste de M y los bordes expuestos de E/pasarela.
 - La instancia de misión usa el elevador Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. Las compuertas fijas se alinean con los bordes del hueco y las barandillas laterales protegen ambas cotas.
 - Las barandillas del foso están sobre la losa P0, no enterradas; la abertura de S1 se mantiene deliberadamente.
 - El banco del taller no invade el paso B↔C y la marca del pasillo de servicio queda sobre suelo sólido, no suspendida sobre el foso.
@@ -20,7 +21,7 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_ar
 
 ## Correcciones de revisión estática ya aplicadas
 
-La auditoría geométrica detectó y corrigió: solape entre banco y armario; marca de ruta sobre el vacío; columna Aster sin apoyo y marcador T desplazado; compuertas del elevador desalineadas; elementos del foso con separación respecto al suelo; y la escalera colapsada orientada en sentido inverso. Se coordinó B al norte del hueco D1/D2 y se redibujó la ruta de P0 para bordear el foso. El panel E conserva su coordenada contractual y ahora tiene pared de soporte real; se ajustó el borde norte del suelo E para que la pared cierre la sala. La pasarela P2 se extendió hasta el borde protegido. Se añadieron barandillas laterales en el elevador en P0/M, barandilla oeste del mezzanine, protección de los bordes norte/este de control y de los bordes abiertos de la pasarela, y pasamanos inclinados en S1/S2. Los SVG existentes se actualizaron para mostrar las huellas y protecciones.
+La auditoría geométrica detectó y corrigió: solape entre banco y armario; marca de ruta sobre el vacío; columna Aster sin apoyo y marcador T desplazado; compuertas del elevador desalineadas; elementos del foso con separación respecto al suelo; y la escalera colapsada orientada en sentido inverso. Se coordinó B al norte del hueco D1/D2 y se redibujó la ruta de P0 para bordear el foso. El panel E conserva su coordenada contractual y ahora tiene pared de soporte real; se ajustó el borde norte del suelo E para que la pared cierre la sala. La pasarela P2 se extendió hasta el borde protegido. La ruta de retorno desde S1 se dibuja por el perímetro sur y el pasillo este. Se añadieron barandillas laterales en el elevador en P0/M, barandilla oeste del mezzanine, protección de los bordes norte/este de control y de los bordes abiertos de la pasarela, y pasamanos inclinados en S1/S2. Los SVG existentes se actualizaron para mostrar las huellas y protecciones.
 
 Las pruebas de integración ahora comprueban el túnel y la orientación inicial, la escalera colapsada, cotas, huecos de colisión, apoyos de equipos, ausencia de solapes críticos, guardarraíles, alineación Aster/escáner, compuertas, y pérdida de alimentación del elevador de misión. Todo esto sigue siendo revisión estática y cobertura escrita: no demuestra comportamiento físico hasta ejecutar Godot y recorrer la escena.
 
