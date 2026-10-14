@@ -96,14 +96,15 @@ The following coordinates are derived from the concept plan only. Origin is the 
 |---|---:|---|---|
 | P2-01 Service threshold | (5.3, 21.8) local | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; orient/transform only after the Phase 1 exit is selected |
 | P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
-| P2-A1 Direct aisle | (13.9, 19.3) | Short exposed path | To P2-A2; limited cover |
-| P2-A2 Exposed crossing | (22.9, 21.8) | High-risk crossing | To P2-A3; retain recovery cover nearby |
+| P2-A1 Direct aisle | (14.3, 19.3) | Short exposed path; turns north around the first column | To P2-A2; keep ≥1.2 m clear west of the column |
+| P2-A2 Exposed crossing | (22.9, 19.3) | High-risk central-apron crossing | To P2-A3; retain recovery cover nearby |
 | P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-A4; minimum clear width 2.0 m |
 | P2-A4 South-east turn | (40.7, 19.6) | Exposed 90-degree turn south of O2 before convergence | To P2-JOIN; keep 2.0 m clear and visible from approach |
 | P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
 | P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
-| P2-B3 Technical cage | (37.1, 12.1) | Service-side traversal | To P2-JOIN; must not be a dead end |
-| P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05 |
+| P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal east of the technical cage; does not pass through the cage | To P2-JOIN; maintain ≥1.2 m clearance from the cage envelope |
+| P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05A |
+| P2-05A Barrier approach | (44.3, 16.8) | Clear approach south of the barrier, with the 1.3 m aperture visible ahead | To P2-05; keep the approach collision-free |
 | P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
 | P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
 | P2-EXIT Boundary | (42.8, 1.8) | Physical escape threshold | Mission completion only after crossing actual boundary |
@@ -123,8 +124,8 @@ These are design targets for the concept graph, not measured clearances in the c
 | P2-02 → P2-B1 → P2-B2 | Walk/crouch where needed | ≥1.2 m at the single authored pinch; otherwise ≥1.5 m | Broken sightline behind parked vehicles | No required jump; player can retreat to P2-02 until the final commitment |
 | P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
 | P2-A2 → P2-A3 → P2-JOIN / P2-B3 → P2-JOIN | Walk/run; direct route passes south of P2-O2 and then turns north through the shared convergence | ≥2.0 m clear width at bypass and convergence | Direct route stays exposed; service route keeps more broken sightlines | Show the southern bypass from approach; keep the 1.3 m barrier aperture unobstructed; no hidden collision lip |
-| P2-JOIN → P2-05 | Walk/run, optional short crouch only if geometry clearly signals it | ≥1.5 m | Threat can regain sight near the barrier | Both routes remain viable; no hidden collision lip |
-| P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.2 m at the fixed O3 aperture, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; the 1.3 m aperture stays open and collision-free; any future blocked state requires a drawn bypass |
+| P2-JOIN → P2-05A | Walk/run along the open apron | ≥2.0 m | The barrier opening is visible ahead | No obstruction or forced crouch on approach |
+| P2-05A → P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.2 m at the fixed O3 aperture, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; the 1.3 m aperture stays open and collision-free; any future blocked state requires a drawn bypass |
 
 No jump or climb is currently required by the parking concept. Do not import the prototype's 1.8 m/3.0 m gaps into this level simply because they exist in the mechanics test. If a jump, climb or squeeze is later added, it needs an approach/landing diagram and a measured capability test.
 
