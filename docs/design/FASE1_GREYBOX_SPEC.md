@@ -33,7 +33,7 @@ Galería de observación X 9..13, Z −9..−1,5; sala de bombas X 13..24, Z −
 
 ## P2 · Control, archivo, esclusa — Y=+3
 
-G X 0..3, Z −9..−4,5; F X 3..9, Z −9..−4,5; E X 9..24, Z −9..−4,5; pasarela X 9..26, Z −4,5..−1,5, con hueco S2 X 9..13. Proteger los bordes norte/este de E y los bordes sur/este del saliente de pasarela. G no tiene escalera a P0. Mantener libre la ruta E→F→G y los anchos de paso; el panel debe poder leerse desde el área de operación.
+G X 0..3, Z −9..−4,5; F X 3..9, Z −9..−4,5; E X 9..24, Z −8,5..−4,5; pasarela X 9..26, Z −4,5..−1,5, con hueco S2 X 9..13. Proteger los bordes norte/este de E y los bordes sur/este del saliente de pasarela. G no tiene escalera a P0. Mantener libre la ruta E→F→G y los anchos de paso; el panel debe poder leerse desde el área de operación.
 
 ## Cubierta y lectura del edificio
 
