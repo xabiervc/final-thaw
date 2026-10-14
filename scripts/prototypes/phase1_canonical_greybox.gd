@@ -14,6 +14,9 @@ const WALL_THICKNESS := 0.3
 const RAIL_HEIGHT := 1.1
 const INTERACTION_REACH := 2.15
 const HANDOFF_DELAY := 2.4
+const SCAN_CHARGE_TIME := 0.9
+const SCAN_REVEAL_TIME := 3.0
+const SCAN_COOLDOWN := 4.0
 const ARCHIVE_RECORD := "El acta oficial declara alimentación exclusiva del nodo T. La telemetría de bornes registra corriente simultánea en A y T durante la ventana de ensayo; el cierre posterior la atribuye a una interrupción automática."
 
 var materials = FacilityMaterials.new()
@@ -29,6 +32,11 @@ var _handoff_started := false
 var _archive_consulted := false
 var _audit_events: Array[String] = []
 var _service_lights: Array[OmniLight3D] = []
+var _scan_charge: float = 0.0
+var _scan_reveal_left: float = 0.0
+var _scan_cooldown_left: float = 0.0
+var _scan_labels: Array[Label3D] = []
+var _scan_highlights: Array[MeshInstance3D] = []
 var _lift_lower_button: MeshInstance3D
 var _lift_upper_button: MeshInstance3D
 var _lift_deck_label: Label3D
@@ -48,6 +56,7 @@ func _ready() -> void:
 	_build_ground_floor()
 	_build_fixed_geometry()
 	_build_pit()
+	_build_scanner_fixtures()
 	_build_upper_route()
 	_build_lift()
 	_build_controls_and_fixtures()
@@ -61,10 +70,11 @@ func _exit_tree() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if player == null or hud == null:
 		return
 	_update_interaction_prompt()
+	_update_scanner(delta)
 	if not _hotspot_id.is_empty() and Input.is_action_just_pressed("interact"):
 		_interact(_hotspot_id)
 	_update_safe_point()
@@ -288,6 +298,53 @@ func _build_pit() -> void:
 	_visual_box("MaintenanceHousing", Vector3(0.65, 0.55, 0.35), Vector3(26.0, -1.55, 2.0), materials.get_material("steel_light"))
 	_switch_lamp = _visual_box("MaintenanceStatusLamp", Vector3(0.22, 0.12, 0.08), Vector3(26.0, -1.22, 1.78), _flat_material(Color(0.9, 0.2, 0.1), 0.35, 0.0, 1.3))
 	_label3d("MaintenanceLabel", "MANTENIMIENTO", Vector3(26.0, -0.85, 2.0), Color(0.92, 0.88, 0.7), 20, 0.0032)
+
+
+func _build_scanner_fixtures() -> void:
+	# Three transient markers communicate continuity at A, the physical bridge and T without naming an action.
+	var marker_a := _label3d("ScanSchematicLabel", "TRAZA DE CONTINUIDAD · A", Vector3(27.0, -0.52, 6.0), Color(0.35, 0.98, 0.95), 18, 0.0035)
+	var marker_bridge := _label3d("ScanBridgeLabel", "CONTINUIDAD A → T", Vector3(22.0, -0.72, 4.0), Color(0.35, 0.98, 0.95), 20, 0.0037)
+	var marker_t := _label3d("ScanNodeTLabel", "TRAZA DETECTADA · T", Vector3(14.5, 2.75, 2.7), Color(0.35, 0.98, 0.95), 18, 0.0035)
+	for marker in [marker_a, marker_bridge, marker_t]:
+		marker.visible = false
+		_scan_labels.append(marker)
+	var glow := _flat_material(Color(0.25, 0.98, 0.9), 0.35, 0.1, 2.0)
+	var schematic_glow := _visual_box("ScanSchematicHighlight", Vector3(1.7, 0.05, 0.18), Vector3(27.0, -0.82, 6.0), glow)
+	var bridge_glow := _visual_box("ScanBridgeHighlight", Vector3(1.65, 0.05, 0.36), Vector3(22.0, -1.65, 4.0), glow)
+	var node_t_glow := _visual_box("ScanNodeTHighlight", Vector3(0.8, 0.05, 0.8), Vector3(14.5, 2.14, 0.5), glow)
+	for highlight in [schematic_glow, bridge_glow, node_t_glow]:
+		highlight.visible = false
+		_scan_highlights.append(highlight)
+
+
+func _set_scan_visibility(value: bool) -> void:
+	for marker in _scan_labels:
+		marker.visible = value
+	for highlight in _scan_highlights:
+		highlight.visible = value
+
+
+func _start_scan_reveal() -> void:
+	_scan_charge = 0.0
+	_scan_reveal_left = SCAN_REVEAL_TIME
+	_scan_cooldown_left = SCAN_COOLDOWN
+	_set_scan_visibility(true)
+	_banner("TRAZAS REVELADAS", "Continuidad detectada entre A y T. Contrasta la traza con el esquema previsto.", Color(0.35, 0.98, 0.95), SCAN_REVEAL_TIME)
+
+
+func _update_scanner(delta: float) -> void:
+	_scan_cooldown_left = maxf(0.0, _scan_cooldown_left - delta)
+	if _scan_reveal_left > 0.0:
+		_scan_reveal_left -= delta
+		if _scan_reveal_left <= 0.0:
+			_set_scan_visibility(false)
+		return
+	if Input.is_action_pressed("scan") and _scan_cooldown_left <= 0.0:
+		_scan_charge += delta
+		if _scan_charge >= SCAN_CHARGE_TIME:
+			_start_scan_reveal()
+	else:
+		_scan_charge = 0.0
 
 
 func _build_sloped_stairs(label: String, x0: float, x1: float, z0: float, z1: float, y0: float, y1: float) -> void:
