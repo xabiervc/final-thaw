@@ -16,6 +16,7 @@ extends Node3D
 
 const Materials := preload("res://scripts/levels/test_room_art/facility_materials.gd")
 const PowerScript := preload("res://scripts/levels/test_room_art/test_room_power.gd")
+const AudioScript := preload("res://scripts/levels/test_room_art/test_room_audio.gd")
 
 const ROOM_X := Vector2(-12.0, 12.0)
 const ROOM_Z := Vector2(-8.0, 8.0)
@@ -42,6 +43,7 @@ const SUN_ROTATION := Vector3(-58.0, 205.0, 0.0)
 var mats := Materials.new()
 var room: Node3D = null
 var power: Node = null
+var audio: Node = null
 
 var _boxes: Dictionary = {}  # "material|shadow" -> Array[Transform3D]
 var _cylinders: Dictionary = {}
@@ -83,6 +85,9 @@ func _ready() -> void:
 	power.set("mats", mats)
 	power.set("room", room)
 	add_child(power)
+	audio = AudioScript.new()
+	audio.set("room", room)
+	add_child(audio)
 
 
 func _find_room(host: Node) -> Node3D:
