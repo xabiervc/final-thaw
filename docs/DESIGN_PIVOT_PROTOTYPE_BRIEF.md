@@ -15,7 +15,7 @@ The opening has two causally linked slices:
 1. **The Ghost Protocol — investigation/system puzzle.** Elena reconstructs an Aster test by comparing the intended circuit diagram, a physically manipulated A→T bridge, protection behaviour and a restricted record.
 2. **Containment — traversal/stealth/escape.** Leaving through G synchronizes a queued service audit; Helix activates a recovery unit that searches for Elena using bounded vision/noise rules.
 
-The functional decisions for Phase 1 are closed in `docs/design/FASE1_FUNCTIONAL_SPEC.md`. Its construction geometry, spatial graph and progression map are reconciled and versioned. This closure is design authority, not Godot validation.
+The functional decisions for Phase 1 are closed in `docs/design/FASE1_FUNCTIONAL_SPEC.md`. Its construction geometry, spatial graph and progression map are reconciled and versioned. The first canonical scene is `scenes/prototypes/phase1_canonical_greybox.tscn`, with an integration test at `tests/test_phase1_canonical_greybox.tscn`. This is code presence, not Godot validation.
 
 ## Mission 1 — The Ghost Protocol
 
