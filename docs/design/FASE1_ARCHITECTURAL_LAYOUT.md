@@ -44,7 +44,7 @@ La huella puede crecer si el plano acotado demuestra que el recorrido de huida n
 | M · Bombas/observación | Bombeo y supervisión de Aster | Confirma efectos del mantenimiento, enlaza elevador y S2 y permite leer verticalmente la nave. |
 | E · Control | Supervisión del circuito | Probar hipótesis, ver diagnóstico y recuperarse de un error. |
 | F · Archivo | Registro restringido | Consultar con ARCHIVO estable; la consulta no equivale a extracción. |
-| G · Esclusa de doble puerta | Interbloqueo de seguridad exterior | Tras resolver lo necesario, abrir la compuerta exterior inicia la persecución; Elena retrocede por la puerta interior hacia F/E. No es la salida final ni un cambio de escena inmediato. |
+| G · Esclusa de doble puerta | Interbloqueo de seguridad exterior | Tras resolver lo necesario, abrir la compuerta exterior envía la auditoría e inicia Containment; Elena retrocede por la puerta interior hacia F/E. Primero hay evasión silenciosa; la carrera empieza tras una reacquisición real en un umbral expuesto definido en el grafo. No es la salida final ni un cambio de escena inmediato. |
 | Ruta de huida | Circulación de emergencia y mantenimiento, con posibles áreas operativas ocupadas | Evitar personal y percepción de Containment en un primer tramo de bajo perfil; después correr por un tramo expuesto con obstáculos físicos legibles. No requiere combate. |
 | Galería de evacuación | Descarga de servicio | Ruta final alternativa; conduce a una boca exterior distinta del túnel de entrada. |
 | Aparcamiento | Logística exterior | Primer espacio de Fase 2; handoff continuo a la persecución existente. |
@@ -72,7 +72,7 @@ El puzle principal conserva el contrato eléctrico existente. El edificio aporta
 - **M:** comprobar el efecto físico del mantenimiento en bombas, iluminación y elevador; entender que ese circuito no equivale a la protección de recuperación.
 - **E:** diagnóstico y maniobra del circuito, con errores reversibles.
 - **F:** consulta condicionada a ARCHIVO estable; aporta contexto, no una llave que haga funcionar el circuito.
-- **G:** puerta de huida, consecuencia jugable de haber estabilizado la situación, y comienzo del segmento de persecución.
+- **G:** envía la auditoría e inicia Containment; no fuerza una carrera instantánea. La sección silenciosa precede al segmento de persecución a la carrera.
 
 Las pistas deben reforzarse entre sí mediante geometría, texto, estado de maquinaria y continuidad de tuberías/cables. El escáner revela continuidad A→T; no marca la respuesta correcta ni señala los controles. La máquina de ensayo nunca arranca. No añadir llaves, coleccionables o puzles secundarios obligatorios sin decisión explícita.
 
