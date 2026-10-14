@@ -74,7 +74,7 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 | Canopy headroom | 2.8 m shown in section | Optional design element; remove if unsupported by the facility program, but retain route and threat readability |
 | Perimeter | wall/fence shown schematically | Height, gate opening, climbability and boundary collision remain to be specified against the threat and exit behavior |
 
-Before design lock, add dimension strings for the narrowest clear passage on each route, the service-cage bypass and the final gate. The current SVGs now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron and the 1.3 m O3 aperture; they still do not prove every internal clearance or the final exit threshold.
+Before design lock, add dimension strings for the narrowest clear passage on each route, the service-cage bypass and the final gate. The current SVGs now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron, the 1.3 m O3 aperture and the 3.6 m far-side egress; they still do not prove every internal clearance or the Phase 1 exterior threshold.
 
 ### 2.3 Required plan and section views
 
