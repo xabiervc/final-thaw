@@ -20,7 +20,7 @@ Distinguir siempre diseño objetivo, código implementado, test automatizado y v
 - La investigación aprovecha A/B/C, D1/D2, M, E y F; las estancias no deben ser salas de relleno ni barreras arbitrarias.
 - G inicia la huida dentro del edificio; no es una puerta exterior ni debe cambiar de escena inmediatamente.
 - La huida usa S2, M, elevador, P0 y S1, y sale por una galería de evacuación nueva en P−1.
-- La galería de evacuación y su boca este enlazan físicamente con el aparcamiento y son distintas del túnel de entrada oeste.
+- La salida alternativa seleccionada enlaza físicamente con el aparcamiento y es distinta del túnel de entrada oeste. La galería y la boca este dibujadas actualmente son una propuesta, no una restricción para la ruta definitiva.
 - Se conservan las conexiones verticales existentes; no añadir un segundo elevador ni una escalera secreta.
 - El contrato del circuito, los inputs, autoloads, rutas de recursos, renderer Compatibility y guardado JSON/CRC32 no cambian sin aprobación explícita.
 
@@ -53,7 +53,7 @@ La reconstrucción anterior contiene túnel oeste, perímetro/salas P0, hueco D1
 - El perímetro debe ser cerrado salvo puertas y salidas intencionadas.
 - D1/D2 tienen suelo inferior y huecos reales en P0; el retorno S1→galería de servicio existe en colisión.
 - G inicia el segmento interior; la galería de evacuación no se representa solo mediante una línea o un cambio de escena.
-- La salida de P−1 se ve y se recorre hasta el aparcamiento.
+- La salida alternativa seleccionada se ve y se recorre hasta el aparcamiento; sus coordenadas se fijan tras cerrar el grafo completo.
 - Todas las rutas se validan con cápsula de Elena y cámara real, sin saltos no diseñados.
 
 ### Puzle y huida
