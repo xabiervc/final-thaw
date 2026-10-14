@@ -45,7 +45,7 @@ Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protecció
 | M | Mostrar respuesta de bombas/iluminación y enlazar cotas. | No crea una segunda regla eléctrica. |
 | E | Diagnóstico, selector, aislador y rearme. | Mantener centros de interacción y contrato existentes. |
 | F | Consultar con ARCHIVO estable. | Consulta no es extracción ni condición técnica para que el circuito funcione. |
-| G | Puerta de huida y comienzo de persecución. | No cambiar de escena directamente al aparcamiento. |
+| G | Puerta que envía la auditoría e inicia Containment. | No equivale a correr inmediatamente ni cambia de escena. |
 
 Las pistas ambientales deben poder leerse en el espacio real y desde la cámara. Si el texto no se puede leer, debe corregirse su montaje/legibilidad; no compensarlo añadiendo marcadores que den la solución.
 
