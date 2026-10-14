@@ -12,6 +12,15 @@ const TEXT := Color("eff4ee")
 const OXYGEN_NORMAL := Color("eff4ee")
 const OXYGEN_WARNING := Color("f2c14e")
 const OXYGEN_CRITICAL := Color("f26d5b")
+const HC_BG := Color("101418")
+const HC_WATER := Color("1d3b4d")
+const HC_LOCKED := Color("5a5a5a")
+const HC_ACTIVE := Color("00e5a0")
+const HC_HIGHLIGHT := Color("ffffff")
+const HC_TEXT := Color("ffffff")
+const HC_OXYGEN_NORMAL := Color("ffffff")
+const HC_OXYGEN_WARNING := Color("ffd400")
+const HC_OXYGEN_CRITICAL := Color("ff5252")
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const PLAYER_START := Vector2(125, 390)
 const WORLD_MIN := Vector2(80, 130)
@@ -35,13 +44,13 @@ func _ready() -> void:
 	_restore_persistent_shelter_state()
 
 	var floor_rect := ColorRect.new()
-	floor_rect.color = BG
+	floor_rect.color = _palette().bg
 	floor_rect.size = Vector2(2100, 800)
 	add_child(floor_rect)
 
 	for n in 3:
 		var room := ColorRect.new()
-		room.color = WATER if n > 0 else Color("30465a")
+		room.color = _palette().water if n > 0 else Color("30465a")
 		room.position = Vector2(70 + n * 650, 110)
 		room.size = Vector2(600, 550)
 		add_child(room)
@@ -76,8 +85,34 @@ func _ready() -> void:
 	if narrative_panel != null and narrative_panel.has_signal("narrative_dismissed"):
 		narrative_panel.narrative_dismissed.connect(_on_narrative_dismissed)
 
+	GameManager.stats_changed.connect(_on_accessibility_changed)
 	_update_interactable_visuals()
 	_update_ui(NarrativeTextManager.get_shelter_intro())
+
+func _palette() -> Dictionary:
+	if GameManager.get_flag("accessibility_high_contrast"):
+		return {
+			"bg": HC_BG,
+			"water": HC_WATER,
+			"locked": HC_LOCKED,
+			"active": HC_ACTIVE,
+			"highlight": HC_HIGHLIGHT,
+			"text": HC_TEXT,
+			"oxygen_normal": HC_OXYGEN_NORMAL,
+			"oxygen_warning": HC_OXYGEN_WARNING,
+			"oxygen_critical": HC_OXYGEN_CRITICAL,
+		}
+	return {
+		"bg": BG,
+		"water": WATER,
+		"locked": LOCKED,
+		"active": ACTIVE,
+		"highlight": HIGHLIGHT,
+		"text": TEXT,
+		"oxygen_normal": OXYGEN_NORMAL,
+		"oxygen_warning": OXYGEN_WARNING,
+		"oxygen_critical": OXYGEN_CRITICAL,
+	}
 
 func _restore_persistent_shelter_state() -> void:
 	var power := GameStateManager.get_flag("shelter_power_restored")
@@ -100,7 +135,7 @@ func _create_interactable(kind: String, location: Vector2) -> void:
 	area.add_child(shape_node)
 
 	var graphic := ColorRect.new()
-	graphic.color = LOCKED
+	graphic.color = _palette().locked
 	graphic.position = Vector2(-45, -45)
 	graphic.size = Vector2(90, 90)
 	area.add_child(graphic)
@@ -108,7 +143,7 @@ func _create_interactable(kind: String, location: Vector2) -> void:
 	var label := Label.new()
 	label.text = kind
 	label.position = Vector2(-44, -82)
-	label.add_theme_color_override("font_color", TEXT)
+	label.add_theme_color_override("font_color", _palette().text)
 	area.add_child(label)
 
 	add_child(area)
@@ -119,7 +154,7 @@ func _label(parent: Node, pos: Vector2, value: String) -> Label:
 	var label := Label.new()
 	label.position = pos
 	label.text = value
-	label.add_theme_color_override("font_color", TEXT)
+	label.add_theme_color_override("font_color", _palette().text)
 	label.add_theme_font_size_override("font_size", int(20.0 * GameManager.font_scale))
 	parent.add_child(label)
 	return label
@@ -228,15 +263,21 @@ func _on_narrative_dismissed() -> void:
 	narrative_grace_left = NARRATIVE_GRACE_SECONDS
 	_update_interactable_visuals()
 
+func _on_accessibility_changed() -> void:
+	_update_interactable_visuals()
+	_update_ui()
+
 func _update_interactable_visuals() -> void:
+	var palette := _palette()
 	for kind in interactables:
 		var data: Dictionary = interactables[kind]
 		var graphic: ColorRect = data["graphic"]
 		var label: Label = data["label"]
 		var is_active := _is_interactable_active(kind)
-		graphic.color = ACTIVE if is_active else LOCKED
-		graphic.self_modulate = HIGHLIGHT if kind == highlighted_kind else Color.WHITE
+		graphic.color = palette.active if is_active else palette.locked
+		graphic.self_modulate = palette.highlight if kind == highlighted_kind else Color.WHITE
 		label.text = _interactable_prompt(kind)
+		label.add_theme_color_override("font_color", palette.text)
 
 func _is_interactable_active(kind: String) -> bool:
 	match kind:
@@ -263,6 +304,7 @@ func _interactable_prompt(kind: String) -> String:
 	return kind
 
 func _update_ui(message: String = "") -> void:
+	var palette := _palette()
 	hud.text = NarrativeTextManager.get_shelter_hud(
 		rules.power_on,
 		rules.valves_open,
@@ -271,11 +313,11 @@ func _update_ui(message: String = "") -> void:
 	)
 
 	var oxygen_state := rules.oxygen_state()
-	var oxygen_color := OXYGEN_NORMAL
+	var oxygen_color: Color = palette.oxygen_normal
 	if oxygen_state == "warning":
-		oxygen_color = OXYGEN_WARNING
+		oxygen_color = palette.oxygen_warning
 	elif oxygen_state == "critical":
-		oxygen_color = OXYGEN_CRITICAL
+		oxygen_color = palette.oxygen_critical
 	hud.add_theme_color_override("font_color", oxygen_color)
 
 	if not message.is_empty():
