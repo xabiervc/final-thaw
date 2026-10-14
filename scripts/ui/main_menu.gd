@@ -1,7 +1,7 @@
 extends Control
 class_name MainMenu
 
-const LEVEL_PATH := "res://scenes/levels/elena_test_room.tscn"
+const LEVEL_PATH := "res://scenes/levels/elena_test_room_art.tscn"
 const OPTIONS_PATH := "res://scenes/ui/options_menu.tscn"
 const CREDITS_PATH := "res://scenes/ui/credits.tscn"
 const BOX := "CenterContainer/Panel/MarginContainer/VBoxContainer"

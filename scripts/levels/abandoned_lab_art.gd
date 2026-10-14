@@ -10,4 +10,6 @@ func _ready() -> void:
 	name = "AbandonedLabArt"
 	var level := (load(LEVEL_SCENE) as PackedScene).instantiate()
 	add_child(level)
-	add_child(DressingScript.new())
+	var dressing := DressingScript.new()
+	dressing.profile = "lab"
+	add_child(dressing)
