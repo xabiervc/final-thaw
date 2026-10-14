@@ -1,10 +1,16 @@
-# FINAL THAW — Fase 1: grafo espacial (v0.2)
+# FINAL THAW — Fase 1: grafo espacial (v0.2.1)
 
-Estado: DISEÑO PARA REVISIÓN (v0.2). Revisión estática de documentos; no se ha ejecutado Godot ni validado ningún recorrido. No autoriza construcción, dimensiones nuevas, habitaciones nuevas ni cambios en `FASE1_LOGIC_CONTRACT.md`, guardado o escenas existentes.
+Estado: DISEÑO PARA REVISIÓN (v0.2.1). Revisión estática de documentos; no se ha ejecutado Godot ni validado ningún recorrido. No autoriza construcción, dimensiones nuevas, habitaciones nuevas ni cambios en `FASE1_LOGIC_CONTRACT.md`, guardado o escenas existentes.
 
-Fuentes: `fase1_fase2_mapa_progresion.md` (v0.3), `FASE1_GREYBOX_SPEC.md`, `FASE1_LOGIC_CONTRACT.md`.
+Fuentes: `fase1_fase2_mapa_progresion.md` (v0.4), `FASE1_GREYBOX_SPEC.md`, `FASE1_LOGIC_CONTRACT.md`.
 
 Convención: **[R]** = existe en la especificación del greybox. **[P]** = propuesta, no es una capacidad disponible. Distancias: estimaciones de longitud de recorrido calculadas a partir de las coordenadas y superficies descritas en el greybox; no son mediciones en escena. Cuando no se proporciona el desglose de tramos, la cifra se marca como no reproducible y no se considera criterio de aceptación. El ascensor sigue sin validar y la rampa es PROVISIONAL.
+
+## Estado de las variantes
+
+- **Variante A: orden previsto para el recorrido.**
+- **Variante B: alternativa posible, con un coste de retorno pendiente de medición reproducible.**
+- **Decisión definitiva: pendiente de validación mediante playtest. Ninguna variante queda descartada por razones de comodidad de construcción.**
 
 ## 1. Nodos y aristas existentes [R]
 
@@ -66,7 +72,7 @@ Entrada -> ruta sur -> pasillo oeste -> explanada -> ruta este -> rellano inferi
 | Pistas del foso antes de operar el circuito | Sí | No |
 | Orden natural por el recorrido | Sí: la boca del foso está en el camino | No: exige pasar de largo |
 
-Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda permitido como orden alternativo con coste de retorno asumido. No se añade ninguna estructura para reducir ese coste. El coste cualitativo está respaldado por la topología; la cifra de distancia queda pendiente de un desglose reproducible. Si en pruebas con jugadores B resulta frecuente y penaliza, se abrirá una decisión aparte sobre una conexión nueva, con medición del retorno.
+Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda permitida como alternativa posible, con un coste de retorno pendiente de medición reproducible. La decisión definitiva queda pendiente de validación mediante playtest; ninguna variante queda descartada por razones de comodidad de construcción. No se añade ninguna estructura para reducir ese coste. El coste cualitativo está respaldado por la topología; la cifra de distancia queda pendiente de un desglose reproducible. Si en pruebas con jugadores B resulta frecuente y penaliza, se abrirá una decisión aparte sobre una conexión nueva, con medición del retorno.
 
 ## 5. Comprobaciones puntuales
 
@@ -81,8 +87,10 @@ Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda
 
 ### 5.2 Indicador del archivo (F)
 
-- Estado actual del greybox: indicadores del circuito en la pasarela, legibles desde (15,3,-7), a ≈ 10 m del archivo. Terminal de diagnóstico en la cabina, siempre accesible.
-- Corrección al documento de progresión: v0.3 habla de «el diagnóstico completo de E»; en el greybox el terminal de diagnóstico está en la cabina. E aporta indicadores físicos y los controles. Debe alinearse la redacción con el greybox.
+- Estado actual del greybox: los indicadores del circuito están en la pasarela, pero su ubicación física exacta no está confirmada. La coordenada (15,3,-7) es el punto de observación desde el que deben ser legibles, no la ubicación confirmada de un indicador.
+- El archivo está en (5,3,-7), a ≈ 10 m del punto de observación (15,3,-7).
+- Terminal de diagnóstico en la cabina, siempre accesible.
+- Corrección al documento de progresión: v0.3 hablaba de «el diagnóstico completo de E»; en el greybox el terminal de diagnóstico está en la cabina. E aporta indicadores físicos y los controles. La redacción debe alinearse con el greybox.
 - [P] Indicador local de suministro en el punto de consulta del archivo (5,3,-7), con dos estados: suministro estable y no disponible. Lectura derivada de «archivo estable» del contrato. No indica qué control accionar. No sustituye el terminal ni los indicadores de la pasarela.
 - [P] Posición a verificar con la cámara real: el archivo está en el mismo eje Z=-7 que la entrada este (9,3,-7). Un indicador visible por esa apertura permitiría leerlo desde la pasarela sin entrar.
 - Esto añade un elemento visual, no una habitación ni un cambio de contrato.
@@ -112,18 +120,19 @@ Decisión de diseño propuesta, para revisión: A es el orden previsto y B queda
 
 ## 7. Decisiones abiertas
 
-1. Aceptar A como orden previsto y B como alternativa con coste.
+1. Confirmar A como orden previsto y B como alternativa.
 2. Ubicación y función de la plataforma.
 3. Ubicación del control de rearme.
 4. Indicador local de F y su posición visible.
-5. Alinear la redacción del documento de progresión: ubicación del interruptor, terminal de diagnóstico en la cabina y nota de resumen de correcciones.
-6. Punto de conexión de G (guion).
+5. Punto de conexión de G (guion).
+6. Validación en Godot de ascensor, rampa, colisiones, cámara y recorridos.
 
 Ninguna de estas decisiones exige cambiar `FASE1_LOGIC_CONTRACT.md`, el guardado o las escenas existentes. Si una la exige, se documenta como decisión separada.
 
+## 8. Correcciones de v0.2.1 y límites de validación
 
-## 8. Correcciones de v0.2 y límites de validación
-
+- Se corrige la sección 5.2: (15,3,-7) es un punto de observación, no la ubicación confirmada de un indicador. La ubicación física de los indicadores de la pasarela no está confirmada en el greybox.
+- Se unifica el estado de las variantes: A es el orden previsto; B es una alternativa posible con coste de retorno pendiente de medición reproducible; la decisión definitiva requiere playtest y ninguna variante queda descartada por comodidad de construcción.
 - La cifra de ≈ 70 m para el retorno de B queda registrada como estimación previa no reproducible, no como medición validada. Para confirmarla se requiere desglose por arista y ruta concreta.
 - Se distingue entre trayectos verticales del ascensor y «cruces»; el documento no usa el conteo anterior como criterio hasta definirlo.
 - El indicador de F y la interacción de rearme siguen siendo propuestas [P]. La coincidencia de coordenadas no acredita visibilidad y la operación lógica de rearme no acredita la existencia de un control físico.
