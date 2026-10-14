@@ -36,7 +36,7 @@ The puzzle must be solved through at least two complementary clues. The scanner 
 **Primary verb:** escape.  
 **Status:** movement/chase prototype exists; integrated mission design is specified in `docs/LEVEL_STRUCTURE.md`; runtime verification pending.
 
-The player moves through an industrial route while the recovery unit patrols, investigates, alerts, chases the last known position, searches and returns. Walking, running, crouching, jumping, the authored climb and scanner use are tactical choices, not checklist mechanics.
+The player first evades quietly through potentially occupied work areas, using real cover, timing and noise discipline. The recovery unit patrols/searches and follows through existing circulation; after the lift to P0 it reacquires Elena at R1 and the experience shifts to a running chase. Earlier reacquisition can start the chase sooner only when the unit has real line of sight. Walking, running, crouching, jumping, the authored climb and scanner use are tactical choices, not checklist mechanics.
 
 ### Decision model
 
