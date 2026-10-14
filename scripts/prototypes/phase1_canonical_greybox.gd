@@ -583,6 +583,8 @@ func _build_player_and_hud() -> void:
 	player.name = "Elena"
 	player.position = Vector3(-2.3, 0.2, 6.0)
 	add_child(player)
+	# Face the opening into A so the first camera composition reads the intended route.
+	player.visual.rotation.y = PI * 0.5
 	hud = HudScript.new()
 	hud.name = "PromptHUD"
 	add_child(hud)
