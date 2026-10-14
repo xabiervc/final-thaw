@@ -1,0 +1,50 @@
+name: Godot headless tests
+
+on:
+  push:
+    branches:
+      - feat/godot-vertical-slice
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  headless-tests:
+    name: Import project and run regression suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Godot 4.7.1
+        uses: chickensoft-games/setup-godot@v2
+        with:
+          version: 4.7.1
+          use-dotnet: false
+          include-templates: false
+
+      - name: Import project resources
+        run: godot --headless --editor --path . --quit
+
+      - name: Phase 0 regression
+        run: godot --headless --path . res://tests/test_phase_0.tscn
+
+      - name: Existing vertical slice regression
+        run: godot --headless --path . res://tests/test_vertical_slice.tscn
+
+      - name: Phase 1 circuit contract
+        run: godot --headless --path . res://tests/test_phase1_circuit_model.tscn
+
+      - name: Generic service lift
+        run: godot --headless --path . res://tests/test_service_lift.tscn
+
+      - name: Service lift transport
+        run: godot --headless --path . res://tests/test_service_lift_transport.tscn
+
+      - name: Canonical Phase 1 integration
+        run: godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
