@@ -26,7 +26,7 @@ The functional decisions for Phase 1 are closed in `docs/design/FASE1_FUNCTIONAL
 - The extra platform reservation X=30..34 and provisional ramp have been removed from the final slice; there is no alternate B route.
 - The circuit follows `FASE1_LOGIC_CONTRACT.md`: safe order is isolate trial, select ARCHIVO, verify. An unsafe order trips protection but remains recoverable.
 - The archive contains one session-persistent record contradicting the official summary. Reading it is not extraction and does not change the save format.
-- The maintenance switch queues SERVICE_OVERRIDE locally. Crossing the outer G hatch sends the queued audit and starts Containment. Reading the record adds RESTRICTED_RECORD_READ but is not the trigger by itself.
+- The maintenance interaction queues `SERVICE_OVERRIDE` as a mission-level flag separate from the circuit model. Opening the exterior leaf of G while the flag is queued sends the audit and starts Containment exactly once. Reading the record adds `RESTRICTED_RECORD_READ` but is not the trigger by itself. Without the queued flag, G does not start the chase.
 
 ## Mission 2 — Containment
 
