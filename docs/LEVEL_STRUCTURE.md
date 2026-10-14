@@ -63,7 +63,7 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 
 | Element | Concept dimension | Design intent / check |
 |---|---:|---|
-| Site boundary | 48 × 30 m | Retain only if service operations and two routes justify the footprint |
+| Combined facade/site envelope | 48 × 30 m | Includes the 5.3 m facade band; clear parking yard is 42.7 m east of the service threshold. The 30 m Z depth is clear between inner north/south wall faces |
 | Marked bay | 3.0 m wide × 5.0 m deep | Wider than a minimum stall to permit readable cover routes; validate total bay count and circulation |
 | Parked car envelope | approx. 1.9 × 4.5 m | Static cover; doors/bonnets do not create walkable space |
 | Pipe-rack support column | 1.0 × 1.0 m footprint at each inner parking-row edge | Supports overhead service pipes; no continuous canopy. Maintain 2.8 m clear below rack and keep the central apron open |
@@ -72,9 +72,9 @@ The SVG uses a nominal 14 px per local metre in plan. This schedule records the 
 | Pedestrian pinch | target ≥1.2 m | Only at one clearly telegraphed, non-jump pinch; prefer ≥1.5 m for a fast turn |
 | Primary route | target ≥2.0 m clear | Measured between collision surfaces, not visual prop bounds |
 | Overhead service pipe racks | At the inner edges of the two parking rows; 2.8 m clear below | Two linear pipe racks supported by the column rows; the central apron remains open-air, with no continuous canopy |
-| Perimeter | wall/fence shown schematically | Height, gate opening, climbability and boundary collision remain to be specified against the threat and exit behavior |
+| Perimeter walls | 0.3–0.5 m thick; 2.4 m high above pavement | Non-climbable in the baseline; the 3.6 m north egress is the only far-side opening. Verify collision and gate continuity in Godot |
 
-Before design lock, add dimension strings for the narrowest clear passage on each route, the service-cage bypass and the final gate. The current SVGs now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron, the 1.3 m O3 aperture, the 2.2 m O3 headroom (in the detail sheet) and the 3.6 m far-side egress; they still do not prove every runtime clearance or camera envelope.
+The drawings now dimension the overall envelope, a representative 3.0 × 5.0 m bay, the 17.3 m central apron, O1/O2 footprints, the 1.3 × 2.2 m O3 aperture and the 3.6 m far-side egress. The route table defines minimum target widths, but the service-cage bypass and each route's tightest collision envelope still require explicit measurement against the actual player capsule and camera before production lock.
 
 ### 2.3 Required plan and section views
 
@@ -96,7 +96,7 @@ The parking graph uses local metres, origin at the northwest inside corner, X ea
 
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
-| P2-01 Service threshold | local (5.3, 21.8); world (34, 6, −2) | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; aligned to the selected P−1 east mouth by the design-baseline transform |
+| P2-01 Service threshold | local (5.3, 21.8); world (34, 6, −2) | Exterior mouth plane at the west edge of the entry vestibule | Continuous handoff from P−1; preserve player position/orientation here, no scene-spawn teleport |
 | P2-CP Recovery checkpoint | local (6.8, 21.8); world (35.5, 6, −2) | Safe pocket inside vestibule, 1.5 m beyond the mouth | Recovery-only checkpoint after fair failure; not the initial integration spawn |
 | P2-02 Route decision | local (9.3, 21.8); world (38, 6, −2) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (14.3, 19.3) | Short exposed path; turns north around the first column | To P2-A2; keep ≥1.2 m clear west of the column |
@@ -108,7 +108,7 @@ The parking graph uses local metres, origin at the northwest inside corner, X ea
 | P2-B3 Technical-cage bypass | (37.1, 12.1) | Service-side traversal east of the technical cage; does not pass through the cage | To P2-JOIN; maintain ≥1.5 m target clearance from the cage envelope |
 | P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05A |
 | P2-05A Barrier approach | (44.3, 16.8) | Clear approach south of the barrier, with the 1.3 m aperture visible ahead | To P2-05; keep the approach collision-free |
-| P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
+| P2-05 Service bottleneck | (44.3, 14.8) | Fixed service-shutter leaves with a 1.3 m wide × 2.2 m high clear aperture | To P2-06 through the aperture; no interaction, timed slide or moving collision across a player already inside |
 | P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
 | P2-EXIT Boundary | local (42.8, −0.4); world (71.5, −16.2, −2) | Far-side threshold beyond the north wall; 3.6 m clear opening | Mission completion only after crossing the gate and its wall thickness |
 
@@ -122,7 +122,8 @@ These are design targets for the concept graph, not measured clearances in the c
 
 | Edge | Traversal | Target clear width | Sightline / exposure | Recovery and threat rule |
 |---|---|---:|---|---|
-| P2-01 → P2-02 | Walk/run, no jump | ≥2.0 m | Entry is briefly sheltered by facade | Threat enters only through the actual connected Phase 1 exit; no spawn in front of Elena |
+| P2-01 → P2-CP | Walk/run through vestibule, no jump | 3.0 m clear opening; 1.5 m to checkpoint | Entry is briefly sheltered by facade | Preserve player transform at the threshold; CP is recovery-only, not the initial spawn |
+| P2-CP → P2-02 | Walk/run through vestibule, no jump | 3.0 m clear opening; 1.8 m to decision | Read the direct/service split before committing | Checkpoint must not reset story state or place Elena in threat LOS |
 | P2-02 → P2-A1 → P2-A2 | Direct walk/run | ≥3.5 m at aisle; ≥1.5 m at turns | High exposure across the central aisle | Nearest cover cluster remains reachable; threat may pursue only along visible, traversable aisle |
 | P2-02 → P2-B1 → P2-B2 | Walk/crouch where needed | ≥1.2 m at the single authored pinch; otherwise ≥1.5 m | Broken sightline behind parked vehicles | No required jump; player can retreat to P2-02 until the final commitment |
 | P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
