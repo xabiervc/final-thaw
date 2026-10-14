@@ -2,176 +2,69 @@
 
 ## Purpose
 
-This document declares **WHICH DOCUMENT IS NORMATIVE** for each area, which documents are historical/informative, what happens if two documents disagree, who can approve changes, how to update traceability, and what decisions are closed vs. open for prototype validation.
+This document identifies design documents that currently govern implementation, distinguishes legacy specifications from approved direction, and defines conflict resolution while the game is undergoing a prototype-led redesign.
 
-This eliminates ambiguity and prevents "document conflict" during implementation.
+**Important status:** the legacy design package and new prototype brief are not fully reconciled. Until playtest results are reviewed, do not treat the legacy full-campaign requirements as requirements for the new prototype.
 
-**Relationship to SOURCE_OF_TRUTH.md**: This document SUPERSEDES `SOURCE_OF_TRUTH.md`. Use this as the authoritative source for normative documents. `SOURCE_OF_TRUTH.md` is archived for historical reference.
+## Active working authority
 
----
+| Area | Document | Status | Scope |
+|---|---|---|---|
+| Prototype direction | `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | **ACTIVE WORKING BRIEF — VALIDATE, NOT FINAL CAMPAIGN CANON** | Next proof of concept only: Elena-led 3D traversal, investigation puzzle, pursuit/escape |
+| Current implementation evidence | `PROJECT_STATUS.md` | Status record | What currently exists, test evidence, known gaps and next milestone |
+| Asset provenance | `docs/art/PROVENANCE.md` | Active technical record | Source/licence tracking; required before shipping external or derived assets |
+| Technical/agent workflow | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Active | Safety, implementation and verification procedure |
+| Phase 0 contracts | Existing test suite and technical contract docs | Protected baseline | Input/autoload/resource/save compatibility until reviewed change is explicitly approved |
 
-## Normative Documents (Source of Truth)
+## Legacy design specifications — under review
 
-| Area | Normative Document | Version | Status |
-|------|-------------------|---------|--------|
-| **Vision & Identity** | `docs/VISION.md` | 1.0 | ✅ NORMATIVE (player fantasy, core emotion, pillars, ANTI-PILLARS, audience, differentiation, scope, duration) |
-| **Core Gameplay Loop** | `docs/CORE_LOOP.md` | 1.0 | ✅ NORMATIVE (minute-by-minute gameplay, decision frequency, metrics) |
-| **Systems Specification** | `docs/SYSTEMS_SPEC.md` | 1.0 | ✅ NORMATIVE (9 systems: temperature, resources, shelter, displacement, threats, health, inventory, time, consequences—with inputs, outputs, limits, priorities, interactions) |
-| **Level Structure** | `docs/LEVEL_STRUCTURE.md` | 1.0 | ✅ NORMATIVE (16 phases, 3 acts, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm) |
-| **Survival Systems** | `docs/SURVIVAL_SYSTEMS.md` | 1.0 | ✅ NORMATIVE (3 variables: elena_safety, prototype_integrity, civilian_aid—with thresholds for endings) |
-| **Exploration Flow** | `docs/EXPLORATION_FLOW.md` | 1.0 | ✅ NORMATIVE (phase structure, exploration metrics, rewards) |
-| **Narrative States** | `docs/NARRATIVE_STATE_MAP.md` | 1.0 | ✅ NORMATIVE (global states, story flags, state transitions) |
-| **Progression** | `docs/PROGRESSION_SPEC.md` | 1.0 | ✅ NORMATIVE (campaign order, skill progression, NG+ unlocks) |
-| **Accessibility** | `docs/ACCESSIBILITY_SPEC.md` | 1.0 | ✅ NORMATIVE (38 testable requirements, 12 categories—ALL must PASS for shippable) |
-| **Vertical Slice** | `docs/VERTICAL_SLICE_PLAN.md` | 1.0 | ✅ NORMATIVE (25-minute Phase 6 spec, success criteria, metrics) |
-| **Technical Risks** | `docs/TECHNICAL_RISK_REGISTER.md` | 1.0 | ✅ NORMATIVE (8 risks with probability, impact, mitigation, owner, triggers) |
-| **Traceability** | `docs/TRACEABILITY_MATRIX.md` | 1.0 | ✅ NORMATIVE (pillar → mechanic → scene → variable → UI → test → acceptance) |
-| **Narrative (Full)** | `docs/narrative_complete.md` | 1.0 | ✅ NORMATIVE (full arc, characters, states, consequences) |
-| **Technical Quality** | `docs/technical_quality.md` | 1.0 | ✅ NORMATIVE (platforms, performance, memory, save, telemetry) |
-| **Accessibility (Full)** | `docs/accessibility_requirements.md` | 1.0 | ✅ NORMATIVE (35 KB, 38 requirements with tests) |
-| **Design Authority** | `docs/DESIGN_AUTHORITY.md` | 1.1 | ✅ NORMATIVE (this document—governance, conflict resolution, change approval) |
+The following files contain detailed prior-direction assumptions. They remain useful as historical source material but must not be taken as binding scope for the new prototype without explicit reconciliation:
 
----
+- `docs/VISION.md` — dual-protagonist player fantasy, four fixed pillars and 13–15-hour campaign.
+- `docs/CORE_LOOP.md` and `docs/core_gameplay_loop.md` — timed puzzle rooms, Marcus combat arenas, and fixed decision metrics.
+- `docs/LEVEL_STRUCTURE.md`, `docs/EXPLORATION_FLOW.md`, `docs/PROGRESSION_SPEC.md`, `docs/VERTICAL_SLICE_PLAN.md` — fixed phase/room counts and campaign flow.
+- `docs/SYSTEMS_SPEC.md`, `docs/SURVIVAL_SYSTEMS.md`, `docs/NARRATIVE_STATE_MAP.md` — resource/ending thresholds and systems that may not survive the pivot.
+- `docs/TRACEABILITY_MATRIX.md` — traces prior pillars and mechanics, not yet the new prototype.
+- `docs/narrative_complete.md` — detailed full-campaign narrative that must be selectively reconciled with the two-mission opening.
+- `GDD.md` — high-level aspirational document with scope and award claims, not the acceptance authority for current implementation.
 
-## Historical/Informative Documents (Archived/Superseded)
+Do not delete these documents. Do not implement them as new-prototype requirements merely because they were previously labelled normative. Update them only after the owner reviews prototype evidence and the new scope is deliberately adopted.
 
-| Document | Purpose | Status | Superseded By |
-|----------|---------|--------|---------------|
-| `docs/SOURCE_OF_TRUTH.md` | Declares definitive versions | ℹ️ ARCHIVED (historical reference only) | `DESIGN_AUTHORITY.md` |
-| `docs/award_vision.md` | Early vision document | ℹ️ ARCHIVED (superseded) | `VISION.md` |
-| `docs/core_gameplay_loop.md` | Extended core loop spec | ℹ️ INFORMATIVE (complements normative) | `CORE_LOOP.md` (normative) |
-| `docs/PREPRODUCTION_INDEX.md` | Full documentation index | ℹ️ ARCHIVED (superseded) | `CRITICAL_DOCS_INDEX.md` |
-| `GDD.md` | High-level game design | ℹ️ INFORMATIVE (high-level only) | Specific normative docs for each area |
+## Conflict resolution during redesign
 
----
+1. For the **next prototype's scope and acceptance criteria**, use `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md`.
+2. For **what the code currently does**, use the actual branch plus `PROJECT_STATUS.md` and reproducible test/playtest evidence; a design brief is not proof of implementation.
+3. For **Phase 0 technical contracts**, preserve the current tests and technical contract docs unless a dedicated impact analysis and approval authorize a change.
+4. When another legacy design document conflicts with the prototype brief, treat it as legacy guidance for this prototype and record the conflict rather than silently merging both directions.
+5. This temporary precedence does not approve a full-game redesign or a new save format. After the prototype gate, the owner must decide whether to promote the new direction to full-campaign canon.
+6. Do not declare completion, performance, accessibility, compatibility or a successful playtest without evidence.
 
-## Conflict Resolution
+## Required review gates
 
-### What Happens If Two Documents Disagree?
+### Before implementing movement/traversal
+- Confirm target Godot version, current renderer and required target platforms.
+- Inspect existing controller, camera, input actions and collision layers.
+- Define observable acceptance tests for movement, jump/landing, crawl and climb.
+- Keep the change isolated from save, autoload and Phase 0 behavior.
 
-**Rule 1**: Normative documents ALWAYS override historical/informative documents.
+### Before adding pursuit AI
+- Specify state machine and visible tells.
+- Define line-of-sight break, search, recovery, checkpoint/death behavior and deterministic tests.
+- Confirm the encounter introduces a route/timing/concealment decision and is not just a timer.
 
-**Example**: If `award_vision.md` says "duration: 10-12 hours" but `VISION.md` says "duration: 13-15 hours", use `VISION.md` (normative).
+### Before approving assets
+- Review from the intended gameplay camera, not only beauty renders.
+- Verify scale, collider alignment, traversal clearance, camera occlusion, state/scan visibility, performance and licensing.
+- Record owner review and a build identifier.
 
-**Rule 2**: If two normative documents disagree, the MORE SPECIFIC document wins.
+### After the five-minute proof of concept
+- Run regression tests and manual playtest.
+- Record failures and player observations.
+- Decide explicitly which legacy mechanics, characters, ending rules, platforms and campaign assumptions survive.
+- Only then reconcile normative design documents and traceability.
 
-**Example**: If `SYSTEMS_SPEC.md` says "health pack: +25 health" but `SURVIVAL_SYSTEMS.md` says "health pack: +30 health", use `SYSTEMS_SPEC.md` (more specific to systems).
+## Change policy
 
-**Rule 3**: If two normative documents of equal specificity disagree, escalate to Lead Designer.
-
-**Example**: If `CORE_LOOP.md` and `LEVEL_STRUCTURE.md` both make conflicting claims about phase duration, Lead Designer decides.
-
-**Rule 4**: This document (`DESIGN_AUTHORITY.md`) is the FINAL ARBITER. If there's any conflict about which document is normative, this document decides.
-
----
-
-## Change Approval Process
-
-### Who Can Approve Changes?
-
-| Change Type | Approver | Process |
-|-------------|----------|---------|
-| **Minor edit** (typo, clarification, no mechanical change) | Author of document | Edit directly, commit with message: `docs: [document] minor edit (typo/clarification)` |
-| **Mechanical change** (alters gameplay, systems, narrative, accessibility) | Lead Designer + affected discipline lead | 1. Create PR, 2. Tag Lead Designer + affected lead, 3. Wait for approval, 4. Merge, 5. Update traceability if needed |
-| **Normative change** (alters normative document: VISION, CORE_LOOP, SYSTEMS_SPEC, LEVEL_STRUCTURE, etc.) | Lead Designer + Producer | 1. Create PR, 2. Tag Lead Designer + Producer, 3. Wait for approval, 4. Merge, 5. Update traceability, 6. Update this document if normative list changes |
-| **Anti-pillar change** (adds/removes ANTI-PILLAR) | Lead Designer + Producer + entire team | 1. Create PR, 2. Tag Lead Designer + Producer, 3. Team discussion (48h minimum), 4. Unanimous approval required, 5. Merge, 6. Update traceability, 7. Update this document |
-
-### How to Request a Change
-
-1. **Create issue**: `docs: [document] change request (brief description)`
-2. **Describe change**: What, why, impact on other documents, impact on traceability
-3. **Tag approvers**: Lead Designer + affected discipline lead
-4. **Wait for approval**: Do NOT merge until approved
-5. **Update traceability**: If change affects pillar → mechanic → scene → variable → UI → test → acceptance, update `TRACEABILITY_MATRIX.md`
-6. **Update this document**: If change adds/removes normative document, update `DESIGN_AUTHORITY.md`
-
----
-
-## Traceability Updates
-
-### When to Update Traceability?
-
-Update `TRACEABILITY_MATRIX.md` when:
-- A pillar changes (VISION.md)
-- A mechanic changes (CORE_LOOP.md, SYSTEMS_SPEC.md)
-- A scene changes (LEVEL_STRUCTURE.md, narrative_complete.md)
-- A variable changes (SURVIVAL_SYSTEMS.md, SYSTEMS_SPEC.md)
-- A UI element changes (ACCESSIBILITY_SPEC.md, technical_quality.md)
-- A test changes (test files, accessibility_requirements.md)
-- An acceptance criterion changes (VERTICAL_SLICE_PLAN.md, TECHNICAL_RISK_REGISTER.md)
-
-### How to Update Traceability?
-
-1. **Open `TRACEABILITY_MATRIX.md`**
-2. **Find affected row**: Pillar → Mechanic → Scene → Variable → UI → Test → Acceptance
-3. **Update row**: Change affected cells, keep format consistent
-4. **Update summary table**: Update totals at bottom (mechanics, scenes, variables, UI, tests, acceptance criteria)
-5. **Commit**: `docs: TRACEABILITY_MATRIX.md update (reason: [change description])`
-6. **Tag QA Lead**: Ensure tests still match acceptance criteria
-
----
-
-## Decisions Closed vs. Open for Prototype Validation
-
-### Decisions CLOSED (Cannot Change Without Normative Approval)
-
-| Decision | Document | Rationale |
-|----------|----------|-----------|
-| **Player fantasy**: "I am the scientist and the soldier" | `VISION.md` | Core identity, changing this changes the game |
-| **Core emotion**: "Weighted hope" (not hopelessness, not despair) | `VISION.md` | Core emotional target, changing this changes the experience |
-| **4 Pillars**: Choices matter, environment masterable, dual-protagonist, failure teaches | `VISION.md` | Core design principles, changing these breaks the game |
-| **4 ANTI-PILLARS**: No survival porn, no white savior, no techno-utopianism, no randomness | `VISION.md` | Explicit boundaries, violating these breaks trust with players |
-| **3 Endings**: Public Thaw, Guarded Thaw, Fragile Thaw (with explicit thresholds) | `SURVIVAL_SYSTEMS.md` | Core narrative structure, changing this breaks the arc |
-| **9 Systems**: Temperature, resources, shelter, displacement, threats, health, inventory, time, consequences | `SYSTEMS_SPEC.md` | Core gameplay systems, changing these breaks mechanics |
-| **16 Phases, 3 Acts**: Fixed campaign structure | `LEVEL_STRUCTURE.md` | Core progression, changing this breaks pacing |
-| **38 Accessibility Requirements**: ALL must PASS for shippable | `ACCESSIBILITY_SPEC.md` | Non-negotiable commitment to accessibility |
-| **60 FPS, <2s loads, ≤5-8 GB memory**: Technical budgets | `technical_quality.md` | Non-negotiable performance targets |
-
----
-
-### Decisions OPEN for Prototype Validation (Can Change Based on Playtest Data)
-
-| Decision | Document | Hypothesis | Validation Method |
-|----------|----------|------------|-------------------|
-| **Health pack value**: +25 health (could be +20 or +30) | `SYSTEMS_SPEC.md` | +25 is generous but not OP | Playtest Phase 6, measure health usage, adjust if players never use or always full |
-| **Aster charges per level**: 3 (could be 2 or 4) | `SYSTEMS_SPEC.md` | 3 is enough for meaningful choices | Playtest Phase 9-10, measure charge usage, adjust if players always/never use |
-| **Oxygen timer**: 60s (could be 45s or 90s) | `SYSTEMS_SPEC.md` | 60s is generous (most finish in 30-40s) | Playtest Phase 6 oxygen section, measure completion times, adjust if >20% fail |
-| **Checkpoint spacing**: ≤5 min (could be ≤3 min or ≤7 min) | `LEVEL_STRUCTURE.md` | ≤5 min is fair (not too punishing, not too easy) | Playtest all phases, measure death frequency, adjust if players complain about repetition |
-| **Enemy damage**: 10-50 per hit (could be 5-40 or 15-60) | `SYSTEMS_SPEC.md` | 10-50 is challenging but fair | Playtest combat arenas, measure death frequency, adjust if players die too fast or too slow |
-| **Run speed**: 320 pixels/s (could be 280 or 360) | `SYSTEMS_SPEC.md` | 320 is agile but not too fast for puzzles | Playtest puzzle + combat sections, measure completion times, adjust if players feel too slow or too fast |
-| **Vertical slice duration**: 20-30 min (could be 15-25 or 25-35) | `VERTICAL_SLICE_PLAN.md` | 20-30 min is ideal for first impression | Playtest Phase 6 with 20+ players, measure completion times, adjust scope if >30 min or <15 min |
-
-**Key Principle**: Closed decisions are STRUCTURAL (vision, pillars, systems, campaign). Open decisions are BALANCE/TUNING (numbers, timings, values) that can be validated through playtesting.
-
----
-
-## MUST_FIX_BEFORE_IMPLEMENTATION
-
-### Current List (Empty = All Structural Decisions Closed)
-
-**Status**: ✅ EMPTY. All structural decisions are closed. Only balance/tuning decisions remain open (to be validated through prototyping).
-
-**Justification**: 
-- Vision is defined (player fantasy, core emotion, pillars, ANTI-PILLARS, audience, differentiation, scope, duration)
-- Core loop is defined (minute-by-minute, decision frequency, metrics)
-- Systems are defined (9 systems with inputs, outputs, limits, priorities, interactions)
-- Level structure is defined (16 phases, 3 acts, zones, shortcuts, decision points, encounters, resources, checkpoints, rhythm)
-- Accessibility is defined (38 testable requirements, ALL must PASS)
-- Technical budgets are defined (60 FPS, <2s loads, ≤5-8 GB memory)
-- Traceability is complete (pillar → mechanic → scene → variable → UI → test → acceptance)
-
-**Remaining Uncertainties**: All remaining uncertainties are PROTOTYPABLE (balance, tuning, feel). No structural uncertainties remain.
-
----
-
-## Sign-Off
-
-**Lead Designer**: [x] I approve this as the authoritative source for design decisions
-**Lead Programmer**: [ ] I understand which documents are normative and will implement accordingly
-**Lead Writer**: [ ] I understand which documents are normative and will write narrative accordingly
-**Accessibility Lead**: [ ] I understand 38 requirements are non-negotiable (ALL must PASS)
-**QA Lead**: [ ] I understand which documents define acceptance criteria for tests
-**Producer**: [ ] I approve this governance structure and will enforce it
-
-**Date**: September 30, 2026
-**Status**: ✅ DESIGN AUTHORITY COMPLETE. NORMATIVE DOCUMENTS DECLARED. CONFLICT RESOLUTION DEFINED. CHANGE APPROVAL PROCESS CLEAR. TRACEABILITY UPDATES SPECIFIED. CLOSED VS. OPEN DECISIONS SEPARATED. MUST_FIX LIST EMPTY. SOURCE_OF_TRUTH.MD SUPERSEDED.
+- Typos and clarifications may be edited directly.
+- Changes to mechanics, narrative, accessibility, scope or normative hierarchy require an explicit design decision and impact analysis.
+- Do not make irreversible scene deletion, wholesale art replacement, renderer migration, save migration or autoload/input contract changes as part of the proof-of-concept task.
