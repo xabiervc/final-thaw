@@ -28,11 +28,13 @@ Use exactly one elevator/platform in the canonical lift shaft, footprint X=24.5.
 
 If safety behaviour fails during testing, the implementation fails acceptance; do not add rescue mini-games, damage, falls or alternative routes to compensate.
 
+The mission adds **fixed landing safety gates**, separate from the moving deck's own gates: lower centre `(26,0.55,-1.1)`, upper centre `(26,3.55,-4.9)`. Both fixed gates close as soon as the deck leaves a landing and remain closed during movement. Only the fixed gate at the docked landing may open. On power loss mid-trip, both remain closed until the emergency crawl docks the deck at its selected landing. This gate interlock is part of mission integration, not the isolated lift component.
+
 ## Wiring into the mission
 
 The mission calls `set_powered(maintenance_on)` when the independent maintenance state changes. The platform itself does not own electrical logic and does not write persistence. Place the controller buttons at the lower landing and the upper landing; interact requests `call_to("upper")` or `call_to("lower")`. No automatic movement begins merely because maintenance turns on.
 
-The lift deck is centred at world position (26,0,-3), with the north end aligned to the upper landing and the south end aligned to the lower connector. The player must board and leave by walking, not by jumping. Gate geometry must prevent entry into the shaft while the deck is absent.
+The lift deck is centred at world position (26,0,-3), with the north end aligned to the upper landing and the south end aligned to the lower connector. The player must board and leave by walking, not by jumping. The scene listens to the lift's state change and mirrors `gates_open()` into the stationary landing-gate colliders and meshes. Verify there is no overlap between stationary and deck gates and no gap through which the player can enter the shaft while the deck is absent.
 
 ## Existing tests and remaining validation
 
@@ -43,6 +45,6 @@ godot --headless --path . res://tests/test_service_lift.tscn
 godot --headless --path . res://tests/test_service_lift_transport.tscn
 ```
 
-Record exact engine version, output, exit code and commit. Then validate manually: calls from both landings; ten round trips; cut power while docked and near the start, exact midpoint and near the destination; board/ride/disembark without jumping; no sliding or fall; gate readability; camera comfort while riding. The midpoint case is added to acceptance explicitly.
+Record exact engine version, output, exit code and commit. Then validate manually: calls from both landings; ten round trips; cut power while docked and near the start, exact midpoint and near the destination; board/ride/disembark without jumping; no sliding or fall; both fixed landing gates and the moving deck gates open/close in the correct order; no walkable gap into the shaft; camera comfort while riding. The midpoint case is added to acceptance explicitly.
 
 Until these runs are recorded, the component behaviour is specified and implemented in code, but not validated.
