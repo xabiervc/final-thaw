@@ -22,9 +22,18 @@ var font_scale: float = 1.0
 var colorblind_mode: int = 0
 var subtitle_size: int = 2
 var input_profile: String = "default"
+## Preferencias booleanas persistentes (p. ej. accesibilidad). No se reinician con new_game().
+var flags: Dictionary = {}
 
 func _ready() -> void:
 	load_game(0)
+
+func get_flag(key: String, default: bool = false) -> bool:
+	return bool(flags.get(key, default))
+
+func set_flag(key: String, value: bool) -> void:
+	flags[key] = value
+	stats_changed.emit()
 
 func save_path(slot: int) -> String:
 	return "user://save_%d.json" % slot
@@ -81,6 +90,7 @@ func _collect() -> Dictionary:
 		"colorblind_mode": colorblind_mode,
 		"subtitle_size": subtitle_size,
 		"input_profile": input_profile,
+		"flags": flags,
 		"active_character_id": active_character_id,
 		"current_checkpoint_id": current_checkpoint_id,
 		"has_prototype": has_prototype,
@@ -100,6 +110,11 @@ func _apply(d: Dictionary) -> void:
 	colorblind_mode = int(d.get("colorblind_mode", 0))
 	subtitle_size = int(d.get("subtitle_size", 2))
 	input_profile = str(d.get("input_profile", "default"))
+	var fl = d.get("flags", {})
+	if typeof(fl) == TYPE_DICTIONARY:
+		flags = fl
+	else:
+		flags = {}
 	active_character_id = str(d.get("active_character_id", "elena"))
 	current_checkpoint_id = str(d.get("current_checkpoint_id", ""))
 	has_prototype = bool(d.get("has_prototype", false))
