@@ -148,5 +148,5 @@
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
   <text x="48" y="710" class="small">Concept coordinates: X east/right, Z south/down; origin at northwest inside corner, 14 px/m. Candidate transform for the current Phase 1 P−1 service mouth: world X = local X + 28.7 m; world Z = local Z − 15.8 m. This maps the threshold plane (local 5.3, 21.8) to world (34, 6) and the interior spawn pocket (local 6.8, 21.8) to world (35.5, 6). Verify exact footprint/elevation before implementation; do not force the design to the old prototype checkpoint.</text>
-  <text x="48" y="730" class="small">Do not implement as-is without reconciliation against Phase 1 service-exit location and current prototype geometry.</text>
+  <text x="48" y="730" class="small">Local concept only. Do not force Phase 1 to match this entrance coordinate; derive the world transform from the final selected exit after the complete route is approved.</text>
 </svg>
