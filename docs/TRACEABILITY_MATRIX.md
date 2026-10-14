@@ -71,13 +71,13 @@ These rows define requirements and evidence, not passing results. No Phase 2 req
 | P2-DOC-02 | Local-to-world transform aligns the parking entry with Phase 1's P−1 service mouth | `FASE1_SPATIAL_GRAPH.md`, `LEVEL_STRUCTURE.md` | Measured mouth bounds and transform checked against current scene | Design owner defines; programmer verifies in scene |
 | P2-DOC-03 | Two routes are meaningfully different in exposure and traversal cost | `LEVEL_STRUCTURE.md` route graph and edge contract | Plan overlay plus route-by-route playtest observations | Design owner + programmer |
 | P2-DOC-04 | Every obstacle has stable ID, dimensions, approach, bypass and recovery | `LEVEL_STRUCTURE.md` obstacle register | Reviewed collision envelopes and manual traversal evidence | Design owner defines; programmer implements |
-| P2-DOC-05 | Threat line-of-sight, patrol, hearing, search and route access are bounded and spatially possible | `LEVEL_STRUCTURE.md` threat contract and concept overlay | Threat overlay against actual scene; tests for occlusion and last-known position | Shared |
+| P2-DOC-05 | Threat line-of-sight, patrol, hearing, search and route access are bounded and spatially possible | `LEVEL_STRUCTURE.md`, `threat_sightline_overlay.svg` | Reconcile sightline sectors with measured cover; test occlusion, hearing, last-known position and enemy route reachability | Shared |
 | P2-DOC-06 | The opening reveal, trigger and chase dialogue are causal and non-blocking | `narrative_complete.md`, `CORE_LOOP.md`, `DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Trigger table and first-time-player comprehension answers | Design owner + programmer |
-| P2-DOC-07 | Environmental clues, lighting and sound communicate critical facts accessibly | `LEVEL_STRUCTURE.md`, `narrative_complete.md` | Landmark/light/audio map, subtitle and visual-equivalent review | Design owner |
+| P2-DOC-07 | Environmental clues, lighting and sound communicate critical facts accessibly | `LEVEL_STRUCTURE.md`, `lighting_landmark_overlay.svg`, `narrative_complete.md` | Check L1–L5 visibility from each decision point in actual camera; review contrast, audio alternatives and subtitles | Design owner |
 | P2-DOC-08 | Every claim distinguishes proposal, specification, implementation and validation | `DESIGN_AUTHORITY.md`, `PROJECT_STATUS.md` | Status/evidence record tied to a commit and actual results | Both owners |
 | P2-DOC-09 | Entry, route convergence and final approach use fair local retry anchors | `LEVEL_STRUCTURE.md` checkpoint contract and concept plan | Repeated catch/retry tests, no spawn collision or immediate detection, state preservation | Shared |
 
-These requirements are design/verification gates, not passing results. The concept SVGs currently contain proposed sightline and light zones only; they do not represent the final enemy perception model or Godot lighting.
+These requirements are design/verification gates, not passing results. The concept SVGs contain proposed sightline and light zones only; they do not represent a computed enemy perception model, actual navigation, measured illumination or Godot runtime behavior.
 
 ## 6. Protected regression boundary
 
