@@ -75,6 +75,7 @@ These rows define requirements and evidence, not passing results. No Phase 2 req
 | P2-DOC-06 | The opening reveal, trigger and chase dialogue are causal and non-blocking | `narrative_complete.md`, `CORE_LOOP.md`, `DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Trigger table and first-time-player comprehension answers | Design owner + programmer |
 | P2-DOC-07 | Environmental clues, lighting and sound communicate critical facts accessibly | `LEVEL_STRUCTURE.md`, `narrative_complete.md` | Landmark/light/audio map, subtitle and visual-equivalent review | Design owner |
 | P2-DOC-08 | Every claim distinguishes proposal, specification, implementation and validation | `DESIGN_AUTHORITY.md`, `PROJECT_STATUS.md` | Status/evidence record tied to a commit and actual results | Both owners |
+| P2-DOC-09 | Entry, route convergence and final approach use fair local retry anchors | `LEVEL_STRUCTURE.md` checkpoint contract and concept plan | Repeated catch/retry tests, no spawn collision or immediate detection, state preservation | Shared |
 
 These requirements are design/verification gates, not passing results. The concept SVGs currently contain proposed sightline and light zones only; they do not represent the final enemy perception model or Godot lighting.
 
