@@ -47,6 +47,7 @@ func _ready() -> void:
 	_dress_floor(layout)
 	_dress_walls(layout)
 	_dress_dividers(layout["dividers"])
+	_dress_industrial_accents(layout)
 	_dress_set_pieces(layout)
 	_brighten()
 	_fixture_lights(layout)
@@ -260,3 +261,88 @@ func _fixture_lights(layout: Dictionary) -> void:
 		light.shadow_enabled = false
 		add_child(light)
 		i += 1
+
+
+## High-readability floor markings and wall trims: visual-only geometry, batched by material.
+## These details give the room scale and guide the player without adding collision or gameplay logic.
+func _dress_industrial_accents(layout: Dictionary) -> void:
+	var half: float = float(layout["half"])
+	var x0: float = float(layout["x0"])
+	var x1: float = float(layout["x1"])
+	var lane_marks: Array[Transform3D] = []
+	var base_trim: Array[Transform3D] = []
+	var caution_yellow: Array[Transform3D] = []
+	var caution_dark: Array[Transform3D] = []
+
+	# Short, worn safety-lane dashes. Keep the centre open so Elena and interactables stay readable.
+	for rect_value in layout["floors"]:
+		var rect := rect_value as Rect2
+		var x := rect.position.x + 1.0
+		while x < rect.position.x + rect.size.x - 0.5:
+			for z in [-2.0, 2.0]:
+				lane_marks.append(_place(Vector3(x, 0.025, z)))
+			x += 2.8
+
+	# Low metal skirting visually anchors the wall kit and masks small seams between repeated panels.
+	var bx := x0 + 1.0
+	while bx < x1:
+		base_trim.append(_place(Vector3(bx, 0.12, -half + 0.035)))
+		base_trim.append(_place(Vector3(bx, 0.12, half - 0.035), 180.0))
+		bx += 2.0
+
+	# Mark each traversable divider opening with restrained alternating hazard blocks.
+	# Deduplicate divider X coordinates because each wall is represented by two segments.
+	var seen_x: Dictionary = {}
+	for divider in layout["dividers"]:
+		var dx := float(divider[0])
+		var key := snappedf(dx, 0.01)
+		if seen_x.has(key):
+			continue
+		seen_x[key] = true
+		var z := -1.28
+		var index := 0
+		while z <= 1.28:
+			var pos := Vector3(dx + 0.34, 0.035, z)
+			if index % 2 == 0:
+				caution_yellow.append(_place(pos))
+			else:
+				caution_dark.append(_place(pos))
+			z += 0.32
+			index += 1
+
+	var lane_mat := StandardMaterial3D.new()
+	lane_mat.albedo_color = Color(0.62, 0.48, 0.22, 1.0)
+	lane_mat.roughness = 0.92
+	var trim_mat := StandardMaterial3D.new()
+	trim_mat.albedo_color = Color(0.12, 0.17, 0.21, 1.0)
+	trim_mat.metallic = 0.55
+	trim_mat.roughness = 0.72
+	var caution_mat := StandardMaterial3D.new()
+	caution_mat.albedo_color = Color(0.95, 0.61, 0.19, 1.0)
+	caution_mat.roughness = 0.85
+	var dark_mat := StandardMaterial3D.new()
+	dark_mat.albedo_color = Color(0.07, 0.09, 0.11, 1.0)
+	dark_mat.roughness = 0.9
+
+	_batch_boxes("SafetyLaneDashes", Vector3(1.05, 0.018, 0.045), lane_marks, lane_mat)
+	_batch_boxes("WallBaseTrim", Vector3(1.9, 0.16, 0.075), base_trim, trim_mat)
+	_batch_boxes("CautionYellow", Vector3(0.22, 0.02, 0.18), caution_yellow, caution_mat)
+	_batch_boxes("CautionDark", Vector3(0.22, 0.021, 0.18), caution_dark, dark_mat)
+
+
+func _batch_boxes(label: String, box_size: Vector3, placements: Array[Transform3D], material: Material) -> void:
+	if placements.is_empty():
+		return
+	var mesh := BoxMesh.new()
+	mesh.size = box_size
+	var mm := MultiMesh.new()
+	mm.transform_format = MultiMesh.TRANSFORM_3D
+	mm.mesh = mesh
+	mm.instance_count = placements.size()
+	for i in placements.size():
+		mm.set_instance_transform(i, placements[i])
+	var instance := MultiMeshInstance3D.new()
+	instance.name = label
+	instance.multimesh = mm
+	instance.material_override = material
+	add_child(instance)
