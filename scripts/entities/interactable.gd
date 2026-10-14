@@ -26,8 +26,13 @@ func _ready() -> void:
 	lbl.position = Vector2(-50, -80)
 	add_child(lbl)
 
+func can_interact(_interactor: Node2D) -> bool:
+	if can_interact_func.is_valid():
+		return can_interact_func.call(_interactor)
+	return true
+
 func try_interact(interactor: Node2D) -> bool:
-	if can_interact_func.is_valid() and not can_interact_func.call(interactor):
+	if not can_interact(interactor):
 		return false
 	if on_interact_func.is_valid():
 		on_interact_func.call(interactor)
@@ -35,6 +40,5 @@ func try_interact(interactor: Node2D) -> bool:
 	interacted.emit(interactor)
 	return true
 
-func interact() -> void:
-	interact_count += 1
-	print("Interactuando con: ", interact_text, " (", interact_count, ")")
+func interact(interactor: Node2D = null) -> bool:
+	return try_interact(interactor)

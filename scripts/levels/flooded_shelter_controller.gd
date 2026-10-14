@@ -23,6 +23,8 @@ signal civilian_status_changed(rescued: bool)
 signal level_completed(success: bool, rescued_civilian: bool)
 
 func _ready() -> void:
+	add_to_group("flooded_shelter")
+
 	if power_console:
 		power_console.connect("power_activated", _on_power_activated)
 	if valve_station_left:
@@ -31,6 +33,17 @@ func _ready() -> void:
 		valve_station_right.connect("valve_opened", _on_valve_opened)
 	if civilian:
 		civilian.connect("civilian_rescued", _on_civilian_rescued)
+
+	restore_from_persistence()
+	_emit_initial_state()
+
+func _emit_initial_state() -> void:
+	power_restored.emit() if has_power else null
+	valves_progress_changed.emit(valves_open)
+	civilian_status_changed.emit(civilian_rescued)
+
+	if elena:
+		elena.oxygen_changed.emit(elena.oxygen)
 
 func _on_power_activated() -> void:
 	if has_power:
@@ -84,3 +97,9 @@ func restore_from_persistence() -> void:
 	else:
 		valves_open = 0
 	civilian_rescued = gsm.get_flag("shelter_civilian_rescued", false)
+
+	if has_power and flood_gate_exit == null:
+		return
+
+	if valves_open >= 2 and flood_gate_exit:
+		flood_gate_exit.open_gate()

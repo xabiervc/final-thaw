@@ -6,6 +6,7 @@ class_name DemoHUD
 @export var civilian_label: Label
 
 var shelter: FloodedShelterController
+var elena: Elena
 
 func _ready() -> void:
 	shelter = get_tree().get_first_node_in_group("flooded_shelter")
@@ -17,9 +18,15 @@ func _ready() -> void:
 	shelter.civilian_status_changed.connect(_on_civilian_status)
 	shelter.level_completed.connect(_on_level_completed)
 
-	update_objective()
+	elena = shelter.elena
+	if elena:
+		elena.oxygen_changed.connect(update_oxygen)
+		update_oxygen(elena.oxygen, elena.oxygen_max)
 
-func update_oxygen(value: float, max_value: float) -> void:
+	update_objective()
+	update_civilian_label()
+
+func update_oxygen(value: float, max_value: float = 100.0) -> void:
 	if oxygen_label:
 		oxygen_label.text = NarrativeTextManager.get_hud_oxygen_label(100.0 * value / max_value)
 
@@ -30,25 +37,29 @@ func update_objective() -> void:
 	var civilian_exists := shelter.civilian != null
 	var civilian_trapped := civilian_exists and shelter.civilian.state == Civilian.State.TRAPPED
 
-	var text := NarrativeTextManager.get_hud_objective(
+	objective_label.text = NarrativeTextManager.get_hud_objective(
 		shelter.has_power,
 		shelter.valves_open,
 		civilian_exists,
 		civilian_trapped
 	)
-	objective_label.text = text
+
+func update_civilian_label() -> void:
+	if not civilian_label or not shelter or not shelter.civilian:
+		return
+
+	var trapped := shelter.civilian.state == Civilian.State.TRAPPED
+	var dead := not shelter.civilian.is_alive
+	civilian_label.text = NarrativeTextManager.get_hud_civilian_state(trapped, shelter.civilian_rescued, dead)
 
 func _on_power_restored() -> void:
 	update_objective()
 
-func _on_valves_progress(open_count: int) -> void:
+func _on_valves_progress(_open_count: int) -> void:
 	update_objective()
 
-func _on_civilian_status(rescued: bool) -> void:
-	if civilian_label and shelter and shelter.civilian:
-		var trapped := shelter.civilian.state == Civilian.State.TRAPPED
-		var dead := not shelter.civilian.is_alive
-		civilian_label.text = NarrativeTextManager.get_hud_civilian_state(trapped, rescued, dead)
+func _on_civilian_status(_rescued: bool) -> void:
+	update_civilian_label()
 	update_objective()
 
 func _on_level_completed(success: bool, rescued_civilian: bool) -> void:
@@ -56,6 +67,6 @@ func _on_level_completed(success: bool, rescued_civilian: bool) -> void:
 		return
 	if success:
 		var civil_state := NarrativeTextManager.get_hud_civilian_state(false, rescued_civilian, false)
-		objective_label.text = "Demo completada - " + civil_state
+		objective_label.text = NarrativeTextManager.get_hud_demo_completed(civil_state)
 	else:
-		objective_label.text = "Demo fallida - Elena no sobrevivió"
+		objective_label.text = NarrativeTextManager.get_hud_demo_failed()
