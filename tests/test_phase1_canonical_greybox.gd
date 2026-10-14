@@ -71,6 +71,7 @@ func _run() -> void:
 	_expect(scene.get_node_or_null("PumpSkidA") != null and scene.get_node_or_null("ControlStairsS2CollisionRamp") != null, "pump room and S2 stairs connect mezzanine to control")
 	_expect(scene.get_node_or_null("ControlStairsS2RailWest") != null and scene.get_node_or_null("ControlStairsS2RailEast") != null, "S2 has slope-aligned side protection")
 	_expect(scene.get_node_or_null("MezzanineWestRail") != null and scene.get_node_or_null("P2WalkwaySouthRail") != null and scene.get_node_or_null("P2WalkwayEastRail") != null, "M and P2 exposed edges are protected")
+	_expect(scene.get_node_or_null("P2ControlNorthRail") != null and scene.get_node_or_null("P2ControlEastRail") != null and scene.get_node_or_null("P2WalkwayNorthRailEast") != null, "control and east observation spur have no unguarded edges")
 	_expect(scene.get_node_or_null("LiftShaftSideRailLowerWest") != null and scene.get_node_or_null("LiftShaftSideRailUpperEast") != null, "lift shaft sides are protected at both landings")
 	_expect(scene.get_node_or_null("WestShortcutStairsCollisionRamp") == null, "exterior airlock has no stair return to P0")
 	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
