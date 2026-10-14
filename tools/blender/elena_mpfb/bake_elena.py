@@ -208,6 +208,11 @@ def main():
 	bake_atlas(bake_list, ASSET, ATLAS, tex_dir, samples=int(options["samples"]), margin=10)
 	finalize_materials(bake_list, ASSET)
 
+	# hair cards use their own alpha-scissor material (elena_hair_cards.tres) and keep the UVs built with the strips
+	cards = bpy.data.objects.get("Elena_HairCards")
+	if cards:
+		cards.data.materials.clear()
+		cards.data.materials.append(bpy.data.materials.new("elena_hair_cards"))
 	# the backpack and the Aster keep their existing materials (resolved by name in Godot)
 	# the Aster screen shares the Aster's pivot: re-seat it on the Aster with an identity local transform
 	from mathutils import Matrix

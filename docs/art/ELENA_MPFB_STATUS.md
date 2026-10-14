@@ -11,7 +11,7 @@ Status: **textured asset, imports in Godot, integrated in the playable Elena con
 | Material | `assets/materials/lab_ref/elena_mpfb.tres` (albedo, normal, ORM: AO=R, rough=G, metal=B) |
 | Backpack / Aster | keep the existing `ref_elena` and `ref_elena_aster` materials (resolved by name) |
 | Triangles | 29,556 (approved budget 25–30k) |
-| Pipeline | `tools/blender/elena_mpfb/`: `build_base` → `build_clothes` → `build_accessories` → `build_materials` → `build_finalize` (live Blender session with MPFB enabled), then `bake_elena.py` (headless) |
+| Pipeline | `tools/blender/elena_mpfb/`: `make_hair_card_texture.py` (system Python, once), `build_base` → `build_clothes` → `build_hair_cards` → `build_accessories` → `build_materials` → `build_finalize` (live Blender session with MPFB enabled), then `bake_elena.py` (headless) |
 
 Bake command (Blender 5.2.2, ~2 min on CPU):
 
@@ -38,7 +38,7 @@ The source `.blend` files live outside the repo (`D:/Projects/evidence/final-tha
 
 - Procedural cloth/skin only: no painted detail, no fold detail, no freckles or skin variation beyond noise.
 - Face is a tuned MPFB head with simple eyes and brows; it does not reproduce the concept's painted likeness.
-- Hair is still a smooth shell (lower hairline, covers the top of the ears) plus a tube ponytail: it reads as a bowl cut with a straight fringe, not the parted, flowing hair of the concept. Reaching that needs hair cards (alpha strand strips). Eyelash lines added 2026-10-14 for eye definition.
+- Hair: since 2026-10-14 it is hair cards (about 1,900 triangles of alpha-scissor strips following the skull from the hairline and centre part to the nape, plus ponytail strips) over a heavily decimated shell. Strand texture and material are procedural (`make_hair_card_texture.py`, `elena_hair_cards.tres`). Known issues: a dark patch of the shell shows at the crown between the strip groups, the front fringe is a hard line, and alpha-scissor edges alias at distance. It reads as hair with a parting and a ponytail, not yet as the concept's flowing style. Eyelash lines added for eye definition.
 - Boot toes show the foot's toe shapes through the rubber.
 - Coat hem is slightly wavy; piping edges are face-stepped.
 - A-pose only. The Aster hangs at the right hand and needs a posed arm to look held.
