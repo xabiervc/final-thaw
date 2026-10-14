@@ -4,6 +4,7 @@
 
 **Authorities:** `FASE1_FUNCTIONAL_SPEC.md` v1.0 and `FASE1_SPATIAL_GRAPH.md` v0.4.  
 **Implementation component:** `scripts/prototypes/service_lift.gd`.  
+**Mission integration, not yet executed:** `scenes/prototypes/phase1_canonical_greybox.tscn`.  
 **Existing tests:** `tests/test_service_lift.tscn` and `tests/test_service_lift_transport.tscn`.
 
 ## Decision
