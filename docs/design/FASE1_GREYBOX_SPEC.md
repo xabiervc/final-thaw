@@ -20,7 +20,8 @@ Referencias: esquema (27,−2,6), puente (22,−2,4), switch (26,−2,2). D1 y D
 | A · Esclusa | X 1..7, Z 4..10 | Entrada desde túnel, señal y vista a B. |
 | B · Nave | X 7..20, Z −9..1 | Columna Aster, rig bajo, bandejas, barreras y circulación alrededor de maquinaria. |
 | C · Taller | X 20..24, Z −9..−2 | Cuadros y banco; utilería perimetral; paso de servicio a B. |
-| Galería servicio | X 20..30, Z −2..1 | Paso al elevador, ancho libre mínimo 2 m. |\n| Retorno este | X 28..30, Z 1..8 | Pasillo de 2 m entre barandilla del foso y muro este; conecta el rellano superior de S1 con la galería de servicio. |
+| Galería servicio | X 20..30, Z −2..1 | Paso al elevador, ancho libre mínimo 2 m. |
+| Retorno este | X 28..30, Z 1..8 | Pasillo de 2 m entre barandilla del foso y muro este; conecta el rellano superior de S1 con la galería de servicio. |
 | Hueco D1/D2 | X 10..28, Z 1..8 | Hueco real, protegido y con acceso únicamente por S1. |
 | Elevador inferior | X 24,5..27,5, Z −4,5..−1,5 | Parada Y=0. |
 | Tramo dañado | X 2..4, Z −3..3 | Barrera/collider; no paso a P2. |
