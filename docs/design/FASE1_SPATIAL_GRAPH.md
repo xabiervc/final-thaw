@@ -21,7 +21,8 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | D2 · Distribución | −2 | X 20..28, Z 1..8 | Esquema, puente A→T y mantenimiento. |
 | Galería de evacuación (candidato actual) | −2 | X 28..34, Z 4,5..7,5 (propuesta no bloqueante) | Ruta posible hacia una salida exterior nueva; no se ha construido/validado. Reubicarla si la topología completa requiere otra salida. |
 | Boca de servicio (candidata) | variable | X≈34, Z≈6 (propuesta no bloqueante) | Salida exterior de servicio conectada con parking; ubicación definitiva pendiente del grafo completo. |
-| Elevador | 0↔+1,5 | X 24,5..27,5, Z −4,5..−1,5 | Transporte P0↔M, habilitado por mantenimiento; lo usa Elena y lo sigue físicamente la unidad. |\n| R1 · Umbral de reacquisición | 0 | X≈29, Z≈1; transición de galería de servicio a retorno este P0 | La unidad sale del elevador detrás de Elena y la reacquiere por LOS real; inicia la carrera. Sin teletransporte ni spawn delante del jugador. |
+| Elevador | 0↔+1,5 | X 24,5..27,5, Z −4,5..−1,5 | Transporte P0↔M, habilitado por mantenimiento; lo usa Elena y lo sigue físicamente la unidad. |
+| R1 · Umbral de reacquisición | 0 | X≈29, Z≈1; transición de galería de servicio a retorno este P0 | La unidad sale del elevador detrás de Elena y la reacquiere por LOS real; inicia la carrera. Sin teletransporte ni spawn delante del jugador. |
 | Galería de observación | +1,5 | X 9..13, Z −9..−1,5 | Vista a B y llegada de S2. |
 | M · Bombas | +1,5 | X 13..24, Z −9..−1,5 | Bombas, colectores y paso al elevador. |
 | S2 · Escalera fija | +1,5↔+3 | X 9..13, Z −4,5..−1,5 | M a P2, independiente de alimentación. |
@@ -50,16 +51,17 @@ La planta de parking y sus overlays usan coordenadas locales. Se retira el trans
 ## Grafo de circulación
 
 ~~~text
-ENTRADA OESTE → túnel → A → B ─────→ galería de servicio ─→ elevador ↑ M
-                              │                              │             │
-                              S1                             │             S2 ↑
-                              ↓                              │             E → F → G
-                         D1 ↔ D2                             │                  │
-                              │                              │             inicio huida
-                              └─ galería de evacuación       │                  ↓
-                                   → boca de servicio        └─ elevador ↓ P0 ← S2
-                                      → aparcamiento                         │
-                                                                           S1 ↓
+INVESTIGACIÓN:
+Entrada oeste → túnel → A → B/C → P0 → S1 ↓ P−1 (D1/D2)
+D2: mantenimiento + circuito seguro → elevador ↑ M → S2 ↑ P2 → E/F → G
+
+HUIDA (dos ritmos, sin rutas nuevas):
+G abre → Containment → retroceso por puerta interior → F/E → pasarela → S2 ↓ M
+→ evasión silenciosa en M (STAFF-M1 + cobertura C1/O2) → elevador ↓ P0
+→ R1 (X≈29, Z≈1; reacquisición por LOS real) → carrera por retorno este
+→ S1 ↓ P−1 → galería de evacuación (candidata) → boca alternativa (por seleccionar)
+→ aparcamiento
+
                                                                               P−1
                                                                               │
                                                                    galería evacuación
