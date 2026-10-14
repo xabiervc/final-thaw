@@ -37,15 +37,15 @@ The player's emotional progression is: **curiosity → doubt → inference → c
 
 7. **Threat enters.** A containment alarm and an identifiable mechanical/audio cue precede the recovery unit's appearance. The player gets a short but real opportunity to retreat. The unit searches and tracks only from evidence it can perceive.
 
-8. **Retreat through F/E.** Elena turns back through the inner G door and retreats across the upper control/archive route. A first obstacle communicates the physical rule before pressure peaks.  
+8. **Quiet evasion through F/E.** Elena turns back through the inner G door and moves through control/archive and connected work areas where staff may still be present. She uses real cover, timing and quiet movement to avoid attention; no takedown is required. Containment has begun, but the first section is not an automatic sprint.  
    *Dialogue proposal, only if a quiet window exists:* “Han recibido la auditoría.”  
    This line is provisional and must not explain a fact already made obvious by the world.
 
 9. **Vertical escape.** The player returns via S2 to M, the existing lift to P0, S1 to P−1 and the service evacuation gallery. The level must never invent a new stair or lift to make the script work.
 
-10. **Service exit.** Elena emerges from a distinct exterior mouth connected to the parking area. The change in light and acoustic space provides a breath, not a false victory.
+10. **Alternative service exit.** Elena leaves through a physically justified exterior mouth different from the west entrance. Its location is chosen to support the full route and can differ from the current provisional P−1 mouth. The selected exit connects continuously to the parking area; the parking plan's local coordinate frame is fitted afterward.
 
-11. **Parking chase.** The player reads cover, columns, vehicles, sightlines and the service perimeter. The routes trade exposure against time/traversal. The recovery unit remains bound by its senses and physical navigation.
+11. **Parking chase.** The running pressure continues into the parking area. The player reads cover, columns, vehicles, sightlines and the service perimeter. The routes trade exposure against time/traversal. The recovery unit remains bound by its senses and physical navigation.
 
 12. **Egress / aftermath.** Elena crosses a physically defined far-side boundary. The immediate pursuit is broken, but the broader threat remains.  
    *Ending-beat proposal:* a short external security response or access-state change suggests that the facility's response is coordinated. Do not identify a person or settle the wider conspiracy without a separately approved story decision.
@@ -73,6 +73,7 @@ All lines below are proposed Spanish source copy for the prototype. They must be
 | N1-03 | Player reads restricted record | Terminal: “ENSAYO ASTER — RESULTADO RETENIDO. RECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.” | Static readable text, accessible again from archive during Mission 1; not required during chase | State the specific contradiction |
 | N1-04 | Opening G's exterior leaf after maintenance queued SERVICE_OVERRIDE | No mandatory spoken line. Alarm changes state; status light changes; exterior door mechanism is audible/visible | Gameplay continues; no forced camera | Make cause and consequence legible |
 | N2-01 | Recovery unit becomes audible/visible beyond G | Elena: “La auditoría ha activado Containment.” | Trigger only after line of sight or audio establishes the unit; subtitle; skippable | Connect the audit to the response without naming an operator |
+| N2-05 | First occupied work area during quiet evasion | No mandatory spoken line. Staff voices, work posture and a readable sightline establish who may notice Elena | NPC routines are deterministic enough to learn; no required takedown; optional dialogue never blocks movement | Establish stealth pressure before the running chase |
 | N2-02 | Elena reaches P−1 service gallery and the threat loses sight | No dialogue required; pump/ventilation bed gives way to exterior ambience | Audio transition with visual threshold | Create breath and spatial transition |
 | N2-03 | First view of parking exit/perimeter | No mandatory line. A service reader displays “PROTOCOLO DE CONTENCIÓN: ACTIVO / SECTOR EXTERIOR” while perimeter lights/access states change in sequence | Environmental storytelling; readable without sound; no forced stop or log interaction | Show coordinated facility response without naming an operator or explaining the motive |
 | N2-04 | Escape boundary crossed | Elena: “Fuera del perímetro. Eso no significa que haya terminado.” | One short, skippable subtitle after control is safe | Deliver temporary release, preserve stakes |
@@ -106,7 +107,7 @@ A first-time player should be able to answer after the opening:
 1. What was inconsistent about the Aster system?
 2. What evidence suggests the result was withheld?
 3. Which player action caused Containment to begin?
-4. What can the recovery unit perceive, and how can the player break contact?
+4. How can Elena avoid staff during the quiet section, what event turns it into a run, and what can the recovery unit perceive or lose?
 5. Has Elena solved the larger conspiracy? (Correct understanding: no.)
 
 These are playtest questions, not assumed results. Record actual answers and revise the staging if players cannot infer the intended facts.
