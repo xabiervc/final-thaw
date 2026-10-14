@@ -62,6 +62,8 @@ func _run() -> void:
 	_expect(not _has_ground_slab_at(scene, Vector2(25.0, 9.5)), "S1 stair mouth remains open through the P0 slab")
 	_expect(scene.get_node_or_null("PitRailWest") != null and scene.get_node_or_null("PitRailEast") != null, "maintenance pit perimeter is protected")
 	_expect(scene.get_node_or_null("FixedPitStairsRailWest") != null and scene.get_node_or_null("FixedPitStairsRailEast") != null, "S1 has side protection following the stair slope")
+	var s1_ramp := scene.get_node("FixedPitStairsCollisionRamp") as StaticBody3D
+	_expect((s1_ramp.get_child(1) as MeshInstance3D).visible and scene.get_node_or_null("FixedPitStairsTreadMark_01") != null, "S1 shows tread markings on its continuous walkable surface")
 	var pit_rail := scene.get_node("PitRailWest") as StaticBody3D
 	_expect(is_equal_approx(pit_rail.position.y, 0.55), "pit guardrail rises above P0 floor instead of being buried below it")
 	_expect(scene.get_node_or_null("NaveWorkshopPierSouth") != null and scene.get_node_or_null("RoofBeam_00") != null, "P0 has room boundaries and industrial roof structure")
