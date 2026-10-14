@@ -25,6 +25,32 @@ La auditoría geométrica encontró cuatro defectos concretos antes de ejecutar 
 
 La ampliación geométrica no prueba que las paredes, barandillas, cubierta o huecos sean transitables/correctos. Godot no está disponible en el entorno de edición; la ejecución y el recorrido manual siguen pendientes. El aparcamiento de Fase 2 está definido como continuidad de diseño, no como escena integrada y validada.
 
+## Quality gates — no aceptar solo por apariencia o compilación
+
+### Arquitectura y geometría
+- Comparar cada planta SVG con la escena desde arriba y en sección; toda diferencia debe resolverse en el plano o registrarse como desviación intencional aprobada.
+- Comprobar que los huecos P0 de D1/D2 y S1 son reales en la colisión, que el foso tiene suelo a Y=−2 y que las barandillas se apoyan en P0 sin cerrar S1.
+- Verificar puertas, dinteles, vigas, conductos, mobiliario, barandillas y maquinaria contra los volúmenes de jugador y cámara; ninguna pieza decorativa puede bloquear una ruta contractual.
+- Recorrer S1, el elevador P0↔M y S2 M↔P2 en ambos sentidos, sin saltar cuando el diseño promete caminar. Probar la pérdida de alimentación en ambas mitades del recorrido y en el punto medio.
+- Verificar el paso B↔C, galería de servicio, rellanos, E→F→G y el hueco de salida con cámara de tercera persona. Ningún punto de control debe quedar detrás de un collider, dentro de una pared o en una zona sin espacio para detenerse.
+
+### Jugabilidad y narrativa
+- Una persona que no conozca el diseño debe poder distinguir acceso, nave, taller, achique, distribución, sala de bombas, control, archivo y esclusa por composición espacial y señalización, sin depender solo del color.
+- La anomalía A→T debe poder inferirse comparando esquema y puente; el escáner amplía información, pero no señala selector, aislador ni la respuesta.
+- El fallo eléctrico debe ser reversible y diagnosticable; el panel separa estado actual de last_trip; la consulta del archivo no equivale a extracción.
+- La causa de Containment debe leerse como consecuencia de cruzar la esclusa y transmitir la auditoría. La transición al aparcamiento no puede teletransportar al jugador sin continuidad audiovisual/espacial perceptible.
+
+### Accesibilidad y presentación
+- Texto de paneles legible en resolución de referencia y en la cámara real; estados críticos se expresan con texto/símbolo y no solo con color.
+- Indicaciones de interacción visibles sin tapar el objeto, el recorrido ni los indicadores. Validar tamaños, contraste, distancia de lectura y oclusión desde las posiciones de juego.
+- No introducir audio como único canal para eventos importantes; si se añade sonido, acompañarlo con señal visual o texto. Mantener las acciones de entrada contractuales y respetar remapeos existentes.
+
+### Ingeniería y evidencia
+- Ningún cambio a autoloads, acciones existentes, rutas de recursos, renderer Compatibility o formato JSON/CRC32 sin decisión explícita y pruebas de compatibilidad.
+- Tests unitarios del circuito/elevador, integración canónica, regresión Fase 0 y recorrido manual son puertas separadas; una no sustituye a otra.
+- Registrar commit exacto, versión de Godot, renderer, resolución, comando, exit code, salida de tests, incidencias y evidencia visual. No declarar CI verde sin el resultado del run y no declarar jugabilidad aceptada sin playtest.
+- Cualquier fallo de parseo/runtime bloquea ampliación artística. Corregir primero, ejecutar regresión, luego continuar con detalle y presentación.
+
 ## Regresión automatizada
 
 Se añadió `.github/workflows/godot-headless-tests.yml` para importar recursos y ejecutar Fase 0, el vertical slice existente, contrato de circuito, elevador genérico, transporte y la integración canónica en Godot 4.7.1. El resultado de GitHub Actions no se ha verificado durante esta revisión; no se declara CI verde sin consultar el run real.
