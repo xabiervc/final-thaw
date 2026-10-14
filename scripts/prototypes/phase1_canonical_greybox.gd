@@ -40,7 +40,7 @@ var _scan_highlights: Array[MeshInstance3D] = []
 var _lift_lower_button: MeshInstance3D
 var _lift_upper_button: MeshInstance3D
 var _lift_deck_label: Label3D
-var _safe_point: Vector3 = Vector3(3.0, 0.2, 14.3)
+var _safe_point: Vector3 = Vector3(-2.3, 0.2, 6.0)
 var _lift_deck_button: MeshInstance3D
 var _lower_lift_gate: StaticBody3D
 var _upper_lift_gate: StaticBody3D
@@ -259,23 +259,25 @@ func _build_ground_floor() -> void:
 
 
 func _build_fixed_geometry() -> void:
-	# Outer shell. The north-west hatch is upper-only; the separate south opening is the framed entry tunnel.
+	# West shell has two deliberate openings: the upper G hatch and the ground-level entry tunnel.
+	# Keep wall segments explicit so both openings are framed and no unintended gap remains.
 	_wall_x("OuterWestLowerA", 0.0, -10.0, -8.25, 0.0, 5.4)
-	_wall_x("OuterWestLowerB", 0.0, -6.75, 12.0, 0.0, 5.4)
 	_wall_x("OuterWestHatchLower", 0.0, -8.25, -6.75, 0.0, 3.0)
 	_wall_x("OuterWestHatchLintel", 0.0, -8.25, -6.75, 5.2, 5.4)
+	_wall_x("OuterWestLowerB", 0.0, -6.75, 4.5, 0.0, 5.4)
+	_wall_x("OuterWestAccessLintel", 0.0, 4.5, 7.5, 2.2, 5.4)
+	_wall_x("OuterWestLowerC", 0.0, 7.5, 12.0, 0.0, 5.4)
 
-	# The existing south-wall opening is the sole ground-level entrance and is framed by a short tunnel.
-	_wall_z("OuterSouthAccessLintel", 12.0, 2.0, 4.0, 2.4, 4.5)
-	_add_floor_rect(Rect2(Vector2(2.0, 12.0), Vector2(2.0, 3.0)), 0.0, "AccessTunnelFloor", materials.get_material("floor"))
-	_wall_x("AccessTunnelWest", 2.0, 12.0, 15.0, 0.0, 2.2)
-	_wall_x("AccessTunnelEast", 4.0, 12.0, 15.0, 0.0, 2.2)
-	_body_box("AccessTunnelCeiling", Vector3(2.0, 0.2, 3.0), Vector3(3.0, 2.3, 13.5), materials.get_material("concrete"))
-	_label3d("AccessTunnelLabel", "ENTRADA · INSTALACIÓN", Vector3(3.0, 1.9, 13.5), Color(0.9, 0.82, 0.62), 15, 0.003)
+	# Ground-level entrance tunnel: exterior X=-3..0, Z=4.5..7.5; clear height 2.2 m.
+	_add_floor_rect(Rect2(Vector2(-3.0, 4.5), Vector2(3.0, 3.0)), 0.0, "AccessTunnelFloor", materials.get_material("floor"))
+	_wall_z("AccessTunnelSouth", 4.5, -3.0, 0.0, 0.0, 2.2)
+	_wall_z("AccessTunnelNorth", 7.5, -3.0, 0.0, 0.0, 2.2)
+	_body_box("AccessTunnelCeiling", Vector3(3.0, 0.2, 3.0), Vector3(-1.5, 2.3, 6.0), materials.get_material("concrete"))
+	_label3d("AccessTunnelLabel", "ENTRADA · INSTALACIÓN", Vector3(-1.5, 1.9, 6.0), Color(0.9, 0.82, 0.62), 15, 0.003)
+
 	_wall_z("OuterNorth", -10.0, 0.0, 30.0, 0.0, 5.4)
 	_wall_x("OuterEast", 30.0, -10.0, 12.0, 0.0, 4.5)
-	_wall_z("OuterSouthWest", 12.0, 0.0, 2.0, 0.0, 4.5)
-	_wall_z("OuterSouthMiddle", 12.0, 4.0, 30.0, 0.0, 4.5)
+	_wall_z("OuterSouth", 12.0, 0.0, 30.0, 0.0, 4.5)
 
 	# Damaged direct stair remains visible but has no traversable collision ramp.
 	var damaged_stair := _visual_box("BrokenApproachStairVisual", Vector3(2.0, 0.18, 6.0), Vector3(3.0, 1.5, 0.0), materials.get_material("grate"))
@@ -581,10 +583,10 @@ func _build_doors() -> void:
 func _build_player_and_hud() -> void:
 	player = Player.new()
 	player.name = "Elena"
-	player.position = Vector3(3.0, 0.2, 14.3)
+	player.position = Vector3(-2.3, 0.2, 6.0)
 	add_child(player)
-	# Face the opening into A so the first camera composition reads the intended route.
-	player.visual.rotation.y = PI
+	# Face east (+X), through the west-wall opening into access A.
+	player.visual.rotation.y = PI * 0.5
 	hud = HudScript.new()
 	hud.name = "PromptHUD"
 	add_child(hud)
