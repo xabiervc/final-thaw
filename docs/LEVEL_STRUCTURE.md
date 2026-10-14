@@ -57,6 +57,24 @@ For the parking level, author a measured plan before expanding the builder. The 
 
 These are design targets, not verified measurements. Any deviation must be recorded with its gameplay reason and tested in the actual scene. The level designer must not compress circulation to preserve the old corridor length.
 
+### 2.2.1 Provisional dimension schedule
+
+The SVG uses a nominal 14 px per local metre in plan. This schedule records the dimensions implied by the concept, not verified construction dimensions.
+
+| Element | Concept dimension | Design intent / check |
+|---|---:|---|
+| Site boundary | 48 × 30 m | Retain only if service operations and two routes justify the footprint |
+| Marked bay | 3.0 m wide × 5.0 m deep | Wider than a minimum stall to permit readable cover routes; validate total bay count and circulation |
+| Parked car envelope | approx. 1.9 × 3.6 m | Static cover; doors/bonnets do not create walkable space |
+| Structural column | 1.0 × 1.0 m footprint | Must not intrude into the required clear route or hide a required landing |
+| Main central apron | approx. 17.3 m between the two parking rows | Deliberately a service/maneuvering apron, not a standard aisle; use the technical cage, cover clusters and exposed crossing to break the open area |
+| Pedestrian pinch | target ≥1.2 m | Only at one clearly telegraphed, non-jump pinch; prefer ≥1.5 m for a fast turn |
+| Primary route | target ≥2.0 m clear | Measured between collision surfaces, not visual prop bounds |
+| Canopy headroom | 2.8 m shown in section | Optional design element; remove if unsupported by the facility program, but retain route and threat readability |
+| Perimeter | wall/fence shown schematically | Height, gate opening, climbability and boundary collision remain to be specified against the threat and exit behavior |
+
+Before design lock, add dimension strings for the narrowest clear passage on each route, barrier aperture, service cage bypass, and the final gate. The current SVG dimension strings establish only the overall envelope; they do not yet prove all internal clearances.
+
 ### 2.3 Required plan and section views
 
 A first spatial concept is now recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg). It is deliberately marked **concept v0.1**: its 48 × 30 m envelope, routes and prop placements are design proposals, not approved coordinates and not a representation of the current Godot scene. Its purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the service-exit handoff, world-coordinate transform, clearances and elevation are reconciled.
