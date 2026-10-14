@@ -24,5 +24,5 @@
 <!-- collapsed stair -->
 <path d="M195 440L220 420L245 397L270 375" stroke="#e9a17e" stroke-width="4" stroke-dasharray="8 6" fill="none"/><path d="M258 365L282 389M282 365L258 389" stroke="#e9a17e" stroke-width="3"/><text x="105" y="350" class="lab" fill="#e9a17e">P0→P2 dañada</text><text x="105" y="368" class="body">no transitable</text>
 <path d="M235 420L360 420L520 420L790 420L835 390L930 350L730 305L495 305L400 240L620 175L380 175L230 175" class="walk"/>
-<text x="32" y="754" class="sub">Sección conceptual coordinada con las plantas. Geometría, cámara y colisiones aún deben probarse en Godot.</text>
+<text x="32" y="754" class="sub">Sección conceptual coordinada con plantas v1.1. B termina al norte del hueco D1/D2; S1, elevador y S2 tienen destinos distintos. Geometría, cámara y colisiones pendientes de Godot.</text>
 </svg>
