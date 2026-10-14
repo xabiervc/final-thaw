@@ -22,6 +22,8 @@ uniform float seam_darkness = 0.55;
 // Frost creeping from the top edge (0 = none).
 uniform float frost_amount = 0.0;
 uniform float frost_start = 2.4;
+// Cutaway: 0 = solid, 1 = gone. Ordered-dither discard, so it stays in the opaque pipeline (works on Compatibility).
+uniform float dither_fade = 0.0;
 
 varying vec3 wpos;
 varying vec3 wnrm;
@@ -40,7 +42,18 @@ float seam_line(float coord, float spacing, float width_px) {
 	return 1.0 - smoothstep(0.0, fwidth(coord) * width_px, d);
 }
 
+float bayer4(vec2 p) {
+	int x = int(mod(p.x, 4.0));
+	int y = int(mod(p.y, 4.0));
+	int i = x + y * 4;
+	float m[16] = float[](0.0, 8.0, 2.0, 10.0, 12.0, 4.0, 14.0, 6.0, 3.0, 11.0, 1.0, 9.0, 15.0, 7.0, 13.0, 5.0);
+	return (m[i] + 0.5) / 16.0;
+}
+
 void fragment() {
+	if (dither_fade > 0.0 && bayer4(FRAGCOORD.xy) < dither_fade) {
+		discard;
+	}
 	vec3 w = pow(abs(wnrm), vec3(4.0));
 	w /= (w.x + w.y + w.z);
 	vec3 base = triplanar(albedo_tex, wpos, w).rgb;

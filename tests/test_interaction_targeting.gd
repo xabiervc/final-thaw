@@ -9,12 +9,14 @@ const ROOM_SCENE := "res://scenes/levels/elena_test_room.tscn"
 
 var failed := 0
 var passed := 0
+var _reached_end := false  # a script error aborts the coroutine; this turns that into a failure
 
 
 func _ready() -> void:
 	await _test_line_of_sight()
 	await _test_own_collider_does_not_block()
 	await _test_room_lever_not_through_wall()
+	_expect(_reached_end, "END: every room check ran to completion")
 	print("Interaction targeting: %d passed, %d failed" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
 
@@ -145,5 +147,6 @@ func _test_room_lever_not_through_wall() -> void:
 		if str(n.get("display_name")) in ["", "Objeto"]:
 			names_ok = false
 	_expect(names_ok, "R7: every interactable in the room has a specific name for its prompt")
+	_reached_end = true
 	room.queue_free()
 	await get_tree().process_frame

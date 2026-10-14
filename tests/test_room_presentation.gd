@@ -8,11 +8,13 @@ const HudScript := preload("res://scripts/ui/prompt_hud.gd")
 
 var failed := 0
 var passed := 0
+var _reached_end := false  # a script error aborts the coroutine; this turns that into a failure
 
 
 func _ready() -> void:
 	_test_synth()
 	await _test_room()
+	_expect(_reached_end, "END: every room check ran to completion")
 	print("Room presentation: %d passed, %d failed" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
 
@@ -129,6 +131,21 @@ func _test_room() -> void:
 	await get_tree().process_frame
 	_expect(not marker.get("_marker").visible, "P15: with no target the marker hides")
 
+	# The alcove wall is cut away while Elena stands behind it, and restored when she leaves.
+	var fade = dressing.get("alcove_fade")
+	var wall_mat := dressing.get("mats").get_material("wall_alcove") as ShaderMaterial
+	elena.global_position = Vector3(5.0, 0.1, -5.4)
+	await _wait(0.6)
+	elena.global_position = Vector3(5.0, 0.1, -5.4)
+	await get_tree().process_frame
+	_expect(fade.is_faded() and float(wall_mat.get_shader_parameter("dither_fade")) > 0.5, "P18: inside the alcove the wall hiding Elena is cut away")
+	elena.global_position = Vector3(5.5, 0.1, -1.0)
+	await _wait(0.6)
+	_expect(not fade.is_faded() and float(wall_mat.get_shader_parameter("dither_fade")) == 0.0, "P19: outside the alcove the wall is solid again")
+	var other_wall := dressing.get("mats").get_material("wall") as ShaderMaterial
+	var other_fade = other_wall.get_shader_parameter("dither_fade")
+	_expect(other_fade == null or float(other_fade) == 0.0, "P20: the cutaway never affects the other walls")
+
 	# Procedural pose lowers the bind-pose arms.
 	var pose = elena.get("pose")
 	if elena.get("uses_mpfb_model"):
@@ -143,5 +160,6 @@ func _test_room() -> void:
 		var rest_down := rad_to_deg(rest_dir.angle_to(-up))
 		var posed_down := rad_to_deg(posed_dir.angle_to(-up))
 		_expect(posed_down < 20.0 and rest_down > posed_down + 15.0, "P17: the upper arm hangs down (%.0f deg from vertical, bind pose %.0f deg)" % [posed_down, rest_down])
+	_reached_end = true
 	art.queue_free()
 	await get_tree().process_frame

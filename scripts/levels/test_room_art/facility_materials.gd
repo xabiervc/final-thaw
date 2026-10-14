@@ -81,6 +81,11 @@ func _build(key: String) -> Material:
 			var m := _wall("painted_plaster_wall", Color(0.36, 0.42, 0.47), 2.5)
 			m.set_shader_parameter("seam_spacing", 2.0)
 			return m
+		"wall_alcove":
+			# Own instance of the wall material so the alcove wall can be cut away without touching other walls.
+			var m := _wall("painted_plaster_wall", Color(0.36, 0.42, 0.47), 2.5)
+			m.set_shader_parameter("seam_spacing", 2.0)
+			return m
 		"wall_frost":
 			var m := _wall("painted_plaster_wall", Color(0.36, 0.42, 0.47), 2.5)
 			m.set_shader_parameter("frost_amount", 1.0)

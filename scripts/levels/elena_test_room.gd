@@ -31,7 +31,8 @@ const BARRIER_SIZE := Vector3(0.3, 0.5, 16.0)
 ## Generator feed cable, revealed by scanning in the generator bay: it runs from the hidden lever, out of the alcove
 ## through its east gap, to the exit door. The trace origin sits in the bay so a scan from its entrance reaches it.
 const FEED_ORIGIN := Vector3(6.0, 0.0, -2.0)
-const FEED_ROUTE := [Vector3(-0.4, 0.0, -4.95), Vector3(1.7, 0.0, -4.95), Vector3(1.7, 0.0, 0.25), Vector3(2.2, 0.0, 0.25)]
+## Listed door -> lever, so the trace's label appears over the hidden lever instead of over the exit door.
+const FEED_ROUTE := [Vector3(2.2, 0.0, 0.25), Vector3(1.7, 0.0, 0.25), Vector3(1.7, 0.0, -4.95), Vector3(-0.4, 0.0, -4.95)]
 const FEED_LABEL := "ALIMENTACIÓN: GENERADOR → PUERTA DE SALIDA"
 const FEED_MESSAGE := "El cable de la puerta de salida viene del generador auxiliar, detrás del muro. Se entra por el hueco del este."
 
