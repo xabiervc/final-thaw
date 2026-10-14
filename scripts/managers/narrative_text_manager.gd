@@ -120,6 +120,16 @@ static func get_end_button_menu() -> String:
 static func get_end_button_restart() -> String:
 	return _text("end_button_restart", "Restart Demo")
 
+static func get_prompt_instructions() -> String:
+	return _text("prompt_instructions", "WASD / arrows: move   |   E: interact   |   Q / Tab: scan   |   F2: save   F3: load   |   ESC: menu")
+
+static func get_prompt_condition(stamina: int, state: String, aster_loaded: bool) -> String:
+	var state_text := _text("condition_state_%s" % state, state.to_upper())
+	var text: String = _text("prompt_condition", "STAMINA %d%%  |  %s") % [stamina, state_text]
+	if aster_loaded:
+		text += "  |  " + _text("prompt_aster_load", "Aster load")
+	return text
+
 ## Shelter vertical-slice text. Fallbacks keep the scene usable while the
 ## ES/EN NarrativeText resources are expanded.
 static func get_shelter_intro() -> String:

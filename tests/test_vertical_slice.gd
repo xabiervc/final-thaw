@@ -11,6 +11,7 @@ func _ready() -> void:
 	_check_shelter_text_fallbacks()
 	_check_menu_text_contract()
 	_check_hud_text_contract()
+	_check_prompt_text_contract()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -114,6 +115,11 @@ func _check_hud_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_hud_prototype_integrity(3).is_empty(), "HUD prototype integrity fallback exists")
 	_expect(not NarrativeTextManager.get_hud_elena_safety(3).is_empty(), "HUD Elena safety fallback exists")
 	_expect(not NarrativeTextManager.get_hud_fps(60).is_empty(), "HUD FPS fallback exists")
+
+func _check_prompt_text_contract() -> void:
+	_expect(not NarrativeTextManager.get_prompt_instructions().is_empty(), "Prompt instructions fallback exists")
+	_expect(not NarrativeTextManager.get_prompt_condition(80, "estable", false).is_empty(), "Prompt condition fallback exists")
+	_expect(not NarrativeTextManager.get_prompt_condition(20, "critica", true).is_empty(), "Loaded critical condition fallback exists")
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid

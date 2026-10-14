@@ -26,7 +26,7 @@ func _ready() -> void:
 	_hint.custom_minimum_size = Vector2(820.0, 0.0)
 	_hint.visible = false
 	_instructions = _make_label(box, 15, Color(0.72, 0.8, 0.84))
-	_instructions.text = "WASD / flechas: mover   |   E: interactuar   |   Q / Tab: escanear   |   F2: guardar   F3: cargar   |   ESC: menú"
+	_instructions.text = NarrativeTextManager.get_prompt_instructions()
 
 	_status = Label.new()
 	_status.add_theme_font_size_override("font_size", 18)
@@ -53,7 +53,6 @@ func _ready() -> void:
 	_condition.offset_top = 62.0
 	_condition.offset_bottom = 100.0
 	_condition.grow_horizontal = Control.GROW_DIRECTION_BEGIN
-	_condition.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	_condition.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_condition.visible = false
 	add_child(_condition)
@@ -85,6 +84,8 @@ func _ready() -> void:
 	_prompt.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_prompt)
 
+	GameManager.stats_changed.connect(_apply_font_scale)
+
 func _style(alpha: float) -> StyleBoxFlat:
 	var s := StyleBoxFlat.new()
 	s.bg_color = Color(0.03, 0.05, 0.07, alpha)
@@ -103,6 +104,15 @@ func _make_label(parent: Node, font_size: int, color: Color) -> Label:
 	parent.add_child(l)
 	return l
 
+func _apply_font_scale() -> void:
+	var scale := clampf(GameManager.font_scale, 0.75, 2.0)
+	_objective.add_theme_font_size_override("font_size", int(22 * scale))
+	_hint.add_theme_font_size_override("font_size", int(17 * scale))
+	_instructions.add_theme_font_size_override("font_size", int(15 * scale))
+	_status.add_theme_font_size_override("font_size", int(18 * scale))
+	_condition.add_theme_font_size_override("font_size", int(16 * scale))
+	_prompt.add_theme_font_size_override("font_size", int(24 * scale))
+
 func _process(_delta: float) -> void:
 	var p := get_tree().get_first_node_in_group("player")
 	var c = null
@@ -116,9 +126,11 @@ func _process(_delta: float) -> void:
 
 func _update_condition(c) -> void:
 	var state := str(c.state_name())
-	var text := "RESISTENCIA %d%%  |  %s" % [int(round(c.stamina)), state.to_upper()]
-	if c.load_factor > 0.0:
-		text += "  |  Carga del Aster"
+	var text: String = NarrativeTextManager.get_prompt_condition(
+		int(round(c.stamina)),
+		state,
+		c.load_factor > 0.0
+	)
 	_condition.text = text
 	_cond_bar.value = c.stamina
 	var tint := Color(0.4, 0.9, 0.8)
