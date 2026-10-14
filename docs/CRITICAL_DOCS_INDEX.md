@@ -20,7 +20,7 @@
 9. [Motion/chase mechanics prototype](design/MOTION_CHASE_PROTOTYPE.md) — current movement, scanner, recovery-unit behavior, controls, limits and run commands.
 10. [Traceability matrix](TRACEABILITY_MATRIX.md) — maps requirements to design evidence, implementation and verification gaps.
 11. [Project status](../PROJECT_STATUS.md) — current implementation evidence and next milestone.
-12. [Narrative archive](narrative_complete.md) — legacy story material; not automatically current canon.
+12. [Opening script and narrative archive](narrative_complete.md) — current opening proposal and unresolved decisions at the top; legacy full-campaign material is preserved below.
 
 ## Technical governance and production constraints
 
