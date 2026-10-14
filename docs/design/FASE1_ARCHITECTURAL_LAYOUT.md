@@ -25,7 +25,7 @@ La instalación mantiene cuatro cotas interiores conectadas y una salida de serv
 | **P−1 · Y=−2 m** | D1 galería de achique; D2 distribución hidráulica/eléctrica; puente A→T manipulado; interruptor de mantenimiento; sumidero y colectores; galería de evacuación/descarga de servicio hacia el exterior este. |
 | **P0 · Y=0 m** | Túnel de entrada oeste; A esclusa de acceso; B nave de ensayos Aster; C taller; cuadros auxiliares; galería de servicio; retorno por perímetro sur/este; acceso inferior del elevador; boca superior de S1. |
 | **M · Y=+1,5 m** | Sala de bombas, colectores y manómetros; galería de observación; rellano del elevador; llegada de S2; corredor técnico de conexión. |
-| **P2 · Y=+3 m** | E control y diagnóstico; F archivo restringido; pasarela superior; G puerta de salida/interbloqueo que inicia la huida, no la salida exterior definitiva. La ruta de huida vuelve a la circulación técnica y desciende por conexiones existentes. |
+| **P2 · Y=+3 m** | E control y diagnóstico; F archivo restringido; pasarela superior; G esclusa de doble puerta. Abrir la compuerta exterior activa la amenaza; Elena retrocede al interior y escapa por conexiones técnicas existentes. G no es la salida final. |
 | **Exterior · cota variable** | Boca de servicio/descarga al este del nivel P−1 y conexión legible al aparcamiento. El aparcamiento y la persecución exterior continúan en Fase 2. |
 
 La huella puede crecer si el plano acotado demuestra que el recorrido de huida no cabe con anchos seguros. No comprimir pasillos, escaleras ni espacios de combate/persecución para preservar una dimensión arbitraria del prototipo.
@@ -44,7 +44,7 @@ La huella puede crecer si el plano acotado demuestra que el recorrido de huida n
 | M · Bombas/observación | Bombeo y supervisión de Aster | Confirma efectos del mantenimiento, enlaza elevador y S2 y permite leer verticalmente la nave. |
 | E · Control | Supervisión del circuito | Probar hipótesis, ver diagnóstico y recuperarse de un error. |
 | F · Archivo | Registro restringido | Consultar con ARCHIVO estable; la consulta no equivale a extracción. |
-| G · Interbloqueo/puerta de huida | Control de acceso y salida de emergencia | Tras resolver lo necesario, abrir esta puerta inicia el desenlace de huida. No es la salida exterior ni un cambio de escena inmediato. |
+| G · Esclusa de doble puerta | Interbloqueo de seguridad exterior | Tras resolver lo necesario, abrir la compuerta exterior inicia la persecución; Elena retrocede por la puerta interior hacia F/E. No es la salida final ni un cambio de escena inmediato. |
 | Ruta de huida | Circulación de emergencia y mantenimiento | Recorrer pasarela/corredor técnico, sortear obstáculos físicos y descender por conexiones existentes hasta P−1. |
 | Galería de evacuación | Descarga de servicio | Ruta final alternativa; conduce a una boca exterior distinta del túnel de entrada. |
 | Aparcamiento | Logística exterior | Primer espacio de Fase 2; handoff continuo a la persecución existente. |
