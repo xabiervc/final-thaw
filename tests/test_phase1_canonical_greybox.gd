@@ -29,6 +29,7 @@ func _run() -> void:
 	_expect(scene.circuit != null, "canonical scene owns a circuit model")
 	_expect(scene.lift != null and scene.player != null, "scene creates player and service lift")
 	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
+	_expect(scene._service_lights.size() == 2 and scene._service_lights[0].light_energy < 0.2 and scene._service_lights[1].light_energy < 0.2, "service lights start at safe ambient minimum while maintenance is off")
 	var lower_gate_shape := scene.get_node("LiftSafetyGateLower").get_child(0) as CollisionShape3D
 	var lower_gate_mesh := scene.get_node("LiftSafetyGateLower").get_child(1) as MeshInstance3D
 	var upper_gate_shape := scene.get_node("LiftSafetyGateUpper").get_child(0) as CollisionShape3D
@@ -75,6 +76,7 @@ func _run() -> void:
 	# Maintenance and platform power are wired independently of the recovery circuit.
 	scene._toggle_maintenance()
 	_expect(scene.circuit.maintenance_on and scene.lift.powered, "maintenance enables the service lift")
+	_expect(scene._service_lights[0].light_energy > 0.7 and scene._service_lights[1].light_energy > 0.7, "maintenance turns on the service lights")
 	_expect(scene.circuit.outputs()["diagnostic"], "diagnostics remain available with maintenance on")
 	_expect(scene._audit_events.has("SERVICE_OVERRIDE"), "maintenance queues SERVICE_OVERRIDE")
 	scene._call_lift("upper")
