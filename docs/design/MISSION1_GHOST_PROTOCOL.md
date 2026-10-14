@@ -53,13 +53,13 @@ Reconnecting the trial while ARCHIVO is selected can trip available protection. 
 
 ## Mission-level event contract (separate from the circuit model)
 
-The circuit reference model remains authoritative and unchanged. Its maintenance operation changes only the maintenance state. The mission interaction has a separate side effect: when the maintenance switch is activated, it queues the mission flag `SERVICE_OVERRIDE`. This flag does not change circuit outputs, protection history, archive stability or save format.
+The circuit reference model remains authoritative and unchanged. Its maintenance operation changes only the maintenance state. The mission interaction has a separate side effect: on the rising edge OFF → ON, the maintenance switch queues the mission flag `SERVICE_OVERRIDE`. Once queued, it remains queued for this mission even if maintenance is later switched OFF; toggling maintenance cannot enqueue duplicate audits. This flag does not change circuit outputs, protection history, archive stability or save format.
 
 - Reading the restricted record adds the in-session knowledge flag `RESTRICTED_RECORD_READ`; it does not send the audit or start Containment.
-- Opening the exterior leaf of G while `SERVICE_OVERRIDE` is queued sends the audit and starts Containment exactly once.
+- Opening the exterior leaf of G while `SERVICE_OVERRIDE` is queued sends the audit, marks it sent and starts Containment exactly once. Repeated interaction/open callbacks must not send duplicate audits or restart the chase.
 - The event must be visible/audible through door motion, a state-light change and the containment cue. No forced camera, unskippable line or direct scene transition.
 - The recovery unit enters from the exterior side of G; Elena retreats through the inner leaf toward F/E. The chase then follows the existing spatial graph back via S2, M, the existing lift to P0, S1 to P−1 and the new service evacuation gallery.
-- If G is opened before `SERVICE_OVERRIDE` is queued, the door must provide a diegetic unavailable/locked response; it must not start Containment. Do not invent an alternate trigger.
+- If G is opened before `SERVICE_OVERRIDE` is queued, the door must provide a diegetic unavailable/locked response; it must not start Containment. Do not invent an alternate trigger. Restarting the mission resets both mission flags; no flag is written to persistent save data.
 - These mission flags are session-level design state only. Any persistence beyond the current mission requires explicit compatibility review; no save-schema change is implied.
 
 ## Scanner and feedback
