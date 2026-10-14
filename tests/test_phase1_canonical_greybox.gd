@@ -67,6 +67,8 @@ func _run() -> void:
 	var pit_rail := scene.get_node("PitRailWest") as StaticBody3D
 	_expect(is_equal_approx(pit_rail.position.y, 0.55), "pit guardrail rises above P0 floor instead of being buried below it")
 	_expect(scene.get_node_or_null("NaveWorkshopPierSouth") != null and scene.get_node_or_null("RoofBeam_00") != null, "P0 has room boundaries and industrial roof structure")
+	var broken_stair := scene.get_node("BrokenApproachStairVisual") as MeshInstance3D
+	_expect(broken_stair.rotation.x > 0.0 and scene.get_node_or_null("BrokenStairBlockedGap") != null, "the collapsed stair slopes toward P2 but remains physically blocked")
 	var aster_column := scene.get_node("AsterVerticalColumn") as StaticBody3D
 	_expect(is_equal_approx(aster_column.position.z, -4.0) and _has_ground_slab_at(scene, Vector2(aster_column.position.x, aster_column.position.z)), "Aster column stands on the nave floor, clear of the maintenance void")
 	var workshop_bench := scene.get_node("WorkshopBench") as StaticBody3D
