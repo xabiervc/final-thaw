@@ -46,15 +46,22 @@ Galería de observación X=9..13, Z=−9..−1,5; sala de bombas X=13..24, Z=−
 
 G X=0..3, Z=−9..−4,5; F X=3..9, Z=−9..−4,5; E X=9..24, Z=−8,5..−4,5; pasarela X=9..26, Z=−4,5..−1,5, con hueco de S2 X=9..13. El panel E conserva su centro contractual (15,5; 4,55; −8,15) y su soporte. La puerta G abre hacia una ruta de circulación interior y dispara la secuencia de huida; no puede representar una puerta exterior que teletransporte a H. Añadir puerta, umbral y corredor de huida en el plano y en la escena.
 
-## Ruta de huida y obstáculos
+## Ruta de huida y obstáculos — posiciones candidatas acotadas
 
-Ruta de referencia: G → corredor/pasarela superior → S2 ↓ M → sala de bombas → elevador ↓ P0 → galería de servicio → S1 ↓ P−1 → D2 → galería de evacuación → exterior este → aparcamiento.
+Ruta de referencia: G → F/E → pasarela superior → S2 ↓ M → sala de bombas → elevador ↓ P0 → galería de servicio → S1 ↓ P−1 → D2 → galería de evacuación → exterior este → aparcamiento.
 
-- Los obstáculos deben ubicarse en planos con footprint, ancho residual, altura, collider y solución esperada. No aprobar obstáculos descritos solo en prosa.
-- Primera pasada: máximo tres obstáculos principales, cada uno con anticipación visual, colisión visible y margen de recuperación. Los obstáculos exactos siguen pendientes de layout de persecución.
-- No usar obstáculos que exijan una habilidad aún no enseñada o un salto ciego. No convertir la persecución en combate obligatorio.
-- El estado del elevador al comenzar la huida debe ser explícito. Si se requiere una llamada, tiempo de espera y riesgo deben formar parte del diseño y probarse.
-- El camino debe funcionar con cámara de tercera persona; tuberías, vigas, barandillas y puertas no pueden tapar al jugador ni esconder la solución.
+| ID | Cota/centro aproximado | Volumen de referencia | Lectura y solución | Aceptación geométrica |
+|---|---|---|---|---|
+| O1 · Estantería caída | P2: (7,0; 3,0; −6,75) | 1,6 × 1,1 × 2,0 m | Estantería de archivo vencida hacia el paso. Rodear por el lateral abierto, con aproximación visible desde F. | Mantener al menos 1,2 m de paso continuo; no tapar la puerta ni ocultar el acceso a E. |
+| O2 · Bastidor de tuberías | M: (18,0; 1,5; −3,0) | 2,0 × 0,8 × 1,2 m | Bastidor desplazado durante la evacuación; rodear siguiendo las líneas de servicio. | Dejar un recorrido ≥2,0 m entre maquinaria/barandillas; no invadir el acceso a elevador ni S2. |
+| O3 · Bandeja desprendida | P0: (25,0; 0,0; −0,5) | 1,2 × 0,8 × 0,6 m | Bandeja/canaleta caída en la galería de servicio; el paso lateral debe ser obvio y estable. | Dejar ≥1,2 m libres a ambos lados donde el trazado lo permita; no bloquear la llegada al elevador ni S1. |
+
+Estas posiciones son la primera propuesta de layout de persecución y deben dibujarse en planta antes de construir los colliders. Las dimensiones son máximos iniciales, no autorización para reducir pasos. Ajustar los obstáculos si la cápsula/cámara reales no permiten una solución justa; actualizar SVG y pruebas en el mismo cambio.
+
+- Máximo tres obstáculos principales en la primera pasada; anticipación visual, colisión visible y margen de recuperación.
+- No usar saltos ciegos ni exigir habilidades no enseñadas. No convertir la persecución en combate obligatorio.
+- Al abrir G, el elevador está disponible porque mantenimiento debe estar activo en la progresión normal; definir y probar qué ocurre si el estado se altera. No bloquear al jugador por una llamada imposible.
+- La cámara de tercera persona debe conservar lectura del perseguidor, borde de paso y solución; vigas/tuberías no pueden ocluir simultáneamente al jugador y la salida.
 
 ## Arquitectura legible como instalación real
 
