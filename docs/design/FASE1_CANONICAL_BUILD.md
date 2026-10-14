@@ -40,6 +40,8 @@ La reconstrucción anterior contiene túnel oeste, perímetro/salas P0, hueco D1
 6. Conectar el estado de amenaza con el recorrido interior; no arrancar la escena de aparcamiento al abrir G.
 7. Crear el handoff a la escena de aparcamiento al cruzar la boca de servicio; conservar el checkpoint standalone.
 8. Añadir pruebas para ruta G→S2/M→elevador/P0→S1/P−1→salida, estados del elevador y handoff.
+9. Cubrir el contrato de evento de misión: mantenimiento OFF→ON encola `SERVICE_OVERRIDE` una sola vez; volver a OFF no lo borra; consultar F solo establece `RESTRICTED_RECORD_READ`; abrir G con la cola envía la auditoría y activa Containment una sola vez; abrir G sin cola no activa la persecución; reiniciar la misión limpia los flags de sesión.
+10. Verificar que el evento de misión no altera las salidas ni el historial del modelo eléctrico definido en `FASE1_LOGIC_CONTRACT.md`.
 9. Ejecutar todas las pruebas y playtest manual; corregir parse/runtime antes de añadir detalle visual.
 10. Registrar commit, versión, renderer, comandos, exit codes, salida, errores/warnings, QA y limitaciones.
 
