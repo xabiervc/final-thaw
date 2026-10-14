@@ -50,6 +50,35 @@ The player's emotional progression is: **curiosity → doubt → inference → c
 12. **Egress / aftermath.** Elena crosses a physically defined far-side boundary. The immediate pursuit is broken, but the broader threat remains.  
    *Ending-beat proposal:* a short external security response or access-state change suggests that the facility's response is coordinated. Do not identify a person or settle the wider conspiracy without a separately approved story decision.
 
+### Recommended narrative baseline (proposal for owner review)
+
+To keep the opening coherent without inventing a full conspiracy explanation, use the following as the recommended direction for this slice:
+
+- **Aster fact:** the physical circuit state and restricted record disagree with the official summary; the record says the result was retained and the deployment recommendation suppressed. The opening establishes suppression, not motive.
+- **Containment cause:** maintenance queues `SERVICE_OVERRIDE`; crossing G transmits the queued audit and starts the facility's recovery protocol. The event is automated at the facility level. No named executive is shown ordering the pursuit.
+- **Recovery unit:** treat it as an autonomous facility recovery/security unit, not a supernatural pursuer or a combat enemy. It uses bounded senses, has a recognizable mechanical signature and cannot pass through physical barriers. Do not lock a specific manufacturer, model or human operator in final art yet.
+- **Mission 2 new information:** the response affects more than one local door: a perimeter light/access state changes in a sequence that implies coordinated facility control. This implies coordination, not who controls it or why.
+- **Elena's personal history:** do not insert an Iris memory or name Selene in the chase just to add emotion. Use either only when a specific established chronology and a quiet, gameplay-safe trigger justify it. Keep Marcus out of this opening unless full-campaign reconciliation makes him necessary.
+
+This baseline closes the *opening's dramatic logic* while keeping the larger mystery intact. It is a recommendation for review, not user-approved full-game canon.
+
+### Provisional in-game script table
+
+All lines below are proposed Spanish source copy for the prototype. They must be approved and localized before final recording. Silent environmental delivery is preferred wherever it can carry the same fact.
+
+| ID | Trigger / safe window | Proposed line or text | Delivery / player control | Purpose |
+|---|---|---|---|---|
+| N1-01 | First clear view of Aster rig; movement not blocked | Elena: “El registro no coincide con el estado del circuito.” | One short subtitle; no camera lock; skippable | Establish discrepancy without solving it |
+| N1-02 | Player scans the A→T bridge after first seeing the diagram | Optional Elena reaction: “Este puente no figura en el esquema.” | Only once; no repeat spam; can be omitted if environmental cue is clear | Reinforce physical manipulation |
+| N1-03 | Player reads restricted record | Terminal: “ENSAYO ASTER — RESULTADO RETENIDO. RECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.” | Static readable text, accessible again from archive during Mission 1; not required during chase | State the specific contradiction |
+| N1-04 | Crossing G after maintenance queued SERVICE_OVERRIDE | No mandatory spoken line. Alarm changes state; status light changes; exterior door mechanism is audible/visible | Gameplay continues; no forced camera | Make cause and consequence legible |
+| N2-01 | Recovery unit becomes audible/visible beyond G | Elena: “Han recibido la auditoría.” | Trigger only after line of sight or audio establishes the unit; subtitle; skippable | Connect the audit to the response without naming an operator |
+| N2-02 | Elena reaches P−1 service gallery and the threat loses sight | No dialogue required; pump/ventilation bed gives way to exterior ambience | Audio transition with visual threshold | Create breath and spatial transition |
+| N2-03 | First view of parking exit/perimeter | No mandatory line; sequential perimeter light/access-state response | Environmental storytelling; readable without sound | Show coordination, not omniscience |
+| N2-04 | Escape boundary crossed | Elena: “Fuera del perímetro. Eso no significa que haya terminado.” | One short, skippable subtitle after control is safe | Deliver temporary release, preserve stakes |
+
+**Trigger safeguards:** N1-03 is not the Containment trigger; N1-04 occurs only once when the queued audit crosses G. N2-01 must never play before the unit can be perceived. N2-04 must not interrupt the final movement or play before the exit boundary is crossed. Any line removed for pacing must have its narrative function covered by a readable environmental cue.
+
 ### Script and delivery rules
 
 - Every line must have a speaker/source, trigger, exact approved text, subtitle, delivery window, skip/replay policy and a statement of whether gameplay continues.
