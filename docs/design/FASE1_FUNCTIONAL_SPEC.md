@@ -83,7 +83,7 @@ Esta capa es nueva y aún no está implementada ni validada. No debe mezclarse c
 - R1 activa la transición a carrera cuando la unidad entra en el espacio abierto y reacquiere a Elena por línea de visión real. No se crea una unidad delante del jugador ni se teletransporta al perseguidor.
 - R1 es el punto de reacquisición por defecto si la evasión anterior se completa sin detección. Si la unidad obtiene LOS real antes, la carrera puede comenzar antes; si no está físicamente presente en R1, el trigger espera a que llegue.
 - El cambio de estado se comunica con sonido/animación/feedback y cambio de ritmo, sin corte de cámara, bloqueo de input ni muerte instantánea.
-- Tras R1, la ruta de carrera es P0 retorno este → S1 → P−1 → galería de evacuación → salida exterior alternativa. La boca final y su transform hacia parking se cierran después de reconciliar el recorrido completo; no se inventa otra escalera ni elevador.
+- Tras R1, la ruta de carrera es P0 retorno este → S1 → P−1 → galería de evacuación → salida exterior alternativa. La boca este de P−1 (X=34, Z=4,5..7,5, Y=−2) y el transform del parking (X_mundo=X_local+28,7; Z_mundo=Z_local−15,8) son el baseline seleccionado; no se inventa otra escalera ni elevador. La continuidad física queda pendiente de verificación.
 
 Pruebas mínimas:
 1. STAFF-M1 no detecta a Elena detrás de cobertura opaca.
@@ -96,7 +96,7 @@ Pruebas mínimas:
 
 ## 6. Transición a Fase 2
 
-La salida de servicio seleccionada conecta físicamente con el aparcamiento. No se exige que use una boca ni coordenada provisional específica: la continuidad se resuelve al cerrar la ruta y el plano del parking. El handoff reutiliza `scenes/prototypes/phase2_parking_chase.tscn` y su checkpoint de entrada, si la prueba de integración confirma que conserva los contratos existentes. La versión standalone mantiene su propio inicio.
+La salida de servicio seleccionada conecta físicamente con el aparcamiento mediante galería de 6×3 m. El umbral local del parking (5,3; 21,8) coincide con la boca P−1 (34; 6); el spawn local (6,8; 21,8) queda en mundo (35,5; 6). El transform es baseline de diseño y debe verificarse en escena. El handoff reutiliza `scenes/prototypes/phase2_parking_chase.tscn` y su checkpoint de entrada, si la prueba de integración confirma que conserva los contratos existentes. La versión standalone mantiene su propio inicio.
 
 Criterios:
 1. G abre y Containment comienza; la evasión silenciosa inicia sin transición instantánea de escena.
