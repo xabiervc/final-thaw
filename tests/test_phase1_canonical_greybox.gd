@@ -107,6 +107,21 @@ func _run() -> void:
 	await get_tree().physics_frame
 	_expect(not lower_gate_shape.disabled and upper_gate_shape.disabled and lower_gate_mesh.visible and not upper_gate_mesh.visible, "upper landing gate opens only when the deck docks upper")
 
+	# Mission-specific safety gate: power loss mid-travel must crawl to the nearest landing.
+	scene.lift.set_physics_process(false)
+	_expect(scene.lift.call_to("lower"), "lift accepts a return call from M")
+	scene.lift.step(0.5)
+	_expect(scene.lift.moving and scene.lift.platform_y > 0.75, "power-loss scenario starts above the halfway point")
+	scene._toggle_maintenance()
+	_expect(not scene.circuit.maintenance_on and not scene.lift.powered and scene.lift.crawling and scene.lift.target == "upper", "maintenance loss retargets the moving lift to the nearer M landing")
+	var emergency_steps := 0
+	while scene.lift.moving and emergency_steps < 100:
+		scene.lift.step(0.1)
+		emergency_steps += 1
+	_expect(not scene.lift.moving and scene.lift.landing == "upper" and is_equal_approx(scene.lift.platform_y, 1.5), "emergency return docks safely at M instead of stopping between levels")
+	_expect(not scene.lift.call_to("lower"), "lift refuses a new call after power loss")
+	scene.lift.set_physics_process(true)
+
 	# The F→G door and exterior hatch are controllable from their intended sides.
 	scene.player.global_position = Vector3(4.0, 3.2, -7.5)
 	scene._unlock_shortcut()
