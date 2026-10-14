@@ -305,14 +305,16 @@ func _build_scanner_fixtures() -> void:
 	var marker_a := _label3d("ScanSchematicLabel", "TRAZA DE CONTINUIDAD · A", Vector3(27.0, -0.52, 6.0), Color(0.35, 0.98, 0.95), 18, 0.0035)
 	var marker_bridge := _label3d("ScanBridgeLabel", "CONTINUIDAD A → T", Vector3(22.0, -0.72, 4.0), Color(0.35, 0.98, 0.95), 20, 0.0037)
 	var marker_t := _label3d("ScanNodeTLabel", "TRAZA DETECTADA · T", Vector3(14.5, 2.75, 2.7), Color(0.35, 0.98, 0.95), 18, 0.0035)
-	for marker in [marker_a, marker_bridge, marker_t]:
+	var markers: Array[Label3D] = [marker_a, marker_bridge, marker_t]
+	for marker: Label3D in markers:
 		marker.visible = false
 		_scan_labels.append(marker)
 	var glow := _flat_material(Color(0.25, 0.98, 0.9), 0.35, 0.1, 2.0)
 	var schematic_glow := _visual_box("ScanSchematicHighlight", Vector3(1.7, 0.05, 0.18), Vector3(27.0, -0.82, 6.0), glow)
 	var bridge_glow := _visual_box("ScanBridgeHighlight", Vector3(1.65, 0.05, 0.36), Vector3(22.0, -1.65, 4.0), glow)
 	var node_t_glow := _visual_box("ScanNodeTHighlight", Vector3(0.8, 0.05, 0.8), Vector3(14.5, 2.14, 0.5), glow)
-	for highlight in [schematic_glow, bridge_glow, node_t_glow]:
+	var highlights: Array[MeshInstance3D] = [schematic_glow, bridge_glow, node_t_glow]
+	for highlight: MeshInstance3D in highlights:
 		highlight.visible = false
 		_scan_highlights.append(highlight)
 
