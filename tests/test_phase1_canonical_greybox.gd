@@ -83,7 +83,13 @@ func _run() -> void:
 	_expect(scene.get_node_or_null("PumpSkidA") != null and scene.get_node_or_null("ControlStairsS2CollisionRamp") != null, "pump room and S2 stairs connect mezzanine to control")
 	_expect(scene.get_node_or_null("ControlStairsS2RailWest") != null and scene.get_node_or_null("ControlStairsS2RailEast") != null, "S2 has slope-aligned side protection")
 	_expect(scene.get_node_or_null("MezzanineWestRail") != null and scene.get_node_or_null("P2WalkwaySouthRail") != null and scene.get_node_or_null("P2WalkwayEastRail") != null, "M and P2 exposed edges are protected")
-	_expect(scene.get_node_or_null("P2ControlNorthRail") != null and scene.get_node_or_null("P2ControlEastRail") != null and scene.get_node_or_null("P2WalkwayNorthRailEast") != null, "control and east observation spur have no unguarded edges")
+	_expect(scene.get_node_or_null("ControlRoomNorthWall") != null and scene.get_node_or_null("P2ControlEastRail") != null and scene.get_node_or_null("P2WalkwayNorthRailEast") != null, "control has its panel wall and the east observation spur is guarded")
+	var panel_wall := scene.get_node("ControlRoomNorthWall") as StaticBody3D
+	var panel_wall_shape := panel_wall.get_child(0) as CollisionShape3D
+	var panel_wall_box := panel_wall_shape.shape as BoxShape3D
+	var panel_board := scene.get_node("EStatusPanelBoard") as MeshInstance3D
+	var panel_board_box := panel_board.mesh as BoxMesh
+	_expect(absf((panel_wall.position.z + panel_wall_box.size.z * 0.5) - (panel_board.position.z - panel_board_box.size.z * 0.5)) < 0.05, "E status panel is physically mounted on its north wall")
 	_expect(scene.get_node_or_null("LiftShaftSideRailLowerWest") != null and scene.get_node_or_null("LiftShaftSideRailLowerEast") != null and scene.get_node_or_null("LiftShaftSideRailUpperWest") != null and scene.get_node_or_null("LiftShaftSideRailUpperEast") != null, "both sides of the lift shaft are protected at both landings")
 	_expect(scene.get_node_or_null("WestShortcutStairsCollisionRamp") == null, "exterior airlock has no stair return to P0")
 	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
