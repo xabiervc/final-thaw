@@ -37,6 +37,20 @@ Blender MCP was not available in the environment where these assets were produce
 
 `assets/concept/characters/elena_vast_concept.png` and `marcus_reyes_concept.png` are project design references supplied by the project owner. They are used as visual guidance only; no pixel of them is reused in any texture or model.
 
+## External asset library (downloaded 2026-10-14, NOT yet in the repository)
+
+Stored outside the repo in `D:/Projects/external_assets/` (download scripts in `_tools/`, listing in `polyhaven/manifest.json`). Only files that are actually used get copied into the repo, each with its own row here. The ambientCG zips also contained `.blend`/`.usdc` files that were extracted but never opened.
+
+| Source | URL | Author / license | Obtained | Content |
+|---|---|---|---|---|
+| Poly Haven textures | https://polyhaven.com (API https://api.polyhaven.com) | Poly Haven contributors, CC0 1.0 | 2026-10-14 | 20 materials at 2K (diffuse JPG, GL normal PNG, ARM JPG): concrete, metal plate, corrugated/rusty iron, plaster, tiles, rubber, leather. ~419 MB |
+| Poly Haven models | https://polyhaven.com | CC0 1.0 | 2026-10-14 | 14 glTF 2K props (barrels, cart, hand truck, lamps, cabinet, shelf, desk, chair, A/C unit, hydrant, circuit board). ~120 MB with the HDRIs |
+| Poly Haven HDRIs | https://polyhaven.com | CC0 1.0 | 2026-10-14 | `abandoned_workshop`, `abandoned_factory_canteen_01` (2K .hdr) for look-dev reflections |
+| ambientCG materials | https://ambientcg.com (API v2) | ambientCG, CC0 1.0 | 2026-10-14 | Concrete034, Metal063, Tiles141, Rubber004, Leather037, Fabric085, Asphalt033 (2K-JPG). ~158 MB |
+| Kenney Space Kit, Furniture Kit | https://kenney.nl/assets/space-kit, https://kenney.nl/assets/furniture-kit | Kenney, CC0 (stated on each asset page) | 2026-10-14 | Low-poly kits, ~12 MB zipped; stylised, probably only useful as proxies |
+
+Quaternius packs were not downloaded (hosted behind Google Drive/itch, no stable official direct link).
+
 ## Adding an external resource
 
 Before any external model, texture, add-on or font enters the project, add a row here with: name, URL, author, license (with link), date obtained, files affected and the change made. Anything without a compatible license is not used.
