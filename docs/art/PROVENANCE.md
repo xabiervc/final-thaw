@@ -60,6 +60,8 @@ Stored outside the repo in `D:/Projects/external_assets/` (download scripts in `
 
 Used by `scripts/levels/lab_art_dressing.gd` (world-space triplanar, tinted cool). ARM = AO (R), roughness (G), metallic (B).
 
+| `assets/models/props/barrel_03/` (glTF + 2K textures, unmodified) | Poly Haven model `barrel_03` | CC0 1.0 | used for the barrel inspect point by `scripts/levels/lab_art_components.gd` (scaled to the greybox footprint) |
+
 Quaternius packs were not downloaded (hosted behind Google Drive/itch, no stable official direct link).
 
 ## Adding an external resource

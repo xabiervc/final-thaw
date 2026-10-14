@@ -7,6 +7,8 @@ extends Node
 ## Component scripts, colliders, signals and save state are untouched; removing this node restores the greybox look.
 
 const ART_DIR := "res://assets/models/lab/"
+const PhotoMaterial := preload("res://scripts/levels/lab_photo_material.gd")
+const BARREL := "res://assets/models/props/barrel_03/barrel_03_2k.gltf"
 
 ## script file name -> art GLB, glow map {component variable: art node}, optional follows
 const CONFIG := {
@@ -20,6 +22,15 @@ const CONFIG := {
 	"lever.gd": {"art": "lab_lever_a.glb", "glow": {"_lamp": "emit_lamp"}, "lever": "LeverArm"},
 	"door.gd": {"art": "lab_door_slab_a.glb", "glow": {"_strip": "emit_strip"}, "door": "DoorSlab"},
 	"robotic_arm.gd": {"art": "lab_robotic_arm_a.glb"},
+	# inspect points: art scaled to the greybox footprint (the collider is unchanged); variant 0 crate, 1 console, 2 barrel
+	"inspect_point.gd": {"by_variant": {
+		0: {"art": "lab_container_a.glb", "fit": Vector3(0.9, 0.7, 0.9)},
+		1: {"art": "lab_console_a.glb", "fit": Vector3(0.7, 1.0, 0.5)},
+		2: {"path": BARREL, "fit": Vector3(0.7, 0.9, 0.7), "uniform": true}}},
+}
+## Components that keep their greybox mesh but get a photographic material on the mesh with this base colour.
+const RETEXTURE := {
+	"moving_platform.gd": {"base_color": Color(0.34, 0.37, 0.41), "photo": "metal_plate", "tint": Color(0.75, 0.8, 0.85), "tile_m": 1.5},
 }
 const GEM_REST_Y := 1.0  # the greybox gem floats around this height
 
@@ -44,17 +55,35 @@ func _dress_all(host: Node) -> void:
 		var key := script.resource_path.get_file()
 		if CONFIG.has(key) and node.get_node_or_null("ArtProp") == null:
 			_dress(node, CONFIG[key])
+		elif RETEXTURE.has(key):
+			_retexture(node, RETEXTURE[key])
 
 
-func _dress(component: Node3D, cfg: Dictionary) -> void:
-	var packed := load(ART_DIR + String(cfg["art"])) as PackedScene
+func _retexture(component: Node3D, cfg: Dictionary) -> void:
+	var material := PhotoMaterial.make(cfg["photo"], cfg["tint"], cfg["tile_m"])
+	for mesh in component.find_children("*", "MeshInstance3D", true, false):
+		var current := (mesh as MeshInstance3D).material_override as StandardMaterial3D
+		if current != null and current.albedo_color.is_equal_approx(cfg["base_color"]):
+			(mesh as MeshInstance3D).material_override = material
+
+
+func _dress(component: Node3D, config: Dictionary) -> void:
+	var cfg := config
+	if config.has("by_variant"):
+		cfg = (config["by_variant"] as Dictionary).get(int(component.get("variant")), {})
+		if cfg.is_empty():
+			return
+	var path: String = String(cfg["path"]) if cfg.has("path") else ART_DIR + String(cfg["art"])
+	var packed := load(path) as PackedScene
 	if packed == null:
-		push_warning("LabArtComponents: missing art %s" % cfg["art"])
+		push_warning("LabArtComponents: missing art %s" % path)
 		return
 	var greybox: Array = component.find_children("*", "MeshInstance3D", true, false)
 	var art := packed.instantiate() as Node3D
 	art.name = "ArtProp"
 	component.add_child(art)
+	if cfg.has("fit"):
+		_fit(art, cfg["fit"], bool(cfg.get("uniform", false)))
 	for mesh in greybox:
 		(mesh as MeshInstance3D).layers = 0  # hidden by render layer: components that toggle `visible` themselves cannot bring it back
 	var entry := {"node": component, "mirrors": [], "gem": null, "gem_src": null, "lever_arm": null, "pivot": null, "door_slab": null, "slab": null}
@@ -77,6 +106,30 @@ func _dress(component: Node3D, cfg: Dictionary) -> void:
 		entry["slab"] = component.get("_slab")
 	_entries.append(entry)
 	_sync(entry)
+
+
+## Scales and offsets `art` so its bounds match `size` (footprint of the greybox collider), sitting on the floor.
+func _fit(art: Node3D, size: Vector3, uniform: bool) -> void:
+	var low := Vector3(1e9, 1e9, 1e9)
+	var high := Vector3(-1e9, -1e9, -1e9)
+	for m in art.find_children("*", "MeshInstance3D", true, false):
+		var mi := m as MeshInstance3D
+		var xf := mi.transform
+		var parent := mi.get_parent()
+		while parent != null and parent != art:
+			xf = (parent as Node3D).transform * xf
+			parent = parent.get_parent()
+		var box := xf * mi.get_aabb()
+		low = low.min(box.position)
+		high = high.max(box.end)
+	var extent := high - low
+	if extent.x <= 0.0 or extent.y <= 0.0 or extent.z <= 0.0:
+		return
+	var s := Vector3(size.x / extent.x, size.y / extent.y, size.z / extent.z)
+	if uniform:
+		s = Vector3.ONE * minf(minf(s.x, s.z), s.y)
+	art.scale = s
+	art.position = Vector3(-(low.x + extent.x * 0.5) * s.x, -low.y * s.y, -(low.z + extent.z * 0.5) * s.z)
 
 
 ## Gives the art's emissive part its own material (art materials are shared per asset) and links it to the greybox glow mesh.

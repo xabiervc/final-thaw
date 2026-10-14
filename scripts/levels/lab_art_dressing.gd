@@ -9,7 +9,7 @@ extends Node3D
 ## Profiles: "lab" = Abandoned Lab (phase 2, x 0..86), "phase1" = the Elena test room (phase 1, 24 x 16 m).
 
 const ART_DIR := "res://assets/models/lab/"
-const PHOTO_DIR := "res://assets/textures/lab_photo/"
+const PhotoMaterial := preload("res://scripts/levels/lab_photo_material.gd")
 const USE_PHOTO_TEXTURES := true  # photographic CC0 textures (docs/art/PROVENANCE.md) instead of the kit's flat colours
 const FLOOR_LIFT := 0.006  # lifts art tiles above the greybox floor to avoid z-fighting
 const PANEL_OFFSET := 0.03  # art panel front relief sits this far past its pivot
@@ -109,25 +109,7 @@ func _photo(texture_name: String, tint: Color, tile_m: float) -> StandardMateria
 	var key := "%s|%s|%s" % [texture_name, tint, tile_m]
 	if _materials.has(key):
 		return _materials[key]
-	var m := StandardMaterial3D.new()
-	m.resource_name = texture_name
-	m.albedo_texture = load(PHOTO_DIR + texture_name + "_diff.jpg")
-	m.albedo_color = tint
-	m.normal_enabled = true
-	m.normal_texture = load(PHOTO_DIR + texture_name + "_nor.png")
-	var arm: Texture2D = load(PHOTO_DIR + texture_name + "_arm.jpg")
-	m.ao_enabled = true
-	m.ao_texture = arm
-	m.ao_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
-	m.roughness = 1.0
-	m.roughness_texture = arm
-	m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GREEN
-	m.metallic = 1.0
-	m.metallic_texture = arm
-	m.metallic_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_BLUE
-	m.uv1_triplanar = true
-	m.uv1_world_triplanar = true
-	m.uv1_scale = Vector3.ONE / tile_m
+	var m := PhotoMaterial.make(texture_name, tint, tile_m)
 	_materials[key] = m
 	return m
 
