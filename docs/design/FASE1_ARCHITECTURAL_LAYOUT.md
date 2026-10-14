@@ -1,70 +1,112 @@
-# FINAL THAW — Arquitectura espacial de Fase 1 (v1.1)
+# FINAL THAW — Arquitectura espacial de Fase 1 (v2.0)
 
-**Estado:** topología espacial aprobada conceptualmente; reconstrucción geométrica ampliada en código, pendiente de ejecutar y validar en Godot. Los SVG son planos de diseño, no evidencia de colisiones o recorrido validado. Las causas concretas de la respuesta de Helix, la percepción de Elena y el destino posterior siguen siendo decisiones narrativas propuestas, no requisitos aprobados.
+**Estado:** dirección de diseño confirmada por el usuario; revisión de topología y planos en curso. Esta versión redefine el recorrido final respecto a v1.1. Los SVG describen el objetivo arquitectónico; geometría, colisiones, cámara, navegación y transición a Fase 2 siguen pendientes de validación en Godot. No declarar la fase aceptada por documentación o revisión estática.
 
-## Decisión
+## 1. Intención arquitectónica
 
-Ala industrial de ensayo y control de inundaciones de Helix, evacuada durante el deshielo y parcialmente abandonada. No es una ruina genérica: estructura, señalización y equipos deben revelar una instalación operativa que se cerró con prisa. La columna de calibración Aster conecta visualmente nave, mezzanine y pasarela superior.
+Fase 1 ocurre dentro de **una única instalación clandestina de investigación hidrológica/industrial**, evacuada con prisa y parcialmente abandonada. No es una ruina genérica ni un decorado de salas conectadas por puertas arbitrarias. Debe poder leerse como un edificio que tuvo una función real: acceso y descontaminación, nave de ensayos, taller, distribución eléctrica, achique, bombeo, observación, control, archivo restringido y logística de servicio.
 
-El edificio debe leerse como una sola instalación con perímetro, vestíbulos, salas técnicas, pasillos y circulación vertical. La primera versión de código era demasiado abierta y no representaba de forma suficiente la huella D1 del foso; la reconstrucción actual amplía el foso continuo D1/D2 y añade límites de salas, equipamiento industrial, bandejas y estructura de cubierta. Sigue siendo greybox, no arte final.
+La arquitectura es el sistema que sostiene exploración, investigación, puzle y persecución. Las tuberías, bandejas, cuadros, colectores, señalización, desgaste, reparaciones improvisadas y huellas de evacuación deben permitir inferir cómo funciona el edificio y qué ocurrió. La columna de calibración Aster es el hito visual que conecta nave, mezzanine y pasarela superior.
 
-| Cota | Programa |
+**Principios obligatorios**
+- Un perímetro de edificio legible, con espesor de muros, umbrales, patios/huecos y conexiones verticales coherentes.
+- La mayoría de las áreas representadas son explorables y tienen un propósito. Las áreas restringidas deben explicarse por cerraduras, derrumbes, riesgo industrial o seguridad, nunca por límites invisibles.
+- El puzle se descubre a través del conjunto de la instalación. Las pistas pueden encontrarse en distintos sectores; ninguna lectura opcional debe convertirse en una llave arbitraria.
+- La ruta principal y la ruta de huida son diferentes. El jugador no sale por el túnel de entrada ni se limita a cruzar una puerta que teletransporta al aparcamiento.
+- La arquitectura, los SVG, el grafo, la progresión, los contratos funcionales, la escena Godot y las pruebas deben compartir nombres, cotas, huellas y conexiones.
+- La escala y la circulación se validan con el volumen real de Elena, su cámara y los colliders; el dibujo bonito no sustituye a una prueba de recorrido.
+
+## 2. Organización por cotas
+
+La instalación mantiene cuatro cotas interiores conectadas y una salida de servicio exterior. Las cotas existentes se conservan como base para reducir riesgo de implementación.
+
+| Cota | Programa arquitectónico |
 |---|---|
-| P−1 · Y=−2 m | Foso D1 de achique y D2 de distribución; esquema, puente A→T e interruptor. |
-| P0 · Y=0 m | Acceso A, nave de ensayo B, taller C, galería de servicio y hueco protegido del foso. |
-| M · Y=+1,5 m | Sala de bombas y galería de observación; mezzanine parcial con barandilla. |
-| P2 · Y=+3 m | Control E, archivo F, pasarela superior y esclusa G. |
-| H | Exterior inmediato; transición a aparcamiento/Containment de Fase 2. |
+| **P−1 · Y=−2 m** | D1 galería de achique; D2 distribución hidráulica/eléctrica; puente A→T manipulado; interruptor de mantenimiento; sumidero y colectores; galería de evacuación/descarga de servicio hacia el exterior este. |
+| **P0 · Y=0 m** | Túnel de entrada oeste; A esclusa de acceso; B nave de ensayos Aster; C taller; cuadros auxiliares; galería de servicio; retorno por perímetro sur/este; acceso inferior del elevador; boca superior de S1. |
+| **M · Y=+1,5 m** | Sala de bombas, colectores y manómetros; galería de observación; rellano del elevador; llegada de S2; corredor técnico de conexión. |
+| **P2 · Y=+3 m** | E control y diagnóstico; F archivo restringido; pasarela superior; G puerta de salida/interbloqueo que inicia la huida, no la salida exterior definitiva. La ruta de huida vuelve a la circulación técnica y desciende por conexiones existentes. |
+| **Exterior · cota variable** | Boca de servicio/descarga al este del nivel P−1 y conexión legible al aparcamiento. El aparcamiento y la persecución exterior continúan en Fase 2. |
 
-## Circulación vertical definitiva
+La huella puede crecer si el plano acotado demuestra que el recorrido de huida no cabe con anchos seguros. No comprimir pasillos, escaleras ni espacios de combate/persecución para preservar una dimensión arbitraria del prototipo.
 
-1. **S1 · P0↔P−1:** escalera fija al foso, siempre utilizable.
-2. **Elevador · P0↔M:** elevador de mantenimiento que termina en la sala de bombas a +1,5 m.
-3. **S2 · M↔P2:** escalera fija del mezzanine a control.
-4. **Escalera directa P0↔P2:** colapsada y bloqueada, visible pero no transitable.
-5. **G↔H:** esclusa horizontal al exterior; no tiene escalera de retorno a P0.
+## 3. Programa de estancias y función jugable
 
-No añadir rampas, elevadores adicionales ni conexiones secretas. Las rutas verticales deben tener destino legible y responder a la arquitectura, no a una secuencia arbitraria.
+| Zona | Función del edificio | Función jugable / acceso |
+|---|---|---|
+| Túnel oeste | Acceso técnico secundario | Entrada y orientación inicial; no será la salida final. |
+| A · Esclusa | Control de entrada y descontaminación | Introduce el protocolo y da una primera vista a la nave. |
+| B · Nave Aster | Ensayos de calibración | Hito visual, lectura del espacio y obstáculos industriales de recorrido; no activar la máquina de ensayo. |
+| C · Taller | Reparación y mantenimiento | Área explorable con utilería funcional y evidencias ambientales; sin llave artificial obligatoria. |
+| Galería de servicio P0 | Distribución técnica | Une taller, retorno y elevador; debe tener ancho transitable y orientación clara. |
+| D1 · Achique | Extracción de agua | Bombas, marcas de nivel, colector y evidencia de la instalación bajo cota. |
+| D2 · Distribución | Conducción de circuito | Esquema previsto, puente físico A→T manipulado e interruptor de mantenimiento. |
+| M · Bombas/observación | Bombeo y supervisión de Aster | Confirma efectos del mantenimiento, enlaza elevador y S2 y permite leer verticalmente la nave. |
+| E · Control | Supervisión del circuito | Probar hipótesis, ver diagnóstico y recuperarse de un error. |
+| F · Archivo | Registro restringido | Consultar con ARCHIVO estable; la consulta no equivale a extracción. |
+| G · Interbloqueo/puerta de huida | Control de acceso y salida de emergencia | Tras resolver lo necesario, abrir esta puerta inicia el desenlace de huida. No es la salida exterior ni un cambio de escena inmediato. |
+| Ruta de huida | Circulación de emergencia y mantenimiento | Recorrer pasarela/corredor técnico, sortear obstáculos físicos y descender por conexiones existentes hasta P−1. |
+| Galería de evacuación | Descarga de servicio | Ruta final alternativa; conduce a una boca exterior distinta del túnel de entrada. |
+| Aparcamiento | Logística exterior | Primer espacio de Fase 2; handoff continuo a la persecución existente. |
 
-## Programa de estancias
+“Explorable casi en su totalidad” no significa que todas las puertas deban abrirse en cualquier momento. Significa que los espacios principales tienen circulación justificable y que los bloqueos son diegéticos, comprensibles y verificables. No crear salas de relleno para aumentar el tamaño aparente.
 
-| Zona | Cota | Contenido y función |
-|---|---:|---|
-| Túnel de entrada | 0 m | Aproximación exterior de 3 m, cubierta, suelo y apertura a A. |
-| A · Esclusa de acceso | 0 m | Señal de evacuación, armario y primera vista a B. |
-| B · Nave de ensayo | 0 m | Rig bajo, columna Aster, bandejas y barreras; rodear maquinaria. |
-| C · Taller técnico | 0 m | Cuadros, banco, repuestos y colectores; sin llave nueva. |
-| D1 · Galería de achique | −2 m | Bombas, sumidero, colector y marcas de marea. |
-| D2 · Foso de distribución | −2 m | Esquema previsto, puente físico manipulado A→T e interruptor. |
-| M · Sala de bombas | +1,5 m | Bombas, manómetros, colectores, banco y zumbido mecánico. |
-| Galería de observación | +1,5 m | Barandilla y vista parcial de B/columna. |
-| E · Control | +3 m | Selector, aislador, diagnóstico, panel y rearme. |
-| F · Archivo | +3 m | Consola de consulta, terminal independiente e indicador local. |
-| G · Esclusa exterior | +3 m | Puerta desde F, compuerta exterior y señal de sincronización. |
-| H · Exterior | transición | Salida legible hacia aparcamiento; inicio de persecución en Fase 2. |
+## 4. Circulación vertical y rutas
 
-**Entrada:** el slice comienza en el túnel exterior (X=−3..0, Z=4,5..7,5) y continúa por A. La apertura del muro oeste se alinea con el túnel; el techo mantiene 2,2 m de altura libre.
+Se preservan las conexiones verticales ya definidas:
+1. **S1 · P0↔P−1:** escalera fija, siempre utilizable; también forma parte de la ruta de huida.
+2. **Elevador · P0↔M:** elevador de mantenimiento, habilitado por mantenimiento; no llega a P2.
+3. **S2 · M↔P2:** escalera fija, independiente de alimentación.
+4. **Escalera directa P0↔P2:** colapsada y bloqueada; se ve como parte del historial del edificio, no como ruta alternativa.
+5. **G → ruta interior de huida → S2/M/P0/S1 → P−1 → galería de evacuación → aparcamiento:** ruta de salida de la Fase 1. La secuencia exacta de puertas, obstáculos y estados de amenaza se detallará en el mapa de progresión y deberá aparecer en los planos.
+6. **Entrada → túnel oeste → A:** solo entrada inicial; no reutilizar como salida final.
 
-**Coordinación de huellas:** B ocupa X=7..20, Z=−9..1. El pasillo A→B ocupa X=7..10, Z=1..8 y bordea el hueco abierto D1/D2 (X=10..28, Z=1..8). D1 y D2 tienen suelo continuo en Y=−2; la nave termina en Z=1, de modo que el vacío no se superpone al suelo de B.
+La galería de evacuación de P−1 es una nueva conexión arquitectónica respecto a v1.1. Debe dibujarse en el plano de P−1 y en sección; no puede implementarse como teletransporte. Si la cota exterior exige rampa, escalera o tramo de descarga, debe representarse y tener pendiente/altura transitables. No añadir conexiones secretas arbitrarias: la salida debe ser una infraestructura de servicio coherente con el edificio.
 
-No añadir coleccionables, llaves, puzzles nuevos ni salas de relleno. Taller, galería y sala de bombas tienen función industrial/orientativa, no nuevas barreras de progreso.
+## 5. Puzle distribuido por el edificio
 
-## Recorrido espacial y beats narrativos
+El puzle principal conserva el contrato eléctrico existente. El edificio aporta evidencia complementaria:
+- **A/B:** primera lectura de Aster, canalizaciones y disposición de la nave.
+- **C/P0:** paneles auxiliares, reparaciones y etiquetas de mantenimiento que orientan sin revelar la solución.
+- **D1/D2/P−1:** comparación entre el esquema de distribución y el puente A→T manipulado; activar mantenimiento.
+- **M:** comprobar el efecto físico del mantenimiento en bombas, iluminación y elevador; entender que ese circuito no equivale a la protección de recuperación.
+- **E:** diagnóstico y maniobra del circuito, con errores reversibles.
+- **F:** consulta condicionada a ARCHIVO estable; aporta contexto, no una llave que haga funcionar el circuito.
+- **G:** puerta de huida, consecuencia jugable de haber estabilizado la situación, y comienzo del segmento de persecución.
 
-**Recorrido físico de referencia:** exterior → túnel → A → B → S1 ↓ D1/D2 → S1 ↑ → perímetro sur del foso → retorno este → galería de servicio → elevador ↑ M → bombas/galería → S2 ↑ E → F → G → H → aparcamiento.
+Las pistas deben reforzarse entre sí mediante geometría, texto, estado de maquinaria y continuidad de tuberías/cables. El escáner revela continuidad A→T; no marca la respuesta correcta ni señala los controles. La máquina de ensayo nunca arranca. No añadir llaves, coleccionables o puzles secundarios obligatorios sin decisión explícita.
 
-El regreso desde D1/D2 no debe interpretarse como volver a cruzar B: desde el rellano superior de S1 se rodea el foso por el perímetro sur y el pasillo este hasta la galería de servicio. Esta arista debe existir en la geometría y las colisiones, no solo en el plano.
+## 6. Desenlace de Fase 1 y continuidad con Fase 2
 
-**Beats funcionales acordados:** mantenimiento empieza apagado; activarlo en D enciende luces y habilita el elevador, sin alimentar la protección de recuperación. El escáner revela continuidad A→T, no los controles. F solo permite consulta con suministro estable; consultar no es extracción.
+La secuencia final prevista es:
+1. Elena completa la configuración funcional necesaria y llega a G.
+2. La puerta se abre físicamente y el jugador ve/oye una respuesta del edificio; no se produce una transición instantánea al aparcamiento.
+3. Comienza una persecución dentro de la instalación. El jugador debe atravesar obstáculos industriales legibles (p. ej. una compuerta que baja, una pasarela parcialmente bloqueada o equipo desplazado), con alternativas de movimiento coherentes con el espacio y sin exigir una única maniobra no comunicada.
+4. La ruta obliga a abandonar P2 y descender por la circulación técnica hacia M/P0/P−1. No se inventa un ascensor adicional ni una escalera nueva para resolver el guion.
+5. La galería de evacuación conduce a una salida exterior distinta de la entrada oeste.
+6. El exterior de servicio conecta de forma continua con el aparcamiento. El checkpoint de entrada de la escena de persecución de Fase 2 se usa como punto de integración, no como inicio standalone.
+7. Fase 2 continúa la huida en el aparcamiento. La escena standalone del corredor conserva su checkpoint propio.
 
-**Pendiente de aprobación narrativa:** el evento exacto que Helix recibe al salir, si la lectura de F se audita, cómo percibe Elena la respuesta, el momento y la forma de activar Containment y el destino posterior. `SERVICE_OVERRIDE`, `RESTRICTED_RECORD_READ`, una señal de sincronización y la patrulla en H son propuestas existentes en documentos/prototipos; no deben presentarse como canon ni ampliarse hasta aprobar el beat narrativo. La transición física G→H sí pertenece a la arquitectura espacial.
+El disparador exacto de la amenaza, los eventos que Helix recibe, la causalidad de Containment y la percepción de Elena siguen siendo decisiones narrativas que deben cerrarse en el contrato de historia. La necesidad arquitectónica de la huida y su ruta alternativa sí quedan fijadas por esta dirección.
 
-## Planos existentes
+## 7. Autoridad, coordinación y criterios de aceptación
 
-- P−1: [foso de mantenimiento](assets/phase1_architecture/plan_p_minus2.svg)
-- P0: [acceso, nave y taller](assets/phase1_architecture/plan_p0.svg)
-- M: [bombas y observación](assets/phase1_architecture/plan_m_plus1_5.svg)
-- P2: [control, archivo y esclusa](assets/phase1_architecture/plan_p_plus3.svg)
-- [Sección vertical de cuatro cotas](assets/phase1_architecture/section_vertical.svg)
+- Este documento fija la intención y programa espacial de referencia.
+- `FASE1_SPATIAL_GRAPH.md` fija nodos, aristas y accesibilidad.
+- Los SVG existentes fijan las plantas y la sección; deben mostrar la nueva ruta de huida, no limitarse a etiquetarla en texto.
+- `FASE1_GREYBOX_SPEC.md` fija huellas, alturas libres, anchos y elementos de colisión.
+- `FASE1_FUNCTIONAL_SPEC.md` fija el puzle, los estados y los beats jugables.
+- `fase1_fase2_mapa_progresion.md` fija el recorrido y los cambios de estado.
+- `FASE1_LOGIC_CONTRACT.md` mantiene las reglas del circuito salvo aprobación explícita de cambios.
+- `FASE1_CANONICAL_BUILD.md` documenta implementación y pruebas; no redefine diseño para acomodar limitaciones del código.
 
-Los SVG mantienen la autoridad de distribución y deben compararse con la escena en la revisión visual. Medidas finales, cámara, colisiones y experiencia requieren validación en Godot. Contrato lógico, guardado JSON/CRC32, autoloads, inputs y renderer no cambian.
+La arquitectura solo se acepta cuando:
+1. Cada planta y sección coincide con las huellas de la escena.
+2. El perímetro y las estancias se leen como un edificio único.
+3. Las zonas principales son accesibles y las restricciones están justificadas.
+4. La ruta de ida, el retorno tras D1/D2 y la ruta de huida se distinguen y se recorren sin saltos.
+5. Los anchos, escaleras, puertas, barandillas, obstáculos y altura libre funcionan con la cápsula, cámara y controles reales.
+6. La puerta G inicia la huida; la persecución ocurre dentro del edificio; la salida exterior es diferente de la entrada y conecta físicamente con el aparcamiento.
+7. Se ejecutan las pruebas automáticas y el playtest manual; se registra versión de Godot, renderer, commit, comandos, resultados, incidencias y evidencia visual.
+
+No se afirma aceptación geométrica o jugable hasta ejecutar Godot y completar las pruebas.
