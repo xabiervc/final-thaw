@@ -1,4 +1,4 @@
-# Phase 1 — Independent greybox specification (v1.1)
+# Phase 1 — Independent greybox specification (v1.2)
 
 **Status:** geometry decisions closed; first canonical greybox code now exists in `scenes/prototypes/phase1_canonical_greybox.tscn` and `scripts/prototypes/phase1_canonical_greybox.gd`. It has not been executed or validated in Godot. See FASE1_FUNCTIONAL_SPEC.md v1.0 for exact interactions and progression. This document does not authorize final art, campaign integration, save migration, or changes to existing contracts.
 
