@@ -16,7 +16,7 @@ Referencias: esquema (27,−2,6), puente (22,−2,4), switch (26,−2,2). D1 y D
 
 | Área | Footprint | Requisitos |
 |---|---|---|
-| Túnel de entrada | X −3..0, Z 4,5..7,5 | Suelo a Y=0, paredes laterales y techo; altura libre 2,2 m; apertura oeste hacia exterior y abertura en X=0 hacia A. Spawn inicial en X=−2,3, Z=6. |
+| Túnel de entrada | X −3..0, Z 4,5..7,5 | Suelo a Y=0, paredes laterales y techo; altura libre 2,2 m; apertura oeste hacia exterior y abertura en X=0 hacia el umbral interior X=0..1, Z=4,5..7,5, que conecta con A. Spawn inicial en X=−2,3, Z=6. |
 | A · Esclusa | X 1..7, Z 4..10 | Entrada desde túnel, señal y vista a B. |
 | B · Nave | X 7..20, Z −9..1 | Columna Aster, rig bajo, bandejas, barreras y circulación alrededor de maquinaria. |
 | C · Taller | X 20..24, Z −9..−2 | Cuadros y banco; utilería perimetral; paso de servicio a B. |
