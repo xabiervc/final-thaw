@@ -1,0 +1,35 @@
+[gd_scene load_steps=7 format=3 uid="uid://threat_agent_scene"]
+
+[ext_resource type="Script" path="res://scripts/entities/threat/threat_agent.gd" id="1_threat_agent"]
+[ext_resource type="Script" path="res://scripts/entities/threat/threat_perception_component.gd" id="2_perception"]
+[ext_resource type="Script" path="res://scripts/entities/threat/threat_state_machine.gd" id="3_state_machine"]
+[ext_resource type="Script" path="res://scripts/entities/threat/threat_navigation_component.gd" id="4_navigation"]
+[ext_resource type="Script" path="res://scripts/entities/threat/threat_capture_component.gd" id="5_capture"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_agent"]
+radius = 0.4
+height = 1.6
+
+[node name="ThreatAgent" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_threat_agent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("CapsuleShape3D_agent")
+
+[node name="Model" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+
+[node name="ThreatPerception" type="Node3D" parent="."]
+script = ExtResource("2_perception")
+
+[node name="ThreatStateMachine" type="Node" parent="."]
+script = ExtResource("3_state_machine")
+
+[node name="ThreatNavigation" type="Node" parent="."]
+script = ExtResource("4_navigation")
+
+[node name="ThreatCapture" type="Area3D" parent="."]
+script = ExtResource("5_capture")
