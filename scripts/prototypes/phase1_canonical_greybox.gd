@@ -476,7 +476,7 @@ func _build_upper_route() -> void:
 	_body_box("MezzanineNorthRail", Vector3(18.8, RAIL_HEIGHT, 0.1), Vector3(18.4, 1.5 + RAIL_HEIGHT * 0.5, -9.02), rail)
 	_body_box("MezzanineEastRail", Vector3(0.1, RAIL_HEIGHT, 7.0), Vector3(28.02, 1.5 + RAIL_HEIGHT * 0.5, -5.0), rail)
 	_body_box("MezzanineSouthRailWest", Vector3(10.0, RAIL_HEIGHT, 0.1), Vector3(14.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
-	_body_box("MezzanineSouthRailEast", Vector3(11.0, RAIL_HEIGHT, 0.1), Vector3(22.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
+	_body_box("MezzanineSouthRailEast", Vector3(9.0, RAIL_HEIGHT, 0.1), Vector3(23.5, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
 	_body_box("MezzanineWestRail", Vector3(0.1, RAIL_HEIGHT, 4.5), Vector3(8.98, 1.5 + RAIL_HEIGHT * 0.5, -6.75), rail)
 	# S2 is walkable in both directions and has handrails that follow the actual slope.
 	_build_sloped_stairs("ControlStairsS2", 9.0, 13.0, -4.5, -1.5, 3.0, 1.5)
