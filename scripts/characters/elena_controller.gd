@@ -43,6 +43,8 @@ var pose = null
 var stamina: float = 100.0
 var is_crouching: bool = false
 var is_climbing: bool = false
+## Base usada para transformar el input de movimiento (por defecto, mundo).
+var movement_basis: Basis = Basis.IDENTITY
 
 var _t: float = 0.0
 var _coyote_left: float = 0.0
@@ -222,7 +224,8 @@ func _physics_process(delta: float) -> void:
 	elif wants_run and stamina > 0.0:
 		speed *= run_multiplier
 
-	var target := Vector3(input_vec.x, 0.0, input_vec.y) * speed
+	var move_dir: Vector3 = movement_basis * Vector3(input_vec.x, 0.0, input_vec.y)
+	var target: Vector3 = move_dir * speed
 	var horizontal := Vector3(velocity.x, 0.0, velocity.z)
 	var rate := acceleration if input_vec != Vector2.ZERO else deceleration
 	horizontal = horizontal.move_toward(target, rate * delta)
@@ -257,8 +260,8 @@ func _physics_process(delta: float) -> void:
 	condition.tick(delta, input_vec != Vector2.ZERO, on_floor)
 
 	if input_vec != Vector2.ZERO:
-		facing_vector = input_vec.normalized()
-		var wanted := atan2(input_vec.x, input_vec.y)
+		facing_vector = Vector2(move_dir.x, move_dir.z).normalized()
+		var wanted := atan2(move_dir.x, move_dir.z)
 		visual.rotation.y = lerp_angle(visual.rotation.y, wanted, clampf(turn_speed * delta, 0.0, 1.0))
 	move_and_slide()
 

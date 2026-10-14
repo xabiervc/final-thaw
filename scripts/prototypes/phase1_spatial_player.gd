@@ -1,9 +1,8 @@
 extends "res://scripts/characters/elena_controller.gd"
 ## Spatial-test adapter: orbit camera plus Elena's embedded animations. Never writes campaign state.
-## When the model carries its AnimationPlayer (idle/walk/jump/fall/land), the procedural pose layer is disabled
-## so both do not fight over the same bones.
+## Movement is delegated to the shared controller so run, crouch, climb and stamina work here too.
+
 const LANDING_TIME := 0.2
-const MOVE_SPEED := 4.2
 ## Default camera elevation: steeper than before (about 31 degrees) so low volumes hide less of the floor behind them.
 var orbit_yaw: float = -0.21
 var orbit_pitch: float = -0.55
@@ -59,18 +58,8 @@ func _input(event: InputEvent) -> void:
 		orbit_pitch = clampf(orbit_pitch - event.relative.y * mouse_sensitivity, -1.2, 0.1)
 
 func _physics_process(delta: float) -> void:
-	var input_vec := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var wish := Basis(Vector3.UP, orbit_yaw) * Vector3(input_vec.x, 0.0, input_vec.y)
-	var horizontal := Vector3(velocity.x, 0.0, velocity.z)
-	horizontal = horizontal.move_toward(wish * MOVE_SPEED, 18.0 * delta)
-	velocity.x = horizontal.x
-	velocity.z = horizontal.z
-	velocity.y = -0.5 if is_on_floor() else velocity.y - 22.0 * delta
-	if is_on_floor() and Input.is_action_just_pressed("jump"):
-		velocity.y = 5.0
-	if wish.length_squared() > 0.01:
-		visual.rotation.y = lerp_angle(visual.rotation.y, atan2(wish.x, wish.z), minf(1.0, delta * 12.0))
-	move_and_slide()
+	movement_basis = Basis(Vector3.UP, orbit_yaw)
+	super._physics_process(delta)
 	_update_animation(delta)
 
 func _update_animation(delta: float) -> void:
