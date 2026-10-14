@@ -4,7 +4,8 @@
 
 **Autoridad funcional:** FASE1_FUNCTIONAL_SPEC.md v1.0.  
 **Geometría base:** FASE1_GREYBOX_SPEC.md v1.1.  
-**Lógica eléctrica:** FASE1_LOGIC_CONTRACT.md.
+**Lógica eléctrica:** FASE1_LOGIC_CONTRACT.md.  
+**Primera escena implementada, no ejecutada:** `scenes/prototypes/phase1_canonical_greybox.tscn`; ver `FASE1_CANONICAL_BUILD.md`.
 
 Convención: [R] geometría base anterior; [D] decisión ahora cerrada; ninguna marca [P] queda abierta dentro del slice. Coordenadas en metros; Y es altura y Z positivo hacia el sur.
 
