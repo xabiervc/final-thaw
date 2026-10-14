@@ -1,15 +1,15 @@
 # Phase 1 — Canonical build and verification
 
-**Estado:** la arquitectura de referencia se ha revisado a v2.0 para representar un laboratorio completo, puzle distribuido, persecución interior y salida alternativa. La escena canónica aún refleja parcialmente el diseño anterior: la galería de evacuación, el segmento de persecución interior y la salida distinta del túnel de entrada no están implementados ni validados. No declarar greybox aceptado.
+**Estado:** la arquitectura de referencia se ha revisado a v2.1 para representar un laboratorio completo, puzle distribuido, persecución interior y salida alternativa. La escena canónica aún refleja parcialmente el diseño anterior: la galería de evacuación, el segmento de persecución interior y la salida distinta del túnel de entrada no están implementados ni validados. No declarar greybox aceptado.
 
 ## Autoridad y estados de decisión
 
-- Intención y programa espacial: `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`.
-- Nodos, aristas y accesibilidad: `FASE1_SPATIAL_GRAPH.md v1.0`.
+- Intención y programa espacial: `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`.
+- Nodos, aristas y accesibilidad: `FASE1_SPATIAL_GRAPH.md v1.1`.
 - Plantas y sección: SVG existentes en `docs/design/assets/phase1_architecture/`, revisados para mostrar la salida alternativa.
-- Footprints, anchos y colisiones: `FASE1_GREYBOX_SPEC.md v2.0`.
-- Reglas de experiencia/puzle/huida: `FASE1_FUNCTIONAL_SPEC.md v2.0`.
-- Recorrido y beats: `fase1_fase2_mapa_progresion.md v1.0`.
+- Footprints, anchos y colisiones: `FASE1_GREYBOX_SPEC.md v2.1`.
+- Reglas de experiencia/puzle/huida: `FASE1_FUNCTIONAL_SPEC.md v2.1`.
+- Recorrido y beats: `fase1_fase2_mapa_progresion.md v1.1`.
 - Circuito eléctrico: `FASE1_LOGIC_CONTRACT.md`, sin cambios.
 
 Distinguir siempre diseño objetivo, código implementado, test automatizado y validación manual. La actualización documental no acredita que la escena represente el nuevo diseño.
