@@ -62,6 +62,18 @@ These repairs are implemented but **not yet verified by a recorded Godot playtes
 - This is an early technical prototype for Phase 1; it does not replace or complete the Flooded Shelter 2.5D slice.
 - Further work is required to validate 3D movement, camera framing, interaction affordances, collision, performance and visual direction.
 
+### Art pipeline and 3D art (2026-10-14, branch `feat/godot-vertical-slice`)
+
+Status: **assets and visual wrappers exist and import in Godot; none is final, none has been reviewed by the owner in a playtest.**
+
+- **Elena (MPFB base)** — `assets/models/lab_ref/ref_elena_mpfb.glb`: skinned (53-bone `game_engine` rig), 1.70 m, ~29.9k triangles, 2048² baked atlas, hair cards, painted face detail. The playable controller loads it with a primitive fallback. See `docs/art/ELENA_MPFB_STATUS.md`.
+- **Marcus (MPFB base)** — `ref_marcus_mpfb.glb`: 1.817 m, ~28.8k triangles, jacket, belt kit, stubble, hair cards. Not wired into any scene (no Marcus gameplay exists). Spec: `docs/art/MARCUS_MPFB_SPEC.md`; status: `MARCUS_MPFB_STATUS.md`.
+- **Level dressing (decision D1)** — visual-only wrappers `abandoned_lab_art.tscn` and `elena_test_room_art.tscn` instance the unmodified levels and add photographic CC0 textures (Poly Haven, 1K), kit walls/floors/dividers/set pieces, a lighting pass (glow, grading, fixture lights) and the Batch 2 art for 10 interactive component types, mirroring their glow/state. `NEXT_PATH` (`elena_test_room.gd`) and `LEVEL_PATH` (`main_menu.gd`) point at the wrappers; reverting those two constants restores the greybox. `abandoned_lab.tscn/.gd` are untouched. Details: `docs/art/LAB_KIT_PLAN.md`.
+- **Provenance** — all external resources are recorded in `docs/art/PROVENANCE.md`. The MakeHuman/MPFB base-mesh licence is **not yet verified** against the official source.
+- **Evidence** — Godot 4.7.2: all 12 scenes in `tests/*.tscn` exit 0 with no script errors (including `test_lab_art_components`, 12 checks, and `test_elena_model`, 14 checks). Windowed captures on an Intel HD 630 (OpenGL via ANGLE) were taken for characters and levels and kept outside the repo. Compile errors in `NarrativeTextManager`/`NarrativePanel` and missing `GameManager.get_flag/set_flag` were fixed; `test_vertical_slice`, `test_control_room_texts` and `test_phase_0` were repaired.
+- **Not verified** — manual playtest of any dressed level, animation/posed characters, FPS or memory (no profiling), grayscale readability, the Marcus model in a scene. The renderer is still `gl_compatibility` (no SSAO, GI, volumetrics); a Forward+ move is an owner decision.
+- **Known visual gaps vs. the concept art** — face likeness (generic tuned heads), strand-level hair, fabric folds, boot toes, collar detail; decor has no colliders; hazard zones, prototype carrier and tutorial barriers have no art.
+
 ## Verified evidence
 
 - Engine: Godot 4.7.2.stable.official.ed1daf0bf.
@@ -89,7 +101,13 @@ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it aft
 - The Flooded Shelter slice is functionally complete at a prototype level, but is not art-complete, audio-complete, polished or release-ready.
 - The canonical shelter repairs have not yet been validated by recorded Godot playtesting.
 - The 3D test room is an early prototype, not a content-complete or production-quality vertical slice.
-- Art, lighting, VFX, audio, Marcus gameplay, dual-protagonist systems, combat, puzzles and ending content remain unimplemented or unverified.
+- Final-quality art, VFX, audio, Marcus gameplay, dual-protagonist systems, combat, puzzles and ending content remain unimplemented or unverified.
+
+## Next art tasks (need owner review or new hardware)
+
+1. Review the dressed lab and phase 1 room in Godot and decide whether the look is acceptable.
+2. Decide on the renderer (Forward+) and character-face tooling when the new PC arrives; verify the MPFB licence.
+3. Commission or produce sculpted faces, hair and fabric detail; add collision to set pieces if desired.
 
 ## Next three tasks
 
