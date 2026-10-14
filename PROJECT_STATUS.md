@@ -4,6 +4,12 @@
 
 **Phase 1 — architectural redesign and canonical greybox reconciliation. Runtime verification pending.** The design now defines a complete clandestine/semi-abandoned industrial research facility, a building-wide investigation puzzle, an interior chase triggered by opening G, and a physically distinct service exit to the parking area. Documentation and SVG plans have been updated to this direction; the canonical Godot scene has not yet been reconciled to the full new route.
 
+## Design direction and ownership
+
+**Design ownership:** architecture, level design, progression, narrative/script, visual/audio direction, documentation consistency and acceptance criteria are specified in the design sources. Programming is implemented by the programming owner. Design documents define intended behavior; they do not claim code completion or runtime validation.
+
+The current Phase 2 parking design has been raised from a mechanics-only description to an initial level contract. `docs/LEVEL_STRUCTURE.md` contains the architectural and encounter requirements; `docs/design/assets/phase2_parking/parking_plan_concept.svg` is a provisional 48 × 30 m concept plan, not yet reconciled with the Godot world. `docs/narrative_complete.md` now separates the current opening script proposal and unresolved decisions from the legacy full-campaign archive. The opening story is not locked full-game canon.
+
 ## Sources of truth
 
 Keep existing documents coordinated; do not create duplicates.
@@ -14,6 +20,10 @@ Keep existing documents coordinated; do not create duplicates.
 - Greybox footprints/collisions: `docs/design/FASE1_GREYBOX_SPEC.md` v2.0.
 - Functional experience: `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.0.
 - Phase 1/2 progression: `docs/design/fase1_fase2_mapa_progresion.md` v1.0.
+- Opening gameplay/narrative contract: `docs/CORE_LOOP.md`.
+- Phase 2 parking architecture, routes, beats and acceptance: `docs/LEVEL_STRUCTURE.md` and its provisional SVG concept plan.
+- Opening script and unresolved story decisions: top section of `docs/narrative_complete.md`; legacy campaign retained below.
+- Requirement-to-evidence traceability: `docs/TRACEABILITY_MATRIX.md`.
 - Circuit logic: `docs/design/FASE1_LOGIC_CONTRACT.md` (unchanged).
 - Build and verification protocol: `docs/design/FASE1_CANONICAL_BUILD.md`.
 
@@ -31,7 +41,14 @@ The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S
 - **Narrative decisions still open:** exact Helix event, audit status of F, Elena’s perception, Containment cause/timing, pursuer identity/entry and post-parking destination.
 - **Runtime status:** the previous editing environment did not have a Godot executable. No claim is made that recent GDScript, SVGs, or tests have been executed. CI status must be checked from the actual run before claiming green.
 
-## Mandatory next work
+## Mandatory design work
+
+1. Reconcile the provisional Phase 2 plan against the exact P−1 exterior mouth and parking-entry world coordinates; then produce a dimensioned plan, section and spatial graph with consistent dimensions.
+2. Replace illustrative Phase 2 obstacles with a measured obstacle register, route alternatives, sightline/threat overlay, lighting landmarks and checkpoint locations.
+3. Review the proposed opening script and decide the unresolved story points listed in `docs/narrative_complete.md`; do not silently promote proposals to canon.
+4. Cross-check every Phase 1 plan, section, spatial graph, greybox footprint and progression beat; update the existing sources of truth rather than creating duplicates.
+
+## Mandatory implementation work (programming owner)
 
 1. Inspect and freeze exact footprints, clear widths, door swings/states, obstacles and the P−1 exit in every SVG and section.
 2. Reconcile `scripts/prototypes/phase1_canonical_greybox.gd` and its scene to the plans; keep all coordinates traceable.
