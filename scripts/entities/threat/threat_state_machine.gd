@@ -34,9 +34,15 @@ var search_timer: float = 0.0
 var search_direction: float = 1.0
 
 var perception: ThreatPerceptionComponent
+var agent: Node3D
 
 func _ready() -> void:
+	agent = get_parent() as Node3D
 	perception = get_node_or_null("../ThreatPerception") as ThreatPerceptionComponent
+
+	if agent == null:
+		push_warning("ThreatStateMachine requires a Node3D parent agent.")
+		return
 
 	if perception == null:
 		push_warning("ThreatStateMachine requires a sibling ThreatPerceptionComponent named ThreatPerception.")
@@ -50,6 +56,9 @@ func _ready() -> void:
 	_enter_state(State.PATROL)
 
 func _physics_process(delta: float) -> void:
+	if agent == null:
+		return
+
 	match current_state:
 		State.PATROL:
 			_process_patrol()
@@ -107,11 +116,11 @@ func _process_patrol() -> void:
 	if patrol_points.is_empty():
 		return
 
-	if global_position.distance_to(current_destination) <= capture_distance:
+	if agent.global_position.distance_to(current_destination) <= capture_distance:
 		_go_to_next_patrol_point()
 
 func _process_move_to_destination() -> void:
-	if global_position.distance_to(current_destination) <= capture_distance:
+	if agent.global_position.distance_to(current_destination) <= capture_distance:
 		if current_state == State.INVESTIGATE:
 			_enter_state(State.SEARCH)
 		elif current_state == State.RETURN:
@@ -129,7 +138,7 @@ func _process_chase() -> void:
 	if perception.has_known_position():
 		_set_destination(perception.get_last_known_position(), chase_speed)
 
-	if global_position.distance_to(current_destination) <= capture_distance:
+	if agent.global_position.distance_to(current_destination) <= capture_distance:
 		_enter_state(State.SEARCH)
 
 func _process_search(delta: float) -> void:
