@@ -16,7 +16,6 @@ const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const PLAYER_START := Vector2(125, 390)
 const WORLD_MIN := Vector2(80, 130)
 const WORLD_MAX := Vector2(2020, 640)
-const INTERACT_RANGE := 110.0
 
 var rules = Rules.new()
 var player: CharacterBody2D
@@ -84,6 +83,7 @@ func _create_interactable(kind: String, location: Vector2) -> void:
 	area.position = location
 	area.set_meta("kind", kind)
 	area.add_to_group("shelter_interactable")
+	area.add_to_group("interactable")
 	area.monitorable = true
 
 	var shape_node := CollisionShape2D.new()
@@ -147,14 +147,9 @@ func _unhandled_input(event: InputEvent) -> void:
 			_interact_with(str(target.get_meta("kind")))
 
 func _closest_object() -> Area2D:
-	var best: Area2D = null
-	var distance := INTERACT_RANGE
-	for item in objects:
-		var candidate: float = player.global_position.distance_to(item.global_position)
-		if candidate < distance:
-			distance = candidate
-			best = item
-	return best
+	if player == null:
+		return null
+	return player.get_nearest_interactable()
 
 func _update_highlight() -> void:
 	var target := _closest_object()
