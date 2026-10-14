@@ -163,7 +163,10 @@ func _ready() -> void:
 	_build_audio()
 	_build_ui()
 	_update_camera(100.0)
-	_show_message("Llega a la salida. Una unidad de recuperación patrulla la zona central: usa el escáner, el sigilo y el entorno.", 7.0)
+	if parking_entry_mode:
+		_show_message("Containment activado. Encuentra una salida.", 7.0)
+	else:
+		_show_message("Llega a la salida. Una unidad de recuperación patrulla la zona central: usa el escáner, el sigilo y el entorno.", 7.0)
 
 
 func _ensure_action(action: String, keycode: Key) -> void:
@@ -806,7 +809,10 @@ func _build_level() -> void:
 	_add_sign("Espacio: salta el hueco", Vector3(12.0, 2.4, 0.0))
 	_add_sign("Ctrl: agáchate bajo el conducto", Vector3(18.0, 2.4, 0.0))
 	_add_sign("Hueco largo: Shift + Espacio", Vector3(27.5, 2.4, 0.0))
-	_add_sign("Unidad de recuperación. Q: escanear", Vector3(35.0, 3.0, 0.0))
+	if parking_entry_mode:
+		_add_sign("APARCAMIENTO · SERVICIO", Vector3(36.5, 2.6, 0.0))
+	else:
+		_add_sign("Unidad de recuperación. Q: escanear", Vector3(35.0, 3.0, 0.0))
 	_add_sign("SALIDA", Vector3(80.0, 3.4, 0.0))
 
 
