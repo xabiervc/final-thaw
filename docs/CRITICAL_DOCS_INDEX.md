@@ -9,8 +9,8 @@
 3. [Prototype brief](DESIGN_PIVOT_PROTOTYPE_BRIEF.md) — two-mission opening, boundaries and implementation order.
 4. [Core loop and mission contracts](CORE_LOOP.md) — player verbs, threat rules, narrative progression and continuity.
 5. [Level structure and Phase 2 spatial design](LEVEL_STRUCTURE.md) — parking architecture, local-coordinate status, route graph, clearances, obstacle register, narrative beats and acceptance gates.
-   - [Parking concept plan](design/assets/phase2_parking/parking_plan_concept.svg) — concept v0.2 48 × 30 m layout, two routes, cover, obstacles and internal dimension callouts; world transform intentionally not locked.
-   - [Parking concept section](design/assets/phase2_parking/section_parking_concept.svg) — north–south section with 5 m bays, 17.3 m apron and 2.8 m headroom target; exterior datum still unresolved.
+   - [Parking concept plan](design/assets/phase2_parking/parking_plan_concept.svg) — concept v0.3 48 × 30 m layout, two routes, cover, obstacles and internal dimension callouts; selected transform X+28.7/Z−15.8 at Y=−2.0, runtime verification pending.
+   - [Parking concept section](design/assets/phase2_parking/section_parking_concept.svg) — north–south section with 5 m bays, 17.3 m apron and 2.8 m headroom target; selected datum Y=−2.0 m, verify in Godot.
    - [Threat/sightline overlay](design/assets/phase2_parking/threat_sightline_overlay.svg) — candidate bounded pursuit route, visibility sectors and search pockets; not AI verification.
    - [Lighting/landmark overlay](design/assets/phase2_parking/lighting_landmark_overlay.svg) — intended L1–L5 navigation chain and exposure zones; not a photometric plan.
 6. [Mission 1 puzzle](design/MISSION1_GHOST_PROTOCOL.md) — investigation, clue relationships and puzzle feedback.
