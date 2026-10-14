@@ -334,7 +334,7 @@ func _build_upper_route() -> void:
 	var rail := _flat_material(Color(0.55, 0.58, 0.6), 0.45, 0.7)
 	_body_box("WalkwayRailSouth", Vector3(17.0, RAIL_HEIGHT, 0.1), Vector3(17.5, 3.0 + RAIL_HEIGHT * 0.5, -6.02), rail)
 	_body_box("WalkwayRailNorth", Vector3(15.0, RAIL_HEIGHT, 0.1), Vector3(16.5, 3.0 + RAIL_HEIGHT * 0.5, -7.98), rail)
-	_body_box("UpperLandingOuterRail", Vector3(4.0, RAIL_HEIGHT, 0.1), Vector3(26.0, 3.0 + RAIL_HEIGHT * 0.5, -7.02), rail)
+	_body_box("UpperLandingOuterRail", Vector3(2.0, RAIL_HEIGHT, 0.1), Vector3(27.0, 3.0 + RAIL_HEIGHT * 0.5, -7.02), rail)
 	_body_box("UpperLandingEastRail", Vector3(0.1, RAIL_HEIGHT, 2.5), Vector3(28.02, 3.0 + RAIL_HEIGHT * 0.5, -5.75), rail)
 
 	# The west vestibule is bounded by the external hatch at x=0 and the inner F→G door at x=2.
