@@ -2,6 +2,8 @@ extends Control
 class_name MainMenu
 
 const LEVEL_PATH := "res://scenes/levels/elena_test_room.tscn"
+const OPTIONS_PATH := "res://scenes/ui/options_menu.tscn"
+const CREDITS_PATH := "res://scenes/ui/credits.tscn"
 const BOX := "CenterContainer/Panel/MarginContainer/VBoxContainer"
 
 @onready var title_label: Label = get_node(BOX + "/TitleLabel")
@@ -26,7 +28,37 @@ func _ready() -> void:
 	lang_en_button.pressed.connect(_on_lang_en_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	start_button.grab_focus()
+	_create_secondary_buttons()
 	_apply_language(current_locale)
+
+func _create_secondary_buttons() -> void:
+	var box: VBoxContainer = get_node(BOX)
+	var row := HBoxContainer.new()
+	row.name = "SecondaryRow"
+	row.alignment = BoxContainer.ALIGNMENT_CENTER
+	row.add_theme_constant_override("separation", 16)
+	box.add_child(row)
+	box.move_child(row, box.get_child_count() - 1)
+
+	var options_button := Button.new()
+	options_button.name = "OptionsButton"
+	options_button.text = _options_text()
+	options_button.custom_minimum_size = Vector2(160, 42)
+	options_button.add_to_group("menu_button")
+	options_button.pressed.connect(_on_options_pressed)
+	row.add_child(options_button)
+
+	var credits_button := Button.new()
+	credits_button.name = "CreditsButton"
+	credits_button.text = _credits_text()
+	credits_button.custom_minimum_size = Vector2(160, 42)
+	credits_button.add_to_group("menu_button")
+	credits_button.pressed.connect(_on_credits_pressed)
+	row.add_child(credits_button)
+
+	start_button.add_to_group("menu_button")
+	lang_es_button.add_to_group("menu_button")
+	lang_en_button.add_to_group("menu_button")
 
 func _apply_font_scale() -> void:
 	var scale := clampf(GameManager.font_scale, 0.75, 2.0)
@@ -49,6 +81,7 @@ func _apply_language(locale: String) -> void:
 	base_context = _context_text()
 	start_button.text = _start_text()
 	_refresh_context()
+	_refresh_secondary_buttons()
 
 func _title_text() -> String:
 	var t: String = NarrativeTextManager.get_menu_title().replace("\n", " - ")
@@ -68,6 +101,14 @@ func _start_text() -> String:
 		return t
 	return "Iniciar Demo" if current_locale == "es" else "Start Demo"
 
+func _options_text() -> String:
+	var t: String = NarrativeTextManager.get_menu_options_button()
+	return t if not t.is_empty() else ("Opciones" if current_locale == "es" else "Options")
+
+func _credits_text() -> String:
+	var t: String = NarrativeTextManager.get_menu_credits_button()
+	return t if not t.is_empty() else ("Créditos" if current_locale == "es" else "Credits")
+
 func _refresh_context() -> void:
 	var lines: Array[String] = [base_context]
 	var game_state = get_node_or_null("/root/GameStateManager")
@@ -83,6 +124,14 @@ func _refresh_context() -> void:
 			lines.append(NarrativeTextManager.get_shelter_previous_state() + "\n" + "\n".join(prior))
 	context_label.text = "\n\n".join(lines)
 
+func _refresh_secondary_buttons() -> void:
+	var options_button := get_node_or_null(BOX + "/SecondaryRow/OptionsButton") as Button
+	var credits_button := get_node_or_null(BOX + "/SecondaryRow/CreditsButton") as Button
+	if options_button != null:
+		options_button.text = _options_text()
+	if credits_button != null:
+		credits_button.text = _credits_text()
+
 func _on_lang_es_pressed() -> void:
 	_apply_language("es")
 
@@ -91,3 +140,9 @@ func _on_lang_en_pressed() -> void:
 
 func _on_start_pressed() -> void:
 	get_tree().change_scene_to_file(LEVEL_PATH)
+
+func _on_options_pressed() -> void:
+	get_tree().change_scene_to_file(OPTIONS_PATH)
+
+func _on_credits_pressed() -> void:
+	get_tree().change_scene_to_file(CREDITS_PATH)

@@ -13,11 +13,21 @@ func _ready() -> void:
 	vbox.add_theme_constant_override("separation", 16)
 	center.add_child(vbox)
 	var lbl := Label.new()
-	lbl.text = "FINAL THAW\nPrototipo Fase 0"
+	lbl.text = _title_text()
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.add_theme_font_size_override("font_size", int(28.0 * clampf(GameManager.font_scale, 0.75, 2.0)))
 	vbox.add_child(lbl)
 	var back := Button.new()
-	back.text = "Volver"
+	back.text = _back_text()
+	back.add_theme_font_size_override("font_size", int(18.0 * clampf(GameManager.font_scale, 0.75, 2.0)))
 	back.pressed.connect(func(): GameManager.change_scene("res://scenes/ui/main_menu.tscn"))
 	vbox.add_child(back)
 	back.grab_focus()
+
+func _title_text() -> String:
+	var text: String = NarrativeTextManager.get_credits_title()
+	return text if not text.is_empty() else ("FINAL THAW\nPrototipo Fase 0" if NarrativeTextManager.current_locale == "es" else "FINAL THAW\nPhase 0 Prototype")
+
+func _back_text() -> String:
+	var text: String = NarrativeTextManager.get_options_back_button()
+	return text if not text.is_empty() else ("Volver" if NarrativeTextManager.current_locale == "es" else "Back")
