@@ -1,5 +1,6 @@
 extends CanvasLayer
 
+var _section_label: Label = null
 var _objective: Label = null
 var _hint: Label = null
 var _instructions: Label = null
@@ -15,13 +16,15 @@ func _ready() -> void:
 	var top := PanelContainer.new()
 	top.position = Vector2(20.0, 16.0)
 	top.custom_minimum_size = Vector2(540.0, 0.0)
-	top.add_theme_stylebox_override("panel", _style())
+	top.add_theme_stylebox_override("panel", _objective_style())
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(top)
 	var box := VBoxContainer.new()
-	box.add_theme_constant_override("separation", 6)
+	box.add_theme_constant_override("separation", 7)
 	top.add_child(box)
-	_objective = _make_label(box, 18, Color(0.94, 0.96, 0.95))
+	_section_label = _make_label(box, 11, Color(0.35, 0.83, 0.85))
+	_section_label.text = "DIRECTIVA DE MISIÓN  /  ASTER"
+	_objective = _make_label(box, 20, Color(0.94, 0.96, 0.95))
 	_objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_objective.custom_minimum_size = Vector2(510.0, 0.0)
 	_hint = _make_label(box, 15, Color(0.95, 0.88, 0.55))
@@ -91,6 +94,21 @@ func _ready() -> void:
 
 	GameManager.stats_changed.connect(_apply_accessibility)
 	_apply_accessibility()
+
+func _objective_style() -> StyleBoxFlat:
+	var s := StyleBoxFlat.new()
+	s.bg_color = Color(0.025, 0.04, 0.055, 0.91)
+	s.border_color = Color(0.18, 0.55, 0.61, 0.9)
+	s.border_width_left = 3
+	s.border_width_top = 1
+	s.border_width_right = 1
+	s.border_width_bottom = 1
+	s.set_corner_radius_all(5)
+	s.content_margin_left = 14.0
+	s.content_margin_right = 14.0
+	s.content_margin_top = 10.0
+	s.content_margin_bottom = 10.0
+	return s
 
 func _style() -> StyleBoxFlat:
 	var alpha := 0.98 if AccessibilityManager.is_high_contrast() else 0.82
@@ -164,7 +182,14 @@ func _update_condition(c) -> void:
 	_cond_bar.visible = true
 
 func set_objective(text: String) -> void:
-	_objective.text = text
+	var clean_text := text
+	if clean_text.begins_with("OBJETIVO  /  "):
+		clean_text = clean_text.trim_prefix("OBJETIVO  /  ")
+		_section_label.text = "DIRECTIVA DE MISIÓN  /  ASTER"
+	elif clean_text.begins_with("SALA SUPERADA  /  "):
+		clean_text = clean_text.trim_prefix("SALA SUPERADA  /  ")
+		_section_label.text = "OBJETIVO COMPLETADO"
+	_objective.text = clean_text
 
 func set_hint(text: String) -> void:
 	if _hint.text != text:
