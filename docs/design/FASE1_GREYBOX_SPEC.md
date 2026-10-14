@@ -1,4 +1,4 @@
-# FINAL THAW — Fase 1: especificación de greybox (v2.0)
+# FINAL THAW — Fase 1: especificación de greybox (v2.1)
 
 **Estado:** objetivo espacial ampliado. Las huellas base de las plantas existentes se conservan donde son compatibles; la galería de evacuación y la huida interior son nuevas y deben incorporarse a SVG, constructor y tests antes de considerarse construidas. Medidas sujetas a prueba de volumen de jugador/cámara; no reducir anchos para encajar el guion.
 
@@ -72,6 +72,26 @@ Estas posiciones son la primera propuesta de layout de persecución y deben dibu
 - Los cierres son diegéticos y los pasillos de servicio no terminan en paredes arbitrarias.
 - La iluminación de emergencia y las zonas abandonadas guían sin depender solo del color.
 - No añadir arte final hasta cerrar planta, sección, circulación, cámaras y colisiones.
+
+## Evasión, cobertura y R1 — v2.1
+
+Estos son contratos de diseño para el greybox; no afirman que los colliders o la IA estén implementados.
+
+### STAFF-M1 y C1 en M
+
+- STAFF-M1 es un operario no hostil situado en M, con rutina corta entre el panel de bombas y la consola de mantenimiento. La ruta de patrulla queda dentro de la huella de M y no cruza la ruta crítica hacia el elevador.
+- El banco de bombas es cobertura opaca C1: debe interrumpir la línea de visión desde STAFF-M1 hacia la ruta de paso. Si la geometría real no bloquea LOS, no se puede etiquetar como cobertura.
+- O2 es un rack de mantenimiento bajo que restringe la trayectoria y puede romper LOS solo si su altura/colisión lo permite. No se debe inferir cobertura por el icono del plano.
+- Mantener un paso continuo de al menos 1,2 m alrededor de O2 y 1,5 m en la ruta de bypass junto al equipo; preferir 1,5 m en giros de evasión. Ningún NPC, rack ni pump collider puede bloquear por completo la ruta al elevador.
+- STAFF-M1 no usa navegación omnisciente. Si detecta a Elena, emite una llamada y se retira; comunica al recovery unit la última posición conocida, no las coordenadas actuales.
+
+### R1 — trigger de carrera en P0
+
+- R1 está fijado como objetivo de diseño en la transición de galería de servicio P0 a retorno este, aproximadamente `X=29, Z=1`.
+- Volumen objetivo de trigger: hasta 2,0 × 2,0 m dentro de la huella de circulación existente `X=28..30, Z=0..2`. No debe añadir pared, escalón ni obstáculo. Ajustar el volumen al footprint real de la puerta/corredor sin reducir la anchura libre.
+- La secuencia física es: Elena desciende por el elevador P0↔M; la unidad la sigue por el mismo elevador; ambos entran en la galería; al alcanzar R1, la unidad obtiene LOS real y se inicia la carrera.
+- Si la unidad no está presente o no tiene LOS, R1 no genera un spawn ni cambia a carrera. Una reacquisición anterior solo adelanta el trigger si la unidad ve a Elena por geometría real.
+- Tras R1, el recorrido usa el retorno este existente, S1, P−1 y la galería de evacuación seleccionada. La boca exterior final y el transform al parking siguen pendientes hasta cerrar la ruta completa.
 
 ## Criterios de aceptación
 
