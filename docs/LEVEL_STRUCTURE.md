@@ -149,6 +149,18 @@ The recovery unit must obey bounded knowledge:
 
 The scanner remains a tactical trade-off: charge time, brief reveal and cooldown should make the player choose when to stop and gather information. It must not outline the correct route continuously or trivialize the threat.
 
+### 4.1 Provisional obstacle register
+
+These entries turn the concept symbols into reviewable design proposals. Their positions and dimensions are **not locked** until the plan, collision envelope and actual player/camera are reconciled.
+
+| ID | Approx. position (X, Z) | Proposed physical element | Intended decision | Fairness and recovery contract |
+|---|---:|---|---|---|
+| P2-O1 | (13.6, 13.4) | Abandoned maintenance cart/pallet intruding into the covered service lane | Read the remaining side clearance and choose to squeeze/walk around rather than sprint blindly | Keep a visibly continuous passage with at least 1.2 m clear target; no hidden collision protrusions; route remains recoverable if detected |
+| P2-O2 | (39.1, 17.9) | Displaced service equipment rack near route convergence | Break the direct line and force a short lateral choice before the final bottleneck | Do not block both branches at once; show the bypass from approach; threat can only follow a physically valid path |
+| P2-O3 | (42.6, 14.0) | Partially lowered vehicle/service barrier at the egress bottleneck | Decide whether to pass through the clear opening or use the adjacent service bypass | Never require a timed, frame-perfect slide; the open aperture must fit the actual capsule/camera; failure returns to the previous safe pocket |
+
+No obstacle is approved merely because it appears in the SVG. Before implementation, the design owner must review each item's measured footprint, approach view, collision shape, camera behavior, player and enemy traversability, audio/visual tell, alternative, checkpoint relationship and acceptance test. If an obstacle changes, update the plan, section/overlay, graph, register and traceability together.
+
 ## 5. Architectural language, props and visual storytelling
 
 ### 5.1 Material and form hierarchy
