@@ -40,7 +40,7 @@ var _scan_highlights: Array[MeshInstance3D] = []
 var _lift_lower_button: MeshInstance3D
 var _lift_upper_button: MeshInstance3D
 var _lift_deck_label: Label3D
-var _safe_point: Vector3 = Vector3(3.0, 0.2, 7.0)
+var _safe_point: Vector3 = Vector3(-2.3, 0.2, 6.0)
 var _lift_deck_button: MeshInstance3D
 var _lower_lift_gate: StaticBody3D
 var _upper_lift_gate: StaticBody3D
@@ -261,9 +261,18 @@ func _build_ground_floor() -> void:
 func _build_fixed_geometry() -> void:
 	# Outer shell. The west hatch is upper-only; the ground-level opening stays sealed.
 	_wall_x("OuterWestLowerA", 0.0, -10.0, -8.25, 0.0, 5.4)
-	_wall_x("OuterWestLowerB", 0.0, -6.75, 12.0, 0.0, 5.4)
+	_wall_x("OuterWestLowerB", 0.0, -6.75, 4.5, 0.0, 5.4)
+	_wall_x("OuterWestLowerC", 0.0, 7.5, 12.0, 0.0, 5.4)
+	_wall_x("OuterWestAccessLintel", 0.0, 4.5, 7.5, 2.4, 5.4)
 	_wall_x("OuterWestHatchLower", 0.0, -8.25, -6.75, 0.0, 3.0)
 	_wall_x("OuterWestHatchLintel", 0.0, -8.25, -6.75, 5.2, 5.4)
+
+	# A short, physically enclosed approach tunnel connects the exterior to room A.
+	_add_floor_rect(Rect2(Vector2(-3.0, 4.5), Vector2(3.0, 3.0)), 0.0, "AccessTunnelFloor", materials.get_material("floor"))
+	_wall_z("AccessTunnelSouth", 4.5, -3.0, 0.0, 0.0, 2.2)
+	_wall_z("AccessTunnelNorth", 7.5, -3.0, 0.0, 0.0, 2.2)
+	_body_box("AccessTunnelCeiling", Vector3(3.0, 0.2, 3.0), Vector3(-1.5, 2.3, 6.0), materials.get_material("concrete"))
+	_label3d("AccessTunnelLabel", "ENTRADA · INSTALACIÓN", Vector3(-1.5, 1.9, 6.0), Color(0.9, 0.82, 0.62), 15, 0.003)
 	_wall_z("OuterNorth", -10.0, 0.0, 30.0, 0.0, 5.4)
 	_wall_x("OuterEast", 30.0, -10.0, 12.0, 0.0, 4.5)
 	_wall_z("OuterSouthWest", 12.0, 0.0, 2.0, 0.0, 4.5)
@@ -572,7 +581,7 @@ func _build_doors() -> void:
 func _build_player_and_hud() -> void:
 	player = Player.new()
 	player.name = "Elena"
-	player.position = Vector3(3.0, 0.2, 7.0)
+	player.position = Vector3(-2.3, 0.2, 6.0)
 	add_child(player)
 	hud = HudScript.new()
 	hud.name = "PromptHUD"
