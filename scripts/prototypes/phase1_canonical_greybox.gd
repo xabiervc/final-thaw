@@ -1,5 +1,5 @@
 extends Node3D
-## Canonical Phase 1 slice following FASE1_ARCHITECTURAL_LAYOUT.md v1.0 and FASE1_SPATIAL_GRAPH.md v0.6.
+## Canonical Phase 1 slice following FASE1_ARCHITECTURAL_LAYOUT.md v1.1 and FASE1_SPATIAL_GRAPH.md v0.7.
 ## This scene deliberately does not alter the preserved six-room comparison prototype.
 ## Logic comes from phase1_circuit_model.gd; lift mechanics come from service_lift.gd.
 const Player = preload("res://scripts/prototypes/phase1_spatial_player.gd")
