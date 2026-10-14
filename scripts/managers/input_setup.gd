@@ -15,10 +15,13 @@ const ACTIONS = {
 	"pause": [KEY_ESCAPE, KEY_P],
 	"quick_save": [KEY_F2],
 	"quick_load": [KEY_F3],
-	"toggle_captions": [KEY_C],
+	"toggle_captions": [KEY_V],  # C is crouch; captions have no handler yet
 	"increase_font": [KEY_EQUAL, KEY_PLUS],
 	"decrease_font": [KEY_MINUS],
 	"toggle_colorblind_mode": [KEY_B],
+	"run": [KEY_SHIFT],
+	"crouch": [KEY_CTRL, KEY_C],
+	"hint": [KEY_H],
 }
 
 func _ready() -> void:

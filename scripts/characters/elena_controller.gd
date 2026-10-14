@@ -10,26 +10,40 @@ const MPFB_MATERIAL_DIR := "res://assets/materials/lab_ref/"
 
 signal fell_off
 signal jumped
+## Emitted when a ledge mantle starts (height of the ledge above the feet, in metres).
+signal mantled(height: float)
 
 @export var max_speed: float = 4.5
 @export var run_multiplier: float = 1.7
 @export var crouch_multiplier: float = 0.5
 @export var acceleration: float = 15.0
 @export var deceleration: float = 15.0
+## Lower acceleration in the air: jumps keep their arc instead of steering like on the ground.
+@export var air_acceleration: float = 7.0
 @export var min_speed: float = 0.1
 @export var turn_speed: float = 14.0
 @export var gravity: float = 28.0
 @export var jump_velocity: float = 5.8
 @export var coyote_time: float = 0.12
 @export var jump_buffer_time: float = 0.14
-@export var climb_speed: float = 2.6
-@export var climb_check_distance: float = 0.55
-@export var stamina_max: float = 100.0
-@export var stamina_run_drain: float = 18.0
-@export var stamina_climb_drain: float = 26.0
-@export var stamina_regen: float = 22.0
+## Stamina is the single `condition.stamina` gauge (0..100) shown by the HUD: running drains it per second,
+## a mantle costs a fixed amount, jumps keep their existing cost, and it recovers walking or standing still.
+@export var run_drain: float = 14.0
+@export var mantle_cost: float = 10.0
+## Ledge mantle ("trepar repisas"): only onto a top surface between these heights above the feet, with room
+## to stand on it and real support under the feet. Thin rails, walls and anything too high are never climbable.
+@export var mantle_min_height: float = 0.45
+@export var mantle_max_height: float = 1.85
+@export var mantle_reach: float = 0.75
+@export var mantle_up_speed: float = 3.2
 ## Usa el modelo MPFB texturizado en lugar del cuerpo de primitivas.
 @export var use_mpfb_model: bool = true
+
+const STAND_HEIGHT := 1.7
+const CROUCH_HEIGHT := 1.05
+const CAPSULE_RADIUS := 0.32
+## Physics layer bit of guard rails (layer 5): Elena collides with them but never mantles onto them.
+const NO_MANTLE_LAYER := 16
 
 var facing_vector: Vector2 = Vector2(0.0, 1.0)
 var input_enabled: bool = true
@@ -40,8 +54,11 @@ var uses_mpfb_model: bool = false
 ## Procedural pose layer (MPFB model only): lowers the bind-pose arms and animates walk, jump and landing.
 var pose = null
 
+## Mirror of condition.stamina, kept for older callers.
 var stamina: float = 100.0
 var is_crouching: bool = false
+var is_running: bool = false
+## True during a ledge mantle (the animation layer plays "climb").
 var is_climbing: bool = false
 ## Base usada para transformar el input de movimiento (por defecto, mundo).
 var movement_basis: Basis = Basis.IDENTITY
@@ -52,11 +69,13 @@ var _buffer_left: float = 0.0
 var _sync_left: float = 0.0
 var _material_cache: Dictionary = {}
 var _collision_shape: CollisionShape3D = null
+var _mantle_target: Vector3 = Vector3.ZERO
+var _mantle_phase: int = 0  # 0 none, 1 rising, 2 stepping onto the ledge
 
 func _ready() -> void:
 	add_to_group("player")
 	collision_layer = 2
-	collision_mask = 1
+	collision_mask = 1 | NO_MANTLE_LAYER
 	condition = ConditionScript.new()
 	GameManager.stats_changed.connect(_on_stats_changed)
 	_build_body()
@@ -191,45 +210,34 @@ func _process(delta: float) -> void:
 	visual.scale.y = 1.0 + 0.02 * (0.5 + 0.5 * sin(_t * TAU / 1.5))
 
 func _physics_process(delta: float) -> void:
+	if _mantle_phase > 0:
+		_step_mantle(delta)
+		return
 	var on_floor := is_on_floor()
 	var input_vec := Vector2.ZERO
 	if input_enabled:
 		input_vec = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
-	var wants_run: bool = input_enabled and Input.is_key_pressed(KEY_SHIFT) and input_vec != Vector2.ZERO
-	var wants_crouch: bool = input_enabled and (Input.is_key_pressed(KEY_CTRL) or Input.is_key_pressed(KEY_C))
-	var wants_climb: bool = input_enabled and Input.is_key_pressed(KEY_SPACE)
-
-	if is_climbing and (not wants_climb or stamina <= 0.0 or not _wall_ahead()):
-		is_climbing = false
-
-	if not is_climbing and wants_climb and _wall_ahead() and stamina > 0.0:
-		is_climbing = true
-
-	if is_climbing:
-		velocity.x = 0.0
-		velocity.z = 0.0
-		velocity.y = climb_speed
-		stamina = maxf(0.0, stamina - stamina_climb_drain * delta)
-		condition.tick(delta, false, false)
-		move_and_slide()
-		_sync_condition(delta)
-		return
-
-	is_crouching = wants_crouch and on_floor
+	var wants_run: bool = input_enabled and _action("run") and input_vec != Vector2.ZERO
+	var wants_crouch: bool = input_enabled and _action("crouch")
+	_set_crouching((wants_crouch and on_floor) or (is_crouching and not _can_stand()))
 
 	var speed: float = max_speed * condition.speed_multiplier()
+	is_running = false
 	if is_crouching:
 		speed *= crouch_multiplier
-	elif wants_run and stamina > 0.0:
+	elif wants_run and condition.stamina > 0.0 and on_floor:
 		speed *= run_multiplier
+		is_running = true
 
 	var move_dir: Vector3 = movement_basis * Vector3(input_vec.x, 0.0, input_vec.y)
 	var target: Vector3 = move_dir * speed
 	var horizontal := Vector3(velocity.x, 0.0, velocity.z)
 	var rate := acceleration if input_vec != Vector2.ZERO else deceleration
+	if not on_floor:
+		rate = air_acceleration
 	horizontal = horizontal.move_toward(target, rate * delta)
-	if input_vec == Vector2.ZERO and horizontal.length() < min_speed:
+	if input_vec == Vector2.ZERO and on_floor and horizontal.length() < min_speed:
 		horizontal = Vector3.ZERO
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
@@ -245,44 +253,147 @@ func _physics_process(delta: float) -> void:
 		_buffer_left = jump_buffer_time
 	else:
 		_buffer_left = maxf(0.0, _buffer_left - delta)
-	if _buffer_left > 0.0 and _coyote_left > 0.0:
+	if _buffer_left > 0.0 and input_vec != Vector2.ZERO and _try_mantle(move_dir):
+		_buffer_left = 0.0
+		return
+	if _buffer_left > 0.0 and _coyote_left > 0.0 and not is_crouching:
 		velocity.y = jump_velocity * condition.jump_multiplier()
 		condition.spend(ConditionScript.JUMP_COST)
 		_buffer_left = 0.0
 		_coyote_left = 0.0
 		jumped.emit()
 
-	if wants_run and input_vec != Vector2.ZERO and stamina > 0.0:
-		stamina = maxf(0.0, stamina - stamina_run_drain * delta)
+	if is_running:
+		condition.spend(run_drain * delta)
 	else:
-		stamina = minf(stamina_max, stamina + stamina_regen * delta)
-
-	condition.tick(delta, input_vec != Vector2.ZERO, on_floor)
+		condition.tick(delta, input_vec != Vector2.ZERO, on_floor)
+	stamina = condition.stamina
 
 	if input_vec != Vector2.ZERO:
 		facing_vector = Vector2(move_dir.x, move_dir.z).normalized()
 		var wanted := atan2(move_dir.x, move_dir.z)
 		visual.rotation.y = lerp_angle(visual.rotation.y, wanted, clampf(turn_speed * delta, 0.0, 1.0))
 	move_and_slide()
-
-	_sync_left -= delta
-	if _sync_left <= 0.0:
-		_sync_left = 0.25
-		GameManager.elena_condition = condition.to_dict()
+	_sync_condition(delta)
 
 	if global_position.y < -6.0:
 		velocity = Vector3.ZERO
 		fell_off.emit()
+
+func _action(action: String) -> bool:
+	return InputMap.has_action(action) and Input.is_action_pressed(action)
+
+## Crouching really lowers the collision capsule (1.05 m) so low ducts and gaps can be passed.
+func _set_crouching(value: bool) -> void:
+	if value == is_crouching or _collision_shape == null:
+		return
+	is_crouching = value
+	var cap := _collision_shape.shape as CapsuleShape3D
+	cap.height = CROUCH_HEIGHT if value else STAND_HEIGHT
+	_collision_shape.position.y = cap.height * 0.5
+
+## Standing up is refused while something is overhead (no popping through a duct ceiling).
+func _can_stand() -> bool:
+	return _capsule_fits(global_position + Vector3(0.0, 0.02, 0.0), STAND_HEIGHT)
+
+func _capsule_fits(feet: Vector3, height: float) -> bool:
+	if not is_inside_tree():
+		return true
+	var cap := CapsuleShape3D.new()
+	cap.radius = CAPSULE_RADIUS - 0.02
+	cap.height = height
+	var q := PhysicsShapeQueryParameters3D.new()
+	q.shape = cap
+	q.transform = Transform3D(Basis.IDENTITY, feet + Vector3(0.0, height * 0.5 + 0.01, 0.0))
+	q.collision_mask = collision_mask | NO_MANTLE_LAYER
+	q.exclude = [get_rid()]
+	return get_world_3d().direct_space_state.intersect_shape(q, 1).is_empty()
+
+## Ledge detection: a wall face ahead within reach, a top surface 0.45-1.85 m above the feet, real support
+## under the landing (four probes, so thin rails do not count) and standing room on top.
+func _try_mantle(move_dir: Vector3) -> bool:
+	if is_crouching or condition.stamina < mantle_cost * 0.5:
+		return false
+	var dir := Vector3(move_dir.x, 0.0, move_dir.z).normalized()
+	if dir == Vector3.ZERO:
+		return false
+	var space := get_world_3d().direct_space_state
+	var mask := collision_mask | NO_MANTLE_LAYER
+	var feet := global_position
+	var wall_hit := {}
+	for h in [0.35, 0.8, 1.3]:
+		var from: Vector3 = feet + Vector3(0.0, h, 0.0)
+		var q := PhysicsRayQueryParameters3D.create(from, from + dir * (CAPSULE_RADIUS + mantle_reach), mask, [get_rid()])
+		wall_hit = space.intersect_ray(q)
+		if not wall_hit.is_empty():
+			break
+	if wall_hit.is_empty() or _is_no_mantle(wall_hit["collider"]):
+		return false
+	var landing: Vector3 = (wall_hit["position"] as Vector3) + dir * (CAPSULE_RADIUS + 0.12)
+	var side := dir.cross(Vector3.UP).normalized()
+	var top_y := -INF
+	for offset in [Vector3.ZERO, dir * 0.22 + side * 0.2, dir * 0.22 - side * 0.2, dir * 0.4]:
+		var probe: Vector3 = landing + offset
+		var down := PhysicsRayQueryParameters3D.create(Vector3(probe.x, feet.y + mantle_max_height + 0.4, probe.z), Vector3(probe.x, feet.y + mantle_min_height - 0.2, probe.z), mask, [get_rid()])
+		var hit := space.intersect_ray(down)
+		if hit.is_empty() or (hit["normal"] as Vector3).y < 0.85 or _is_no_mantle(hit["collider"]):
+			return false
+		var y: float = (hit["position"] as Vector3).y
+		if top_y > -INF and absf(y - top_y) > 0.12:
+			return false
+		top_y = maxf(top_y, y)
+	var height := top_y - feet.y
+	if height < mantle_min_height or height > mantle_max_height:
+		return false
+	var target := Vector3(landing.x, top_y + 0.02, landing.z)
+	if not _capsule_fits(target, STAND_HEIGHT):
+		return false
+	# The body must also be able to rise in place to the ledge height without hitting a ceiling...
+	if not _capsule_fits(Vector3(feet.x, top_y + 0.02, feet.z), STAND_HEIGHT):
+		return false
+	# ...and then step across at that height without passing through anything (a rail at the edge, a wall).
+	for h in [0.3, 0.9, 1.5]:
+		var across := PhysicsRayQueryParameters3D.create(Vector3(feet.x, top_y + h, feet.z), target + Vector3(0.0, h, 0.0) + dir * CAPSULE_RADIUS, mask, [get_rid()])
+		if not space.intersect_ray(across).is_empty():
+			return false
+	_mantle_target = target
+	_mantle_phase = 1
+	is_climbing = true
+	velocity = Vector3.ZERO
+	condition.spend(mantle_cost)
+	stamina = condition.stamina
+	visual.rotation.y = atan2(dir.x, dir.z)
+	facing_vector = Vector2(dir.x, dir.z)
+	mantled.emit(height)
+	return true
+
+func _is_no_mantle(collider: Object) -> bool:
+	var body := collider as CollisionObject3D
+	return body != null and (body.collision_layer & NO_MANTLE_LAYER) != 0
+
+func _step_mantle(delta: float) -> void:
+	var p := global_position
+	if _mantle_phase == 1:
+		p.y = move_toward(p.y, _mantle_target.y, mantle_up_speed * delta)
+		if is_equal_approx(p.y, _mantle_target.y):
+			_mantle_phase = 2
+	else:
+		var flat := Vector2(_mantle_target.x - p.x, _mantle_target.z - p.z)
+		var step := 2.4 * delta
+		if flat.length() <= step:
+			p.x = _mantle_target.x
+			p.z = _mantle_target.z
+			_mantle_phase = 0
+			is_climbing = false
+		else:
+			var d := flat.normalized() * step
+			p.x += d.x
+			p.z += d.y
+	global_position = p
+	velocity = Vector3.ZERO
 
 func _sync_condition(delta: float) -> void:
 	_sync_left -= delta
 	if _sync_left <= 0.0:
 		_sync_left = 0.25
 		GameManager.elena_condition = condition.to_dict()
-
-func _wall_ahead() -> bool:
-	var space := get_world_3d().direct_space_state
-	var from := global_position + Vector3(0.0, 1.1, 0.0)
-	var dir := Vector3(facing_vector.x, 0.0, facing_vector.y).normalized()
-	var query := PhysicsRayQueryParameters3D.create(from, from + dir * climb_check_distance, collision_mask)
-	return not space.intersect_ray(query).is_empty()
