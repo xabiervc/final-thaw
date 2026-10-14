@@ -652,6 +652,10 @@ func _begin_handoff() -> void:
 	if _handoff_started:
 		return
 	_handoff_started = true
+	# Latch Elena at the hatch during the short synchronization beat; the outside is a scene transition, not a fall.
+	player.velocity = Vector3.ZERO
+	player.set_physics_process(false)
+	player.set_process_input(false)
 	var transmitted := ", ".join(PackedStringArray(_audit_events))
 	_log("audit_transmitted", transmitted)
 	_log("containment_trigger", "outer_hatch_crossed")
