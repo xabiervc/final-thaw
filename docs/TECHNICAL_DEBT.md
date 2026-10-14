@@ -28,7 +28,7 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
   - Demo HUD and DemoEnd node exports are wired.
   - Generator and valve prompts are localized and refresh on language change.
   - Shelter light responds to generator activation and persistence.
-  - Missing HUD localization methods were added.
+  - Spanish and English narrative resources now cover the current shelter slice.
 - **Remaining work:**
   - Validate the full loop in Godot.
   - Add visual/audio feedback for generator, valves, gate and rescue.
@@ -138,9 +138,9 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
   - Civilian uses `get_interact_civilian()`.
   - Prompts refresh through `Interactable.update_label()`.
   - Props listen to `NarrativeTextManager.language_changed`.
+  - Spanish and English resources include the relevant keys.
 - **Remaining work:**
   - Verify ES/EN prompt updates in Godot.
-  - Add localization keys to narrative resources if absent.
 - **Owner:** Perplexity + Claude/local Godot validation.
 - **Priority:** P1.
 
@@ -149,6 +149,23 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
 - **Status:** Resolved in commit `d978169`.
 - **Resolution:** `DemoHUD` oxygen/objective/civilian labels and `DemoEnd` title/summary/buttons are now connected to their scripts.
 - **Remaining work:** Verify in Godot that all node paths resolve and the UI displays correctly.
+
+### TD-016 — Localization schema and resources are incomplete
+
+- **Status:** Partially resolved; see `docs/LOCALIZATION_AUDIT.md`.
+- **Resolved:**
+  - Added `data/narrative_text_es.tres`.
+  - Added `hud_demo_completed` and `hud_demo_failed` to ES/EN resources.
+  - Added both properties to `NarrativeText`.
+- **Remaining work:**
+  - Declare `options_*`, `credits_title`, `prompt_*`, `shelter_*` and `sound_cue_*` in `NarrativeText`.
+  - Add those keys to ES and EN resources.
+  - Add control-room keys to the Spanish resource.
+  - Decide the role of the empty `narrative_text.tres` fallback.
+  - Add a headless localization-parity test.
+- **Risk:** Missing keys silently fall back to English; future resource edits can introduce Godot resource-loading errors.
+- **Owner:** Perplexity + localization owner.
+- **Priority:** P1.
 
 ## Resolution rule
 
@@ -162,12 +179,13 @@ A debt item is closed only when:
 ## Current priority order
 
 1. TD-011: run Godot and verify the repaired interaction chain.
-2. TD-014: verify localized prompts and language refresh.
-3. TD-013: verify persisted prop restoration.
-4. TD-015: verify UI node paths and display.
-5. TD-001: complete canonical parity.
-6. TD-012: choose the canonical oxygen rule.
-7. TD-005: define and consolidate the production player-controller contract.
-8. TD-007: port accessibility to the canonical implementation.
-9. TD-004: apply narrative grace period to the canonical implementation.
-10. TD-006 and TD-008: harden condition systems and validation.
+2. TD-016: complete localization schema and resource parity.
+3. TD-014: verify localized prompts and language refresh.
+4. TD-013: verify persisted prop restoration.
+5. TD-015: verify UI node paths and display.
+6. TD-001: complete canonical parity.
+7. TD-012: choose the canonical oxygen rule.
+8. TD-005: define and consolidate the production player-controller contract.
+9. TD-007: port accessibility to the canonical implementation.
+10. TD-004: apply narrative grace period to the canonical implementation.
+11. TD-006 and TD-008: harden condition systems and validation.
