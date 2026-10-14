@@ -9,6 +9,7 @@ extends Node
 ##   --actions=a,b,c         call interact() on level properties in order (terminal, door_a, lever, door)
 ##   --scan                  trigger a scan before capturing
 ##   --overview=h,d          review framing of the whole room: camera offset (0, h, d), no limits
+##   --hold=a,b              hold these input actions (e.g. move_right,jump) during the wait
 ##   --wait=90               frames to wait before the capture
 ##   --bench=240             frames to measure after the capture (0 = skip)
 ##   --out=D:/path/shot.png  screenshot output (outside the repository)
@@ -68,6 +69,9 @@ func _run() -> void:
 			if target != null:
 				target.call("interact", elena)
 				await get_tree().create_timer(0.1).timeout
+	var held := String(_args.get("hold", "")).split(",", false)
+	for action in held:
+		Input.action_press(action)
 	var wait := int(_args.get("wait", "90"))
 	for i in wait:
 		await get_tree().process_frame
@@ -76,6 +80,8 @@ func _run() -> void:
 		for i in 20:
 			await get_tree().process_frame
 	await RenderingServer.frame_post_draw
+	for action in held:
+		Input.action_release(action)
 	var out := String(_args.get("out", ""))
 	if out != "":
 		var img := get_viewport().get_texture().get_image()
