@@ -12,7 +12,7 @@ Convención: [R] geometría base anterior; [D] decisión ahora cerrada; ninguna 
 ## 1. Decisiones definitivas
 
 1. **Recorrido único A:** foso y mantenimiento antes de subir a E. El estado inicial de mantenimiento es OFF y la plataforma elevadora no se mueve sin él. No existe una ruta de rampa en el slice final; la variante B queda retirada y no es un criterio de aceptación.
-2. **Una única plataforma:** es la plataforma del elevador en la huella original X=24.5..27.5, Z=-4.5..-1.5, de Y=0 a Y=3. Se elimina la segunda reserva de plataforma X=30..34 y se elimina la rampa provisional. No hay dos transportes compitiendo por el anexo.
+2. **Una única plataforma:** es la plataforma del elevador en la huella original X=24.5..27.5, Z=-4.5..-1.5, de Y=0 a Y=3. Se elimina la segunda reserva de plataforma X=30..34 y se elimina la rampa provisional. No hay dos transportes compitiendo por el anexo. Se añaden compuertas fijas de seguridad en ambos rellanos: inferior centrada en `(26,0.55,-1.1)` y superior en `(26,3.55,-4.9)`. Solo se abre la compuerta fija del rellano donde el deck está acoplado; ambas cierran durante el viaje y la compuerta del rellano abandonado se cierra al iniciar el movimiento.
 3. **Fallo de energía:** parada segura hacia el rellano más cercano con reserva de seguridad; empate exacto se resuelve hacia el rellano superior, de acuerdo con `service_lift.gd`. Al llegar, plataforma deshabilitada hasta reactivar mantenimiento. Nunca caída ni atrapamiento entre niveles.
 4. **Rearme:** interacción en soporte fuera del borde norte de la pasarela, centrada aproximadamente en (15.5,3.5,-8.15). Selector y aislador conservan exactamente (12,3,-7) y (19,3,-7).
 5. **Panel E:** soporte de estado cerca de (15.5,4.55,-8.15), cara al sur; el punto (15,3,-7) sigue siendo punto de observación, no una ubicación de indicador.
@@ -32,6 +32,7 @@ Convención: [R] geometría base anterior; [D] decisión ahora cerrada; ninguna 
 | Foso | X 20..28, Z 1..8, Y=-2 | Esquema (27,-2,6); puente (22,-2,4); mantenimiento (26,-2,2) |
 | Ruta este / rellano inferior | X 28..30; X 24..28, Z -1..1, Y=0 | Camino a la plataforma |
 | Plataforma elevadora | X 24.5..27.5, Z -4.5..-1.5; Y=0..3 | Transporte vertical único, controlado por mantenimiento |
+| Compuertas fijas del elevador | Inferior (26,0.55,-1.1); superior (26,3.55,-4.9) | Cerradas cuando el deck no está acoplado a ese rellano; ambas cerradas durante el viaje |
 | Rellano superior | X 24..28, Z -7..-4.5, Y=3 | Conecta plataforma con pasarela |
 | Pasarela pública | X 9..26, Z -8..-6, Y=3 | Selector (12,3,-7), aislador (19,3,-7), observación (15,3,-7) |
 | Cabina / archivo | X 2..9, Z -9..-5, Y=3 | Consola de archivo (5,3,-7), entrada este (9,3,-7), diagnóstico |
