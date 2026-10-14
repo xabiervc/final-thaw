@@ -1,70 +1,70 @@
-# FINAL THAW — Design Authority
+# FINAL THAW — Design Authority During Prototype-Led Redesign
 
 ## Purpose
 
-This document identifies design documents that currently govern implementation, distinguishes legacy specifications from approved direction, and defines conflict resolution while the game is undergoing a prototype-led redesign.
+This document separates the current working direction, actual implementation evidence, protected technical contracts and legacy full-campaign specifications. The project is in a prototype-led redesign; the previous design package is not fully reconciled with the new opening.
 
-**Important status:** the legacy design package and new prototype brief are not fully reconciled. Until playtest results are reviewed, do not treat the legacy full-campaign requirements as requirements for the new prototype.
+## Active design authority
 
-## Active working authority
+| Area | Source | Status |
+|---|---|---|
+| Working vision | `docs/VISION.md` | Active working vision; validate before locking full-game canon |
+| Next prototype scope and acceptance | `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Active brief for the opening prototype only |
+| Current movement/chase mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus code | Active prototype specification; v2 test not yet recorded as run |
+| Core loop | `docs/CORE_LOOP.md` | Active loop for the motion/chase prototype and proposed investigation mission |
+| Level structure | `docs/LEVEL_STRUCTURE.md` | Active prototype map and proposed two-mission opening |
+| Implementation status | `PROJECT_STATUS.md` plus current code and test evidence | Source for what exists and what has actually been verified |
+| Prototype traceability | `docs/TRACEABILITY_MATRIX.md` | Active mapping of code/test coverage and unimplemented requirements |
+| Narrative source | `docs/narrative_complete.md` | Existing story details preserved; full campaign structure under review |
+| Technical/agent workflow | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Active technical and workflow contracts |
+| Asset provenance | `docs/art/PROVENANCE.md` | Active source/licence record |
 
-| Area | Document | Status | Scope |
-|---|---|---|---|
-| Prototype direction | `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | **ACTIVE WORKING BRIEF — VALIDATE, NOT FINAL CAMPAIGN CANON** | Next proof of concept only: Elena-led 3D traversal, investigation puzzle, pursuit/escape |
-| Current implementation evidence | `PROJECT_STATUS.md` | Status record | What currently exists, test evidence, known gaps and next milestone |
-| Asset provenance | `docs/art/PROVENANCE.md` | Active technical record | Source/licence tracking; required before shipping external or derived assets |
-| Technical/agent workflow | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Active | Safety, implementation and verification procedure |
-| Phase 0 contracts | Existing test suite and technical contract docs | Protected baseline | Input/autoload/resource/save compatibility until reviewed change is explicitly approved |
+## Legacy specifications under review
 
-## Legacy design specifications — under review
+The following still contain earlier assumptions such as fixed 16 phases, 13–15 hour playtime, dual-protagonist switching, Marcus combat, combat arenas, survival counters and three fixed endings:
+- `docs/core_gameplay_loop.md`
+- detailed campaign tables in `docs/narrative_complete.md`
+- `docs/EXPLORATION_FLOW.md`, `docs/PROGRESSION_SPEC.md`, `docs/SURVIVAL_SYSTEMS.md`, `docs/NARRATIVE_STATE_MAP.md`
+- `docs/VERTICAL_SLICE_PLAN.md`
+- remaining legacy sections of `docs/TRACEABILITY_MATRIX.md` if encountered in other copies or summaries.
 
-The following files contain detailed prior-direction assumptions. They remain useful as historical source material but must not be taken as binding scope for the new prototype without explicit reconciliation:
+Do not implement those assumptions as requirements for the current prototype. Do not delete them yet: they contain story and design material that should be reconciled deliberately after a playtest.
 
-- `docs/VISION.md` — dual-protagonist player fantasy, four fixed pillars and 13–15-hour campaign.
-- `docs/CORE_LOOP.md` and `docs/core_gameplay_loop.md` — timed puzzle rooms, Marcus combat arenas, and fixed decision metrics.
-- `docs/LEVEL_STRUCTURE.md`, `docs/EXPLORATION_FLOW.md`, `docs/PROGRESSION_SPEC.md`, `docs/VERTICAL_SLICE_PLAN.md` — fixed phase/room counts and campaign flow.
-- `docs/SYSTEMS_SPEC.md`, `docs/SURVIVAL_SYSTEMS.md`, `docs/NARRATIVE_STATE_MAP.md` — resource/ending thresholds and systems that may not survive the pivot.
-- `docs/TRACEABILITY_MATRIX.md` — traces prior pillars and mechanics, not yet the new prototype.
-- `docs/narrative_complete.md` — detailed full-campaign narrative that must be selectively reconciled with the two-mission opening.
-- `GDD.md` — high-level aspirational document with scope and award claims, not the acceptance authority for current implementation.
+## Conflict resolution
 
-Do not delete these documents. Do not implement them as new-prototype requirements merely because they were previously labelled normative. Update them only after the owner reviews prototype evidence and the new scope is deliberately adopted.
-
-## Conflict resolution during redesign
-
-1. For the **next prototype's scope and acceptance criteria**, use `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md`.
-2. For **what the code currently does**, use the actual branch plus `PROJECT_STATUS.md` and reproducible test/playtest evidence; a design brief is not proof of implementation.
-3. For **Phase 0 technical contracts**, preserve the current tests and technical contract docs unless a dedicated impact analysis and approval authorize a change.
-4. When another legacy design document conflicts with the prototype brief, treat it as legacy guidance for this prototype and record the conflict rather than silently merging both directions.
-5. This temporary precedence does not approve a full-game redesign or a new save format. After the prototype gate, the owner must decide whether to promote the new direction to full-campaign canon.
-6. Do not declare completion, performance, accessibility, compatibility or a successful playtest without evidence.
+1. For **the next prototype's intended behavior**, use the working brief and prototype specification.
+2. For **what exists**, inspect the code and scene files. Documentation is not proof of implementation.
+3. For **test status**, require an exact command and observed result. Automated checks do not replace a manual playtest.
+4. For **Phase 0 technical contracts**, preserve input actions, autoloads, resource paths, save JSON/CRC32 and project assumptions unless an impact review and explicit approval authorize a change.
+5. When a legacy campaign document conflicts with the current prototype brief, the brief wins for prototype scope only. Record the conflict; do not silently declare the full campaign redesigned.
+6. Promote the new direction to full-game canon only after owner review of the combined puzzle/escape prototype and explicit reconciliation of narrative, progression, accessibility, platforms and endings.
 
 ## Required review gates
 
-### Before implementing movement/traversal
-- Confirm target Godot version, current renderer and required target platforms.
-- Inspect existing controller, camera, input actions and collision layers.
-- Define observable acceptance tests for movement, jump/landing, crawl and climb.
-- Keep the change isolated from save, autoload and Phase 0 behavior.
+### Motion/chase v2
+- Run `godot --headless --path . res://tests/test_motion_chase_prototype.tscn`.
+- Run `godot --headless --path . res://tests/test_phase_0.tscn`.
+- Run the scene manually; review movement, jump range, crouch clearance, climb, camera occlusion, enemy sight/hearing, search, catches, checkpoints and exit.
+- Record Godot version, results, defects and evidence.
 
-### Before adding pursuit AI
-- Specify state machine and visible tells.
-- Define line-of-sight break, search, recovery, checkpoint/death behavior and deterministic tests.
-- Confirm the encounter introduces a route/timing/concealment decision and is not just a timer.
+### Investigation puzzle and narrative bridge
+- Define clue relationships and intended inference before implementation.
+- Ensure the scanner supports reasoning but does not reveal the answer.
+- Test feedback, hints, accessibility and alternative recovery.
+- Verify puzzle completion causes a single, visible lockdown transition and that the chase follows causally.
 
-### Before approving assets
-- Review from the intended gameplay camera, not only beauty renders.
-- Verify scale, collider alignment, traversal clearance, camera occlusion, state/scan visibility, performance and licensing.
-- Record owner review and a build identifier.
+### Assets and production
+- Review from gameplay camera, not beauty renders alone.
+- Verify scale, collider alignment, clearance, occlusion, performance and provenance/licensing.
+- Do not call an asset production-ready without Godot integration and owner review.
 
-### After the five-minute proof of concept
-- Run regression tests and manual playtest.
-- Record failures and player observations.
-- Decide explicitly which legacy mechanics, characters, ending rules, platforms and campaign assumptions survive.
-- Only then reconcile normative design documents and traceability.
+### Full-game reconciliation
+After the combined opening passes:
+- Decide Marcus's role and whether the dual-protagonist premise survives.
+- Reconcile campaign structure, endings, total duration and platform scope.
+- Update narrative-state documents, progression, accessibility and traceability.
+- Mark superseded specifications explicitly; preserve useful history.
 
 ## Change policy
 
-- Typos and clarifications may be edited directly.
-- Changes to mechanics, narrative, accessibility, scope or normative hierarchy require an explicit design decision and impact analysis.
-- Do not make irreversible scene deletion, wholesale art replacement, renderer migration, save migration or autoload/input contract changes as part of the proof-of-concept task.
+Keep prototype changes small and reversible. Do not make wholesale renderer migrations, save migrations, scene deletions, autoload/input contract changes or full-campaign rewrites as incidental parts of the prototype task.
