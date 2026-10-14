@@ -1,7 +1,7 @@
-# FASE1 — Especificación funcional de implementación (v2.0)
+# FASE1 — Especificación funcional de implementación (v2.1)
 
 **Estado:** contrato funcional revisado para el diseño de edificio completo, puzle distribuido y huida interior. Las nuevas fases de persecución y salida alternativa aún no están implementadas ni validadas en Godot. No se afirma aceptación de runtime.  
-**Autoridad:** arquitectura espacial en `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`; grafo en `FASE1_SPATIAL_GRAPH.md v1.0`; huellas y colisiones en `FASE1_GREYBOX_SPEC.md`; progresión en `fase1_fase2_mapa_progresion.md v1.0`; contrato eléctrico en `FASE1_LOGIC_CONTRACT.md`.
+**Autoridad:** arquitectura espacial en `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`; grafo en `FASE1_SPATIAL_GRAPH.md v1.1`; huellas y colisiones en `FASE1_GREYBOX_SPEC.md v2.1`; progresión en `fase1_fase2_mapa_progresion.md v1.1`; contrato eléctrico en `FASE1_LOGIC_CONTRACT.md`.
 
 ## 1. Objetivo jugable
 
