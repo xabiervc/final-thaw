@@ -53,6 +53,7 @@ func _run() -> void:
 	_expect(not _has_ground_slab_at(scene, Vector2(15.0, 4.0)) and not _has_ground_slab_at(scene, Vector2(22.0, 4.0)), "P0 has real collision voids above both D1 and D2")
 	_expect(not _has_ground_slab_at(scene, Vector2(25.0, 9.5)), "S1 stair mouth remains open through the P0 slab")
 	_expect(scene.get_node_or_null("PitRailWest") != null and scene.get_node_or_null("PitRailEast") != null, "maintenance pit perimeter is protected")
+	_expect(scene.get_node_or_null("FixedPitStairsRailWest") != null and scene.get_node_or_null("FixedPitStairsRailEast") != null, "S1 has side protection following the stair slope")
 	var pit_rail := scene.get_node("PitRailWest") as StaticBody3D
 	_expect(is_equal_approx(pit_rail.position.y, 0.55), "pit guardrail rises above P0 floor instead of being buried below it")
 	_expect(scene.get_node_or_null("NaveWorkshopPierSouth") != null and scene.get_node_or_null("RoofBeam_00") != null, "P0 has room boundaries and industrial roof structure")
@@ -68,11 +69,16 @@ func _run() -> void:
 	var service_route_mark := scene.get_node("SouthRouteMark") as Label3D
 	_expect(service_route_mark.position.z < 1.0, "service route marking sits on the walkway, not over the open pit")
 	_expect(scene.get_node_or_null("PumpSkidA") != null and scene.get_node_or_null("ControlStairsS2CollisionRamp") != null, "pump room and S2 stairs connect mezzanine to control")
+	_expect(scene.get_node_or_null("ControlStairsS2RailWest") != null and scene.get_node_or_null("ControlStairsS2RailEast") != null, "S2 has slope-aligned side protection")
+	_expect(scene.get_node_or_null("MezzanineWestRail") != null and scene.get_node_or_null("P2WalkwaySouthRail") != null and scene.get_node_or_null("P2WalkwayEastRail") != null, "M and P2 exposed edges are protected")
+	_expect(scene.get_node_or_null("LiftShaftSideRailLowerWest") != null and scene.get_node_or_null("LiftShaftSideRailUpperEast") != null, "lift shaft sides are protected at both landings")
 	_expect(scene.get_node_or_null("WestShortcutStairsCollisionRamp") == null, "exterior airlock has no stair return to P0")
 	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
 	_expect(scene._service_lights.size() == 2 and scene._service_lights[0].light_energy < 0.2 and scene._service_lights[1].light_energy < 0.2, "service lights start at safe ambient minimum while maintenance is off")
-	var lower_gate_shape := scene.get_node("LiftSafetyGateLower").get_child(0) as CollisionShape3D
-	var lower_gate_mesh := scene.get_node("LiftSafetyGateLower").get_child(1) as MeshInstance3D
+	var lower_gate_body := scene.get_node("LiftSafetyGateLower") as StaticBody3D
+	_expect(is_equal_approx(lower_gate_body.position.z, -1.49), "lower fixed gate aligns with the P0 shaft edge")
+	var lower_gate_shape := lower_gate_body.get_child(0) as CollisionShape3D
+	var lower_gate_mesh := lower_gate_body.get_child(1) as MeshInstance3D
 	var upper_gate_body := scene.get_node("LiftSafetyGateUpper") as StaticBody3D
 	_expect(is_equal_approx(upper_gate_body.position.z, -4.49), "upper lift gate aligns with the mezzanine shaft edge")
 	var upper_gate_shape := upper_gate_body.get_child(0) as CollisionShape3D
