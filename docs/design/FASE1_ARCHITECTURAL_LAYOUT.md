@@ -1,6 +1,6 @@
 # FINAL THAW — Arquitectura espacial de Fase 1 (v2.1)
 
-**Estado:** dirección de diseño confirmada por el usuario; revisión de topología y planos en curso. Esta versión cierra la evasión silenciosa y el objetivo R1 de reacquisición en P0 respecto a v2.0; la boca exterior alternativa sigue pendiente de selección geométrica. Los SVG describen el objetivo arquitectónico; geometría, colisiones, cámara, navegación y transición a Fase 2 siguen pendientes de validación en Godot. No declarar la fase aceptada por documentación o revisión estática.
+**Estado:** dirección de diseño confirmada por el usuario; revisión de topología y planos en curso. Esta versión cierra la evasión silenciosa y el objetivo R1 de reacquisición en P0 respecto a v2.0; la boca este de P−1 queda seleccionada como baseline (X=34, Z=4,5..7,5, Y=−2); continuidad en Godot pendiente. Los SVG describen el objetivo arquitectónico; geometría, colisiones, cámara, navegación y transición a Fase 2 siguen pendientes de validación en Godot. No declarar la fase aceptada por documentación o revisión estática.
 
 ## 1. Intención arquitectónica
 
@@ -22,11 +22,11 @@ La instalación mantiene cuatro cotas interiores conectadas y una salida de serv
 
 | Cota | Programa arquitectónico |
 |---|---|
-| **P−1 · Y=−2 m** | D1 galería de achique; D2 distribución hidráulica/eléctrica; puente A→T manipulado; interruptor de mantenimiento; sumidero y colectores; conexión a la ruta de salida de servicio. El lado exacto de salida queda sujeto a la ruta de huida aprobada. |
+| **P−1 · Y=−2 m** | D1 galería de achique; D2 distribución hidráulica/eléctrica; puente A→T manipulado; interruptor de mantenimiento; sumidero y colectores; conexión a la ruta de salida de servicio. La salida de servicio seleccionada es la boca este en X=34, Z=4,5..7,5, Y=−2, conectada por galería 6×3 m al parking. |
 | **P0 · Y=0 m** | Túnel de entrada oeste; A esclusa de acceso; B nave de ensayos Aster; C taller; cuadros auxiliares; galería de servicio; retorno por perímetro sur/este; acceso inferior del elevador; boca superior de S1. |
 | **M · Y=+1,5 m** | Sala de bombas, colectores y manómetros; galería de observación; rellano del elevador; llegada de S2; corredor técnico de conexión. |
 | **P2 · Y=+3 m** | E control y diagnóstico; F archivo restringido; pasarela superior; G esclusa de doble puerta. Abrir la compuerta exterior activa la amenaza; Elena retrocede al interior y escapa por conexiones técnicas existentes. G no es la salida final. |
-| **Exterior · cota variable** | Boca de servicio/descarga conectada físicamente al aparcamiento. El lado del perímetro y la cota exterior se deciden desde la ruta completa de huida; no se fuerza una coordenada para coincidir con el plano local de parking. |
+| **Exterior · Y=−2 m** | Patio de servicio al mismo datum que P−1. Boca este en X=34, Z=4,5..7,5, apertura libre de 3 m; galería de evacuación 6×3 m. Conexión con parking local mediante X_mundo=X_local+28,7 y Z_mundo=Z_local−15,8. Baseline seleccionado; verificar en escena. |
 
 La huella puede crecer si el plano acotado demuestra que el recorrido de huida no cabe con anchos seguros. No comprimir pasillos, escaleras ni espacios de combate/persecución para preservar una dimensión arbitraria del prototipo.
 
@@ -58,10 +58,10 @@ Se preservan las conexiones verticales ya definidas:
 2. **Elevador · P0↔M:** elevador de mantenimiento, habilitado por mantenimiento; no llega a P2.
 3. **S2 · M↔P2:** escalera fija, independiente de alimentación.
 4. **Escalera directa P0↔P2:** colapsada y bloqueada; se ve como parte del historial del edificio, no como ruta alternativa.
-5. **G → F/E → pasarela/S2/M → áreas de trabajo y servicio → P0/S1/P−1 → salida alternativa → aparcamiento:** ruta objetivo de Fase 1. El primer tramo prioriza sigilo entre áreas potencialmente ocupadas; R1, en la transición de la galería de servicio al retorno este P0 tras el elevador, eleva la presión a carrera antes de S1/P−1. La unidad sigue a Elena por el mismo elevador y la reacquiere por LOS real. La secuencia exacta debe aparecer en planos y grafo. No se exige que la salida coincida con el transform provisional del parking.
+5. **G → F/E → pasarela/S2/M → áreas de trabajo y servicio → P0/S1/P−1 → salida alternativa → aparcamiento:** ruta objetivo de Fase 1. El primer tramo prioriza sigilo entre áreas potencialmente ocupadas; R1, en la transición de la galería de servicio al retorno este P0 tras el elevador, eleva la presión a carrera antes de S1/P−1. La unidad sigue a Elena por el mismo elevador y la reacquiere por LOS real. La secuencia exacta debe aparecer en planos y grafo. La salida y el transform del parking forman el baseline seleccionado; si la escena no coincide, actualizar el paquete de planos y documentar la desviación, no introducir un teletransporte.
 6. **Entrada → túnel oeste → A:** solo entrada inicial; no reutilizar como salida final.
 
-La galería de evacuación de P−1 es una nueva conexión arquitectónica respecto a v1.1. Debe dibujarse en el plano de P−1 y en sección; no puede implementarse como teletransporte. Si la cota exterior exige rampa, escalera o tramo de descarga, debe representarse y tener pendiente/altura transitables. No añadir conexiones secretas arbitrarias: la salida debe ser una infraestructura de servicio coherente con el edificio.
+La galería de evacuación de P−1 es una nueva conexión arquitectónica respecto a v1.1. Debe dibujarse en el plano de P−1 y en sección; no puede implementarse como teletransporte. El baseline mantiene Y=−2 m a través del umbral, sin rampa ni escalón. Cualquier cambio de cota detectado en la escena requiere revisar planta, sección y colisiones antes de aceptar. No añadir conexiones secretas arbitrarias: la salida debe ser una infraestructura de servicio coherente con el edificio.
 
 ## 5. Puzle distribuido por el edificio
 
