@@ -9,7 +9,7 @@
 The opening is a continuous causal sequence, not two unrelated test rooms:
 
 1. **The Ghost Protocol — investigate and infer.** Elena reconstructs the manipulated Aster circuit and finds evidence that Helix withheld the test result.
-2. **Containment — escape under pressure.** Opening the exterior leaf of G exposes Elena to a recovery operation. She retreats through the laboratory, descends through the existing service circulation and leaves through the distinct P−1 evacuation outlet.
+2. **Containment — hide, then run.** Opening G starts the recovery operation, but the escape is not one uninterrupted sprint. Elena first moves quietly through occupied or recently occupied work areas, avoiding staff sightlines, noise and security attention. The route then crosses an exposed service/industrial zone where Containment reacquires her and the experience shifts into a full running chase. The exact trigger and route must be represented in the progression graph; no mandatory combat or takedown.
 3. **Parking chase — improvise and survive.** Elena reaches the service-side parking area; the threat continues into an exposed, vehicle-filled environment. The player must read sightlines, sound, cover and traversable routes, not simply run down an obstacle corridor.
 
 The north star is **tension with agency**. Elena is a scientist, not a combat protagonist. The level should reward observation, spatial reasoning and movement decisions. No firearms, mandatory combat, arbitrary instant-kill hazards, invisible blockers, forced trial-and-error or unexplained teleport transitions.
@@ -30,7 +30,7 @@ The architecture should communicate:
 - a far-side egress target that is visible or inferable early, but not immediately safe;
 - one or more service features (loading shutter, maintenance cage, drainage channel, barrier or security kiosk) that give the site a specific industrial identity.
 
-**Continuity rule:** the P−1 evacuation mouth and the parking entry must meet physically and visually. The player must be able to understand which side of the building they have emerged from. The exterior transition must not place Elena in the middle of the parking lot without a traversable connection.
+**Continuity rule:** the selected Phase 1 exit and the parking entry must connect physically and visually, but their world coordinates are not a design authority and must not dictate the interior route. Phase 1 may leave through a different service route and a different exterior mouth if that produces a stronger stealth-to-chase sequence. Lock the selected exit, local coordinate frames, transform and elevation only after the complete room route is approved. Never teleport Elena into the parking lot.
 
 ### 2.2 Greybox scale and coordinate contract
 
@@ -59,7 +59,7 @@ These are design targets, not verified measurements. Any deviation must be recor
 
 ### 2.2.1 Provisional dimension schedule
 
-The SVG uses a nominal 14 px per local metre in plan. This schedule records the dimensions implied by the concept, not verified construction dimensions.
+The SVG uses a nominal 14 px per local metre in plan. This schedule records the dimensions implied by the concept, not verified construction dimensions. Parking coordinates are local; there is deliberately no locked world transform until the Phase 1 escape route and exit mouth are selected.
 
 | Element | Concept dimension | Design intent / check |
 |---|---:|---|
@@ -77,7 +77,7 @@ Before design lock, add dimension strings for the narrowest clear passage on eac
 
 ### 2.3 Required plan and section views
 
-A first spatial concept is recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg), with companion section, threat and landmark/lighting overlays. All four drawings are deliberately marked **concept v0.1**: the 48 × 30 m envelope, routes, sightline sectors, light zones and prop placements are design proposals, not approved production geometry and not a representation of the current Godot scene. The entry threshold is now represented as 3 m clear, matching the Phase 1 target opening width; the local-to-world transform aligns the threshold plane rather than the vestibule centre. Their purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the service-exit handoff, world-coordinate transform, clearances and elevation are reconciled.
+A first spatial concept is recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg), with companion section, threat and landmark/lighting overlays. All four drawings are deliberately marked **concept v0.1**: the 48 × 30 m envelope, routes, sightline sectors, light zones and prop placements are design proposals, not approved production geometry and not a representation of the current Godot scene. The entry threshold is a provisional 3 m concept opening, not a requirement that Phase 1 use the currently drawn mouth or its coordinates. The plan's local origin and scale support spatial review; they do not lock its rotation or world transform. Their purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the chosen exit, physical connection, clearances and elevation are reconciled.
 
 The parking layout is not accepted from a prose description alone. Its design package must contain:
 1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and patrol/sightline overlays.
@@ -94,7 +94,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
-| P2-01 Service threshold | (5.3, 21.8) | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; must align with the Phase 1 mouth at world (34, 6) |
+| P2-01 Service threshold | (5.3, 21.8) local | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; orient/transform only after the Phase 1 exit is selected |
 | P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (13.9, 19.3) | Short exposed path | To P2-A2; limited cover |
 | P2-A2 Exposed crossing | (22.9, 21.8) | High-risk crossing | To P2-A3; retain recovery cover nearby |
@@ -110,9 +110,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 
 **Graph constraints:** all edges are bidirectionally traversable unless explicitly marked otherwise; no drop, climb, jump or squeeze is implied by a line alone. For every edge, the final graph must state clear width, elevation, traversal verb, threat accessibility, sightline condition, fail/recovery behavior and whether it is part of the intended fast route. The current concept has no approved one-way drop.
 
-The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). Both drawings remain proposals until reconciled against the Phase 1 service mouth and the Godot world.
-
-**Candidate world transform for handoff review:** Phase 1 defines the service mouth at approximately `X=34, Z=4.5..7.5`, i.e. a 3 m clear width along Z. The parking plan now represents a 3 m opening at the west edge of the entry vestibule, with threshold plane `local X≈5.3, Z≈21.8`. The candidate transform is `world X = local X + 28.7`; `world Z = local Z − 15.8`. This aligns the threshold plane at world `(X≈34, Z≈6)`; the interior spawn pocket is near `(X≈35.5, Z≈6)`. This is a derived alignment hypothesis, not an approved implementation coordinate. Confirm opening footprint, orientation and elevation in the Phase 1 SVG/scene before adopting it. Do not rotate or offset the scene independently of the mouth collider. Under this transform, the far-side egress is near world `(X≈71.5, Z≈−14)`. The current prototype instead starts its parking-entry checkpoint near `(X=34.5, Z=0)` and its builder uses a 14 m corridor half-width of only 7 m. Those are real integration mismatches: reconcile the spawn/floor/route to this design or return a documented design change for review. Do not silently move the designed service mouth to match the old prototype.
+The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). The plan, section and overlays use a local coordinate frame only. Do not preserve the former candidate transform (`X + 28.7`, `Z − 15.8`) as a constraint: it was an unverified attempt to align the concept entry to one provisional Phase 1 mouth, and the narrative may choose another route through the building and a different exit. The required invariant is a physically continuous threshold between the final selected Phase 1 exit and this parking entry. After the interior route is locked, derive and record one transform from the actual exit footprint/orientation/elevation; compare the integrated parking checkpoint and builder against that transform. The current prototype starts near `(X=34.5, Z=0)` and its builder has only a 14 m corridor half-width of 7 m; these are implementation facts to reconcile, not reasons to force the architecture to that coordinate.
 
 ### 2.5 Provisional edge and clearance contract
 
@@ -120,7 +118,7 @@ These are design targets for the concept graph, not measured clearances in the c
 
 | Edge | Traversal | Target clear width | Sightline / exposure | Recovery and threat rule |
 |---|---|---:|---|---|
-| P2-01 → P2-02 | Walk/run, no jump | ≥2.0 m | Entry is briefly sheltered by facade | Unit enters from the same service mouth after a readable delay; no spawn in front of Elena |
+| P2-01 → P2-02 | Walk/run, no jump | ≥2.0 m | Entry is briefly sheltered by facade | Threat enters only through the actual connected Phase 1 exit; no spawn in front of Elena |
 | P2-02 → P2-A1 → P2-A2 | Direct walk/run | ≥3.5 m at aisle; ≥1.5 m at turns | High exposure across the central aisle | Nearest cover cluster remains reachable; threat may pursue only along visible, traversable aisle |
 | P2-02 → P2-B1 → P2-B2 | Walk/crouch where needed | ≥1.2 m at the single authored pinch; otherwise ≥1.5 m | Broken sightline behind parked vehicles | No required jump; player can retreat to P2-02 until the final commitment |
 | P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
@@ -193,7 +191,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Design purpose:** deliver release without implying that the larger conflict is resolved.  
 **Narrative result:** the immediate recovery unit is evaded; Helix's ability to identify and track Elena remains a threat. End with a short, authored beat that changes the player's understanding or stakes, not a generic “level complete” message.
 
-The plan labels O1/O2/O3 correspond to provisional register entries P2-O1/P2-O2/P2-O3. Their IDs are stable design references, but their placements and dimensions are not production-locked until plan, section, graph and actual collision envelopes are reconciled. The final number and placement of physical obstacles remain subject to playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
+The plan labels O1/O2/O3 correspond to provisional register entries P2-O1/P2-O2/P2-O3. Their IDs are stable design references, but their placements and dimensions are not production-locked until plan, section, graph and actual collision envelopes are reconciled. The design no longer assumes the player arrives from a specific Phase 1 coordinate; the final parking entry is to be transformed or redrawn around the selected exit, not vice versa. The final number and placement of physical obstacles remain subject to playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
 
 ## 4. Route alternatives and threat fairness
 
