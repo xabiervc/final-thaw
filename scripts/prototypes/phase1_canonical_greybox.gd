@@ -407,6 +407,11 @@ func _build_sloped_stairs(label: String, x0: float, x1: float, z0: float, z1: fl
 	ramp.rotation.x = -angle
 	ramp.position = Vector3((x0 + x1) * 0.5, (y0 + y1) * 0.5, (z0 + z1) * 0.5) - ramp.basis.y * 0.09
 	(ramp.get_child(1) as MeshInstance3D).visible = false
+	# Handrails follow the stair slope and meet the floor at both landings.
+	for side in ["West", "East"]:
+		var rail_x: float = x0 + 0.05 if side == "West" else x1 - 0.05
+		var handrail := _body_box(label + "Rail" + side, Vector3(0.1, RAIL_HEIGHT, ramp_length), Vector3(rail_x, (y0 + y1) * 0.5 + RAIL_HEIGHT * 0.5, (z0 + z1) * 0.5), materials.get_material("safety_paint"))
+		handrail.rotation.x = -angle
 	var count: int = maxi(1, int(ceil(absf(rise) / 0.2)))
 	var base_y: float = minf(y0, y1) - 0.3
 	for i in count:
@@ -472,11 +477,16 @@ func _build_upper_route() -> void:
 	_body_box("MezzanineEastRail", Vector3(0.1, RAIL_HEIGHT, 7.0), Vector3(28.02, 1.5 + RAIL_HEIGHT * 0.5, -5.0), rail)
 	_body_box("MezzanineSouthRailWest", Vector3(10.0, RAIL_HEIGHT, 0.1), Vector3(14.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
 	_body_box("MezzanineSouthRailEast", Vector3(11.0, RAIL_HEIGHT, 0.1), Vector3(22.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
+	_body_box("MezzanineWestRail", Vector3(0.1, RAIL_HEIGHT, 4.5), Vector3(8.98, 1.5 + RAIL_HEIGHT * 0.5, -6.75), rail)
+	# Fixed shaft rails protect the lift void at M when the deck is on P0.
+	_body_box("LiftShaftSideRailUpperWest", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(24.45, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
+	_body_box("LiftShaftSideRailUpperEast", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(27.55, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
 
-	# S2 joins M (z=-1.5, y=1.5) to P2 (z=-4.5, y=3).
+	# S2 is walkable in both directions and has handrails that follow the actual slope.
 	_build_sloped_stairs("ControlStairsS2", 9.0, 13.0, -4.5, -1.5, 3.0, 1.5)
-	_body_box("S2RailWest", Vector3(0.1, 1.1, 3.0), Vector3(8.88, 2.8, -3.0), rail)
-	_body_box("S2RailEast", Vector3(0.1, 1.1, 3.0), Vector3(13.12, 2.8, -3.0), rail)
+	# The upper observation walkway is exposed to the atrium; guard both open edges.
+	_body_box("P2WalkwaySouthRail", Vector3(13.0, RAIL_HEIGHT, 0.1), Vector3(19.5, 3.0 + RAIL_HEIGHT * 0.5, -1.52), rail)
+	_body_box("P2WalkwayEastRail", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(26.02, 3.0 + RAIL_HEIGHT * 0.5, -3.0), rail)
 
 
 func _build_lift() -> void:
@@ -489,12 +499,17 @@ func _build_lift() -> void:
 	add_child(lift)
 	lift.state_changed.connect(_on_lift_state_changed)
 	# Fixed landing gates protect the shaft when the deck is elsewhere.
-	_lower_lift_gate = _body_box("LiftSafetyGateLower", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 0.55, -1.1), materials.get_material("safety_paint"))
+	_lower_lift_gate = _body_box("LiftSafetyGateLower", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 0.55, -1.49), materials.get_material("safety_paint"))
 	_lower_lift_gate_shape = _lower_lift_gate.get_child(0) as CollisionShape3D
 	_lower_lift_gate_mesh = _lower_lift_gate.get_child(1) as MeshInstance3D
 	_upper_lift_gate = _body_box("LiftSafetyGateUpper", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 2.05, -4.49), materials.get_material("safety_paint"))
 	_upper_lift_gate_shape = _upper_lift_gate.get_child(0) as CollisionShape3D
 	_upper_lift_gate_mesh = _upper_lift_gate.get_child(1) as MeshInstance3D
+	# Fixed side rails close the lateral gaps when the deck is away from either landing.
+	_body_box("LiftShaftSideRailLowerWest", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(24.45, RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
+	_body_box("LiftShaftSideRailLowerEast", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(27.55, RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
+	_body_box("LiftShaftSideRailUpperWest", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(24.45, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
+	_body_box("LiftShaftSideRailUpperEast", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(27.55, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
 	_refresh_stationary_lift_gates()
 	_lift_lower_button = _visual_box("LiftCallLower", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 0.28, -0.2), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
 	_label3d("LiftCallLowerLabel", "LLAMAR · P0", Vector3(26.7, 0.72, -0.2), Color(0.95, 0.8, 0.4), 16, 0.003)
