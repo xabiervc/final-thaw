@@ -59,7 +59,7 @@
 | P2-ARCH-01 | Parking reads as a service forecourt belonging to the lab | Dimensioned plan, facade and site-boundary callouts | Scene inspection from entry camera |
 | P2-ARCH-02 | Entry, exit and vehicle circulation form a traversable network | Plan, section, spatial graph and clearance table | Walk every edge with actual capsule/camera |
 | P2-ROUTE-01 | At least two routes have distinct exposure/traversal risk | Route overlay and risk comparison | Playtest both routes; record outcomes |
-| P2-ROUTE-02 | All major obstacles have ID, dimensions, solution and recovery | Obstacle register and approach/landing diagrams | Collision/behavior test and manual traversal |
+| P2-ROUTE-02 | All major obstacles have ID, dimensions, solution and recovery | `LEVEL_STRUCTURE.md` obstacle register and `obstacle_detail_sheet.svg` plan/elevation details | Collision/behavior test and manual traversal; verify 1.3 × 2.2 m O3 aperture for player and threat |
 | P2-AI-01 | Threat sees only within range/cone/line of sight | Sightline overlay and threat-state table | Occlusion, range, noise and last-known-position tests |
 | P2-AI-02 | Threat cannot use undocumented shortcuts or cross solid obstacles | Threat navigation overlay | Walkthrough of all enemy/player routes |
 | P2-FEEDBACK-01 | Alert/detection is legible and fair | Audio/visual feedback spec | Verify HUD, audio and state transitions in play |
@@ -77,7 +77,7 @@ These rows define requirements and evidence, not passing results. No Phase 2 req
 
 | Requirement ID | Design requirement | Source of truth | Evidence required before design acceptance | Owner |
 |---|---|---|---|---|
-| P2-DOC-01 | Parking plan and section agree on overall dimensions, parking-row depth, apron width, orientation and vertical clearance | `LEVEL_STRUCTURE.md`, `parking_plan_concept.svg`, `section_parking_concept.svg` | Reconcile the 48 × 30 m plan with the 30 m north–south section, 5 m bay depths, 17.3 m apron, 2.8 m headroom target and vehicle envelopes | Design owner + programming owner |
+| P2-DOC-01 | Parking plan and section agree on overall dimensions, parking-row depth, apron width, orientation and vertical clearance | `LEVEL_STRUCTURE.md`, `parking_plan_concept.svg`, `section_parking_concept.svg` | Reconcile the 48 × 30 m plan with the 30 m north–south section, 5 m bay depths, 17.3 m apron, 2.8 m clear below the overhead pipe racks; no continuous canopy and vehicle envelopes | Design owner + programming owner |
 | P2-DOC-02 | Parking local-to-world transform aligns with the selected Phase 1 alternative exit | `FASE1_SPATIAL_GRAPH.md`, `LEVEL_STRUCTURE.md`, parking plan and overlays | Selected baseline: world X=local X+28.7 m, Z=local Z−15.8 m, Y=−2.0 m; threshold local (5.3,21.8) maps to world (34,6), spawn (35.5,6), far egress (71.5,−14). Verify footprint, orientation, elevation and continuous colliders in Godot | Design owner defines; programmer verifies in scene |
 | P2-DOC-03 | Two routes are meaningfully different in exposure and traversal cost | `LEVEL_STRUCTURE.md` route graph and edge contract | Plan overlay plus route-by-route playtest observations | Design owner + programmer |
 | P2-DOC-04 | Every obstacle has stable ID, dimensions, approach, bypass and recovery | `LEVEL_STRUCTURE.md` obstacle register | Reviewed collision envelopes and manual traversal evidence | Design owner defines; programmer implements |
