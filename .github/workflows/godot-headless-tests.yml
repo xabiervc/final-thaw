@@ -48,3 +48,6 @@ jobs:
 
       - name: Canonical Phase 1 integration
         run: godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
+
+      - name: Phase 2 parking-entry handoff
+        run: godot --headless --path . res://tests/test_phase2_parking_entry.tscn
