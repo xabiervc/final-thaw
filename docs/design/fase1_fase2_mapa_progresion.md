@@ -59,7 +59,7 @@ La lista definitiva de obstáculos y sus estados se cierra en la especificación
 
 El aparcamiento incluye contexto legible —acceso de servicio, carriles, plazas, pilares y vehículos inmóviles— y una ruta que recibe al jugador desde la boca este. Se reutiliza `scenes/prototypes/phase2_parking_chase.tscn` si sus contratos de checkpoint, percepción y navegación lo permiten. La versión standalone del corredor conserva su punto de inicio original.
 
-El plano conceptual del parking y la sección se encuentran en `docs/design/assets/phase2_parking/parking_plan_concept.svg` y `docs/design/assets/phase2_parking/section_parking_concept.svg`; la especificación de arquitectura/rutas/encuentros está en `docs/LEVEL_STRUCTURE.md`. La transformación candidata para revisión es X mundo = X local + 27,2 m y Z mundo = Z local − 15,8 m, alineando el centro de la entrada conceptual con la boca de servicio aproximada (34, 6). No es coordenada aprobada hasta confirmar la huella real del umbral.
+El paquete conceptual del parking incluye planta, sección, overlay de amenaza y overlay de iluminación/hitos en `docs/design/assets/phase2_parking/`; la especificación de arquitectura/rutas/encuentros está en `docs/LEVEL_STRUCTURE.md`. La transformación candidata corregida es X mundo = X local + 28,7 m y Z mundo = Z local − 15,8 m: alinea el plano del umbral local X≈5,3 m con la boca de servicio de Fase 1 en X≈34, Z=4,5..7,5 (3 m libres). El punto de aparición seguro queda aproximadamente en mundo (35,5; 6), 1,5 m dentro del vestíbulo. No es coordenada aprobada hasta confirmar huella, orientación y cota reales en la escena.
 
 El handoff se acepta solo cuando:
 1. G inicia la huida interior.
@@ -75,7 +75,7 @@ El handoff se acepta solo cuando:
 - **Dirección fijada:** laboratorio completo y explorable en gran parte; puzle integrado en el edificio; G abre la huida interior; persecución antes de salir; salida alternativa a parking.
 - **Contrato existente que se conserva:** circuito, estados iniciales, recuperación reversible, escáner, mantenimiento y elevador P0↔M.
 - **Diseño por cerrar en plano/greybox:** huella final de la galería de evacuación, medidas del recorrido de persecución, posiciones de obstáculos, puertas y estados de seguridad.
-- **Narrativa especificada para el opening (propuesta):** mantenimiento encola `SERVICE_OVERRIDE`; abrir la compuerta exterior de G envía la auditoría y activa el protocolo de recuperación; el registro revela que el resultado fue retenido y la recomendación de despliegue suprimida.
+- **Contrato narrativo provisional del opening:** mantenimiento encola `SERVICE_OVERRIDE`; cruzar el umbral exterior de G envía la auditoría y activa Containment. El registro revela que el resultado fue retenido y la recomendación de despliegue suprimida. La implementación, el destinatario/supervisión y la motivación de la supresión siguen sin estar verificados o cerrados.
 - **Narrativa aún abierta:** motivo de la supresión, cadena de mando concreta, identidad final/arte de la unidad, cronología completa, papel de Iris/Selene en esta secuencia y destino posterior. Ver `docs/narrative_complete.md`.
 - **Validación pendiente:** ejecución de todas las escenas, colisiones, cámara, navegación, secuencia de huida, salida física y transición al aparcamiento.
 
