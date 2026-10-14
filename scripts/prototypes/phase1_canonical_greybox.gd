@@ -18,7 +18,7 @@ const ARCHIVE_RECORD := "El acta oficial declara alimentación exclusiva del nod
 
 var materials = FacilityMaterials.new()
 var circuit = CircuitModel.new()
-var lift: Node3D
+var lift = null
 var player: CharacterBody3D
 var hud: CanvasLayer
 
@@ -428,7 +428,7 @@ func _current_hotspots() -> Array:
 		{"id":"selector", "at":Vector3(12.0, 3.0, -7.0), "verb":"Accionar", "name":"Selector de recuperación"},
 		{"id":"isolator", "at":Vector3(19.0, 3.0, -7.0), "verb":"Accionar", "name":"Aislador de ensayo"},
 		{"id":"indicators", "at":Vector3(15.0, 3.0, -7.0), "verb":"Consultar", "name":"Indicadores del circuito"},
-		{"id":"rearm", "at":Vector3(15.5, 3.5, -5.85), "verb":"Rearmar", "name":"Protección de recuperación"},
+		{"id":"rearm", "at":Vector3(15.5, 3.5, -8.15), "verb":"Rearmar", "name":"Protección de recuperación"},
 		{"id":"diagnostic", "at":Vector3(7.25, 3.1, -6.0), "verb":"Inspeccionar", "name":"Terminal de diagnóstico"},
 		{"id":"archive", "at":Vector3(5.0, 3.1, -7.0), "verb":"Consultar", "name":"Archivo restringido"},
 		{"id":"shortcut", "at":Vector3(2.0, 3.0, -7.5), "verb":"Desbloquear", "name":"Puerta del vestíbulo oeste"},
