@@ -35,7 +35,7 @@ Galería de observación X 9..13, Z −9..−1,5; sala de bombas X 13..24, Z −
 
 Pared de soporte del panel E: X 9..24, Z=−8,35, desde Y=3 hasta Y=5,4. El panel conserva su centro contractual (15,5; 4,55; −8,15) y se monta en la cara sur de esa pared.
 
-G X 0..3, Z −9..−4,5; F X 3..9, Z −9..−4,5; E X 9..24, Z −8,5..−4,5; pasarela X 9..26, Z −4,5..−1,5, con hueco S2 X 9..13. Proteger los bordes norte/este de E y los bordes sur/este del saliente de pasarela. G no tiene escalera a P0. Mantener libre la ruta E→F→G y los anchos de paso; el panel debe poder leerse desde el área de operación.
+G X 0..3, Z −9..−4,5; F X 3..9, Z −9..−4,5; E X 9..24, Z −8,5..−4,5; pasarela X 9..26, Z −4,5..−1,5, con hueco S2 X 9..13. Cerrar el borde norte de E con la pared de soporte del panel y proteger su borde este con barandilla; proteger los bordes sur/este del saliente de pasarela. G no tiene escalera a P0. Mantener libre la ruta E→F→G y los anchos de paso; el panel debe poder leerse desde el área de operación.
 
 ## Cubierta y lectura del edificio
 
