@@ -244,8 +244,9 @@ func _build_ground_floor() -> void:
 	# The only intentional holes in the ground slab: the lift shaft, pit, and pit-stair mouth.
 	var regions: Array = [Rect2(Vector2(0.0, -10.0), Vector2(30.0, 22.0))]
 	var holes: Array = [
+		# One continuous maintenance void spans D1 and D2; S1 and the lift have their own openings.
 		Rect2(Vector2(24.5, -4.5), Vector2(3.0, 3.0)),
-		Rect2(Vector2(20.0, 1.0), Vector2(8.0, 7.0)),
+		Rect2(Vector2(10.0, 1.0), Vector2(18.0, 7.0)),
 		Rect2(Vector2(24.0, 8.0), Vector2(2.0, 3.0)),
 	]
 	for hole in holes:
@@ -276,13 +277,7 @@ func _build_fixed_geometry() -> void:
 	_visual_box("BrokenApproachWarning", Vector3(2.2, 0.16, 0.08), Vector3(3.0, 2.8, -3.48), _flat_material(Color(0.95, 0.54, 0.12), 0.45, 0.0, 1.1))
 	_label3d("BrokenStairSign", "ESCALERA COLAPSADA · NO PASAR", Vector3(3.0, 3.2, -3.45), Color(1.0, 0.66, 0.25), 16, 0.003)
 
-	# Pit protection. The S1 stair mouth stays open.
-	var rail := _flat_material(Color(0.55, 0.58, 0.6), 0.5, 0.7)
-	_body_box("PitRailWest", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(19.94, RAIL_HEIGHT * 0.5, 4.5), rail)
-	_body_box("PitRailEast", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(28.06, RAIL_HEIGHT * 0.5, 4.5), rail)
-	_body_box("PitRailNorth", Vector3(8.0, RAIL_HEIGHT, 0.12), Vector3(24.0, RAIL_HEIGHT * 0.5, 0.94), rail)
-	_body_box("PitRailSouthWest", Vector3(4.0, RAIL_HEIGHT, 0.12), Vector3(22.0, RAIL_HEIGHT * 0.5, 8.06), rail)
-	_body_box("PitRailSouthEast", Vector3(2.0, RAIL_HEIGHT, 0.12), Vector3(27.0, RAIL_HEIGHT * 0.5, 8.06), rail)
+	# The full pit perimeter is guarded in _build_pit(); S1 remains deliberately open.
 
 	# Distinct functional areas and the Aster column make the industrial volume readable.
 	_body_box("AsterVerticalColumn", Vector3(0.58, 3.4, 0.58), Vector3(14.5, 2.7, 0.5), materials.get_material("steel_light"))
@@ -296,9 +291,48 @@ func _build_fixed_geometry() -> void:
 	_label3d("SouthRouteMark", "PASILLO DE SERVICIO", Vector3(13.0, 0.06, 6.0), Color(0.7, 0.82, 0.86), 20, 0.003)
 	_label3d("PitApproachMark", "FOSO DE SERVICIO ↓", Vector3(21.8, 0.06, 9.7), Color(0.9, 0.74, 0.35), 20, 0.003)
 
+	# Room boundaries make the footprint read as an actual facility, while preserving every designed route.
+	# A/B threshold: short piers leave a broad view and passage into the main test nave.
+	_wall_x("AccessNavePierSouth", 7.0, 4.0, 5.6, 0.0, 3.2)
+	_wall_x("AccessNavePierNorth", 7.0, 8.4, 10.0, 0.0, 3.2)
+	_wall_x("AccessNaveLintel", 7.0, 5.6, 8.4, 2.8, 3.2)
+	# B/C workshop partition with a service doorway.
+	_wall_x("NaveWorkshopPierSouth", 20.0, -9.0, -7.2, 0.0, 3.2)
+	_wall_x("NaveWorkshopPierNorth", 20.0, -4.8, -2.0, 0.0, 3.2)
+	_wall_x("NaveWorkshopLintel", 20.0, -7.2, -4.8, 2.8, 3.2)
+	# Industrial details at scale: overhead cable trays, ducts and column footings.
+	_body_box("CableTrayMain", Vector3(15.0, 0.12, 0.22), Vector3(14.0, 3.05, -1.4), materials.get_material("steel"))
+	_body_box("CableTrayCross", Vector3(0.22, 0.12, 8.0), Vector3(18.5, 3.05, 1.0), materials.get_material("steel"))
+	_body_box("AsterColumnFooting", Vector3(1.0, 0.24, 1.0), Vector3(14.5, 0.12, 0.5), materials.get_material("steel"))
+	# A few repeated service cabinets give the long nave a measurable industrial rhythm.
+	for cabinet_index in range(3):
+		_body_box("NaveServiceCabinet_%02d" % cabinet_index, Vector3(0.75, 1.5, 0.65), Vector3(8.5 + cabinet_index * 2.0, 0.75, -2.2), materials.get_material("steel_light"))
+	_label3d("NaveLabel", "B · NAVE DE ENSAYO", Vector3(14.0, 0.12, 7.0), Color(0.75, 0.86, 0.9), 18, 0.003)
+	_label3d("ServiceDoorLabel", "ACCESO TÉCNICO", Vector3(20.3, 2.1, -6.0), Color(0.8, 0.86, 0.88), 14, 0.003)
+	# Roof framing establishes a building volume without hiding the Aster sightline.
+	for beam_index in range(5):
+		_body_box("RoofBeam_%02d" % beam_index, Vector3(0.18, 0.18, 22.0), Vector3(4.0 + beam_index * 5.0, 5.25, 1.0), materials.get_material("steel"))
+	_body_box("NorthDuct", Vector3(25.0, 0.35, 0.45), Vector3(15.0, 4.85, -9.2), materials.get_material("steel"))
+
 
 func _build_pit() -> void:
-	_add_floor_rect(Rect2(Vector2(20.0, 1.0), Vector2(8.0, 7.0)), -2.0, "PitFloor", materials.get_material("grate"))
+	# D1 and D2 form one connected lower maintenance level, visually zoned by machinery and markings.
+	_add_floor_rect(Rect2(Vector2(10.0, 1.0), Vector2(18.0, 7.0)), -2.0, "PitFloor", materials.get_material("grate"))
+	_add_floor_rect(Rect2(Vector2(10.0, 1.0), Vector2(10.0, 7.0)), -2.0, "D1DewateringInset", materials.get_material("floor"))
+	_body_box("D1Sump", Vector3(1.3, 0.18, 1.0), Vector3(13.0, -1.86, 6.4), materials.get_material("steel"))
+	_body_box("D1PumpA", Vector3(0.8, 0.9, 0.8), Vector3(15.0, -1.45, 3.0), materials.get_material("steel_light"))
+	_body_box("D1PumpB", Vector3(0.8, 0.9, 0.8), Vector3(17.0, -1.45, 3.0), materials.get_material("steel_light"))
+	_body_box("D1Manifold", Vector3(4.0, 0.16, 0.16), Vector3(16.0, -0.9, 2.0), materials.get_material("steel"))
+	_label3d("D1RoomLabel", "D1 · ACHIQUE / BOMBAS", Vector3(14.5, -1.2, 7.5), Color(0.7, 0.85, 0.9), 16, 0.003)
+	_label3d("D2RoomLabel", "D2 · DISTRIBUCIÓN", Vector3(23.5, -1.2, 7.5), Color(0.7, 0.85, 0.9), 16, 0.003)
+	# Guardrails protect the entire pit perimeter, with deliberate openings at S1 and the maintenance route.
+	var pit_rail := _flat_material(Color(0.55, 0.58, 0.6), 0.5, 0.7)
+	_body_box("PitRailWest", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(9.94, -0.55, 4.5), pit_rail)
+	_body_box("PitRailEast", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(28.06, -0.55, 4.5), pit_rail)
+	_body_box("PitRailNorth", Vector3(18.0, RAIL_HEIGHT, 0.12), Vector3(19.0, -0.55, 0.94), pit_rail)
+	_body_box("PitRailSouthWest", Vector3(14.0, RAIL_HEIGHT, 0.12), Vector3(17.0, -0.55, 8.06), pit_rail)
+	_body_box("PitRailSouthEast", Vector3(2.0, RAIL_HEIGHT, 0.12), Vector3(27.0, -0.55, 8.06), pit_rail)
+	# S1 stair has a continuous walkable slope; its visual treads do not replace collision geometry.
 	# A continuous sloped collision surface with visible individual treads.
 	_build_sloped_stairs("FixedPitStairs", 24.0, 26.0, 8.0, 11.0, -2.0, 0.0)
 	_visual_box("SchematicBoard", Vector3(1.6, 1.0, 0.12), Vector3(27.0, -1.35, 6.0), materials.get_material("screen_dark"))
