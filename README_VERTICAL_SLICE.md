@@ -15,3 +15,15 @@ From the repository root: `godot --headless --path . res://tests/test_vertical_s
 ## Limits and validation
 
 No runtime validation was performed by the authoring assistant. Test in the editor before calling this playable. The scene is built dynamically; its TSCN shows only a root node in the editor. The prototype intentionally has no Marcus, combat, sound, final assets, mobile touch controls, complete accessibility suite, or web export. The existing player controller may also need an interaction-input routing check because it consumes `interact`; verify the station interaction by hand. Do not merge into main until F6 and both headless test scenes pass.
+
+
+## Canonical 3D investigation slice
+
+The four-elevation Phase 1 greybox is a separate scene, not the main menu target:
+
+- Run it in the editor with **F6 (Run Current Scene)**: `scenes/prototypes/phase1_canonical_greybox.tscn`.
+- Run its integration test: `godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn`.
+- Architectural authority: `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md`, the floor-plan SVGs under `docs/design/assets/phase1_architecture/`, and the spatial/greybox/functional specifications.
+- The canonical scene builder now places the lift between P0 (Y=0) and M (Y=+1.5), then uses fixed stairs S2 to reach P2 (Y=+3). G is a horizontal exit vestibule; it has no return stair.
+
+The scene and integration assertions have been updated, but Godot execution and manual traversal are still required. Treat runtime validity, clearances, camera readability, collision behavior and the complete G→H handoff as **unverified** until recorded locally.

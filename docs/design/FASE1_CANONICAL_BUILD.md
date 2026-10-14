@@ -10,15 +10,13 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.0; FASE1_SPATIAL_GRAPH.md v0.6; FASE1_GREYBOX_S
 
 El builder canónico construye ahora las cuatro cotas, M/S2, salas funcionales y una esclusa G horizontal. La instancia del elevador usa Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. Se ha añadido un recurso .tscn explícito y el test de integración lo instancia. Reutiliza circuito, jugador, HUD y materiales; no modifica persistencia ni inputs.
 
-## Orden
+## Orden de verificación
 
-1. Reconstruir P0/P−1: A/B/C, columna, galerías, D1/D2 y S1.
-2. Reconfigurar elevador a upper_y=1.5; ajustar compuerta y añadir test de misión.
-3. Construir mezzanine M y S2.
-4. Construir E/F/G y pasarela sin escaleras a P0.
-5. Reintegrar fixtures/interacciones.
-6. Actualizar pruebas y ejecutar regresión Fase 0.
-7. Probar el recorrido a mano antes de Containment.
+1. Ejecutar test de circuito, elevador genérico, transporte, integración canónica y regresión Fase 0.
+2. Corregir errores de parseo/runtime antes de ampliar el slice.
+3. Recorrer A→B→D→P0→M→S2→E→F→G→H a mano.
+4. Revisar cámara, sightlines, colisiones, anchos, puertas y pérdida de energía.
+5. Validar el prototipo motion/chase v2 por separado y después la transición combinada.
 
 ~~~sh
 godot --headless --path . res://tests/test_phase1_circuit_model.tscn

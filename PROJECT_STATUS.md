@@ -28,10 +28,9 @@ The canonical scene builder now constructs P−1, P0, M (+1.5 m) and P2 (+3 m), 
 
 ## Next verification
 
-1. Rebuild geometry without changing circuit behavior.
-2. Add mission checks for graph and 1.5 m elevator.
-3. Run circuit, lift, transport, canonical integration, and Phase 0 regression under Godot 4.7.x/Compatibility.
-4. Manually check sightlines, camera, clearance, gates, lift power loss, clues and G→H.
-5. Validate motion/chase v2 separately before accepting the combined slice.
+1. Run circuit, generic lift, transport, canonical integration, and Phase 0 regression under Godot 4.7.x/Compatibility.
+2. Fix any parse/runtime/test failures before expanding the slice.
+3. Manually traverse A→B→D→P0→M→S2→E→F→G→H; inspect sightlines, camera, clearance, gates, lift power loss, clues and transition.
+4. Validate motion/chase v2 separately before accepting the combined slice.
 
 Preserve inputs/autoloads/resource paths, JSON/CRC32 saves and Compatibility renderer. Keep old scenes. Distinguish code, automated tests, run results and human validation.
