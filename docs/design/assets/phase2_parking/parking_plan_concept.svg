@@ -79,7 +79,7 @@
     <rect x="520" y="145" width="78" height="48" class="service"/>
     <text x="559" y="164" class="small" text-anchor="middle">JAULA</text><text x="559" y="177" class="small" text-anchor="middle">TÉCNICA</text>
     <rect x="596" y="196" width="48" height="22" class="obstacle"/>
-    <text x="620" y="210" class="tiny" text-anchor="middle">BARRERA</text>
+    <text x="620" y="205" class="tiny" text-anchor="middle">O3</text><text x="620" y="214" class="tiny" text-anchor="middle">BARRERA</text>
     <rect x="548" y="250" width="72" height="30" class="obstacle"/>
     <text x="584" y="268" class="tiny" text-anchor="middle">O2</text>
     <!-- cover blocks -->
@@ -89,6 +89,11 @@
     <rect x="424" y="215" width="58" height="34" class="service"/><text x="453" y="236" class="tiny" text-anchor="middle">COVER</text>
     <!-- O1 obstruction -->
     <rect x="190" y="188" width="27" height="30" class="obstacle"/><text x="203" y="206" class="tiny" text-anchor="middle">O1</text>
+    <!-- provisional threat sightline and functional light overlay; conceptual only -->
+    <path d="M330 190 L250 151 L250 229 Z" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <path d="M500 190 L425 151 L425 229 Z" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <ellipse cx="245" cy="190" rx="64" ry="36" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
+    <ellipse cx="445" cy="190" rx="70" ry="38" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <!-- routes -->
     <path d="M95 305 L150 305 L195 270 L270 270 L320 305 L405 305 L475 275 L535 275 L570 235 L620 207 L620 70 L599 25" class="routeA"/>
     <path d="M95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L450 135 L500 135 L520 170 L540 200 L570 235 L620 207 L620 70 L599 25" class="routeB"/>
@@ -111,10 +116,12 @@
     <line x1="0" y1="24" x2="44" y2="24" class="routeA"/><text x="56" y="28" class="small">Ruta A: rápida/expuesta</text>
     <line x1="0" y1="52" x2="44" y2="52" class="routeB"/><text x="56" y="56" class="small">Ruta B: cubierta/estrecha</text>
     <line x1="0" y1="80" x2="44" y2="80" class="threat"/><text x="56" y="84" class="small">Ruta de presión del perseguidor</text>
-    <rect x="0" y="102" width="22" height="18" class="car"/><text x="32" y="115" class="small">Vehículo estático / cobertura</text>
-    <rect x="0" y="132" width="22" height="18" class="column"/><text x="32" y="145" class="small">Pilar estructural</text>
-    <rect x="0" y="162" width="22" height="18" class="obstacle"/><text x="32" y="175" class="small">Obstáculo de encuentro</text>
-    <rect x="0" y="192" width="22" height="18" class="service"/><text x="32" y="205" class="small">Equipamiento / cubierta</text>
+    <rect x="0" y="94" width="44" height="18" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-dasharray="4 4"/><text x="56" y="106" class="small">Cono visual conceptual</text>
+    <rect x="0" y="124" width="22" height="18" class="car"/><text x="32" y="137" class="small">Vehículo estático / cobertura</text>
+    <rect x="0" y="154" width="22" height="18" class="column"/><text x="32" y="167" class="small">Pilar estructural</text>
+    <rect x="0" y="184" width="22" height="18" class="obstacle"/><text x="32" y="197" class="small">Obstáculo de encuentro</text>
+    <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cubierta</text>
+    <rect x="0" y="244" width="22" height="18" fill="#f0d88b" fill-opacity=".3" stroke="#c5a54f" stroke-dasharray="4 4"/><text x="32" y="257" class="small">Zona de iluminación conceptual</text>
     <text x="0" y="250" class="label">ESTADO</text>
     <text x="0" y="272" class="small">Propuesta espacial, no plano de obra.</text>
     <text x="0" y="291" class="small">Dimensiones por validar con cápsula,</text>
@@ -130,6 +137,6 @@
     <text x="0" y="520" class="small">Toda alternativa necesita un coste real.</text>
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
-  <text x="48" y="710" class="small">Coordinate convention for this concept only: X east/right, Z south/down; origin at northwest interior corner. Final mapping to Godot world coordinates is pending.</text>
+  <text x="48" y="710" class="small">Concept coordinates: X east/right, Z south/down; origin at northwest inside corner. Candidate handoff transform: world X = local X + 27.2 m; world Z = local Z − 15.8 m. This aligns the entry centre with the Phase 1 target (X≈34, Z≈6); confirm the actual opening footprint and elevation before approval.</text>
   <text x="48" y="730" class="small">Do not implement as-is without reconciliation against Phase 1 service-exit location and current prototype geometry.</text>
 </svg>
