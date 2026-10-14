@@ -4,12 +4,13 @@ extends RefCounted
 
 const PHOTO_DIR := "res://assets/textures/lab_photo/"
 
-static func make(texture_name: String, tint: Color, tile_m: float) -> StandardMaterial3D:
+static func make(texture_name: String, tint: Color, tile_m: float, normal_strength: float = 0.5) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.resource_name = texture_name
 	m.albedo_texture = load(PHOTO_DIR + texture_name + "_diff.jpg")
 	m.albedo_color = tint
 	m.normal_enabled = true
+	m.normal_scale = normal_strength  # photographic normals read as heavy relief at gameplay distance, so they are softened
 	m.normal_texture = load(PHOTO_DIR + texture_name + "_nor.png")
 	var arm: Texture2D = load(PHOTO_DIR + texture_name + "_arm.jpg")
 	m.ao_enabled = true

@@ -21,10 +21,10 @@ const SUN_ENERGY := 0.6
 const FOG_DENSITY := 0.006
 ## Lighting pass (all visual-only; gl_compatibility has no SSAO/SDFGI/volumetric fog, so the look comes from
 ## colour grading, glow, soft fixture lights and a cool sun/warm accent contrast).
-const GLOW_INTENSITY := 0.9
-const GLOW_THRESHOLD := 0.9
-const CONTRAST := 1.12
-const SATURATION := 1.1
+const GLOW_INTENSITY := 0.5
+const GLOW_THRESHOLD := 1.0
+const CONTRAST := 1.06
+const SATURATION := 0.92
 const FIXTURE_ENERGY := 1.1
 const FIXTURE_RANGE := 7.5
 const FIXTURE_HEIGHT := 2.3
@@ -150,7 +150,7 @@ func _dress_floor(layout: Dictionary) -> void:
 				else:
 					b.append(_place(pos))
 			edges.append(_place(Vector3(rect.position.x + 1.0 + 2.0 * i, FLOOR_LIFT, back_z)))
-	var floor_mat := _photo("concrete_floor_worn_001", Color(0.85, 0.93, 0.97), 2.0)
+	var floor_mat := _photo("concrete_floor_worn_001", Color(0.62, 0.68, 0.72), 3.0)
 	_batch("lab_floor_2x2_a.glb", a, "FloorA", floor_mat)
 	_batch("lab_floor_2x2_b.glb", b, "FloorB", floor_mat)
 	_batch("lab_floor_edge_2m_a.glb", edges, "FloorEdgeBack", _photo("metal_plate_02", Color(0.7, 0.75, 0.78), 1.0))
@@ -160,7 +160,7 @@ func _dress_walls(layout: Dictionary) -> void:
 	var x0: float = layout["x0"]
 	var x1: float = layout["x1"]
 	var half: float = layout["half"]
-	var wall_mat := _photo("painted_plaster_wall", Color(0.9, 1.0, 1.0), 2.0)
+	var wall_mat := _photo("painted_plaster_wall", Color(0.80, 0.90, 0.95), 3.0)
 	var back_a: Array[Transform3D] = []
 	var back_b: Array[Transform3D] = []
 	var front_low: Array[Transform3D] = []
@@ -197,7 +197,7 @@ func _dress_dividers(dividers: Array) -> void:
 		for k in count:
 			var z := minf(float(d[1]), float(d[2])) + step * (k + 0.5)
 			panels.append(_place(Vector3(float(d[0]), 0.0, z), 90.0, step / PANEL_LENGTH))
-	_batch("lab_divider_wall_2m_a.glb", panels, "Dividers", _photo("concrete_panels", Color(0.8, 0.88, 0.92), 4.0))
+	_batch("lab_divider_wall_2m_a.glb", panels, "Dividers", _photo("concrete_panels", Color(0.55, 0.62, 0.68), 8.0))
 
 
 func _dress_set_pieces(layout: Dictionary) -> void:
