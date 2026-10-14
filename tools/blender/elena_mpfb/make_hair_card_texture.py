@@ -20,7 +20,7 @@ PALETTES = {
 }
 
 
-def draw_strands(palette, seed=7, count=170):
+def draw_strands(palette, seed=7, count=230):
 	rng = random.Random(seed)
 	img = Image.new("RGBA", (W * SS, H * SS), (*palette[1], 0))
 	draw = ImageDraw.Draw(img)
@@ -33,11 +33,12 @@ def draw_strands(palette, seed=7, count=170):
 		phase = rng.uniform(0, math.tau)
 		base = rng.choice(palette)
 		shade = rng.uniform(0.8, 1.15)
+		root_y = H - rng.uniform(0.0, 0.14) * H  # staggered roots: ragged hairline instead of a hard edge
 		steps = 40
 		left, right = [], []
 		for i in range(steps + 1):
 			t = i / steps
-			y = H - t * length
+			y = root_y - t * length
 			x = x0 + math.sin(phase + t * math.pi * freq) * sway * t
 			w = width_root * (1.0 - 0.85 * t ** 1.4)
 			left.append(((x - w) * SS, y * SS))

@@ -194,6 +194,10 @@ def main():
 	bake_list = list(objs.values())
 	bake_atlas(bake_list, ASSET, ATLAS, tex_dir, samples=int(options["samples"]), margin=10)
 	finalize_materials(bake_list, ASSET)
+	cards = bpy.data.objects.get("Marcus_HairCards")
+	if cards:
+		cards.data.materials.clear()
+		cards.data.materials.append(bpy.data.materials.new("marcus_hair_cards"))
 	screen = bpy.data.objects[SCREEN]
 	screen.data.materials.clear()
 	screen.data.materials.append(bpy.data.materials.new("marcus_radio_screen"))

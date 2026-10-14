@@ -38,7 +38,7 @@ The source `.blend` files live outside the repo (`D:/Projects/evidence/final-tha
 
 - Procedural cloth/skin only: no painted detail, no fold detail, no freckles or skin variation beyond noise.
 - Face is a tuned MPFB head with simple eyes and brows; it does not reproduce the concept's painted likeness.
-- Hair: since 2026-10-14 it is hair cards (about 1,900 triangles of alpha-scissor strips following the skull from the hairline and centre part to the nape, plus ponytail strips) over a heavily decimated shell. Strand texture and material are procedural (`make_hair_card_texture.py`, `elena_hair_cards.tres`). Known issues: a dark patch of the shell shows at the crown between the strip groups, the front fringe is a hard line, and alpha-scissor edges alias at distance. It reads as hair with a parting and a ponytail, not yet as the concept's flowing style. Eyelash lines added for eye definition.
+- Hair: since 2026-10-14 it is hair cards (about 1,900 triangles of alpha-scissor strips following the skull from the hairline and centre part to the nape, plus ponytail strips) over a heavily decimated shell. Strand texture and material are procedural (`make_hair_card_texture.py`, `elena_hair_cards.tres`). Second pass (crown strips, staggered strand roots) removed the dark crown patch and the hard fringe line. Remaining: alpha-scissor edges alias at distance, the silhouette is a smooth dome. It reads as hair with a parting and a ponytail, not yet as the concept's flowing style. Eyelash lines added for eye definition.
 - Boot toes show the foot's toe shapes through the rubber.
 - Coat hem is slightly wavy; piping edges are face-stepped.
 - A-pose only. The Aster hangs at the right hand and needs a posed arm to look held.

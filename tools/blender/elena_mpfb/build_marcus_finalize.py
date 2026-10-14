@@ -12,7 +12,7 @@ import char_common as cc
 importlib.reload(garments)
 importlib.reload(cc)
 
-RATIOS = {'Marcus_Boots': 0.5, 'Marcus_Knit': 0.45, 'Marcus_Trousers': 0.55, 'Marcus_Jacket': 0.8, 'Marcus_Hair': 0.35}
+RATIOS = {'Marcus_Boots': 0.5, 'Marcus_Knit': 0.45, 'Marcus_Trousers': 0.55, 'Marcus_Jacket': 0.8, 'Marcus_Hair': 0.2}
 BUDGET = 30000
 KEEP_BONES = ('head', 'neck_', 'hand_', 'index_', 'middle_', 'pinky_', 'ring_', 'thumb_')
 

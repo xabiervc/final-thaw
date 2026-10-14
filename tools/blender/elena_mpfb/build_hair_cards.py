@@ -111,6 +111,18 @@ for side in (-1, 1):
 			u0 = rng.uniform(0.0, 0.7)
 			ribbon(bm, path, normals, widths, u0, u0 + 0.28)
 
+# layer D: crown strips radiating from the top so the shell never shows between the parting groups
+for side in (-1, 1):
+	for k in range(6):
+		root = Vector((side * (0.022 + 0.011 * k), -0.030 + 0.012 * k - CENTER.y, 0.106))
+		pts, nrm = head_path(root, side, 0.027)
+		ppts, pnrm = pony_path(rng.uniform(0, math.tau), rng.uniform(0.9, 1.15))
+		path, normals = pts + ppts[1:], nrm + pnrm[1:]
+		count = len(path)
+		widths = [0.030 * (1.0 - 0.6 * (i / (count - 1)) ** 1.5) for i in range(count)]
+		u0 = rng.uniform(0.0, 0.7)
+		ribbon(bm, path, normals, widths, u0, u0 + 0.28)
+
 # layer C: extra strips on the ponytail itself so it reads as a bunch, not a tube
 for k in range(14):
 	ppts, pnrm = pony_path(math.tau * k / 14 + rng.uniform(-0.15, 0.15), rng.uniform(0.9, 1.2))

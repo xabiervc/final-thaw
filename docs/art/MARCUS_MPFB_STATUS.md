@@ -6,7 +6,7 @@ Status: **textured asset, imports in Godot, not integrated in any scene, not fin
 |---|---|
 | Asset | `assets/models/lab_ref/ref_marcus_mpfb.glb` (skinned, 53-bone `game_engine` rig, A-pose, 1.817 m, front = +Z) |
 | Textures / material | `assets/textures/lab_ref/marcus_mpfb_{albedo,normal,orm}.png` (2048² atlas), `assets/materials/lab_ref/marcus_mpfb.tres`, amber `marcus_radio_screen.tres` |
-| Triangles | 28,724 (budget 30k) |
+| Triangles | 28,759 (budget 30k) |
 | Pipeline | `tools/blender/elena_mpfb/`: `char_common.py`, `build_marcus.py` → `build_marcus_finalize.py` (live Blender with MPFB), then `bake_marcus.py` (headless, ~3 min) |
 
 ## Evidence (2026-10-14)
@@ -14,7 +14,7 @@ Status: **textured asset, imports in Godot, not integrated in any scene, not fin
 - Not run: animation, profiling, grayscale readability, integration, owner review against the concept.
 
 ## Known limits (why it is not final)
-- Face is a generic tuned MPFB male head; no likeness to the concept. Stubble (procedural speckle on the lower face) and eyelash lines were added 2026-10-14; hairline is still stepped.
+- Face is a generic tuned MPFB male head; no likeness to the concept. Stubble (procedural speckle on the lower face) and eyelash lines were added 2026-10-14; hair is now cards (`build_marcus_hair_cards.py`, 52 strips radiating from the crown to the hairline over a decimated shell, `marcus_hair_cards.tres`); it reads as a short cropped cut with a fringe, not the concept's swept, textured top.
 - Jacket: no real stand collar (padded ring added instead), no pockets/zipper detail, yoke and elbow-patch edges are face-stepped, jacket is a smoothed shell without fold detail.
 - Boots show toe lobes; gloves are texture only on the skin hands.
 - A-pose only; MPFB licence not yet verified for `PROVENANCE.md`.

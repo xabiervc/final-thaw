@@ -10,7 +10,7 @@ import bpy
 sys.path.insert(0, 'D:/Projects/github/final-thaw/tools/blender/elena_mpfb')
 import garments  # noqa: E402
 
-RATIOS = {'Elena_Boots': 0.5, 'Elena_Knit': 0.5, 'Elena_Trousers': 0.6, 'Elena_Coat': 0.5, 'Elena_Hair': 0.1}
+RATIOS = {'Elena_Boots': 0.5, 'Elena_Knit': 0.5, 'Elena_Trousers': 0.6, 'Elena_Coat': 0.46, 'Elena_Hair': 0.1}
 BUDGET = 30000
 KEEP_BONES = ('head', 'neck_', 'hand_', 'index_', 'middle_', 'pinky_', 'ring_', 'thumb_')
 
