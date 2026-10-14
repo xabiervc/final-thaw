@@ -114,7 +114,7 @@
     <!-- labels -->
     <text x="78" y="344" class="tiny">UMBRAL GALLERY → PARKING</text><text x="130" y="320" class="label">ENTRADA / DECISIÓN</text>
     <text x="308" y="255" class="label" fill="#b94e30">A · DIRECTA / EXPUESTA</text>
-    <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / CUBIERTA</text>
+    <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / COBERTURA PARCIAL</text>
     <text x="365" y="205" class="small" text-anchor="middle">APRON / CRUCE EXPUESTO · 17,3 m</text>
     <text x="599" y="300" class="small" text-anchor="middle">EMBUDO DE SALIDA</text>
     <text x="450" y="53" class="small" text-anchor="middle">FILAS DE APARCAMIENTO</text>
