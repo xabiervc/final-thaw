@@ -92,11 +92,11 @@ The Phase 2 asset family now includes the plan, north–south section, threat/si
 
 ### 2.4 Provisional spatial graph
 
-The following coordinates are derived from the concept plan only. Origin is the northwest inside corner; X increases east, Z increases south. Values are approximate metres and must not be copied into the production builder before a coordinate transform and Phase 1 handoff review.
+The parking graph uses local metres, origin at the northwest inside corner, X east and Z south. The selected design-baseline transform is X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. Values are still approximate and must not be copied into the production builder until the physical handoff is verified against the canonical scene.
 
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
-| P2-01 Service threshold | (5.3, 21.8) local | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; world orientation/transform remain unlocked until Phase 1 exit is selected |
+| P2-01 Service threshold | local (5.3, 21.8); world (34, 6, −2) | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; aligned to the selected P−1 east mouth by the design-baseline transform |
 | P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (14.3, 19.3) | Short exposed path; turns north around the first column | To P2-A2; keep ≥1.2 m clear west of the column |
 | P2-A2 Exposed crossing | (22.9, 19.3) | High-risk central-apron crossing | To P2-A3; retain recovery cover nearby |
@@ -172,7 +172,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 ### Beat P2-02 — First cover decision
 **Player action:** choose between a more direct exposed aisle and a slower route through parked vehicles/columns.  
 **Design purpose:** teach that cover blocks line of sight but not necessarily sound.  
-**Fairness:** silhouettes, column rhythm, headlight/security-light contrast and the enemy's facing direction must communicate risk. The direct route must remain possible for a confident player; the covered route must be useful, not mandatory busywork.
+**Fairness:** silhouettes, column rhythm, headlight/security-light contrast and the enemy's facing direction must communicate risk. The direct route must remain possible for a confident player; the partially covered service route must be useful, not mandatory busywork.
 
 ### Beat P2-03 — Vehicle-row traversal
 **Player action:** thread through vehicle bays, columns and one clearly signposted service obstruction.  
