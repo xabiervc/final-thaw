@@ -7,14 +7,14 @@
 
 Elena debe reconocer una discrepancia física en la distribución eléctrica, poner el circuito en una configuración segura que permita consultar el archivo y salir de la instalación. La máquina de ensayo nunca arranca. La amenaza exterior pertenece a Fase 2 y empieza cuando el controlador de salida sincroniza el registro de mantenimiento.
 
-La experiencia se basa en inferencia ambiental, no en una secuencia arbitraria de interruptores. El jugador puede operar el circuito sin leer cada pista: las pistas explican el problema, pero no son llaves para los controles.
+La experiencia se basa en inferencia ambiental, no en una secuencia arbitraria de interruptores. El jugador puede operar el circuito sin leer cada pista: las pistas explican el problema, pero no son llaves para los controles. La topología y el contrato del circuito son decisiones aprobadas conceptualmente; los beats específicos de Helix/Containment descritos más abajo deben considerarse propuestas narrativas hasta aprobación explícita.
 
-## 2. Recorrido definitivo
+## 2. Recorrido espacial de referencia
 
 1. Entrar por el túnel exterior a A en P0: orientarse, observar la nave B y localizar la columna vertical de calibración Aster.
 2. Rodear el rig hasta la escalera fija S1.
 3. Bajar a D (Y=−2 m); comparar esquema y puente A→T y activar mantenimiento.
-4. Volver por S1 y llegar por la galería de servicio al elevador.
+4. Subir por S1 y regresar por el perímetro sur del foso y el pasillo este hasta la galería de servicio; no atravesar B ni el hueco para volver al elevador.
 5. Subir desde P0 (Y=0) a M, sala de bombas (Y=+1,5 m). El elevador termina aquí, no en control.
 6. Cruzar M y la galería de observación; subir por S2 a E/P2 (Y=+3 m).
 7. Operar el circuito en E, consultar F con suministro estable, atravesar G y salir a H.
@@ -63,9 +63,7 @@ Los controles contractuales mantienen sus centros de interacción: selector (12,
 
 G es una esclusa exterior compacta al oeste de F. La puerta F→G se desbloquea una sola vez desde F y después es bidireccional. La pared oeste contiene la compuerta exterior a H. G no tiene escalera ni conexión interna a P0.
 
-El interruptor de mantenimiento crea un evento de auditoría local **SERVICE_OVERRIDE** en la sesión. El acceso al registro del archivo, si se consultó, se añade como **RESTRICTED_RECORD_READ**. Ambos quedan en cola local mientras Elena permanece dentro. Al cruzar la compuerta exterior G, el relé de salida transmite los eventos; Helix detecta el uso de mantenimiento y activa Containment. Así se explica la respuesta sin vigilancia omnisciente ni una extracción automática al consultar el archivo.
-
-Elena percibe una señal de sincronización y alarma al cruzar la salida. En H, la unidad de recuperación comienza en patrulla y solo detecta a Elena mediante las reglas de visión, línea de visión y ruido del prototipo de persecución. No conoce su posición a través de paredes ni recibe una posición exacta por guion. El handoff canónico carga `scenes/prototypes/phase2_parking_chase.tscn`, que reutiliza el controlador y arranca en el checkpoint de entrada al aparcamiento (X=34,5); la escena standalone mantiene el inicio del corredor. El mensaje inicial del handoff no debe anunciar la unidad; la primera detección debe surgir de la visión, línea de visión o ruido. Debe verificarse que la unidad no detecte a Elena automáticamente al cargar.
+**Propuesta narrativa pendiente de aprobación (no canon cerrado):** el borrador actual plantea que el interruptor de mantenimiento genere `SERVICE_OVERRIDE`, que una consulta de F pueda generar `RESTRICTED_RECORD_READ` y que G transmita esos eventos a Helix. También propone una señal de sincronización para Elena y una unidad de recuperación en patrulla que detecte mediante visión, línea de visión y ruido. Son hipótesis de implementación, no requisitos narrativos definitivos. No ampliar ni declarar cerrada la causa de Containment, la percepción de Elena o el destino posterior hasta resolver esa decisión. La continuidad espacial G→H y el requisito técnico de no conceder conocimiento omnisciente al enemigo se mantienen; la escena standalone de persecución debe conservar su comportamiento.
 
 La consulta del archivo no es necesaria para operar los controles ni para abrir físicamente la salida; sí es el objetivo narrativo recomendado antes de salir. Si se omite, el evento SERVICE_OVERRIDE aún puede iniciar Containment, pero la sesión no concede el registro de evidencia.
 
