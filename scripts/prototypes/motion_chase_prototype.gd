@@ -1,5 +1,5 @@
 extends Node3D
-## Prototipo de movimiento, infiltracion y persecucion (hitos A y B, version 2).
+## Prototipo de movimiento y persecución (hitos A y B, versión 2); su tramo final se ambienta como aparcamiento de servicio.
 ## Escena aislada para validar la direccion de infiltracion y huida. No modifica el laboratorio,
 ## el arte, el guardado ni los contratos de Fase 0. Reutiliza el modelo y la capa de pose de Elena
 ## y el audio sintetizado del equipo de arte, con vuelta a primitivas si el modelo no carga.
