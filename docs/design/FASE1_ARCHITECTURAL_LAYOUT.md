@@ -87,7 +87,7 @@ La secuencia final prevista es:
 6. El exterior de servicio conecta de forma continua con el aparcamiento. El checkpoint de entrada de la escena de persecución de Fase 2 se usa como punto de integración, no como inicio standalone.
 7. Fase 2 continúa la huida en el aparcamiento. La escena standalone del corredor conserva su checkpoint propio.
 
-El disparador exacto de la amenaza, los eventos que Helix recibe, la causalidad de Containment y la percepción de Elena siguen siendo decisiones narrativas que deben cerrarse en el contrato de historia. La necesidad arquitectónica de la huida y su ruta alternativa sí quedan fijadas por esta dirección.
+El contrato narrativo provisional define que mantenimiento encola `SERVICE_OVERRIDE` y que cruzar el umbral exterior de G envía la auditoría e inicia Containment. Esto fija la causalidad jugable para el opening, pero no acredita su implementación. Siguen abiertas la identidad del destinatario, el grado de supervisión humana, la motivación de la supresión y la identidad final de la unidad de recuperación. La necesidad arquitectónica de la huida y su ruta alternativa sí quedan fijadas por esta dirección.
 
 ## 7. Autoridad, coordinación y criterios de aceptación
 
