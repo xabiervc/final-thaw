@@ -19,6 +19,18 @@ const PANEL_LENGTH := 2.0  # length of the 2 m kit panels
 const AMBIENT_ENERGY := 0.75
 const SUN_ENERGY := 0.6
 const FOG_DENSITY := 0.006
+## Lighting pass (all visual-only; gl_compatibility has no SSAO/SDFGI/volumetric fog, so the look comes from
+## colour grading, glow, soft fixture lights and a cool sun/warm accent contrast).
+const GLOW_INTENSITY := 0.9
+const GLOW_THRESHOLD := 0.9
+const CONTRAST := 1.12
+const SATURATION := 1.1
+const FIXTURE_ENERGY := 1.1
+const FIXTURE_RANGE := 7.5
+const FIXTURE_HEIGHT := 2.3
+const FIXTURE_DEPTH := 1.6  # metres in front of the wall
+const COLD_LIGHT := Color(0.72, 0.88, 1.0)
+const WARM_LIGHT := Color(1.0, 0.8, 0.55)
 
 @export var profile: String = "lab"
 
@@ -34,6 +46,7 @@ func _ready() -> void:
 	_dress_dividers(layout["dividers"])
 	_dress_set_pieces(layout)
 	_brighten()
+	_fixture_lights(layout)
 
 
 ## Rectangles are Rect2(x0, z0, width, depth) in metres.
@@ -213,6 +226,29 @@ func _brighten() -> void:
 		if env != null:
 			env.ambient_light_energy = maxf(env.ambient_light_energy, AMBIENT_ENERGY)
 			env.fog_density = minf(env.fog_density, FOG_DENSITY)
+			env.glow_enabled = true
+			env.glow_intensity = GLOW_INTENSITY
+			env.glow_hdr_threshold = GLOW_THRESHOLD
+			env.adjustment_enabled = true
+			env.adjustment_contrast = CONTRAST
+			env.adjustment_saturation = SATURATION
 	for node in host.find_children("*", "DirectionalLight3D", true, false):
 		var sun := node as DirectionalLight3D
 		sun.light_energy = maxf(sun.light_energy, SUN_ENERGY)
+
+
+## A soft light under every wall fixture, alternating cold/warm, so the room shows pools of light instead of one flat tone.
+## No shadows (cheap on the integrated GPU); the level's own lamps are left as they are.
+func _fixture_lights(layout: Dictionary) -> void:
+	var half: float = layout["half"]
+	var i := 0
+	for lx in layout["lights"]:
+		var light := OmniLight3D.new()
+		light.name = "FixtureLight%d" % i
+		light.position = Vector3(float(lx), FIXTURE_HEIGHT, -half + FIXTURE_DEPTH)
+		light.light_color = COLD_LIGHT if i % 2 == 0 else WARM_LIGHT
+		light.light_energy = FIXTURE_ENERGY
+		light.omni_range = FIXTURE_RANGE
+		light.shadow_enabled = false
+		add_child(light)
+		i += 1

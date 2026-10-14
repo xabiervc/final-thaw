@@ -30,7 +30,7 @@ const CONFIG := {
 }
 ## Components that keep their greybox mesh but get a photographic material on the mesh with this base colour.
 const RETEXTURE := {
-	"moving_platform.gd": {"base_color": Color(0.34, 0.37, 0.41), "photo": "metal_plate", "tint": Color(0.75, 0.8, 0.85), "tile_m": 1.5},
+	"moving_platform.gd": {"base_color": Color(0.34, 0.37, 0.41), "photo": "metal_plate_02", "tint": Color(0.75, 0.8, 0.85), "tile_m": 1.5},
 }
 const GEM_REST_Y := 1.0  # the greybox gem floats around this height
 
