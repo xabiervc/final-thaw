@@ -37,11 +37,13 @@ La misión ocurre en una instalación clandestina de investigación hidrológica
 
 La progresión debe funcionar por inferencia ambiental, no por una lista de recados. Las pistas refuerzan el razonamiento, pero los controles siguen operativos sin leer cada una.
 
-## Diseño de la persecución
+## Evasión y persecución interior
 
-La persecución comienza **dentro** del edificio cuando se abre la compuerta exterior de G con `SERVICE_OVERRIDE` encolado y la amenaza cruza el umbral. Elena debe retroceder por F/E hacia S2. No implementar una transición directa al aparcamiento al abrir G.
+Abrir G con `SERVICE_OVERRIDE` encolado inicia Containment, pero no obliga a correr inmediatamente. Elena retrocede por F/E y atraviesa una sección silenciosa por espacios que pueden seguir ocupados. La carrera empieza cuando la unidad reacquiere a Elena en un umbral expuesto definido en el grafo (propuesta inicial: salida del elevador hacia la circulación P0). No implementar una transición directa al aparcamiento al abrir G.
 
 Requisitos del segmento interior:
+- La fase silenciosa tiene cobertura física, NPC con percepción/rutinas y rutas de patrulla legibles; evitar al personal es viable sin eliminarlo.
+- La carrera empieza en un umbral espacial concreto, anunciado por arquitectura y señales del edificio; la unidad reacquiere por percepción real. La posición exacta queda provisional hasta coordinar planta, sección y grafo.
 - La amenaza tiene un punto de entrada y una línea de persecución explicables por el edificio.
 - O1: estantería caída en F/P2, centro aproximado (8,0; 3,0; −7,0), volumen 1,0 × 1,1 × 0,8 m. La solución es rodearla por el paso visible, con un ancho libre objetivo de 1,2 m.
 - O2: bastidor de tuberías desplazado en M, centro aproximado (18,0; 1,5; −3,0), volumen 2,0 × 0,8 × 1,2 m. La solución es rodearlo sin invadir el acceso a S2 o elevador.
@@ -66,11 +68,11 @@ El handoff se acepta solo cuando:
 2. La sección de evasión silenciosa tiene NPC/estados, cobertura y percepción verificables.
 3. Un trigger espacial legible permite la transición a la carrera sin teletransporte ni corte de cámara.
 4. Elena atraviesa la ruta interior con el perseguidor activo.
-3. Llega a la boca de servicio de P−1.
-4. El exterior se conecta visualmente y físicamente al aparcamiento.
-5. La escena de parking empieza en el checkpoint de entrada, no al inicio standalone.
-6. El perseguidor no detecta a Elena antes de que la secuencia lo permita.
-7. No se pierde estado de misión ni se duplica el jugador al cambiar de escena.
+5. La salida alternativa seleccionada se alcanza sin teletransporte ni conexiones no dibujadas.
+6. El exterior se conecta visualmente y físicamente al aparcamiento.
+7. La escena de parking empieza en el checkpoint de entrada, no al inicio standalone.
+8. La percepción de personal y unidad es coherente con LOS, ruido, cobertura y estado de búsqueda.
+9. No se pierde estado de misión ni se duplica el jugador al cambiar de escena.
 
 ## Estado de decisiones
 
