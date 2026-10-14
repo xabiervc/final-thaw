@@ -42,7 +42,7 @@ The required player inference is:
 4. Select ARCHIVO.
 5. Inspect the diagnostic: destination is ARCHIVO, fault is absent, protection remains tripped only if it was tripped earlier.
 6. Rearm protection. The archive becomes stable; the terminal can be consulted.
-7. Read the restricted record. The terminal text is: **“ASTER TEST — RESULT WITHHELD. DEPLOYMENT RECOMMENDATION SUPPRESSED.”**
+7. Read the restricted record. The working Spanish terminal copy is: **“ENSAYO ASTER — RESULTADO RETENIDO. RECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.”** English localization is not locked and must preserve the same limited inference.
 8. Return to G. Opening its exterior leaf transmits the queued service audit once and starts Containment.
 
 ### Recoverable error path
