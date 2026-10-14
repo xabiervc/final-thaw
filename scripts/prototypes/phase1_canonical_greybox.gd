@@ -292,7 +292,7 @@ func _build_pit() -> void:
 	_build_sloped_stairs("FixedPitStairs", 24.0, 26.0, 8.0, 11.0, -2.0, 0.0)
 	_visual_box("SchematicBoard", Vector3(1.6, 1.0, 0.12), Vector3(27.0, -1.35, 6.0), materials.get_material("screen_dark"))
 	_label3d("PitSchematicTitle", "ESQUEMA · DISTRIBUCIÓN PREVISTA", Vector3(27.0, -0.91, 6.08), Color(0.7, 0.9, 0.94), 15, 0.0028)
-	_label3d("SchematicDiagram", "AUXILIAR → DIAGNÓSTICO\\nMANTENIMIENTO → LUCES / ASCENSOR\\nPROTECCIÓN → SELECTOR\\nENSAYO → T\\nARCHIVO → A", Vector3(27.0, -1.42, 6.08), Color(0.86, 0.95, 0.96), 12, 0.0024)
+	_label3d("SchematicDiagram", "AUXILIAR → DIAGNÓSTICO\nMANTENIMIENTO → LUCES / ASCENSOR\nPROTECCIÓN → SELECTOR\nENSAYO → T\nARCHIVO → A", Vector3(27.0, -1.42, 6.08), Color(0.86, 0.95, 0.96), 12, 0.0024)
 	_label3d("BridgeTitle", "PUENTE A → T", Vector3(22.2, -1.0, 4.0), Color(1.0, 0.63, 0.18), 22, 0.0035)
 	_visual_box("TamperedBridge", Vector3(1.5, 0.16, 0.3), Vector3(22.0, -1.78, 4.0), _flat_material(Color(0.95, 0.38, 0.08), 0.42, 0.3, 1.4))
 	_label3d("TamperedBridgeLabel", "CONEXIÓN MANIPULADA", Vector3(22.0, -1.45, 4.0), Color(1.0, 0.66, 0.3), 20, 0.0032)
@@ -311,7 +311,7 @@ func _build_scanner_fixtures() -> void:
 		marker.visible = false
 		_scan_labels.append(marker)
 	var glow := _flat_material(Color(0.25, 0.98, 0.9), 0.35, 0.1, 2.0)
-	var schematic_glow := _visual_box("ScanSchematicHighlight", Vector3(1.7, 0.05, 0.18), Vector3(27.0, -0.82, 6.0), glow)
+	var schematic_glow := _visual_box("ScanSchematicHighlight", Vector3(1.7, 0.05, 0.18), Vector3(27.0, -0.82, 6.1), glow)
 	var bridge_glow := _visual_box("ScanBridgeHighlight", Vector3(1.65, 0.05, 0.36), Vector3(22.0, -1.65, 4.0), glow)
 	var node_t_glow := _visual_box("ScanNodeTHighlight", Vector3(0.8, 0.05, 0.8), Vector3(14.5, 2.14, 0.5), glow)
 	var highlights: Array[MeshInstance3D] = [schematic_glow, bridge_glow, node_t_glow]
