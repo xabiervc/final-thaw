@@ -104,8 +104,8 @@ func _build_primitive_visual() -> void:
 	_add_mesh(head, Vector3(0.0, 1.72, 0.0), skin)
 
 	var hair_mesh := SphereMesh.new()
-	hair.radius = 0.18
-	hair.height = 0.34
+	hair_mesh.radius = 0.18
+	hair_mesh.height = 0.34
 	_add_mesh(hair_mesh, Vector3(0.0, 1.76, -0.05), hair)
 
 	var pack := BoxMesh.new()
