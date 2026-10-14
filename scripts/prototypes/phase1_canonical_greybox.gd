@@ -70,7 +70,7 @@ func _ready() -> void:
 	_build_doors()
 	_build_player_and_hud()
 	_refresh_state_fixtures()
-	_log("slice_ready", "Fase 1 canónica v1.0 · cuatro cotas")
+	_log("slice_ready", "Fase 1 canónica v1.1 · cuatro cotas")
 
 
 func _exit_tree() -> void:
