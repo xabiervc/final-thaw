@@ -480,7 +480,10 @@ func _build_upper_route() -> void:
 	_body_box("MezzanineWestRail", Vector3(0.1, RAIL_HEIGHT, 4.5), Vector3(8.98, 1.5 + RAIL_HEIGHT * 0.5, -6.75), rail)
 	# S2 is walkable in both directions and has handrails that follow the actual slope.
 	_build_sloped_stairs("ControlStairsS2", 9.0, 13.0, -4.5, -1.5, 3.0, 1.5)
-	# The upper observation walkway is exposed to the atrium; guard both open edges.
+	# E's north/east edges and the east spur of the observation walkway overlook the atrium.
+	_body_box("P2ControlNorthRail", Vector3(15.0, RAIL_HEIGHT, 0.1), Vector3(16.5, 3.0 + RAIL_HEIGHT * 0.5, -9.02), rail)
+	_body_box("P2ControlEastRail", Vector3(0.1, RAIL_HEIGHT, 4.5), Vector3(24.02, 3.0 + RAIL_HEIGHT * 0.5, -6.75), rail)
+	_body_box("P2WalkwayNorthRailEast", Vector3(2.0, RAIL_HEIGHT, 0.1), Vector3(25.0, 3.0 + RAIL_HEIGHT * 0.5, -4.49), rail)
 	_body_box("P2WalkwaySouthRail", Vector3(13.0, RAIL_HEIGHT, 0.1), Vector3(19.5, 3.0 + RAIL_HEIGHT * 0.5, -1.52), rail)
 	_body_box("P2WalkwayEastRail", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(26.02, 3.0 + RAIL_HEIGHT * 0.5, -3.0), rail)
 
