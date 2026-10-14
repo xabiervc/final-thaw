@@ -32,6 +32,11 @@
 | Hints support access | Escalating optional hint | Goal → clue relationship → stronger guidance | Helps without automatically skipping the puzzle |
 | Trigger is causal and singular | Agreed Containment event contract | Visible/audio system response | Transition fires once and not from optional record reading alone unless contract changes |
 
+| Mission-level maintenance side effect is separate from circuit logic | `MISSION1_GHOST_PROTOCOL.md`, `FASE1_FUNCTIONAL_SPEC.md`, `FASE1_LOGIC_CONTRACT.md` | Maintenance OFF→ON queues `SERVICE_OVERRIDE`; circuit outputs/history remain unchanged | State-transition test plus circuit reference regression |
+| Archive consultation adds knowledge but does not trigger Containment | `MISSION1_GHOST_PROTOCOL.md`, `CORE_LOOP.md` | `RESTRICTED_RECORD_READ` changes only on successful consultation with stable ARCHIVO | Test stable/unpowered archive and verify no chase trigger |
+| Opening exterior G sends queued audit once | `FASE1_FUNCTIONAL_SPEC.md`, `DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Door/audio/light response and one Containment activation | Test queued/missing queue, repeated open callback, mission restart |
+| Opening G without queued audit is recoverably denied | `MISSION1_GHOST_PROTOCOL.md`, `FASE1_FUNCTIONAL_SPEC.md` | Diegetic denial; no enemy spawn or state corruption | Test no queue, then activate maintenance and retry |
+
 ## 3. Phase 1 escape continuity (specified; not fully implemented/verified)
 
 | Requirement | Design authority | Required evidence |
