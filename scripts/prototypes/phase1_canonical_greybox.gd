@@ -280,10 +280,10 @@ func _build_fixed_geometry() -> void:
 	# The full pit perimeter is guarded in _build_pit(); S1 remains deliberately open.
 
 	# Distinct functional areas and the Aster column make the industrial volume readable.
-	_body_box("AsterVerticalColumn", Vector3(0.58, 3.4, 0.58), Vector3(14.5, 2.7, 0.5), materials.get_material("steel_light"))
+	_body_box("AsterVerticalColumn", Vector3(0.58, 4.4, 0.58), Vector3(14.5, 2.2, 0.5), materials.get_material("steel_light"))
 	_visual_box("AsterColumnBeacon", Vector3(0.8, 0.12, 0.8), Vector3(14.5, 4.45, 0.5), _flat_material(Color(0.3, 0.8, 0.8), 0.45, 0.2, 1.2))
 	_label3d("AsterColumnLabel", "ASTER · COLUMNA DE CALIBRACIÓN", Vector3(14.5, 4.7, 0.5), Color(0.5, 0.92, 0.9), 19)
-	_body_box("WorkshopBench", Vector3(2.8, 0.16, 0.8), Vector3(22.0, 0.85, -8.2), materials.get_material("steel"))
+	_body_box("WorkshopBench", Vector3(2.0, 0.16, 0.8), Vector3(21.4, 0.85, -8.2), materials.get_material("steel"))
 	_body_box("WorkshopCabinet", Vector3(0.75, 1.6, 0.65), Vector3(23.1, 0.8, -8.4), materials.get_material("steel_light"))
 	_body_box("WorkshopPipeRack", Vector3(2.4, 0.18, 0.18), Vector3(22.0, 2.1, -8.7), materials.get_material("steel"))
 	_label3d("WorkshopLabel", "C · TALLER TÉCNICO", Vector3(22.0, 1.4, -8.2), Color(0.7, 0.85, 0.9), 16, 0.003)
@@ -338,9 +338,9 @@ func _build_pit() -> void:
 	_label3d("PitSchematicTitle", "ESQUEMA · DISTRIBUCIÓN PREVISTA", Vector3(27.0, -0.91, 6.08), Color(0.7, 0.9, 0.94), 15, 0.0028)
 	_label3d("SchematicDiagram", "AUXILIAR → DIAGNÓSTICO\nMANTENIMIENTO → LUCES / ASCENSOR\nPROTECCIÓN → SELECTOR\nENSAYO → T\nARCHIVO → A", Vector3(27.0, -1.42, 6.08), Color(0.86, 0.95, 0.96), 12, 0.0024)
 	_label3d("BridgeTitle", "PUENTE A → T", Vector3(22.2, -1.0, 4.0), Color(1.0, 0.63, 0.18), 22, 0.0035)
-	_visual_box("TamperedBridge", Vector3(1.5, 0.16, 0.3), Vector3(22.0, -1.78, 4.0), _flat_material(Color(0.95, 0.38, 0.08), 0.42, 0.3, 1.4))
+	_visual_box("TamperedBridge", Vector3(1.5, 0.16, 0.3), Vector3(22.0, -1.92, 4.0), _flat_material(Color(0.95, 0.38, 0.08), 0.42, 0.3, 1.4))
 	_label3d("TamperedBridgeLabel", "CONEXIÓN MANIPULADA", Vector3(22.0, -1.45, 4.0), Color(1.0, 0.66, 0.3), 20, 0.0032)
-	_visual_box("MaintenanceHousing", Vector3(0.65, 0.55, 0.35), Vector3(26.0, -1.55, 2.0), materials.get_material("steel_light"))
+	_visual_box("MaintenanceHousing", Vector3(0.65, 0.55, 0.35), Vector3(26.0, -1.725, 2.0), materials.get_material("steel_light"))
 	_switch_lamp = _visual_box("MaintenanceStatusLamp", Vector3(0.22, 0.12, 0.08), Vector3(26.0, -1.22, 1.78), _flat_material(Color(0.9, 0.2, 0.1), 0.35, 0.0, 1.3))
 	_label3d("MaintenanceLabel", "MANTENIMIENTO", Vector3(26.0, -0.85, 2.0), Color(0.92, 0.88, 0.7), 20, 0.0032)
 
