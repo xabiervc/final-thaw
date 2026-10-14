@@ -26,6 +26,21 @@ This document separates current design direction, actual implementation evidence
 | Technical/workflow contracts | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Protected engineering, testing and evidence requirements |
 | Asset provenance | `docs/art/PROVENANCE.md` | Active source/licence record |
 
+## Selected opening design decisions
+
+These decisions are the current design baseline for the opening. **Selected** means the design direction is chosen; it does not mean the scene has been implemented or runtime-verified.
+
+| Decision | Selected baseline | Remaining gate |
+|---|---|---|
+| Phase 1 exterior route | P−1 east service mouth at world X=34, Z=4.5..7.5, Y=−2.0 m; 3 m clear opening through a 6 × 3 m gallery. It is distinct from the west entrance. | Verify physical route, wall opening, elevation and collision continuity in the canonical scene. |
+| Phase 1 → Phase 2 transform | Parking local frame maps with X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. Entry threshold maps to world (34, 6, −2); recovery checkpoint to (35.5, 6, −2); far egress beyond the north wall to (71.5, −16.2, −2). | Verify the actual local/world transform, gate crossing, player capsule and camera; update all drawings together if the scene differs. |
+| Chase pacing | Quiet evasion through F/E and M with STAFF-M1 perception; R1 in P0 triggers full running chase after the recovery unit follows through the existing lift and reacquires Elena by real line of sight; route continues via S1/P−1 to the east gallery and parking. | Verify NPC perception, R1 volume, chase transition and continuous route in Godot. |
+| Parking footprint | Combined facade/site envelope 48 × 30 m, including the 5.3 m facade band; clear parking yard is 42.7 m east of the service threshold. Entry opening 3.0 m; north egress gate 3.6 m. | Verify dimensions and clearances against the real player/threat capsules. |
+| Parking vertical language | Open-air central apron, no continuous canopy; two overhead service pipe racks at the inner parking-row edges with 2.8 m clear below. Pavement datum matches P−1 at Y=−2.0 m. | Verify wall height, rack supports, camera clearance, collision and lighting in the actual renderer. |
+| Parking obstacle contracts | P2-O1: static 1.9 × 2.1 m, 1.1 m high; P2-O2: static 3 × 2 m, 1.4 m high, low cover only when crouched; P2-O3: fixed leaves with a 1.3 × 2.2 m clear aperture, no timed movement and no bypass in the baseline. | Verify each envelope, the O1 pinch and O3 passage for Elena and the recovery unit. |
+| Parking checkpoint | P2-01 is the continuous scene handoff threshold. P2-CP is a recovery-only checkpoint 1.5 m inside the vestibule; it is not the initial spawn. | Test initial handoff and repeated failure recovery without teleport, state loss or direct unfair detection. |
+| Containment trigger | Maintenance queues SERVICE_OVERRIDE; opening the exterior leaf of G sends the queued audit and starts Containment. Reading the restricted record alone is not the trigger. | Verify the exact event fires once; the specific recipient/command chain remains an open narrative decision. |
+
 ## Legacy specifications under review
 
 Earlier documents describe a fixed 16-phase campaign, 13–15 hour duration, dual-protagonist switching, Marcus combat, combat arenas, survival counters and three fixed endings. Preserve this material as historical input; do not silently treat it as current prototype scope or erase its useful story ideas.
