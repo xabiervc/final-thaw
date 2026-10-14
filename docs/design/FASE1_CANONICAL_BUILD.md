@@ -25,6 +25,10 @@ La auditoría geométrica encontró cuatro defectos concretos antes de ejecutar 
 
 La ampliación geométrica no prueba que las paredes, barandillas, cubierta o huecos sean transitables/correctos. Godot no está disponible en el entorno de edición; la ejecución y el recorrido manual siguen pendientes. El aparcamiento de Fase 2 está definido como continuidad de diseño, no como escena integrada y validada.
 
+## Regresión automatizada
+
+Se añadió `.github/workflows/godot-headless-tests.yml` para importar recursos y ejecutar Fase 0, el vertical slice existente, contrato de circuito, elevador genérico, transporte y la integración canónica en Godot 4.7.1. El workflow aún no se ha observado en ejecución; hasta que GitHub Actions publique un resultado, la CI también está pendiente.
+
 ## Orden de verificación
 
 1. Ejecutar test de circuito, elevador genérico, transporte, integración canónica y regresión Fase 0.
