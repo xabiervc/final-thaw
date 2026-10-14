@@ -20,7 +20,7 @@ La misión ocurre en una instalación clandestina de investigación hidrológica
 | 6. Confirmar el sistema | Elevador ↑ M → bombas/observación | Relaciona el estado del edificio con las instalaciones de P−1 y localiza la ruta a control. | Elevador P0↔M; S2 independiente de alimentación. |
 | 7. Resolver el circuito | S2 ↑ E | Contrasta hipótesis, usa diagnóstico y opera aislador/selector/rearme. Puede fallar y recuperarse. | Contrato lógico existente; el escáner revela continuidad A→T, nunca los controles. |
 | 8. Consultar la evidencia | E → F | Consulta el archivo si ARCHIVO está estable. El texto contextualiza la anomalía; no actúa como llave. | Consulta no equivale a extracción ni modifica el guardado persistente en este hito. |
-| 9. Abrir la puerta | F → G | Abre la puerta de salida/interbloqueo. La respuesta del edificio hace perceptible que la situación ha cambiado. | G no teletransporta al exterior. Este acto inicia la huida. |
+| 9. Abrir la puerta | F → G | Abre la compuerta exterior de la esclusa G. La amenaza entra por ese umbral y Elena retrocede al interior por la puerta hacia F/E; la respuesta del edificio hace perceptible el cambio. | G no teletransporta al exterior. Este acto inicia la huida. |
 | 10. Huida interior | G → pasarela/corredor técnico → S2 ↓ M | La amenaza persigue a Elena. El jugador interpreta el espacio y atraviesa obstáculos industriales legibles. | Obstáculos con colisión, anticipación visual y al menos una solución justa; no depender de un salto ciego. |
 | 11. Descenso de servicio | M → elevador ↓ P0 → S1 ↓ P−1 | Regresa por la infraestructura técnica y llega al nivel de achique. La ruta es distinta de la entrada y se siente como parte del mismo edificio. | No crear ascensor ni escalera nueva. Estado del elevador durante la huida debe estar diseñado y probado. |
 | 12. Salida alternativa | D2 → galería de evacuación → boca este | Cruza el corredor de descarga/servicio y sale al exterior. | Galería y salida física nuevas en planos/código; nunca un teletransporte. |
@@ -39,7 +39,7 @@ La progresión debe funcionar por inferencia ambiental, no por una lista de reca
 
 ## Diseño de la persecución
 
-La persecución comienza **dentro** del edificio al abrir G. No se debe implementar todavía como una transición directa a la escena del aparcamiento.
+La persecución comienza **dentro** del edificio cuando se abre la compuerta exterior de G y la amenaza cruza el umbral. Elena debe retroceder por F/E hacia S2. No implementar una transición directa al aparcamiento al abrir G.
 
 Requisitos del segmento interior:
 - La amenaza tiene un punto de entrada y una línea de persecución explicables por el edificio.
