@@ -52,7 +52,7 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 - Verify the reveal triggers Containment exactly once and only under the agreed event contract.
 
 ### Mission 2 — Containment and parking
-- Review the provisional plan, section, spatial graph, edge-clearance contract, obstacle register and conceptual threat/light overlays as a consistent package; reconcile the local-to-world transform with the Phase 1 mouth and current builder before locking dimensions.
+- Review the provisional plan, section, spatial graph, edge-clearance contract, obstacle register and conceptual threat/light overlays as a consistent package; close the Phase 1 escape route and select the alternative mouth first; only then derive the local-to-world transform and verify it against the current builder.
 - Run `godot --headless --path . res://tests/test_motion_chase_prototype.tscn` and `godot --headless --path . res://tests/test_phase_0.tscn`.
 - Run the scene manually; review movement, camera occlusion, staff NPC routines/perception, noise and cover in the quiet section, the mapped transition to running chase, enemy sight/hearing/search, catches, checkpoints, selected exit and physical handoff.
 - Verify the Phase 1 interior pursuit and distinct P−1 service exit before accepting the parking integration.
