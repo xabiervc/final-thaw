@@ -22,7 +22,7 @@ No design alternative remains open inside the Phase 1 slice. Scene, collision, c
 - Reused circuit model: `scripts/prototypes/phase1_circuit_model.gd`.
 - Reused service elevator: `scripts/prototypes/service_lift.gd`.
 
-The scene connects the new single-bay geometry to the circuit model, maintenance-controlled lift, archive consultation, status fixtures, and G→H transition. This is code presence, not verified behavior.
+The scene connects the new single-bay geometry to the circuit model, maintenance-controlled lift, timed scanner trace reveal, archive consultation, live status fixtures, and a provisional G→H handoff. This is code presence, not verified behavior.
 
 ## Phase 1 next steps
 
@@ -34,6 +34,8 @@ The scene connects the new single-bay geometry to the circuit model, maintenance
 
 ## Existing motion/chase prototype v2
 
+The canonical scene currently reaches the chase scene through a provisional handoff. This boundary is available for end-to-end testing, but it is not accepted until the following v2 test and a hands-on chase playtest pass.
+
 Files:
 - Scene: `scenes/prototypes/motion_chase_prototype.tscn`
 - Code: `scripts/prototypes/motion_chase_prototype.gd`
@@ -41,7 +43,7 @@ Files:
 
 Code inspection shows third-person camera orbit/fading, walk/run/crouch/jump, a defined climb, scanner reveal, checkpoints, and a recovery-unit state machine. These are implementation facts, not proof of validated gameplay quality. The prototype specification states v2 and its automated test have not yet been run.
 
-Commands to run before integrating H:
+Commands to run before accepting the H handoff:
 
 ```sh
 godot --headless --path . res://tests/test_motion_chase_prototype.tscn
