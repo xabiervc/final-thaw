@@ -40,7 +40,7 @@
     <rect x="0" y="0" width="74" height="284" class="wall"/><rect x="0" y="326" width="74" height="94" class="wall"/>
     <text x="37" y="190" class="label" text-anchor="middle" transform="rotate(-90 37 190)">FACADE LABORATORIO</text>
     <rect x="74" y="284" width="42" height="42" class="service"/>
-    <text x="95" y="300" class="tiny" text-anchor="middle">BOCA</text><text x="95" y="312" class="tiny" text-anchor="middle">SERVICIO</text>
+    <circle cx="95" cy="305" r="7" fill="#ffffff" stroke="#263849" stroke-width="2"/><text x="95" y="309" class="tiny" text-anchor="middle">CP</text><text x="130" y="291" class="tiny">BOCA 3,0 m LIBRE</text>
     <path d="M74 284 H116 M74 326 H116" stroke="#278c83" stroke-width="3"/><path d="M74 284 V326" stroke="#278c83" stroke-width="3" stroke-dasharray="3 2"/><text x="95" y="322" class="tiny" text-anchor="middle">3 m libres</text>
     <!-- north boundary and egress -->
     <rect x="74" y="-6" width="500" height="6" class="wall"/><rect x="624" y="-6" width="48" height="6" class="wall"/>
