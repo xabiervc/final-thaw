@@ -94,7 +94,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
-| P2-01 Service threshold | (5.3, 21.8) local | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; candidate transform aligns it with the current Phase 1 P−1 mouth |
+| P2-01 Service threshold | (5.3, 21.8) local | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; world orientation/transform remain unlocked until Phase 1 exit is selected |
 | P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (14.3, 19.3) | Short exposed path; turns north around the first column | To P2-A2; keep ≥1.2 m clear west of the column |
 | P2-A2 Exposed crossing | (22.9, 19.3) | High-risk central-apron crossing | To P2-A3; retain recovery cover nearby |
@@ -111,7 +111,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 
 **Graph constraints:** all edges are bidirectionally traversable unless explicitly marked otherwise; no drop, climb, jump or squeeze is implied by a line alone. For every edge, the final graph must state clear width, elevation, traversal verb, threat accessibility, sightline condition, fail/recovery behavior and whether it is part of the intended fast route. The current concept has no approved one-way drop.
 
-The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). The current Phase 1 design already selects the P−1 service mouth at approximately world `X=34, Z=4.5..7.5`. The candidate transform for this design is `world X = local X + 28.7 m`; `world Z = local Z − 15.8 m`: it maps the threshold plane `(local X≈5.3, Z≈21.8)` to `(world X≈34, Z≈6)` and the safe spawn pocket `(local X≈6.8, Z≈21.8)` to `(world X≈35.5, Z≈6)`. This is the current coordination baseline, not a runtime-verified fact; confirm exact mouth footprint, orientation and elevation in the Phase 1 SVG/scene before lock. If the approved Phase 1 mouth changes, update the transform and all four Phase 2 overlays together. The current prototype starts near `(X=34.5, Z=0)` and its builder has only a 14 m corridor half-width of 7 m; these are implementation mismatches to reconcile, not reasons to force the architecture to the old prototype.
+The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). The earlier transform `X+28.7 / Z−15.8` is withdrawn: it was derived from one provisional Phase 1 mouth before the room route and escape pacing were decided. The Phase 2 drawings now use local coordinates only. Once the stealth route, chase trigger and final exterior exit are selected, align or redraw the parking entrance and derive one transform from the real threshold width, orientation and elevation. The current prototype starts near `(X=34.5, Z=0)` and its builder has only a 14 m corridor half-width of 7 m; these are implementation facts to reconcile, not reasons to force the architecture to the old prototype.
 
 ### 2.5 Provisional edge and clearance contract
 
@@ -299,7 +299,7 @@ Any voice line must have a trigger, exact text or approved intent, delivery timi
 ### 6.5 Continuity from Phase 1
 
 The canonical handoff is:
-`G → interior pursuit → F/E retreat → S2 → M → existing lift → P0 → S1 → P−1 → evacuation gallery → exterior service mouth → parking entry → parking chase → far-side egress`.
+`G → quiet evasion through F/E and potentially occupied work areas → mapped reacquisition threshold → running chase through service circulation → approved alternative exterior exit → parking entry → parking chase → far-side egress`.
 
 This is the intended narrative/spatial sequence. The existing parking prototype's standalone start and checkpoints are test infrastructure, not proof of this integrated route. The integrated scene must spawn Elena at the parking entry checkpoint and must not replay the earlier corridor or reset mission evidence without an explicit persistence decision.
 
