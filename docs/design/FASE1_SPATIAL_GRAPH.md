@@ -1,6 +1,6 @@
-# FINAL THAW — Fase 1: grafo espacial (v1.0)
+# FINAL THAW — Fase 1: grafo espacial (v1.1)
 
-**Estado:** grafo revisado para la dirección arquitectónica de edificio completo + huida interior + salida alternativa. La topología es el objetivo de diseño; footprints/colliders y navegación aún requieren verificación en Godot. Autoridad: `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`. Los contratos funcionales y lógicos gobiernan el puzle, no las aristas del grafo.
+**Estado:** grafo revisado para la dirección arquitectónica de edificio completo + huida interior + salida alternativa. La topología es el objetivo de diseño; footprints/colliders y navegación aún requieren verificación en Godot. Autoridad: `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`. Los contratos funcionales y lógicos gobiernan el puzle, no las aristas del grafo.
 
 ## Nodos y huellas de referencia
 
