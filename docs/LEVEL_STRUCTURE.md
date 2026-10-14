@@ -63,12 +63,34 @@ A first spatial concept is now recorded in [parking_plan_concept.svg](design/ass
 
 The parking layout is not accepted from a prose description alone. Its design package must contain:
 1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and patrol/sightline overlays.
-2. **Longitudinal section:** elevation changes, ramps, barriers, low clearances, roof/awning edges and camera-relevant occlusion.
+2. **Section:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a transverse concept showing the service mouth, optional canopy, vehicle envelope, column, light and perimeter. The exterior datum relative to P−1 remains unresolved; do not infer a ramp or step from this drawing.
 3. **Spatial graph:** nodes, traversable edges, directed drops/climbs, blocked edges and route alternatives.
 4. **Threat overlay:** patrol path, investigation points, alert sightlines, chase shortcuts, search pockets and no-go zones.
 5. **Landmark/lighting overlay:** what the player can see from entry and each critical decision point, by day/night or emergency-light state as appropriate.
 
 The existing project has Phase 1 plan/section SVGs. Extend the same disciplined visual conventions for Phase 2 in the existing architecture asset family once the parking dimensions are resolved; do not present a screenshot of the prototype as an architectural plan.
+
+### 2.4 Provisional spatial graph
+
+The following coordinates are derived from the concept plan only. Origin is the northwest inside corner; X increases east, Z increases south. Values are approximate metres and must not be copied into the production builder before a coordinate transform and Phase 1 handoff review.
+
+| Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
+|---|---:|---|---|
+| P2-01 Service entry | (6.8, 21.8) | Emergence from P−1 gallery | To P2-02; must be physically continuous with Phase 1 |
+| P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
+| P2-A1 Direct aisle | (13.9, 19.3) | Short exposed path | To P2-A2; limited cover |
+| P2-A2 Exposed crossing | (22.9, 21.8) | High-risk crossing | To P2-JOIN; retain recovery cover nearby |
+| P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
+| P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
+| P2-B3 Technical cage | (37.1, 12.1) | Service-side traversal | To P2-JOIN; must not be a dead end |
+| P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05 |
+| P2-05 Service bottleneck | (44.3, 14.8) | Barrier/shutter encounter | To P2-06; route around/through must be explicit |
+| P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
+| P2-EXIT Boundary | (42.8, 1.8) | Physical escape threshold | Mission completion only after crossing actual boundary |
+
+**Graph constraints:** all edges are bidirectionally traversable unless explicitly marked otherwise; no drop, climb, jump or squeeze is implied by a line alone. For every edge, the final graph must state clear width, elevation, traversal verb, threat accessibility, sightline condition, fail/recovery behavior and whether it is part of the intended fast route. The current concept has no approved one-way drop.
+
+The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). Both drawings remain proposals until reconciled against the Phase 1 service mouth and the Godot world.
 
 ## 3. Parking route topology and encounter sequence
 
