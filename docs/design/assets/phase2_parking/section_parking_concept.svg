@@ -19,13 +19,13 @@
   </defs>
   <rect width="1200" height="650" fill="#fff"/>
   <text x="48" y="42" class="title">FINAL THAW · PHASE 2 PARKING — SECTION B–B</text>
-  <text x="48" y="65" class="sub">Concept v0.2 · representative north–south section across the parking rows · 30 m Z-depth · not runtime-verified</text>
+  <text x="48" y="65" class="sub">Concept v0.3 · representative north–south section across the parking rows · 30 m Z-depth · not runtime-verified</text>
   <g transform="translate(100 115)">
     <rect width="960" height="390" fill="url(#grid)"/>
     <!-- datum / pavement -->
     <line x1="0" y1="320" x2="960" y2="320" stroke="#344657" stroke-width="3"/>
     <rect x="0" y="320" width="960" height="22" fill="#dce2e7" stroke="#344657" stroke-width="1"/>
-    <text x="480" y="414" class="small" text-anchor="middle">Pavimento continuo; cotas de P−1 y pendiente del umbral de servicio pendientes de medición</text>
+    <text x="480" y="414" class="small" text-anchor="middle">Pavimento continuo a Y=−2,0 m, alineado con P−1 en el baseline de diseño</text>
     <!-- south and north site limits -->
     <rect x="0" y="250" width="14" height="70" class="concrete"/>
     <text x="6" y="236" class="tiny" text-anchor="middle">SUR</text>
@@ -74,6 +74,6 @@
   <line x1="48" y1="555" x2="1152" y2="555" stroke="#d6dde4"/>
   <text x="48" y="582" class="label">ALCANCE Y LIMITACIONES</text>
   <text x="48" y="604" class="small">Este corte representa una sección típica a través de las filas de vehículos y el apron; no corta la boca de servicio ni la puerta de salida norte.</text>
-  <text x="48" y="622" class="small">La puerta de salida y su apertura se definen en planta; la cota del exterior respecto a P−1 debe medirse antes de diseñar rampa, escalón o drenaje.</text>
+  <text x="48" y="622" class="small">La boca de servicio entra sin rampa ni escalón a Y=−2,0 m; el egress norte conecta con un patio de servicio al mismo datum. Validar cotas y continuidad en Godot.</text>
   <text x="48" y="640" class="small">Alturas y marquesina son objetivos conceptuales. Validar colisiones, cámara, cobertura y luces en Godot antes de fijarlos.</text>
 </svg>
