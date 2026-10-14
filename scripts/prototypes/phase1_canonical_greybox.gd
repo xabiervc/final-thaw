@@ -8,7 +8,7 @@ const ServiceLift = preload("res://scripts/prototypes/service_lift.gd")
 const FacilityMaterials = preload("res://scripts/levels/test_room_art/facility_materials.gd")
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
 
-const CHASE_SCENE := "res://scenes/prototypes/motion_chase_prototype.tscn"
+const CHASE_SCENE := "res://scenes/prototypes/phase2_parking_chase.tscn"
 const SLAB := 0.25
 const WALL_THICKNESS := 0.3
 const RAIL_HEIGHT := 1.1
