@@ -29,7 +29,7 @@ Keep existing documents coordinated; do not create duplicates.
 
 ## Architectural target
 
-The facility is one coherent building with access/decontamination, Aster test hall, workshop, service galleries, lower pumping/distribution level, pump mezzanine, control, archive and a door G that initiates an interior escape. G is a two-door airlock: opening its exterior leaf triggers the interior pursuit, and Elena retreats through the inner leaf toward F/E. The final route returns through S2/M, the existing lift to P0, S1 to P−1 and a new evacuation gallery to an exterior service mouth connected to the parking area. This exit differs from the west entrance tunnel.
+The facility is one coherent building with access/decontamination, Aster test hall, workshop, service galleries, lower pumping/distribution level, pump mezzanine, control, archive and a door G that initiates Containment. G is a two-door airlock: opening its exterior leaf sends the queued audit; Elena retreats through the inner leaf toward F/E. The escape should first support quiet evasion through rooms that may still be staffed, then shift to a full run when the recovery unit reacquires her at a mapped, readable threshold. The route uses existing vertical/service circulation and reaches a physically distinct exterior exit connected to parking; its exact mouth is chosen from the complete spatial route, not fixed by the previous candidate transform.
 
 The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S2 M↔P2; collapsed P0↔P2 stair remains blocked. Do not add a second lift or arbitrary secret stair.
 
@@ -37,7 +37,7 @@ The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S
 
 - **Documented:** revised architectural program, spatial graph, progression contract, functional spec and greybox requirements; existing SVGs now show the P−1 evacuation gallery, G pursuit trigger, and initial O1/O2/O3 obstacle footprints.
 - **Previously present in code, not runtime-verified:** west entrance tunnel, P0 rooms/perimeter, D1/D2 lower floor and P0 void, south/east return route, S1/S2, mission lift P0↔M, control/archive fixtures and safety rails.
-- **Not yet implemented/verified against the revised architecture:** P−1 evacuation gallery and exterior mouth, G as the start of an interior chase, the obstacle sequence, the full chase traversal back through existing vertical connections, physical continuity into parking, and the end-to-end handoff.
+- **Not yet implemented/verified against the revised architecture:** NPC/staff stealth behavior and perception, the mapped reacquisition trigger, running-chase obstacle sequence, final route and exit geometry, physical continuity into parking, and the end-to-end handoff.
 - **Narrative direction specified as a proposal:** maintenance queues `SERVICE_OVERRIDE`; opening G's exterior leaf sends the queued audit and starts the facility recovery protocol. The Aster record states that the result was retained and the deployment recommendation suppressed.
 - **Narrative decisions still open:** suppression motive, exact event recipient/supervision, final recovery-unit identity/visual design, Elena/Iris/Selene chronology in this moment, Marcus's role and post-parking destination.
 - **Runtime status:** the previous editing environment did not have a Godot executable. No claim is made that recent GDScript, SVGs, or tests have been executed. CI status must be checked from the actual run before claiming green.
