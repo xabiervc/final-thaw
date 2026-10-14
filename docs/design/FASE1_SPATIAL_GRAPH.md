@@ -8,7 +8,7 @@
 | B · Nave | 0 m | X 7..20, Z −9..1 | Columna Aster, rig central y circulación. |
 | C · Taller | 0 m | X 20..24, Z −9..−2 | Cuadros, banco y colectores. |
 | S1 · Escalera | 0↔−2 m | X 24..26, Z 8..11 | Conexión fija al foso. |
-| D1 · Achique | −2 m | X 10..20, Z 1..8 (bajo losa P0) | Bombas, sumidero y colector. |
+| D1 · Achique | −2 m | X 10..20, Z 1..8 (hueco abierto P0) | Bombas, sumidero y colector. |
 | D2 · Distribución | −2 m | X 20..28, Z 1..8 | Esquema, puente A→T y mantenimiento. |
 | Elevador | 0↔+1,5 m | X 24,5..27,5, Z −4,5..−1,5 | Transporte al mezzanine. |
 | M · Bombas | +1,5 m | X 13..24, Z −9..−1,5 | Bombas y ruta a S2. |
@@ -31,10 +31,10 @@ A ── B ── galería de servicio ── elevador inferior
 
 Aristas aceptadas: A↔pasillo de servicio↔B; B↔galería de servicio; B↔D por S1; P0↔M solo por elevador, después de mantenimiento; M↔P2 por S2; E↔F; F↔G; G↔H.
 
-La huella de D1 está bajo una parte cubierta de B; el hueco vertical P0 se abre sobre D2 (X=20..28, Z=1..8) y la boca S1. Así se evita superponer un suelo jugable y un vacío en las mismas coordenadas. El pasillo A→B ocupa X=7..10, Z=1..8 y bordea la barandilla oeste del hueco.
+D1 y D2 comparten un hueco vertical abierto en P0 (X=10..28, Z=1..8), con suelo continuo a Y=−2. B termina en Z=1, de modo que no se superponen suelo jugable y vacío. El pasillo A→B ocupa X=7..10, Z=1..8 y bordea la barandilla oeste del hueco.
 
 No son aristas: escalera colapsada P0↔P2; escalera desde G a P0; rampa paralela; segunda plataforma; parada de elevador en P2; puertas secretas.
 
 Los controles conservan posiciones lógicas de referencia: selector (12,3,-7), aislador (19,3,-7), panel (15.5,4.55,-8.15), rearme (15.5,3.5,-8.15), consola (5,3,-7), indicador F (8.55,3.8,-7). Ajustar montajes, no reglas.
 
-La aceptación requiere que B quede al norte del foso, el pasillo A→B bordee el hueco sin cruzarlo, D1 tenga techo y altura libre verificable, y M se lea como sala de bombas, el elevador termine en M, S2 llegue a P2, G conduzca al exterior, la escalera dañada no se atraviese, la huella D1 exista realmente en P−1 y la orientación entre cotas sea legible. Planos no validan cámara ni colisiones.
+La aceptación requiere que B quede al norte del foso, el pasillo A→B bordee el hueco sin cruzarlo, y M se lea como sala de bombas, el elevador termine en M, S2 llegue a P2, G conduzca al exterior, la escalera dañada no se atraviese, la huella D1 exista realmente en P−1 y la orientación entre cotas sea legible. Planos no validan cámara ni colisiones.
