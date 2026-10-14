@@ -1,21 +1,24 @@
 # FINAL THAW — Critical Documentation Index
 
-**Current status:** prototype-led redesign. Some older documents still describe a previous dual-protagonist, combat-arena and fixed 16-phase campaign. Those are historical/under review for current prototype work.
+**Current status:** prototype-led redesign of the opening. Older documents still describe a former dual-protagonist, combat-arena and fixed 16-phase campaign; treat those as historical material until deliberately reconciled.
 
 ## Read these first
 
 1. [Working vision](VISION.md) — player fantasy, pillars, anti-pillars and scope.
-2. [Design pivot brief](DESIGN_PIVOT_PROTOTYPE_BRIEF.md) — proposed two-mission opening, acceptance gate and boundaries.
-3. [Motion/chase prototype](design/MOTION_CHASE_PROTOTYPE.md) — actual v2 mechanics, geometry, controls, AI, limits and how to run.
-4. [Core loop](CORE_LOOP.md) — current/proposed loop and implementation boundary.
-5. [Level structure](LEVEL_STRUCTURE.md) — current sandbox and proposed opening.
-6. [Project status](../PROJECT_STATUS.md) — implementation evidence and next milestone.
-7. [Traceability matrix](TRACEABILITY_MATRIX.md) — code/test mapping and unimplemented requirements.
-8. [Narrative](narrative_complete.md) — legacy full campaign retained with opening hypothesis at the top.
+2. [Design authority](DESIGN_AUTHORITY.md) — precedence, conflict resolution and current sources of truth.
+3. [Prototype brief](DESIGN_PIVOT_PROTOTYPE_BRIEF.md) — two-mission opening, boundaries and implementation order.
+4. [Core loop and mission contracts](CORE_LOOP.md) — player verbs, threat rules, narrative progression and continuity.
+5. [Level structure and Phase 2 spatial design](LEVEL_STRUCTURE.md) — parking architecture requirements, route topology, threat overlay, story beats, visual/audio direction and acceptance gates.
+6. [Mission 1 puzzle](design/MISSION1_GHOST_PROTOCOL.md) — investigation, clue relationships and puzzle feedback.
+7. [Phase 1 architecture](design/FASE1_ARCHITECTURAL_LAYOUT.md) — building program, routes and escape intent.
+8. [Phase 1 progression](design/fase1_fase2_mapa_progresion.md) — route, state transitions, chase sequence and parking handoff.
+9. [Motion/chase mechanics prototype](design/MOTION_CHASE_PROTOTYPE.md) — current movement, scanner, recovery-unit behavior, controls, limits and run commands.
+10. [Traceability matrix](TRACEABILITY_MATRIX.md) — maps requirements to design evidence, implementation and verification gaps.
+11. [Project status](../PROJECT_STATUS.md) — current implementation evidence and next milestone.
+12. [Narrative archive](narrative_complete.md) — legacy story material; not automatically current canon.
 
-## Technical governance
+## Technical governance and production constraints
 
-- [Design authority](DESIGN_AUTHORITY.md)
 - [Project contract](PROJECT_CONTRACT.md)
 - [Quality gates](QUALITY_GATES.md)
 - [Agent instructions](../AGENTS.md)
@@ -23,10 +26,11 @@
 
 ## Current prototype paths
 
-- Scene: `scenes/prototypes/motion_chase_prototype.tscn`
-- Script: `scripts/prototypes/motion_chase_prototype.gd`
-- Test scene: `tests/test_motion_chase_prototype.tscn`
-- Test script: `tests/test_motion_chase_prototype.gd`
+- Standalone mechanics scene: `scenes/prototypes/motion_chase_prototype.tscn`
+- Phase 2 parking entry scene: `scenes/prototypes/phase2_parking_chase.tscn`
+- Builder: `scripts/prototypes/motion_chase_prototype.gd`
+- Behavior test scene: `tests/test_motion_chase_prototype.tscn`
+- Behavior test script: `tests/test_motion_chase_prototype.gd`
 
 Commands from repository root:
 
@@ -36,12 +40,12 @@ godot --headless --path . res://tests/test_motion_chase_prototype.tscn
 godot --headless --path . res://tests/test_phase_0.tscn
 ```
 
-The v2 prototype document says its automated test has not yet been run. A successful headless test is necessary but insufficient: movement feel, camera readability, enemy fairness, audio and enjoyment require a hands-on playtest.
+The v2 prototype documentation has not recorded a successful run of its automated test. A passing headless test is necessary but insufficient: movement feel, camera readability, threat fairness, audio, route choice and narrative comprehension require a hands-on playtest.
 
 ## Legacy specifications under review
 
-`core_gameplay_loop.md`, `SURVIVAL_SYSTEMS.md`, `EXPLORATION_FLOW.md`, `NARRATIVE_STATE_MAP.md`, `PROGRESSION_SPEC.md`, `VERTICAL_SLICE_PLAN.md`, detailed campaign sections in `narrative_complete.md`, and old ending/Marcus-combat traceability are historical material. Their existence does not make them binding requirements for the new prototype.
+`core_gameplay_loop.md`, `SURVIVAL_SYSTEMS.md`, `EXPLORATION_FLOW.md`, `NARRATIVE_STATE_MAP.md`, `PROGRESSION_SPEC.md`, `VERTICAL_SLICE_PLAN.md`, detailed campaign sections in `narrative_complete.md`, and old ending/Marcus-combat traceability are historical material. Their presence does not make them binding requirements for the current prototype.
 
 ## Status rule
 
-Separate **implemented in code**, **covered by automated test**, **run successfully**, and **validated in hands-on playtest**. These are not equivalent.
+Separate **specified**, **implemented in code**, **covered by an automated test**, **test executed successfully**, **hands-on validated**, and **accepted by the design owner**. These are different claims and require different evidence.
