@@ -99,5 +99,5 @@ Registrar versión de Godot, commit, resolución, renderer, entrada, comandos ex
 
 Cerradas: cuatro cotas; S1 P0↔D, elevador P0↔M, S2 M↔P2, G horizontal a H; comportamiento seguro del elevador, circuito recuperable, indicadores, rearme, evidencia y Containment.
 
-Pendiente por definición: ninguna decisión arquitectónica o funcional dentro del slice. La escena existente aún no refleja la nueva arquitectura.  
-Pendiente por evidencia: ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. La integración con el aparcamiento de Fase 2 tampoco se considera validada. Véase `FASE1_CANONICAL_BUILD.md`.
+Pendiente por definición: ninguna decisión arquitectónica o funcional dentro del slice, salvo cualquier conflicto que revele la ejecución o el playtest y requiera una revisión explícita de autoridad.  
+Pendiente por evidencia: la escena tiene ya una reconstrucción geométrica ampliada, pero aún faltan ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. El aparcamiento de Fase 2 está ambientado en el prototipo de persecución, pero la transición G→H no está integrada ni validada. Véase `FASE1_CANONICAL_BUILD.md`.
