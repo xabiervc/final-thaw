@@ -97,7 +97,8 @@ The parking graph uses local metres, origin at the northwest inside corner, X ea
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
 | P2-01 Service threshold | local (5.3, 21.8); world (34, 6, −2) | Exterior mouth plane at the west edge of the entry vestibule | To P2-02 via the vestibule; aligned to the selected P−1 east mouth by the design-baseline transform |
-| P2-CP Recovery checkpoint | local (6.8, 21.8); world (35.5, 6, −2) | Safe pocket inside vestibule, 1.5 m beyond the mouth | Recovery-only checkpoint after fair failure; not the initial integration spawn |\n| P2-02 Route decision | local (9.3, 21.8); world (38, 6, −2) | First readable split | Branches to P2-A1 or P2-B1 |
+| P2-CP Recovery checkpoint | local (6.8, 21.8); world (35.5, 6, −2) | Safe pocket inside vestibule, 1.5 m beyond the mouth | Recovery-only checkpoint after fair failure; not the initial integration spawn |
+| P2-02 Route decision | local (9.3, 21.8); world (38, 6, −2) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (14.3, 19.3) | Short exposed path; turns north around the first column | To P2-A2; keep ≥1.2 m clear west of the column |
 | P2-A2 Exposed crossing | (22.9, 19.3) | High-risk central-apron crossing | To P2-A3; retain recovery cover nearby |
 | P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-A4; minimum clear width 2.0 m |
