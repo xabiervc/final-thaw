@@ -1,7 +1,7 @@
 # FINAL THAW — Fases 1 y 2: mapa de progresión verificable
 
-Estado: BORRADOR DE DISEÑO v0.2. No autoriza construir ni ampliar escenarios.
-Esta revisión precisa la relación entre recorrido, descubrimientos, decisiones y validación; no cierra el guion ni aprueba geometría.
+Estado: BORRADOR DE DISEÑO v0.3. No autoriza construir ni ampliar escenarios.
+Esta revisión incorpora los cuatro bloqueos técnicos de la revisión de v0.2; no cierra el guion ni aprueba geometría.
 Todo lo marcado como PENDIENTE DE GUION no debe rellenarse con hechos narrativos no aprobados.
 
 ## 1. Intención y límites
@@ -33,7 +33,7 @@ No se debe asumir que el orden espacial obliga a una única secuencia de descubr
 
 A Acceso y recepción → B Observación → C Nave de ensayo → D Servicios y foso → E Distribución y control → F Archivo → G Esclusa → H Primer encuentro exterior.
 
-Esta secuencia es una hipótesis de trabajo. El orden relativo entre D (foso) y E (circuito) queda abierto a pruebas en el grafo antes de fijar la ruta definitiva.
+Esta secuencia es una hipótesis de trabajo. El orden relativo entre D (foso) y E (circuito) queda abierto a pruebas en el grafo antes de fijar la ruta definitiva. Para que D pueda explorarse antes de E, el interruptor de mantenimiento se ubica provisionalmente en D, junto al acceso inferior del foso y en un punto accesible desde la escalera fija. Alimenta de forma independiente las luces de servicio y habilita la plataforma; no depende del circuito de recuperación. Esta ubicación es una decisión funcional provisional que debe reflejarse en el plano y validarse espacialmente.
 
 ### Tipos de conexión que deben aparecer en el grafo
 
@@ -64,9 +64,9 @@ No asignar cotas, dimensiones, cantidad de habitaciones ni geometría final hast
 | A. Acceso y recepción | Orientar al jugador y permitir reconocer un destino inicial | Entrada a B; evitar callejones sin salida obligatorios | Objetivo inmediato de Elena: PENDIENTE DE GUION | Función provisional |
 | B. Observación | Permitir examinar parte de la instalación antes de entrar en su núcleo | Conexión a C; posibles observaciones desde una posición segura | Función del ensayo y relación con Aster: PENDIENTE DE GUION | Función provisional |
 | C. Nave de ensayo | Reunir máquina central, estado físico y señales del sistema | Acceso a servicios/foso y continuación hacia control, según variante del grafo | Primera contradicción verificable; contenido concreto pendiente de guion | Núcleo existente; integración por validar |
-| D. Servicios y foso | Permitir inspeccionar conexiones y la intervención física | Retorno por salida fija; conexión a E sin repetir todo el recorrido | Schematic, puente manipulado y mantenimiento como observaciones diferenciadas; interpretación narrativa pendiente | Geometría aún no aprobada |
+| D. Servicios y foso | Permitir inspeccionar conexiones y la intervención física | Salida local fija desde el foso al nivel principal; permite continuar hacia E sin regresar por el mismo recorrido ni atravesar toda la instalación | Esquema de distribución, puente manipulado e interruptor de mantenimiento como observaciones diferenciadas; interpretación narrativa pendiente | Geometría aún no aprobada |
 | E. Distribución y control | Permitir comprobar una hipótesis actuando sobre el circuito | Controles próximos entre sí; ruta hacia F | Diferencia entre selector, aislamiento, protección y diagnóstico, según el contrato lógico | Contrato lógico separado; integración pendiente |
-| F. Archivo | Permitir consultar y recuperar evidencia | Conexión hacia G sin retorno largo obligatorio | Contenido, conclusión y dudas restantes: PENDIENTE DE GUION | Acceso y contenido por definir |
+| F. Archivo | Permitir consultar y comprender la información disponible; no implementa extracción ni autorización | Conexión hacia G sin retorno largo obligatorio | Contenido consultable, conclusión y dudas restantes: PENDIENTE DE GUION | Acceso y contenido por definir |
 | G. Esclusa | Convertir la investigación en una transición a supervivencia | Paso al exterior | Desencadenante y percepción de Elena: PENDIENTE DE GUION | Bloqueado por guion |
 | H. Primer encuentro exterior | Enseñar detección, elección de ruta y ruptura de línea de visión | Continuación hacia el destino exterior | Destino y naturaleza exacta de la amenaza: PENDIENTE DE GUION | Prototipo pequeño antes de expandir |
 
@@ -90,10 +90,13 @@ Antes de autorizar la construcción de un espacio, completar su ficha. Cuando un
 | Validación | ¿Qué conducta o explicación observable demostraría que el espacio funciona? |
 | Coste de eliminación | ¿Qué se perdería si se quitara el espacio? Si la respuesta es «nada significativo», justificar su permanencia o eliminarlo. |
 
-### Reglas específicas del circuito
+### Verificación del archivo y reglas específicas del circuito
 
-- El diagnóstico informa del estado actual y del último disparo; no prescribe qué control accionar.
+- En F debe existir un indicador visible en el punto de consulta que muestre si el suministro del archivo está estable o no disponible, antes de que el jugador intente consultar. Debe reflejar el estado real del contrato; no prescribe qué control accionar ni sustituye el diagnóstico completo de E.
+- La consulta en F solo se permite con suministro estable. F permite consultar; no implica extraer, autorizar una extracción ni desencadenar por sí sola una respuesta de Helix.
+- El diagnóstico de E informa del estado actual y del último disparo; no prescribe qué control accionar.
 - El terminal de diagnóstico sigue siendo accesible aunque se pierda la alimentación de recuperación.
+- El interruptor de mantenimiento se ubica provisionalmente en D, junto al acceso inferior del foso, para que mantenimiento y plataforma estén disponibles al llegar a esa zona. Sus luces y la plataforma son independientes del circuito de recuperación; su comportamiento mecánico al perder energía se valida en la prueba independiente de la plataforma.
 - Una acción correcta no se bloquea por no haber leído una pista concreta.
 - Una solución funcional no demuestra por sí sola comprensión; la validación de la deducción se evalúa aparte.
 - La pérdida de alimentación no debe borrar el conocimiento ya adquirido durante la sesión.
@@ -119,8 +122,8 @@ Pasarelas elevadas, mecanismos ambientales y rutas alternativas complejas se añ
 
 | Decisión | Qué debe fijarse | Qué bloquea |
 |---|---|---|
-| Evidencia del archivo | Qué obtiene Elena, qué concluye y qué permanece incierto | Contenido definitivo de F y transición |
-| Respuesta de Helix | Hecho desencadenante, qué detecta Helix y qué percibe Elena | Evento de G y comienzo de la amenaza |
+| Evidencia consultada en el archivo | Qué información consulta Elena, qué concluye y qué permanece incierto | Contenido definitivo de F; no autoriza una operación de extracción |
+| Respuesta de Helix | Hecho desencadenante, qué detecta Helix y qué percibe Elena; no asumir que consultar el archivo autoriza extracción o activa automáticamente la persecución | Evento de G y comienzo de la amenaza |
 | Destino exterior | Lugar inmediato y plausible al que intenta llegar Elena | Objetivo de H y dirección de la Fase 2 |
 | Orden foso/circuito | Variante que preserve comprensión y evite retrocesos innecesarios | Grafo definitivo |
 | Contactos, voces o registros | Quién comunica, qué sabe y si la presencia es necesaria | Narrativa ambiental que dependa de ello |
@@ -129,6 +132,12 @@ Pasarelas elevadas, mecanismos ambientales y rutas alternativas complejas se añ
 Mientras estas decisiones sigan abiertas, las conexiones afectadas son provisionales. El diseño puede reservar espacio y conexiones, pero no asignar hechos narrativos no aprobados ni compensar la falta de motivación con puertas cerradas o sistemas obligatorios.
 
 Este documento tampoco autoriza cambios de contrato en escenas, rutas de recursos, autoloads, controles, guardado o estructura técnica. Cualquier cambio de esos contratos necesita su propia justificación y revisión.
+
+### Guardado durante la misión
+
+- Para este prototipo no se añade guardado intermedio ni un nuevo sistema de checkpoints. Se mantiene sin cambios el contrato de guardado existente.
+- El estado de circuito, el conocimiento adquirido y el sector alcanzado no se añaden al formato de guardado por esta revisión.
+- Si el nivel necesita guardado intermedio antes del hito 2, el trabajo se detiene para una revisión separada de compatibilidad, formato, integridad, restauración y pruebas de guardado. No se cambia el esquema de forma implícita para facilitar la progresión.
 
 ## 8. Pruebas de recorrido y comprensión
 
@@ -153,9 +162,18 @@ Condiciones:
 
 1. **Diseño narrativo y mapa:** grafo de conexiones, fichas de sectores y registro de decisiones pendientes revisados. Sin autorización automática para construir.
 2. **Fase 1 recorrible:** solo tras aprobar el grafo; conexiones legibles, sin bloqueos accidentales y sin retrocesos largos obligatorios.
-3. **Investigación jugable:** pistas diferenciadas, circuito implementado conforme a su contrato y archivo integrado; pruebas ejecutadas y registradas.
-4. **Transición:** evidencia, desencadenante y destino definidos por guion; salida espacial coherente con esas decisiones.
+3. **Investigación jugable:** pistas diferenciadas, circuito implementado conforme a su contrato y archivo integrado. Portar el modelo de referencia Python a GDScript y ejecutar allí T1–T9 como conjunto mínimo de aceptación, además de X1/X2 y las comprobaciones adicionales del contrato. Registrar versión de Godot, commit, comando y salida. Que el oráculo Python pase no sustituye la ejecución de las pruebas GDScript ni valida la integración del nivel.
+4. **Transición:** contenido consultado en el archivo, desencadenante y destino definidos por guion; salida espacial coherente con esas decisiones. La consulta no equivale a extracción ni a autorización de extracción; cualquier operación de extracción queda fuera de alcance hasta que exista un contrato narrativo y técnico aprobado.
 5. **Prototipo de huida:** encuentro exterior pequeño validado antes de ampliar el escenario.
 6. **Expansión de la Fase 2:** solo después de que el encuentro de referencia demuestre que orientación, cobertura y ruptura de visión funcionan.
 
 No se autoriza ampliar escenarios por el mero hecho de que este documento exista. Cada espacio debe tener una función verificable y la revisión de diseño debe aprobar el grafo y las dependencias antes de pasar a construcción.
+
+## 10. Correcciones incorporadas tras la revisión de v0.2
+
+- F: indicador local visible de disponibilidad del suministro del archivo, separado del diagnóstico completo de E.
+- D: interruptor de mantenimiento ubicado provisionalmente junto al acceso inferior del foso; habilita luces y plataforma con independencia del circuito de recuperación.
+- F/G: sustituir «recuperar evidencia» por «consultar información» hasta que el guion y un contrato separado autoricen cualquier extracción.
+- Guardado: no se añade guardado intermedio en este prototipo. Cualquier necesidad futura exige una revisión de compatibilidad independiente antes de implementar checkpoints.
+- Pruebas: el modelo de referencia debe portarse a GDScript y ejecutarse; T1–T9 son el mínimo, con X1/X2 y comprobaciones adicionales también requeridas.
+- Terminología: usar «esquema de distribución» en lugar de «Schematic»; D especifica que la salida fija es local desde el foso al nivel principal, sin retorno obligatorio por el mismo camino.
