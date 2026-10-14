@@ -1,30 +1,86 @@
 > **Design status update — 2026-10-14:** This file preserves the earlier full-campaign narrative as historical source material. The 16-phase dual-protagonist structure, Marcus combat arc, fixed timeline, final-boss sequence and three-ending system are **under review**, not binding requirements for the current prototype. The active opening hypothesis is an Elena-led investigation/system puzzle followed by a third-person traversal and escape sequence. See [VISION.md](VISION.md), [DESIGN_PIVOT_PROTOTYPE_BRIEF.md](DESIGN_PIVOT_PROTOTYPE_BRIEF.md) and [MOTION_CHASE_PROTOTYPE.md](design/MOTION_CHASE_PROTOTYPE.md). Do not silently discard established character or world facts; reconcile them after the prototype playtest.
 
-## Current opening narrative hypothesis (not yet implemented)
+## Current opening narrative and script beats (design proposal; not implemented)
+
+**Authority:** this section governs the current opening proposal only. The legacy campaign below remains archived. Existing facts about Elena, Iris, Selene, Aster and Helix are retained where compatible; this opening does not lock the full campaign, Marcus's role, chronology or endings.
+
+### Dramatic premise
+
+Elena returns to a clandestine Helix facility to investigate a discrepancy around an Aster test. The official record and the physical state of the installation disagree. The player discovers that the test result was diverted or withheld, but does not yet learn the entire motive or chain of command. Elena's action to restore the system queues a `SERVICE_OVERRIDE`; crossing the exterior leaf of G sends the queued audit and initiates Containment. The recovery unit is the physical consequence of the system response, not a random enemy spawn.
+
+The player's emotional progression is: **curiosity → doubt → inference → confirmation → alarm → urgent improvisation → temporary escape**.
 
 ### Mission 1 — The Ghost Protocol
 
-Elena returns to a Helix facility to understand what happened to an Aster test. Physical evidence should carry the story: inconsistent power routing, a machine state that does not match the official record, a hidden trace or partial transmission. The player should infer that the system or its test result was manipulated rather than receive a complete explanation in a long log.
+**Dramatic objective:** establish the discrepancy and let the player infer manipulation through physical evidence.
 
-The emotional anchor is Elena's relationship with Iris and the unresolved influence of Selene. The first mission should reveal one specific contradiction in Helix's account, not explain the whole conspiracy. Preserve ambiguity about Selene's exact responsibility until the larger narrative has been deliberately reconciled.
+1. **Entry / orientation.** Elena enters through the west service tunnel. The Aster rig is visible but inactive. The space suggests an operational research facility evacuated in haste, not a ruin.  
+   *Dialogue proposal:* “No deberían haber dejado el circuito en este estado.”  
+   The line is optional contextual reaction; the objective must be understandable without it.
 
-The player solves a compact system puzzle. The solution restores a subsystem and exposes a new piece of evidence, but it also triggers containment. The transition into Mission 2 must be caused by the player's action.
+2. **Physical contradiction.** The player compares the intended circuit diagram with the actual A→T bridge and follows the cable route. The scanner reveals continuity and state but does not mark the correct action.  
+   *No exposition dump:* environmental state carries the primary information.
+
+3. **Maintenance and diagnosis.** The player enables maintenance, observes the physical response, and configures the existing circuit under `FASE1_LOGIC_CONTRACT.md`. Errors are recoverable and teach the system's rules.
+
+4. **Restricted record.** With ARCHIVO stable, the player reads the record. The record is concise and contradicts the official summary.  
+   *Proposed terminal text:* “Ensayo Aster: resultado retenido. Recomendación de despliegue: suprimida.”  
+   This is a proposed line for narrative review, not locked final copy. It establishes suppression, not who ordered it or why.
+
+5. **Approach to G.** The player understands enough to leave, but the facility is still active. The maintenance action has queued `SERVICE_OVERRIDE`; reading the record is not itself the trigger.
+
+6. **G / causal trigger.** Opening the exterior leaf of G and crossing the threshold sends the queued audit. Containment activates. The exterior side must be visible enough to explain the trigger; the recovery unit must enter through a physically plausible approach. No scene teleport.
 
 ### Mission 2 — Containment
 
-The recovery unit begins searching the facility. Elena must escape using the physical space: gaps, a low duct, an authored climb/catwalk, cover, sound discipline and the scanner's temporary tactical information.
+**Dramatic objective:** turn discovery into physical jeopardy while preserving Elena's agency.
 
-The pursuer is a physical threat and a narrative sign that Helix is trying to suppress what Elena has found. It should behave as an operational unit with limited information, not as an omniscient monster. The player's escape establishes that Elena can act on the truth, but should not yet resolve the entire conspiracy.
+7. **Threat enters.** A containment alarm and an identifiable mechanical/audio cue precede the recovery unit's appearance. The player gets a short but real opportunity to retreat. The unit searches and tracks only from evidence it can perceive.
 
-### Narrative principles for the opening
+8. **Retreat through F/E.** Elena turns back through the inner G door and retreats across the upper control/archive route. A first obstacle communicates the physical rule before pressure peaks.  
+   *Dialogue proposal, only if a quiet window exists:* “Han recibido la auditoría.”  
+   This line is provisional and must not explain a fact already made obvious by the world.
 
-- Put story information in environmental evidence, machine behavior, audio and short, purposeful text.
-- Let the player discover one meaningful contradiction before explaining the broader Aster/Helix plot.
-- Tie the puzzle's mechanical outcome to containment and the chase.
-- Use Iris as emotional subtext through a specific memory or association, not repeated exposition.
-- Introduce Selene through a trace, recording or personal detail before staging a direct confrontation.
-- Do not require Marcus to appear in the opening prototype. His ultimate role is a full-game design decision still under review.
-- Avoid making the recovery unit a generic enemy-wave encounter; its behavior should express Helix's surveillance and containment logic.
+9. **Vertical escape.** The player returns via S2 to M, the existing lift to P0, S1 to P−1 and the service evacuation gallery. The level must never invent a new stair or lift to make the script work.
+
+10. **Service exit.** Elena emerges from a distinct exterior mouth connected to the parking area. The change in light and acoustic space provides a breath, not a false victory.
+
+11. **Parking chase.** The player reads cover, columns, vehicles, sightlines and the service perimeter. The routes trade exposure against time/traversal. The recovery unit remains bound by its senses and physical navigation.
+
+12. **Egress / aftermath.** Elena crosses a physically defined far-side boundary. The immediate pursuit is broken, but the broader threat remains.  
+   *Ending-beat proposal:* a short external security response or access-state change suggests that the facility's response is coordinated. Do not identify a person or settle the wider conspiracy without a separately approved story decision.
+
+### Script and delivery rules
+
+- Every line must have a speaker/source, trigger, exact approved text, subtitle, delivery window, skip/replay policy and a statement of whether gameplay continues.
+- No mandatory voice line may play over a precision traversal or obscure a threat cue.
+- Do not force the player to read optional documents during a chase.
+- Keep core story facts available through physical evidence and readable state changes; dialogue can reinforce but must not be the only source.
+- Use Iris as emotional subtext only when the beat has a specific personal trigger. Do not add a generic memory collectible or explain her entire history in the opening.
+- Preserve ambiguity around Selene's exact responsibility. Do not introduce Marcus as a required participant in this opening.
+- Proposed lines above are placeholders for tone and meaning, not final localization/script lock.
+
+### Open narrative decisions (must not be silently invented)
+
+| Decision | Current status | Required owner decision |
+|---|---|---|
+| Why the Aster result was suppressed | The suppression is evidenced; motive is open | Decide the minimum truth revealed in the opening |
+| Who receives/acts on `SERVICE_OVERRIDE` | Queued audit triggers Containment in the current brief; specific chain of command is open | Decide whether response is automated, remotely supervised or both |
+| Recovery-unit identity | Recovery unit exists in prototype; final identity is open | Decide visual/story identity before final art and VO |
+| Elena's relationship to Iris in this exact moment | Emotional history exists in legacy material; opening beat is not locked | Choose one specific, restrained personal reaction or omit it |
+| Selene's responsibility | Open | Preserve ambiguity until full campaign reconciliation |
+| Marcus's role, chronology and endings | Legacy campaign under review | Do not resolve in this opening without owner approval |
+
+### Narrative acceptance
+
+A first-time player should be able to answer after the opening:
+1. What was inconsistent about the Aster system?
+2. What evidence suggests the result was withheld?
+3. Which player action caused Containment to begin?
+4. What can the recovery unit perceive, and how can the player break contact?
+5. Has Elena solved the larger conspiracy? (Correct understanding: no.)
+
+These are playtest questions, not assumed results. Record actual answers and revise the staging if players cannot infer the intended facts.
 
 ---
 
