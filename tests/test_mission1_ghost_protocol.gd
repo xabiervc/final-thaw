@@ -1,5 +1,5 @@
 extends Node
-## Comprobaciones de la mision 1: pistas, escaner, deduccion y consecuencias.
+## Comprobaciones del prototipo de la Fase 1: El protocolo fantasma.
 ## Ejecutar: godot --headless --path . res://tests/test_mission1_ghost_protocol.tscn
 
 const Mission = preload("res://scripts/prototypes/mission1_ghost_protocol.gd")
@@ -13,31 +13,30 @@ func _ready() -> void:
 	var mission = MissionScene.instantiate()
 	add_child(mission)
 	await get_tree().physics_frame
-	_expect(mission.player != null and mission.player_camera != null, "la mision crea a Elena y la camara")
-	_expect(mission.cut_cable != null and mission.terminal != null and mission.junction != null and mission.lever != null and mission.exit_door != null, "la mision crea cable, terminal, union, palanca y puerta")
-	_expect(mission.scan_highlights.size() == 4, "el escaner tiene cuatro objetivos revelables")
-	_expect(not mission.b_connected and not mission.power_on, "el circuito empieza alterado y sin energia")
+	_expect(mission.elena != null, "el prototipo crea a Elena")
+	_expect(mission.b_diverted, "el circuito B empieza desviado")
+	_expect(not mission.power_on, "la energia empieza apagada")
+	_expect(not mission.door_open(), "la puerta empieza bloqueada")
 	var hidden := true
-	for highlight in mission.scan_highlights:
-		if highlight.visible:
+	for marker in mission.scan_markers:
+		if marker.visible:
 			hidden = false
-	_expect(hidden, "los objetivos del escaner empiezan ocultos")
-	mission.trigger_scan()
+	_expect(hidden, "los marcadores del escaner empiezan ocultos")
+	mission._use_lever()
+	_expect(mission.power_on and not mission.door_open(), "restaurar energia con B desviado no abre la puerta")
+	mission._use_junction()
+	_expect(not mission.b_diverted, "reconectar B cambia el estado del circuito")
+	_expect(mission.door_open(), "con B reconectado y energia activada, la puerta se abre")
+	mission._use_terminal()
+	_expect(mission.evidence_found, "el terminal revela la evidencia tras restaurar el circuito")
+	mission.trigger_scan_reveal()
 	var shown := true
-	for highlight in mission.scan_highlights:
-		if not highlight.visible:
+	for marker in mission.scan_markers:
+		if not marker.visible:
 			shown = false
-	_expect(shown, "el escaner revela panel, cable, terminal y palanca")
-	mission.b_connected = false
-	mission.power_on = false
-	mission._interact(mission.junction)
-	_expect(mission.b_connected, "reconectar la derivacion cambia el estado del circuito")
-	mission._interact(mission.lever)
-	_expect(mission.power_on, "la palanca restaura la energia")
-	mission._interact(mission.exit_door)
-	_expect(mission.finished, "con B reconectado y energia, la puerta completa la mision")
+	_expect(shown, "el escaner revela panel, cable y terminal")
 	mission.queue_free()
-	print("Mission 1: %d passed, %d failed" % [passed, failed])
+	print("Mission 1 prototype: %d passed, %d failed" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
 
 

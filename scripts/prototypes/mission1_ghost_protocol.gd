@@ -1,295 +1,244 @@
 extends Node3D
-## Mision 1 - El protocolo fantasma: investigacion y puzle de deduccion.
-## Escena aislada. No modifica el laboratorio, el arte, el guardado ni los contratos de Fase 0.
+## Prototipo de la Fase 1: El protocolo fantasma.
+## Puzle de investigacion: deducir que el circuito B fue desviado, reconectarlo y restaurar energia.
+## Escena aislada; no modifica el laboratorio, el arte final ni los contratos de Fase 0.
+## Reutiliza el controlador de Elena (modelo MPFB + capa de pose si estan disponibles).
 ## Ejecutar: godot --path . res://scenes/prototypes/mission1_ghost_protocol.tscn
-## Controles: raton camara (clic para capturar), WASD mover, Shift correr, Ctrl agacharse,
-## Espacio saltar, E interactuar, Q mantener para escanear, R reiniciar al terminar, Esc menu.
+## Controles: WASD mover, Espacio saltar, E interactuar, Q mantener para escanear, Esc menu.
 
-const SfxSynth = preload("res://scripts/audio/sfx_synth.gd")
-const PoseScript = preload("res://scripts/characters/elena_procedural_pose.gd")
+const B = preload("res://scripts/components/build_util.gd")
+const ElenaScript = preload("res://scripts/characters/elena_controller.gd")
+const CameraScript = preload("res://scripts/components/follow_camera.gd")
+const ScanSfx = preload("res://scripts/audio/sfx_synth.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
-const MODEL_PATH := "res://assets/models/lab_ref/ref_elena_mpfb.glb"
-const MATERIAL_DIR := "res://assets/materials/lab_ref/"
+const ROOM_ID := "mission1_ghost_protocol"
 
-const WALK_SPEED := 4.2
-const RUN_SPEED := 6.8
-const CROUCH_SPEED := 2.2
-const ACCEL := 18.0
-const DECEL := 22.0
-const GRAVITY := 22.0
-const JUMP_VELOCITY := 6.2
-const CAMERA_DISTANCE := 7.5
-const CAMERA_PITCH := 0.5
-const MOUSE_SENSITIVITY := 0.0022
-const SCAN_CHARGE := 0.9
-const SCAN_REVEAL := 3.0
+const FLOOR_COLOR := Color(0.11, 0.13, 0.16)
+const WALL_COLOR := Color(0.16, 0.19, 0.23)
+const CYAN := Color(0.3, 0.95, 0.9)
+const AMBER := Color(0.95, 0.65, 0.2)
+const DANGER := Color(0.95, 0.2, 0.15)
+const SAFE_GREEN := Color(0.45, 0.9, 0.5)
+
+const INTERACT_RANGE := 2.6
+const SCAN_CHARGE_TIME := 0.9
+const SCAN_REVEAL_TIME := 3.0
 const SCAN_COOLDOWN := 4.0
-const INTERACT_RANGE := 2.2
 
-var player: CharacterBody3D
-var player_visual: Node3D
-var player_camera: Camera3D
-var pose = null
-var uses_model: bool = false
-var cam_yaw: float = 0.0
-var cam_pitch: float = 0.5
-var mouse_captured: bool = false
-var crouching: bool = false
-var coyote_left: float = 0.0
-var buffer_left: float = 0.0
-var was_on_floor: bool = true
+const SPAWN := Vector3(2.0, 0.2, 3.0)
+const PANEL_POS := Vector3(6.0, 1.6, -6.0)
+const CABLE_CUT_POS := Vector3(10.0, 0.3, -2.0)
+const JUNCTION_POS := Vector3(12.0, 0.0, 1.0)
+const TERMINAL_POS := Vector3(16.0, 0.0, -4.0)
+const LEVER_POS := Vector3(20.0, 0.0, 2.0)
+const DOOR_POS := Vector3(23.0, 0.0, 0.0)
 
-var panel: Node3D
-var cut_cable: Node3D
-var terminal: Node3D
-var junction: Node3D
-var lever: Node3D
-var exit_door: Node3D
-var scan_highlights: Array = []
-var scan_reveal_left: float = 0.0
-var scan_cooldown_left: float = 0.0
-var scan_charge: float = 0.0
-var sfx_player: AudioStreamPlayer
-var scan_stream: AudioStream
-var denied_stream: AudioStream
-var power_stream: AudioStream
-var door_stream: AudioStream
-var chime_stream: AudioStream
+var elena: CharacterBody3D
+var camera: Camera3D
 var hud: Label
 var prompt: Label
 var message: Label
+var scan_charge: float = 0.0
+var scan_reveal_left: float = 0.0
+var scan_cooldown_left: float = 0.0
+var scan_markers: Array = []
+var cable_path_markers: Array = []
+var panel_marker: MeshInstance3D
+var terminal_marker: MeshInstance3D
+var door_mesh: MeshInstance3D
+var door_light: OmniLight3D
+var terminal_screen: MeshInstance3D
+var junction_cable: MeshInstance3D
+var sfx_player: AudioStreamPlayer
+var scan_stream: AudioStream
+var denied_stream: AudioStream
+var power_up_stream: AudioStream
+var chime_stream: AudioStream
+var terminal_stream: AudioStream
 
-var b_connected: bool = false
+var b_diverted: bool = true
 var power_on: bool = false
 var record_read: bool = false
+var evidence_found: bool = false
+var door_open: bool = false
 var finished: bool = false
 var elapsed: float = 0.0
+var wrong_attempts: int = 0
 var message_left: float = 0.0
-var current_target: Node3D = null
+var current_hotspot: String = ""
+
+
+class Hotspot:
+	var id: String
+	var pos: Vector3
+	var label: String
+	func _init(p_id: String, p_pos: Vector3, p_label: String) -> void:
+		id = p_id
+		pos = p_pos
+		label = p_label
+
+var hotspots: Array = []
 
 
 func _ready() -> void:
-	_ensure_action("crouch", KEY_CTRL)
-	_ensure_action("run", KEY_SHIFT)
-	_build_level()
+	_ensure_action("scan", KEY_TAB)
+	_build_room()
 	_build_player()
+	_build_scan_markers()
 	_build_audio()
 	_build_ui()
-	_update_camera(100.0)
-	_show_message("La energia esta cortada y la salida bloqueada. Algo altero el circuito.", 6.0)
+	_build_hotspots()
+	_show_message("La energía está cortada. Encuentra qué se ha manipulado y restaura el sistema.", 7.0)
 
 
-func _ensure_action(action: String, keycode: Key) -> void:
-	if InputMap.has_action(action):
-		return
-	InputMap.add_action(action)
-	var event := InputEventKey.new()
-	event.physical_keycode = keycode
-	InputMap.action_add_event(action, event)
+func _build_hotspots() -> void:
+	hotspots = [
+		Hotspot.new("junction", JUNCTION_POS, "Caja de unión"),
+		Hotspot.new("terminal", TERMINAL_POS, "Terminal de registro"),
+		Hotspot.new("lever", LEVER_POS, "Palanca del generador"),
+		Hotspot.new("door", DOOR_POS, "Compuerta de salida"),
+	]
 
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and not mouse_captured:
-		mouse_captured = true
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	elif event is InputEventMouseMotion and mouse_captured:
-		cam_yaw = wrapf(cam_yaw - event.relative.x * MOUSE_SENSITIVITY, -PI, PI)
-		cam_pitch = clampf(cam_pitch + event.relative.y * MOUSE_SENSITIVITY, 0.2, 1.15)
-
-
-func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		get_tree().change_scene_to_file(MENU_PATH)
-	elif finished and event is InputEventKey and event.pressed and not event.echo and event.physical_keycode == KEY_R:
-		get_tree().reload_current_scene()
 
 
 func _physics_process(delta: float) -> void:
 	if not finished:
 		elapsed += delta
-	_move_player(delta)
-	_update_target()
+	_update_hotspot()
 	_update_scan(delta)
-	_update_camera(delta)
 	_update_hud(delta)
+	if not finished and elena.global_position.x >= DOOR_POS.x - 0.5 and door_open():
+		_finish()
 
 
-func _move_player(delta: float) -> void:
-	var on_floor := player.is_on_floor()
-	var input_vec := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var cam_basis := player_camera.global_transform.basis
-	var forward := -cam_basis.z
-	forward.y = 0.0
-	forward = forward.normalized()
-	var right := cam_basis.x
-	right.y = 0.0
-	right = right.normalized()
-	var wish := right * input_vec.x + forward * -input_vec.y
-	if wish.length() > 1.0:
-		wish = wish.normalized()
-	var wants_crouch := Input.is_action_pressed("crouch") and on_floor
-	if wants_crouch != crouching:
-		crouching = wants_crouch
-		player_visual.scale.y = 0.85 if crouching else 1.0
-	var running := Input.is_action_pressed("run") and not crouching and input_vec != Vector2.ZERO
-	var speed := CROUCH_SPEED if crouching else (RUN_SPEED if running else WALK_SPEED)
-	var horizontal := Vector3(player.velocity.x, 0.0, player.velocity.z)
-	var rate := ACCEL if wish != Vector3.ZERO else DECEL
-	horizontal = horizontal.move_toward(wish * speed, rate * delta)
-	player.velocity.x = horizontal.x
-	player.velocity.z = horizontal.z
-	coyote_left = 0.1 if on_floor else maxf(0.0, coyote_left - delta)
-	if Input.is_action_just_pressed("jump"):
-		buffer_left = 0.1
-	else:
-		buffer_left = maxf(0.0, buffer_left - delta)
-	if buffer_left > 0.0 and coyote_left > 0.0 and not crouching:
-		player.velocity.y = JUMP_VELOCITY
-		buffer_left = 0.0
-		coyote_left = 0.0
-	elif on_floor:
-		player.velocity.y = -0.5
-	else:
-		player.velocity.y -= GRAVITY * delta
-	if wish != Vector3.ZERO:
-		var wanted := atan2(wish.x, wish.z)
-		player_visual.rotation.y = lerp_angle(player_visual.rotation.y, wanted, clampf(12.0 * delta, 0.0, 1.0))
-	player.move_and_slide()
-	if player.global_position.y < -8.0:
-		player.global_position = Vector3(2.0, 0.2, 0.0)
-		player.velocity = Vector3.ZERO
+func _update_hotspot() -> void:
+	current_hotspot = ""
+	var best_range := INTERACT_RANGE
+	for hotspot in hotspots:
+		var distance: float = elena.global_position.distance_to(hotspot.pos)
+		if distance < best_range:
+			best_range = distance
+			current_hotspot = hotspot.id
+			prompt.text = "E: " + hotspot.label
+	if current_hotspot == "":
+		prompt.text = ""
+	if current_hotspot != "" and Input.is_action_just_pressed("interact"):
+		_use_hotspot(current_hotspot)
 
 
-func _update_target() -> void:
-	current_target = null
-	var best := INTERACT_RANGE
-	for node in [cut_cable, terminal, junction, lever, exit_door]:
-		var distance := player.global_position.distance_to(node.global_position)
-		if distance < best:
-			best = distance
-			current_target = node
-	prompt.text = ""
-	if current_target == null or finished:
+func _use_hotspot(id: String) -> void:
+	match id:
+		"junction":
+			_use_junction()
+		"terminal":
+			_use_terminal()
+		"lever":
+			_use_lever()
+		"door":
+			_use_door()
+
+
+func _use_junction() -> void:
+	if not b_diverted:
+		_show_message("El circuito B ya vuelve a su panel.", 3.0)
 		return
-	if current_target == cut_cable:
-		prompt.text = "E: examinar cable cortado"
-	elif current_target == terminal:
-		prompt.text = "E: consultar terminal"
-	elif current_target == junction:
-		prompt.text = "E: reconectar derivacion" if not b_connected else "E: revisar union"
-	elif current_target == lever:
-		prompt.text = "E: restaurar energia"
-	elif current_target == exit_door:
-		prompt.text = "E: abrir compuerta" if power_on and b_connected else ""
-	if prompt.text != "" and Input.is_action_just_pressed("interact"):
-		_interact(current_target)
+	b_diverted = false
+	_play_sfx(terminal_stream, -6.0)
+	junction_cable.material_override = _emissive_material(CYAN, 1.2)
+	if power_on:
+		_apply_power()
+	_show_message("El cable B vuelve a su panel. El circuito sigue apagado.", 4.0)
 
 
-func _interact(target: Node3D) -> void:
-	if target == cut_cable:
-		_show_message("El cable B fue cortado y derivado hacia el terminal de registro.", 5.0)
-		record_read = true
-		_play(denied_stream, -8.0)
-	elif target == terminal:
-		if power_on and b_connected:
-			_finish()
-		elif power_on:
-			_show_message("El terminal recibe energia de B, pero el circuito es inconsistente.", 5.0)
-			_play(denied_stream, -8.0)
-		else:
-			_show_message("Sin energia. El terminal no responde.", 4.0)
-			_play(denied_stream, -10.0)
-	elif target == junction:
-		if b_connected:
-			_show_message("La derivacion ya esta reconectada.", 3.0)
-		else:
-			b_connected = true
-			_show_message("Has reconectado la derivacion. El circuito B vuelve a su ruta.", 5.0)
-			_play(scan_stream, -6.0)
-	elif target == lever:
-		if power_on:
-			_show_message("La energia ya esta restaurada.", 3.0)
-		elif b_connected:
-			power_on = true
-			_play(power_stream, -4.0)
-			_show_message("Energia restaurada. La compuerta se desbloquea.", 5.0)
-			exit_door.set_meta("open", true)
-		else:
-			power_on = true
-			_play(power_stream, -4.0)
-			_show_message("Las luces vuelven, pero la compuerta sigue bloqueada: el circuito es inconsistente.", 6.0)
-	elif target == exit_door:
-		if power_on and b_connected:
-			_finish()
-		else:
-			_show_message("La compuerta esta bloqueada.", 4.0)
-			_play(denied_stream, -8.0)
+func _use_terminal() -> void:
+	if b_diverted:
+		_show_message("El terminal recibe alimentación de un cable desviado. El registro está incompleto.", 5.0)
+		return
+	if not power_on:
+		_show_message("El terminal no tiene energía.", 3.0)
+		return
+	record_read = true
+	evidence_found = true
+	_play_sfx(terminal_stream, -6.0)
+	terminal_screen.material_override = _emissive_material(CYAN, 2.0)
+	_show_message("Registro completo: prueba del Aster desviada. Resultado retenido. Recomendación de despliegue suprimida.", 7.0)
+
+
+func _use_lever() -> void:
+	if power_on:
+		_show_message("El generador ya está activo.", 3.0)
+		return
+	power_on = true
+	_play_sfx(power_up_stream, -6.0)
+	_apply_power()
+	if b_diverted:
+		wrong_attempts += 1
+		_show_message("Las luces se encienden, pero la compuerta sigue bloqueada: el circuito B es inconsistente.", 6.0)
+	else:
+		_show_message("Energía restaurada. La compuerta se desbloquea.", 5.0)
+
+
+func _apply_power() -> void:
+	door_light.light_color = SAFE_GREEN
+	door_light.light_energy = 1.5
+	door_mesh.material_override = _emissive_material(SAFE_GREEN, 1.5)
+
+
+func door_open() -> bool:
+	return power_on and not b_diverted
+
+
+func _use_door() -> void:
+	if door_open():
+		return
+	_play_sfx(denied_stream, -6.0)
+	if b_diverted:
+		_show_message("La compuerta está bloqueada: el circuito B no llega a la puerta.", 4.0)
+	else:
+		_show_message("La compuerta está bloqueada: no hay energía.", 4.0)
 
 
 func _finish() -> void:
-	if finished:
-		return
 	finished = true
-	_play(chime_stream, -4.0)
-	_show_message("REGISTRO COMPLETADO\nPrueba del Aster desviada. Resultado oculto. Recomendacion de despliegue suprimida.\nEl sistema de contencion se activa.\n\nR: reiniciar   |   Esc: menu", 600.0)
+	_play_sfx(chime_stream, -4.0)
+	_show_message("EVIDENCIA RECUPERADA\nLa prueba del Aster fue desviada y su resultado oculto.\nLa activación del sistema ha despertado la contención de Helix.\n\nTiempo: %s   |   Intentos fallidos: %d\nEsc para volver al menú." % [_format_time(elapsed), wrong_attempts], 600.0)
 
+
+func _format_time(seconds: float) -> String:
+	return "%d:%02d" % [floori(seconds / 60.0), int(seconds) % 60]
+
+
+# --- Escaner ------------------------------------------------------------------------------------------
 
 func _update_scan(delta: float) -> void:
 	scan_cooldown_left = maxf(0.0, scan_cooldown_left - delta)
 	if scan_reveal_left > 0.0:
 		scan_reveal_left -= delta
 		if scan_reveal_left <= 0.0:
-			for highlight in scan_highlights:
-				highlight.visible = false
+			for marker in scan_markers:
+				marker.visible = false
 		return
 	if Input.is_action_pressed("scan") and scan_cooldown_left <= 0.0 and not finished:
 		scan_charge += delta
-		if scan_charge >= SCAN_CHARGE:
+		if scan_charge >= SCAN_CHARGE_TIME:
 			scan_charge = 0.0
-			scan_reveal_left = SCAN_REVEAL
+			scan_reveal_left = SCAN_REVEAL_TIME
 			scan_cooldown_left = SCAN_COOLDOWN
-			_play(scan_stream, -6.0)
-			for highlight in scan_highlights:
-				highlight.visible = true
+			_play_sfx(scan_stream, -4.0)
+			for marker in scan_markers:
+				marker.visible = true
 	else:
 		scan_charge = 0.0
 
 
-func _update_camera(delta: float) -> void:
-	var offset := Basis(Vector3.UP, cam_yaw) * (Basis(Vector3.RIGHT, -cam_pitch) * Vector3(0.0, 0.0, 7.5))
-	var wanted := player.global_position + offset
-	player_camera.global_position = player_camera.global_position.lerp(wanted, 1.0 - exp(-10.0 * delta))
-	player_camera.look_at(player.global_position + Vector3(0.0, 1.0, 0.0), Vector3.UP)
+# --- Construccion --------------------------------------------------------------------------------------
 
-
-func _update_hud(delta: float) -> void:
-	if message_left > 0.0:
-		message_left -= delta
-		if message_left <= 0.0:
-			message.text = ""
-	var scan_line := "listo"
-	if scan_reveal_left > 0.0:
-		scan_line = "activo %.1f s" % scan_reveal_left
-	elif scan_charge > 0.0:
-		scan_line = "escaneando %d%%" % int(scan_charge / SCAN_CHARGE * 100.0)
-	elif scan_cooldown_left > 0.0:
-		scan_line = "recarga %.1f s" % scan_cooldown_left
-	var circuit := "A ok   |   B desviado   |   C ok" if not b_connected else "A ok   |   B ok   |   C ok"
-	hud.text = "WASD mover · Ratón cámara · Espacio saltar · Shift correr · Ctrl agacharse · E interactuar · Q escáner\nEnergía: %s   |   Circuito: %s   |   Escáner: %s   |   Tiempo: %s" % ["restaurada" if power_on else "cortada", circuit, scan_line, _time(elapsed)]
-
-
-func _time(seconds: float) -> String:
-	return "%d:%02d" % [floori(seconds / 60.0), int(seconds) % 60]
-
-
-func _show_message(text: String, seconds: float) -> void:
-	message.text = text
-	message_left = seconds
-
-
-func _build_level() -> void:
+func _build_room() -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color(0.02, 0.03, 0.05)
@@ -306,68 +255,66 @@ func _build_level() -> void:
 	sun.light_color = Color(0.75, 0.85, 1.0)
 	sun.shadow_enabled = true
 	add_child(sun)
-	_add_box(Vector3(24.0, 0.5, 14.0), Vector3(12.0, -0.25, 0.0), Color(0.11, 0.13, 0.16))
-	_add_box(Vector3(0.6, 4.0, 14.6), Vector3(-0.3, 2.0, 0.0), Color(0.16, 0.19, 0.23))
-	_add_box(Vector3(0.6, 4.0, 14.6), Vector3(24.3, 2.0, 0.0), Color(0.16, 0.19, 0.23))
-	_add_box(Vector3(24.6, 4.0, 0.6), Vector3(12.0, 2.0, -7.3), Color(0.16, 0.19, 0.23))
-	_add_box(Vector3(24.6, 4.0, 0.6), Vector3(12.0, 2.0, 7.3), Color(0.16, 0.19, 0.23))
-	_add_sign("CIRCUITO A: LUCES\nCIRCUITO B: COMPUERTA\nCIRCUITO C: TERMINAL", Vector3(2.0, 2.4, -6.8))
-	_add_sign("SALIDA", Vector3(23.5, 3.0, 0.0))
-	var lamp := OmniLight3D.new()
-	lamp.position = Vector3(12.0, 3.4, 0.0)
-	lamp.light_energy = 0.6
-	lamp.omni_range = 16.0
-	add_child(lamp)
-	var panel := Node3D.new()
-	panel.position = Vector3(2.0, 1.2, -6.0)
+
+	B.solid_box(self, Vector3(26.0, 0.5, 16.0), Vector3(12.0, -0.25, 0.0), FLOOR_COLOR)
+	B.solid_box(self, Vector3(26.0, 4.0, 0.6), Vector3(12.0, 2.0, -8.3), WALL_COLOR)
+	B.solid_box(self, Vector3(26.0, 0.9, 0.6), Vector3(12.0, 0.45, 8.3), WALL_COLOR)
+	B.solid_box(self, Vector3(0.6, 4.0, 16.0), Vector3(-1.3, 2.0, 0.0), WALL_COLOR)
+	B.solid_box(self, Vector3(0.6, 4.0, 16.0), Vector3(25.3, 2.0, 0.0), WALL_COLOR)
+
+	_add_sign("CIRCUITO A: LUCES", Vector3(4.0, 2.2, -6.0))
+	_add_sign("CIRCUITO B: COMPUERTA", Vector3(6.0, 2.2, -6.0))
+	_add_sign("CIRCUITO C: REGISTRO", Vector3(8.0, 2.2, -6.0))
+	_add_sign("Mantén Q para escanear", Vector3(3.0, 3.2, 0.0))
+	_add_sign("SALIDA", Vector3(23.0, 3.2, 0.0))
+
+	var panel := MeshInstance3D.new()
+	var panel_box := BoxMesh.new()
+	panel_box.size = Vector3(6.0, 2.4, 0.3)
+	panel.mesh = panel_box
+	panel.position = PANEL_POS
+	panel.material_override = _plain_material(WALL_COLOR)
 	add_child(panel)
-	var cable := Node3D.new()
-	cable.position = Vector3(9.0, 0.2, -3.0)
-	add_child(cable)
-	var terminal := Node3D.new()
-	terminal.position = Vector3(15.0, 1.0, -5.5)
-	add_child(terminal)
-	var junction := Node3D.new()
-	junction.position = Vector3(9.0, 0.8, -1.5)
-	add_child(junction)
-	var lever := Node3D.new()
-	lever.position = Vector3(20.0, 1.0, -5.5)
-	add_child(lever)
-	var door := Node3D.new()
-	door.position = Vector3(23.5, 1.5, 0.0)
-	add_child(door)
-	panel.set_meta("kind", "panel")
-	cut_cable = cable
-	terminal = terminal
-	junction = junction
-	lever = lever
-	exit_door = door
-	_add_scan_highlight(Vector3(2.0, 2.4, -5.8), Color(0.3, 0.95, 0.9))
-	_add_scan_highlight(Vector3(9.0, 0.5, -3.0), Color(0.95, 0.65, 0.2))
-	_add_scan_highlight(Vector3(15.0, 1.5, -5.2), Color(0.3, 0.95, 0.9))
-	_add_scan_highlight(Vector3(20.0, 1.8, -5.2), Color(0.95, 0.65, 0.2))
+	panel_marker = _make_marker(PANEL_POS + Vector3(0.0, 0.4, 0.6), CYAN, 0.2)
 
+	junction_cable = MeshInstance3D.new()
+	var cable_box := BoxMesh.new()
+	cable_box.size = Vector3(3.0, 0.15, 0.15)
+	junction_cable.mesh = cable_box
+	junction_cable.position = Vector3(13.5, 0.3, -1.5)
+	junction_cable.material_override = _emissive_material(AMBER, 0.8)
+	add_child(junction_cable)
 
-func _add_box(size: Vector3, pos: Vector3, color: Color) -> void:
-	var body := StaticBody3D.new()
-	body.collision_layer = 1
-	body.collision_mask = 0
-	body.position = pos
-	var shape := CollisionShape3D.new()
-	var box := BoxShape3D.new()
-	box.size = size
-	shape.shape = box
-	body.add_child(shape)
-	var mesh := MeshInstance3D.new()
-	var box_mesh := BoxMesh.new()
-	box_mesh.size = size
-	mesh.mesh = box_mesh
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	material.roughness = 0.85
-	mesh.material_override = material
-	body.add_child(mesh)
-	add_child(body)
+	terminal_screen = MeshInstance3D.new()
+	var screen_box := BoxMesh.new()
+	screen_box.size = Vector3(0.9, 0.6, 0.1)
+	terminal_screen.mesh = screen_box
+	terminal_screen.position = TERMINAL_POS + Vector3(0.0, 1.2, -0.3)
+	terminal_screen.material_override = _emissive_material(DANGER, 1.0)
+	add_child(terminal_screen)
+	terminal_marker = _make_marker(TERMINAL_POS + Vector3(0.0, 1.6, 0.0), CYAN, 0.2)
+
+	door_mesh = MeshInstance3D.new()
+	var door_box := BoxMesh.new()
+	door_box.size = Vector3(0.3, 3.0, 4.0)
+	door_mesh.mesh = door_box
+	door_mesh.position = DOOR_POS + Vector3(0.0, 1.5, 0.0)
+	door_mesh.material_override = _plain_material(Color(0.3, 0.35, 0.4))
+	add_child(door_mesh)
+	door_light = OmniLight3D.new()
+	door_light.position = DOOR_POS + Vector3(-0.8, 2.2, 0.0)
+	door_light.light_color = DANGER
+	door_light.light_energy = 0.8
+	door_light.omni_range = 4.0
+	add_child(door_light)
+
+	for x in [5.0, 12.0, 19.0]:
+		var lamp := OmniLight3D.new()
+		lamp.position = Vector3(x, 3.4, 0.0)
+		lamp.light_color = Color(1.0, 0.85, 0.6)
+		lamp.light_energy = 0.0
+		lamp.omni_range = 12.0
+		add_child(lamp)
 
 
 func _add_sign(text: String, pos: Vector3) -> void:
@@ -382,115 +329,54 @@ func _add_sign(text: String, pos: Vector3) -> void:
 	add_child(label)
 
 
-func _add_scan_highlight(pos: Vector3, color: Color) -> void:
+func _build_player() -> void:
+	elena = ElenaScript.new()
+	elena.position = SPAWN
+	add_child(elena)
+	camera = CameraScript.new()
+	camera.target = elena
+	camera.limit_min = Vector2(2.0, -6.0)
+	camera.limit_max = Vector2(22.0, 6.0)
+	add_child(camera)
+
+
+func _build_scan_markers() -> void:
+	panel_marker = _make_marker(PANEL_POS + Vector3(0.0, 0.4, 0.6), CYAN, 0.2)
+	terminal_marker = _make_marker(TERMINAL_POS + Vector3(0.0, 1.6, 0.0), CYAN, 0.2)
+	scan_markers.append(panel_marker)
+	scan_markers.append(terminal_marker)
+	for i in 5:
+		var t: float = float(i) / 4.0
+		var pos: Vector3 = Vector3(lerpf(CABLE_CUT_POS.x, TERMINAL_POS.x, t), 0.35, lerpf(CABLE_CUT_POS.z, TERMINAL_POS.z, t))
+		var marker := _make_marker(pos, AMBER, 0.12)
+		cable_path_markers.append(marker)
+		scan_markers.append(marker)
+
+
+func _make_marker(pos: Vector3, color: Color, radius: float) -> MeshInstance3D:
 	var marker := MeshInstance3D.new()
 	var sphere := SphereMesh.new()
-	sphere.radius = 0.25
-	sphere.height = 0.5
+	sphere.radius = radius
+	sphere.height = radius * 2.0
 	marker.mesh = sphere
 	marker.position = pos
 	marker.visible = false
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	material.emission_enabled = true
-	material.emission = color
-	material.emission_energy_multiplier = 2.0
-	material.no_depth_test = true
-	marker.material_override = material
+	marker.material_override = _emissive_material(color, 2.0)
 	add_child(marker)
-	scan_highlights.append(marker)
-
-
-func _build_player() -> void:
-	player = CharacterBody3D.new()
-	player.name = "Elena"
-	player.collision_layer = 2
-	player.collision_mask = 1
-	player.position = Vector3(2.0, 0.2, 0.0)
-	var shape := CollisionShape3D.new()
-	var capsule := CapsuleShape3D.new()
-	capsule.radius = 0.32
-	capsule.height = 1.7
-	shape.shape = capsule
-	shape.position = Vector3(0.0, 0.85, 0.0)
-	player.add_child(shape)
-	player_visual = Node3D.new()
-	player.add_child(player_visual)
-	add_child(player)
-	if not _try_build_model():
-		_build_primitive_player()
-	player_camera = Camera3D.new()
-	player_camera.fov = 55.0
-	player_camera.current = true
-	add_child(player_camera)
-	player_camera.global_position = player.global_position + Vector3(0.0, 4.2, 7.5)
-
-
-func _try_build_model() -> bool:
-	if not ResourceLoader.exists(MODEL_PATH):
-		return false
-	var scene := load(MODEL_PATH) as PackedScene
-	if scene == null:
-		return false
-	var model := scene.instantiate() as Node3D
-	if model == null:
-		return false
-	model.name = "ElenaModel"
-	player_visual.add_child(model)
-	_dress_model(model)
-	pose = PoseScript.new()
-	pose.name = "ProceduralPose"
-	player.add_child(pose)
-	pose.setup(player, model)
-	uses_model = true
-	return true
-
-
-func _dress_model(model: Node) -> void:
-	for node in model.find_children("*", "MeshInstance3D", true, false):
-		var mesh_instance := node as MeshInstance3D
-		if mesh_instance == null or mesh_instance.mesh == null:
-			continue
-		for surface in mesh_instance.mesh.get_surface_count():
-			var imported := mesh_instance.mesh.surface_get_material(surface)
-			var name := imported.resource_name if imported != null else ""
-			var path := MATERIAL_DIR + name + ".tres"
-			if name != "" and ResourceLoader.exists(path):
-				mesh_instance.set_surface_override_material(surface, load(path) as Material)
-
-
-func _build_primitive_player() -> void:
-	var body := CapsuleMesh.new()
-	body.radius = 0.27
-	body.height = 1.1
-	_add_mesh(player_visual, body, Vector3(0.0, 1.05, 0.0), Color(0.05, 0.24, 0.32))
-	var head := SphereMesh.new()
-	head.radius = 0.17
-	head.height = 0.34
-	_add_mesh(player_visual, head, Vector3(0.0, 1.72, 0.0), Color(0.8, 0.62, 0.52))
-
-
-func _add_mesh(parent: Node3D, mesh: Mesh, pos: Vector3, color: Color) -> void:
-	var instance := MeshInstance3D.new()
-	instance.mesh = mesh
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	instance.material_override = material
-	instance.position = pos
-	parent.add_child(instance)
+	return marker
 
 
 func _build_audio() -> void:
-	scan_stream = SfxSynth.scan_pulse()
+	scan_stream = ScanSfx.scan_pulse()
 	denied_stream = SfxSynth.denied()
-	power_stream = SfxSynth.power_up()
-	door_stream = SfxSynth.door_open()
+	power_up_stream = SfxSynth.power_up()
 	chime_stream = SfxSynth.complete_chime()
+	terminal_stream = SfxSynth.terminal_beep()
 	sfx_player = AudioStreamPlayer.new()
 	add_child(sfx_player)
 
 
-func _play(stream: AudioStream, volume_db: float) -> void:
+func _play_sfx(stream: AudioStream, volume_db: float) -> void:
 	if stream == null:
 		return
 	sfx_player.stream = stream
@@ -519,5 +405,41 @@ func _build_ui() -> void:
 	prompt.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	prompt.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM, Control.PRESET_MODE_MINSIZE, 110)
 	prompt.add_theme_font_size_override("font_size", 24)
-	prompt.add_theme_color_override("font_color", Color(0.95, 0.65, 0.2))
+	prompt.add_theme_color_override("font_color", AMBER)
 	layer.add_child(prompt)
+
+
+func _plain_material(color: Color) -> StandardMaterial3D:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	material.roughness = 0.8
+	return material
+
+
+func _emissive_material(color: Color, energy: float) -> StandardMaterial3D:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = color
+	material.emission_enabled = true
+	material.emission = color
+	material.emission_energy_multiplier = energy
+	return material
+
+
+func _show_message(text: String, seconds: float) -> void:
+	message.text = text
+	message_left = seconds
+
+
+func _update_hud(delta: float) -> void:
+	if message_left > 0.0:
+		message_left -= delta
+		if message_left <= 0.0:
+			message.text = ""
+	var scan_line := "listo"
+	if scan_reveal_left > 0.0:
+		scan_line = "activo %.1f s" % scan_reveal_left
+	elif scan_charge > 0.0:
+		scan_line = "escaneando %d%%" % int(scan_charge / SCAN_CHARGE_TIME * 100.0)
+	elif scan_cooldown_left > 0.0:
+		scan_line = "recarga %.1f s" % scan_cooldown_left
+	hud.text = "WASD mover · Espacio saltar · E interactuar · Q escáner\nEscáner: %s   |   Energía: %s   |   Circuito B: %s" % [scan_line, "activado" if power_on else "apagado", "desviado" if b_diverted else "conectado"]
