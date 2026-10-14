@@ -1,5 +1,7 @@
 # Phase 1 — Long exploration route
 
+> **ESTADO ACTUAL — REFERENCIA NO CANÓNICA.** Este documento describe un diseño/prototipo anterior y se conserva como histórico/comparativo. Para implementar el slice actual, seguir `FASE1_FUNCTIONAL_SPEC.md` v1.0, `FASE1_SPATIAL_GRAPH.md` v0.4, `FASE1_GREYBOX_SPEC.md` v1.1, `fase1_fase2_mapa_progresion.md` v0.6 y `FASE1_LOGIC_CONTRACT.md`. No utilizar sus recorridos, coordenadas ni preguntas abiertas cuando contradigan esas fuentes.
+
 Status: route design requested by the owner on 2026-10-14. Not an implemented expansion, approved construction plan, or playtest result. Written in English under the documentation convention.
 
 ## 1. Experience and authority
