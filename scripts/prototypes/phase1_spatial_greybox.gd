@@ -1,11 +1,12 @@
 extends Node3D
 ## Phase 1 spatial review: six rooms on four levels joined by fixed stairs (layout in phase1_layout.gd).
 ## Reuses the art team's FacilityMaterials, prompt HUD and wall dither, and Elena's animations. The rooms are dressed by
-## phase1_dressing.gd. Review views: F4 top-down, F5 side cut. No circuit, archive extraction, pursuit or containment.
-## The lift is not installed.
+## phase1_dressing.gd and the clues and controls are wired to the circuit model by phase1_interactions.gd.
+## Review views: F4 top-down, F5 side cut. No archive record, extraction, pursuit or containment. The lift is not installed.
 const Layout = preload("res://scripts/prototypes/phase1_layout.gd")
 const Player = preload("res://scripts/prototypes/phase1_spatial_player.gd")
 const Dressing = preload("res://scripts/prototypes/phase1_dressing.gd")
+const Interactions = preload("res://scripts/prototypes/phase1_interactions.gd")
 const FacilityMaterials = preload("res://scripts/levels/test_room_art/facility_materials.gd")
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
@@ -28,11 +29,13 @@ const WET_SPOTS := {
 
 var materials = FacilityMaterials.new()
 var dressing = null
+var interactions = null
 var player: CharacterBody3D
 var hud: CanvasLayer
 var fade_groups: Array = []
 var body_group: Dictionary = {}
 var marker_labels: Array = []
+var room_lights: Array = []
 var shortcut_body: StaticBody3D
 var shortcut_open: bool = false
 var safe_point: Vector3 = Vector3(2.0, 0.2, 1.0)
@@ -60,7 +63,11 @@ func _ready() -> void:
 	hud = HudScript.new()
 	add_child(hud)
 	hud.call("set_objective", "OBJETIVO  /  Accede al registro del archivo")
-	hud.call("set_hint", "Prueba espacial · F4 vista elevada · F5 corte lateral")
+	hud.call("set_hint", "Prueba espacial · F4 vista elevada · F5 corte lateral · H pista")
+	interactions = Interactions.new()
+	interactions.name = "Interactions"
+	add_child(interactions)
+	interactions.setup(self)
 
 func _exit_tree() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -102,7 +109,6 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	_update_room()
-	_update_shortcut_prompt()
 	_update_occluders(delta)
 	if player.position.y < -8.0:
 		player.position = safe_point
@@ -118,7 +124,19 @@ func _update_room() -> void:
 	for entry in marker_labels:
 		(entry["label"] as Label3D).visible = entry["room"] == id
 
-# --- Shortcut (unlockable only from the cabin side) ---------------------------------------------------
+## The trip feedback: every room light dips for a moment and recovers. Visual only.
+func dip_lights() -> void:
+	for light in room_lights:
+		var l := light as OmniLight3D
+		if not l.has_meta("base_energy"):
+			l.set_meta("base_energy", l.light_energy)
+		var base: float = float(l.get_meta("base_energy"))
+		var tween := create_tween()
+		tween.tween_property(l, "light_energy", base * 0.25, 0.12)
+		tween.tween_interval(0.25)
+		tween.tween_property(l, "light_energy", base, 0.5)
+
+# --- Shortcut (unlockable only from the cabin side; the prompt is raised by the interactions node) -------
 
 func unlock_allowed(from: Vector3) -> bool:
 	return from.z < -10.1 and from.x > 0.5 and from.x < 3.5 and absf(from.y - 3.0) < 1.5 and from.distance_to(SHORTCUT_CENTER) <= SHORTCUT_REACH
@@ -131,12 +149,6 @@ func unlock_shortcut(from: Vector3) -> bool:
 	shortcut_body.visible = false
 	hud.call("show_banner", "Atajo desbloqueado", "La escalera de servicio conecta la cabina con el vestíbulo.")
 	return true
-
-func _update_shortcut_prompt() -> void:
-	var near := not shortcut_open and unlock_allowed(player.position)
-	hud.call("set_prompt", "[E] Desbloquear - Puerta del atajo" if near else "")
-	if near and Input.is_action_just_pressed("interact"):
-		unlock_shortcut(player.position)
 
 func _build_shortcut_door() -> void:
 	shortcut_body = _body("ShortcutDoor", Vector3(2.0, 2.4, 0.2), Vector3(2.0, 4.2, -10.0), materials.get_material("safety_paint"))
@@ -277,6 +289,7 @@ func _build_room(id: String) -> void:
 	light.light_energy = 0.7
 	light.omni_range = maxf(x1 - x0, z1 - z0) * 0.5 + 2.0
 	add_child(light)
+	room_lights.append(light)
 
 func _segments(run_lo: float, run_hi: float, gaps: Array) -> Array:
 	var sorted: Array = gaps.duplicate()
