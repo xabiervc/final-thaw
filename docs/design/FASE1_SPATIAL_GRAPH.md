@@ -38,7 +38,7 @@ La galería de evacuación y la boca este quedan seleccionadas como **baseline d
 
 La salida seleccionada es la boca este de P−1 en X=34, Z=4,5..7,5, Y=−2, conectada por una galería de servicio de 6 × 3 m. Es distinta del túnel oeste y comparte cota con el patio de servicio; no requiere una rampa nueva en el umbral. La ruta interior es: evasión silenciosa por F/E, pasarela y M → elevador existente a P0 → R1 → carrera por retorno este → S1/P−1 → galería de evacuación → boca este → parking.
 
-La planta y overlays de parking usan coordenadas locales con transform seleccionado de diseño: `X_mundo = X_local + 28,7 m`, `Z_mundo = Z_local − 15,8 m`, `Y = −2,0 m`. El umbral local (5,3; 21,8) coincide con la boca P−1 (34; 6); el spawn local (6,8; 21,8) queda en mundo (35,5; 6). El egress local (42,8; 1,8) queda en mundo (71,5; −14). Validar orientación, cota, colliders y continuidad en Godot; no sustituir estas coordenadas por el checkpoint antiguo del prototipo.
+La planta y overlays de parking usan coordenadas locales con transform seleccionado de diseño: `X_mundo = X_local + 28,7 m`, `Z_mundo = Z_local − 15,8 m`, `Y = −2,0 m`. El umbral local (5,3; 21,8) coincide con la boca P−1 (34; 6); el checkpoint de recuperación local (6,8; 21,8) queda en mundo (35,5; 6), sin alterar el handoff inicial en (34; 6). El egress más allá del muro norte local (42,8; −0,4) queda en mundo (71,5; −16,2). Validar orientación, cota, colliders y continuidad en Godot; no sustituir estas coordenadas por el checkpoint antiguo del prototipo.
 
 ## Estados de sigilo y transición a carrera (contrato provisional)
 
