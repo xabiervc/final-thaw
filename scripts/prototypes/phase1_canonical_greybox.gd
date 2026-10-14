@@ -280,7 +280,7 @@ func _build_fixed_geometry() -> void:
 
 	# Damaged direct stair remains visible but has no traversable collision ramp.
 	var damaged_stair := _visual_box("BrokenApproachStairVisual", Vector3(2.0, 0.18, 6.0), Vector3(3.0, 1.5, 0.0), materials.get_material("grate"))
-	damaged_stair.rotation.x = -atan2(3.0, 6.0)
+	damaged_stair.rotation.x = atan2(3.0, 6.0) # P2 at z=-3, P0 at z=+3; visual only.
 	_add_floor_rect(Rect2(Vector2(2.0, -4.0), Vector2(2.0, 1.0)), 3.0, "BrokenStairUpperLanding", materials.get_material("grate"))
 	_wall_z("BrokenStairBlockedGap", -3.55, 1.7, 4.3, 0.0, 3.6, materials.get_material("safety_paint"))
 	_visual_box("BrokenApproachWarning", Vector3(2.2, 0.16, 0.08), Vector3(3.0, 2.8, -3.48), _flat_material(Color(0.95, 0.54, 0.12), 0.45, 0.0, 1.1))
