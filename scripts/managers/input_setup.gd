@@ -31,6 +31,7 @@ func _ready() -> void:
 			InputMap.action_add_event(action, ev)
 	_add_mouse("attack_primary", MOUSE_BUTTON_LEFT)
 	_add_mouse("attack_secondary", MOUSE_BUTTON_RIGHT)
+	InputRemapManager.restore_all()
 
 func _add_mouse(action: String, button: int) -> void:
 	var ev := InputEventMouseButton.new()

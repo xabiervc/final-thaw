@@ -29,6 +29,9 @@ static func _text(property_name: String, fallback: String = "") -> String:
 	var value: Variant = texts.get(property_name)
 	return str(value) if value != null else fallback
 
+static func get_option(property_name: String, fallback: String = "") -> String:
+	return _text(property_name, fallback)
+
 static func get_menu_title() -> String:
 	return _text("menu_title", "Final Thaw")
 
@@ -168,6 +171,12 @@ static func get_options_colorblind_protanopia() -> String:
 
 static func get_options_colorblind_tritanopia() -> String:
 	return _text("options_colorblind_tritanopia", "Tritanopia")
+
+static func get_options_remap_title() -> String:
+	return _text("options_remap_title", "Controls")
+
+static func get_options_press_key() -> String:
+	return _text("options_press_key", "Press a key...")
 
 static func get_credits_title() -> String:
 	return _text("credits_title", "FINAL THAW\nPhase 0 Prototype")

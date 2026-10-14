@@ -15,6 +15,7 @@ func _ready() -> void:
 	_check_accessibility_text_contract()
 	_check_accessibility_manager()
 	_check_colorblind_palettes()
+	_check_input_remapping()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -112,6 +113,8 @@ func _check_menu_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_options_text_scale().is_empty(), "Options text-scale fallback exists")
 	_expect(not NarrativeTextManager.get_options_back_button().is_empty(), "Options back fallback exists")
 	_expect(not NarrativeTextManager.get_credits_title().is_empty(), "Credits title fallback exists")
+	_expect(not NarrativeTextManager.get_options_remap_title().is_empty(), "Remap title fallback exists")
+	_expect(not NarrativeTextManager.get_options_press_key().is_empty(), "Press-key fallback exists")
 
 func _check_hud_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_hud_civilian_aid(4).is_empty(), "HUD civilian aid fallback exists")
@@ -171,6 +174,17 @@ func _check_colorblind_palettes() -> void:
 
 	GameManager.colorblind_mode = previous_mode
 	GameManager.set_flag("accessibility_high_contrast", previous_contrast)
+
+func _check_input_remapping() -> void:
+	var original_key: int = InputRemapManager.current_keycode("interact")
+	var rebound: bool = InputRemapManager.rebind("interact", KEY_R)
+	var stored: Variant = GameStateManager.get_nested(["input_rebinds", "interact"], KEY_NONE)
+	_expect(rebound and InputRemapManager.current_keycode("interact") == KEY_R, "Interact can be rebound")
+	_expect(stored is int and stored == KEY_R, "Interact rebinding persists")
+
+	InputRemapManager.rebind("interact", original_key, false)
+	GameStateManager.set_nested(["input_rebinds", "interact"], KEY_NONE)
+	_expect(InputRemapManager.current_keycode("interact") == original_key, "Interact original binding is restored")
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid

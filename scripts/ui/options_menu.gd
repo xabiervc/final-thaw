@@ -2,6 +2,9 @@ extends Control
 
 const MAIN_MENU_PATH := "res://scenes/ui/main_menu.tscn"
 
+var awaiting_rebind: String = ""
+var remap_buttons: Dictionary = {}
+
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new()
@@ -12,7 +15,7 @@ func _ready() -> void:
 	center.set_anchors_preset(Control.PRESET_FULL_RECT)
 	add_child(center)
 	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 16)
+	vbox.add_theme_constant_override("separation", 12)
 	center.add_child(vbox)
 
 	var scale_label := Label.new()
@@ -75,6 +78,28 @@ func _ready() -> void:
 		GameManager.stats_changed.emit())
 	vbox.add_child(colorblind_option)
 
+	var remap_label := Label.new()
+	remap_label.text = _remap_title()
+	vbox.add_child(remap_label)
+
+	for action in InputRemapManager.REMAPPABLE_ACTIONS:
+		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 12)
+		vbox.add_child(row)
+
+		var action_label := Label.new()
+		action_label.text = _action_text(action)
+		action_label.custom_minimum_size = Vector2(160, 0)
+		row.add_child(action_label)
+
+		var remap_button := Button.new()
+		remap_button.custom_minimum_size = Vector2(160, 36)
+		remap_button.pressed.connect(_on_remap_pressed.bind(action))
+		row.add_child(remap_button)
+		remap_buttons[action] = remap_button
+
+	_refresh_remap_buttons()
+
 	var back := Button.new()
 	back.text = _back_text()
 	back.add_theme_font_size_override("font_size", int(18.0 * AccessibilityManager.ui_scale()))
@@ -132,9 +157,61 @@ func _colorblind_tritanopia_text() -> String:
 	var text: String = NarrativeTextManager.get_options_colorblind_tritanopia()
 	return text if not text.is_empty() else "Tritanopia"
 
+func _remap_title() -> String:
+	var text: String = NarrativeTextManager.get_options_remap_title()
+	return text if not text.is_empty() else ("Controles" if NarrativeTextManager.current_locale == "es" else "Controls")
+
+func _action_text(action: String) -> String:
+	var text: String = NarrativeTextManager.get_option("remap_%s" % action, "")
+	if not text.is_empty():
+		return text
+	match action:
+		"interact":
+			return "Interactuar" if NarrativeTextManager.current_locale == "es" else "Interact"
+		"jump":
+			return "Saltar" if NarrativeTextManager.current_locale == "es" else "Jump"
+		"scan":
+			return "Escanear" if NarrativeTextManager.current_locale == "es" else "Scan"
+	return action
+
+func _press_key_text() -> String:
+	var text: String = NarrativeTextManager.get_options_press_key()
+	return text if not text.is_empty() else ("Pulsa una tecla..." if NarrativeTextManager.current_locale == "es" else "Press a key...")
+
 func _back_text() -> String:
 	var text: String = NarrativeTextManager.get_options_back_button()
 	return text if not text.is_empty() else ("Volver" if NarrativeTextManager.current_locale == "es" else "Back")
+
+func _key_name(keycode: int) -> String:
+	if keycode == KEY_NONE:
+		return "-"
+	return OS.get_keycode_string(keycode)
+
+func _refresh_remap_buttons() -> void:
+	for action in remap_buttons:
+		var button: Button = remap_buttons[action]
+		if awaiting_rebind == action:
+			button.text = _press_key_text()
+		else:
+			button.text = _key_name(InputRemapManager.current_keycode(action))
+
+func _on_remap_pressed(action: String) -> void:
+	awaiting_rebind = action
+	_refresh_remap_buttons()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if awaiting_rebind.is_empty():
+		return
+	var key_event := event as InputEventKey
+	if key_event == null or not key_event.pressed or key_event.echo:
+		return
+	if key_event.physical_keycode == KEY_ESCAPE:
+		awaiting_rebind = ""
+		_refresh_remap_buttons()
+		return
+	if InputRemapManager.rebind(awaiting_rebind, key_event.physical_keycode):
+		awaiting_rebind = ""
+		_refresh_remap_buttons()
 
 func _on_back_pressed() -> void:
 	GameManager.save_game(0)
