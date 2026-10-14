@@ -18,7 +18,8 @@ import bpy  # noqa: E402
 import numpy as np  # noqa: E402
 
 import garments  # noqa: E402
-from bake_elena import cloth, eye_material, limit_influences, set_materials, unwrap  # noqa: E402
+import face_paint  # noqa: E402
+from bake_elena import cloth, limit_influences, set_materials, unwrap  # noqa: E402
 from lab_blender_common import parse_args  # noqa: E402
 from ref_common import bake_atlas, finalize_materials, proc_material, write_emissive_tres, write_pbr_tres  # noqa: E402
 
@@ -77,7 +78,7 @@ def make_materials():
 		"steel": proc_material("steel", base="777E82", rough=0.4, rough_var=0.25, metal=0.85, edge_color="C3C8CA", edge_amount=0.5,
 			edge_radius=0.003, edge_metal=0.1, dirt=0.6, ao_distance=0.02, stain=0.3, mottle=0.3, scale=24.0, bump=0.2, bump_scale=230.0,
 			scratch=0.4, scratch_scale=26.0),
-		"eye": eye_material(),
+		"eye": face_paint.eye_material(iris=("6A4B2E", "3A281A")),
 	}
 
 
@@ -179,7 +180,9 @@ def main():
 
 	set_materials(objs["Marcus_Jacket"], [mats["orange"], mats["red"], mats["lining"]])
 	assign_jacket(objs["Marcus_Jacket"], rig)
-	add_stubble(mats["skin"], max(v.co.z for v in objs["Marcus_Base"].data.vertices))
+	top_z = max(v.co.z for v in objs["Marcus_Base"].data.vertices)
+	add_stubble(mats["skin"], top_z)
+	face_paint.paint_face(mats["skin"], top_z, blush=0.10, brow_shadow=0.35, eye_bags=0.45)
 	set_materials(objs["Marcus_Base"], [mats["skin"], mats["lips"], mats["glove"]])
 	assign_gloves(objs["Marcus_Base"])
 	for name, mat in (("Knit", "knit"), ("Trousers", "trousers"), ("Boots", "boot"), ("Hair", "hair"), ("Brow_L", "hair"), ("Brow_R", "hair"),

@@ -12,6 +12,7 @@ import os
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.join(HERE, "..", "reference"))
 sys.path.insert(0, os.path.join(HERE, ".."))
 
@@ -19,6 +20,7 @@ import bmesh  # noqa: E402
 import bpy  # noqa: E402
 import numpy as np  # noqa: E402
 
+import face_paint  # noqa: E402
 from lab_blender_common import parse_args  # noqa: E402
 from ref_common import bake_atlas, finalize_materials, hex_lin, proc_material, select_only, smart_uv, write_pbr_tres  # noqa: E402
 
@@ -104,7 +106,7 @@ def make_materials():
 		"hair": proc_material("hair", base="241A17", rough=0.66, rough_var=0.15, edge_color="4A3A30", edge_amount=0.4, edge_radius=0.01,
 			dirt=0.4, ao_distance=0.04, mottle=0.45, scale=36.0, bump=0.45, bump_scale=420.0),
 		"strap": cloth("strap", "1B1E20", rough=0.85, weave=0.7, bump_scale=210.0, grime=0.3),
-		"eye": eye_material(),
+		"eye": face_paint.eye_material(iris=("5F6F62", "34403A")),
 	}
 
 
@@ -193,6 +195,7 @@ def main():
 
 	set_materials(objs["Elena_Coat"], [mats["coat"], mats["piping"]])
 	assign_coat_piping(objs["Elena_Coat"])
+	face_paint.paint_face(mats["skin"], max(v.co.z for v in objs["Elena_Base"].data.vertices), freckles=0.20)
 	set_materials(objs["Elena_Base"], [mats["skin"], mats["lips"]])
 	assign_lips(objs["Elena_Base"])
 	for name, mat in (("Elena_Knit", "knit"), ("Elena_Trousers", "trousers"), ("Elena_Boots", "boot"), ("Elena_Hair", "hair"),

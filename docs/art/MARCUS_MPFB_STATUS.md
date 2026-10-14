@@ -14,7 +14,7 @@ Status: **textured asset, imports in Godot, not integrated in any scene, not fin
 - Not run: animation, profiling, grayscale readability, integration, owner review against the concept.
 
 ## Known limits (why it is not final)
-- Face is a generic tuned MPFB male head; no likeness to the concept. Stubble (procedural speckle on the lower face) and eyelash lines were added 2026-10-14; hair is now cards (`build_marcus_hair_cards.py`, 52 strips radiating from the crown to the hairline over a decimated shell, `marcus_hair_cards.tres`); it reads as a short cropped cut with a fringe, not the concept's swept, textured top.
+- Face is a generic tuned MPFB male head; no likeness to the concept (geometry). Texture now has eye bags, brow shadow, blush and a brown detailed iris (`face_paint.py`). Stubble (procedural speckle on the lower face) and eyelash lines were added 2026-10-14; hair is now cards (`build_marcus_hair_cards.py`, 52 strips radiating from the crown to the hairline over a decimated shell, `marcus_hair_cards.tres`); it reads as a short cropped cut with a fringe, not the concept's swept, textured top.
 - Jacket: no real stand collar (padded ring added instead), no pockets/zipper detail, yoke and elbow-patch edges are face-stepped, jacket is a smoothed shell without fold detail.
 - Boots show toe lobes; gloves are texture only on the skin hands.
 - A-pose only; MPFB licence not yet verified for `PROVENANCE.md`.
