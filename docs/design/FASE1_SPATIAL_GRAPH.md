@@ -15,7 +15,7 @@
 | M · Bombas | +1,5 m | X 13..24, Z −9..−1,5 | Bombas y ruta a S2. |
 | Galería observación | +1,5 m | X 9..13, Z −9..−1,5 | Vista de B y comienzo S2. |
 | S2 · Escalera | +1,5↔+3 m | X 9..13, Z −4,5..−1,5 | Subida operativa a P2. |
-| E · Control | +3 m | X 9..24, Z −9..−4,5 | Selector, aislador, panel/rearme. |
+| E · Control | +3 m | X 9..24, Z −8,5..−4,5 | Selector, aislador, panel/rearme. |
 | F · Archivo | +3 m | X 3..9, Z −9..−4,5 | Consulta y terminal. |
 | G · Esclusa | +3 m | X 0..3, Z −9..−4,5 | Salida horizontal a H. |
 | Pasarela | +3 m | X 9..26, Z −4,5..−1,5 (hueco S2 X 9..13) | Vista de B y llegada S2. |
