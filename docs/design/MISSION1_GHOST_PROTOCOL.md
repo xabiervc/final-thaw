@@ -60,6 +60,16 @@ The circuit reference model remains authoritative and unchanged. Its maintenance
 - The event must be visible/audible through door motion, a state-light change and the containment cue. No forced camera, unskippable line or direct scene transition.
 - The recovery unit enters from the exterior side of G; Elena retreats through the inner leaf toward F/E. The chase then follows the existing spatial graph back via S2, M, the existing lift to P0, S1 to P−1 and the new service evacuation gallery.
 - If G is opened before `SERVICE_OVERRIDE` is queued, the door must provide a diegetic unavailable/locked response; it must not start Containment. Do not invent an alternate trigger. Restarting the mission resets both mission flags; no flag is written to persistent save data.
+| Event | Precondition | Mission-state result | Circuit-model result | Player-facing result |
+|---|---|---|---|---|
+| Maintenance OFF → ON | Switch interaction accepted | Set `SERVICE_OVERRIDE_QUEUED=true` once | Only maintenance changes, as defined by the logic contract | Service lights/platform respond; no chase starts |
+| Maintenance ON → OFF | Switch interaction accepted | Queue remains true for this mission | Only maintenance changes | Service lighting/platform follows maintenance state; no audit sent |
+| Consult archive | ARCHIVO stable | Set `RESTRICTED_RECORD_READ=true` | No change to circuit outputs/history | Record becomes readable; no chase starts |
+| Open exterior G | Queue true, audit not sent | Mark audit sent and Containment active | No circuit change | Door/alarm/state-light response; unit enters from exterior |
+| Open exterior G | Queue false | No flags change | No circuit change | Diegetic locked/unavailable feedback; no chase |
+| Repeat G/open callback | Audit already sent | No duplicate event; Containment remains active | No circuit change | No second alarm sequence or enemy spawn |
+| Restart mission | New mission instance | Reset queued/read/sent/Containment flags | Circuit returns to defined initial state | Start from mission entry/checkpoint contract |
+
 - These mission flags are session-level design state only. Any persistence beyond the current mission requires explicit compatibility review; no save-schema change is implied.
 
 ## Scanner and feedback
