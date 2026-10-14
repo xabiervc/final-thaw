@@ -37,14 +37,14 @@ The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S
 
 - **Documented:** revised architectural program, spatial graph, progression contract, functional spec and greybox requirements; existing SVGs now show the P−1 evacuation gallery, G pursuit trigger, and initial O1/O2/O3 obstacle footprints.
 - **Previously present in code, not runtime-verified:** west entrance tunnel, P0 rooms/perimeter, D1/D2 lower floor and P0 void, south/east return route, S1/S2, mission lift P0↔M, control/archive fixtures and safety rails.
-- **Not yet implemented/verified against the revised architecture:** NPC/staff stealth behavior and perception, the mapped reacquisition trigger, running-chase obstacle sequence, final route and exit geometry, physical continuity into parking, and the end-to-end handoff.
+- **Not yet implemented/verified against the revised architecture:** NPC/staff stealth behavior and perception, R1 reacquisition at P0, running-chase obstacle sequence, final route and exit geometry, physical continuity into parking, and the end-to-end handoff.
 - **Narrative direction specified as a proposal:** maintenance queues `SERVICE_OVERRIDE`; opening G's exterior leaf sends the queued audit and starts the facility recovery protocol. The Aster record states that the result was retained and the deployment recommendation suppressed.
 - **Narrative decisions still open:** suppression motive, exact event recipient/supervision, final recovery-unit identity/visual design, Elena/Iris/Selene chronology in this moment, Marcus's role and post-parking destination.
 - **Runtime status:** the previous editing environment did not have a Godot executable. No claim is made that recent GDScript, SVGs, or tests have been executed. CI status must be checked from the actual run before claiming green.
 
 ## Mandatory design work
 
-1. Lock the two-tempo Phase 1 escape route first: occupied-room stealth, NPC perception/states, the exposed reacquisition trigger, running chase and the selected alternative exit. Then derive the Phase 2 local-to-world transform from that real exit; do not let a provisional parking coordinate dictate the route.
+1. Lock the two-tempo Phase 1 escape route first: occupied-room stealth, NPC perception/states, the exposed reacquisition trigger R1 at P0 (X≈29, Z≈1), running chase and the selected alternative exit. Then derive the Phase 2 local-to-world transform from that real exit; do not let a provisional parking coordinate dictate the route.
 2. Update the Phase 1 plans/section/spatial graph to show staffed stealth zones, cover and the chase trigger. Reconcile Phase 2 threat/sightline and lighting/landmark overlays to its local geometry; after the exit is selected, align the actual parking handoff.
 3. Complete a cross-document consistency pass across Phase 1 plans, section, spatial graph, greybox, NPC/stealth behavior, progression and the eventual parking handoff.
 4. Review and approve/revise the proposed opening script, particularly the suppression reveal and the end-of-parking beat; retain unresolved full-campaign decisions explicitly.
