@@ -19,8 +19,8 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | S1 · Escalera fija | 0↔−2 | X 24..26, Z 8..11 | P0 a P−1, siempre utilizable. |
 | D1 · Achique | −2 | X 10..20, Z 1..8 | Bombas, sumidero y colector. |
 | D2 · Distribución | −2 | X 20..28, Z 1..8 | Esquema, puente A→T y mantenimiento. |
-| Galería de evacuación | −2 | X 28..34, Z 4,5..7,5 (extensión de diseño) | Ruta final hacia una salida exterior nueva; no se ha construido/validado. |
-| Boca de servicio | variable | X≈34, Z≈6 | Salida al exterior de servicio y conexión con aparcamiento. |
+| Galería de evacuación (candidato actual) | −2 | X 28..34, Z 4,5..7,5 (propuesta no bloqueante) | Ruta posible hacia una salida exterior nueva; no se ha construido/validado. Reubicarla si la topología completa requiere otra salida. |
+| Boca de servicio (candidata) | variable | X≈34, Z≈6 (propuesta no bloqueante) | Salida exterior de servicio conectada con parking; ubicación definitiva pendiente del grafo completo. |
 | Elevador | 0↔+1,5 | X 24,5..27,5, Z −4,5..−1,5 | Transporte P0↔M, habilitado por mantenimiento. |
 | Galería de observación | +1,5 | X 9..13, Z −9..−1,5 | Vista a B y llegada de S2. |
 | M · Bombas | +1,5 | X 13..24, Z −9..−1,5 | Bombas, colectores y paso al elevador. |
@@ -29,7 +29,7 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | F · Archivo | +3 | X 3..9, Z −9..−4,5 | Consulta con ARCHIVO estable. |
 | G · Esclusa de doble puerta | +3 | X 0..3, Z −9..−4,5 | La compuerta exterior envía la auditoría e inicia Containment; la puerta interior devuelve a F. El sigilo precede a la carrera. No es la salida final. |
 | Pasarela superior | +3 | X 9..26, Z −4,5..−1,5, con hueco S2 | Circulación y observación protegidas. |
-| Aparcamiento | exterior | Al este de la boca de servicio | Inicio del tramo exterior de Fase 2. |
+| Aparcamiento | exterior | Conectado a la boca seleccionada; orientación por decidir | Inicio del tramo exterior de Fase 2. |
 
 Las coordenadas de la galería de evacuación y la boca de servicio son **extensión de diseño**, no geometría ya implementada. Los planos deben reflejarlas; si el ancho o el desnivel requieren más espacio, ampliar el perímetro de forma coherente en vez de estrechar el paso.
 
