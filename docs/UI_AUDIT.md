@@ -15,6 +15,8 @@
 - `scripts/ui/options_menu.gd`
 - `scripts/ui/credits.gd`
 - `scenes/ui/*.tscn`
+- `scenes/levels/*.tscn`
+- `scenes/props/*.tscn`
 
 ## Findings
 
@@ -26,6 +28,8 @@
 | Main menu | Secondary buttons were not localized | Added localized getters and refresh on language change |
 | HUD | Spanish strings were hardcoded | Routed civilian aid, prototype integrity, Elena safety and FPS through `NarrativeTextManager` |
 | HUD | Font scale did not update after changing options | HUD now reapplies font scale when `stats_changed` fires |
+| Prompt HUD | Spanish strings and fixed fonts | Localized instructions and condition text; applied font scaling |
+| Narrative panel | Fixed font size; `interact` conflict | Applied font scaling and added dismissal signal/grace period |
 | Options | Spanish-only UI and fixed font size | Localized and applied `GameManager.font_scale` |
 | Credits | Spanish-only UI and fixed font size | Localized and applied `GameManager.font_scale` |
 | Narrative manager | Missing methods used by menu and HUD | Added fallback-backed methods and regression tests |
@@ -34,23 +38,20 @@
 
 | Area | Finding | Risk | Next action |
 |---|---|---|---|
-| `demo_hud.gd` | Depends on nonexistent `FloodedShelterController` | Runtime/type-resolution failure if instantiated | Audit scene references, then adapt or remove |
-| `demo_end.gd` | Depends on nonexistent `FloodedShelterController` | Runtime/type-resolution failure if instantiated | Audit scene references, then adapt or remove |
-| `prompt_hud.gd` | Spanish strings and fixed fonts | Localization and accessibility failure | Localize and apply font scale |
-| `narrative_panel.gd` | Fixed font size; consumes `interact` | UI-scale and input-conflict risk | Apply font scale and define input priority |
+| `demo_hud.gd` | Depends on nonexistent `FloodedShelterController` | Runtime/type-resolution failure if instantiated | Complete local scene audit, then adapt or remove |
+| `demo_end.gd` | Depends on nonexistent `FloodedShelterController` | Runtime/type-resolution failure if instantiated | Complete local scene audit, then adapt or remove |
+| Shelter scenes | `flooded_shelter.tscn` and `flooded_shelter_2_5d.tscn` coexist | Wrong scene may be edited or tested | Identify canonical scene and mark/remove the other |
 | Shelter scene | Built entirely in code | Hard to review, edit and QA visually | Gradually migrate stable modules to `.tscn` |
 | Accessibility | Colorblind, subtitles, reduced motion and input profiles are persisted but not implemented | Specification not met | Implement and validate each option |
 
-## Input conflict
+## Input conflict resolution
 
-`narrative_panel.gd` dismisses itself with `interact`. `flooded_shelter.gd` uses `interact` for stations. This creates a potential conflict when a narrative message is visible near an interactable.
-
-Required behavior:
+The previous conflict between `narrative_panel.gd` and `flooded_shelter.gd` is resolved:
 
 1. While a narrative panel is visible, `interact` dismisses it.
-2. The shelter ignores station interaction for 0.35 seconds after dismissal.
-3. The interaction prompt remains visible but disabled during that grace period.
-4. The behavior must be covered by a headless test.
+2. `narrative_dismissed` starts a 0.35-second grace period.
+3. During that period, `flooded_shelter.gd` ignores station interaction.
+4. After the grace period, station interaction resumes normally.
 
 ## Localization contract
 
@@ -65,6 +66,8 @@ Required key families:
 - `interact_*`
 - `shelter_*`
 - `end_*`
+- `prompt_*`
+- `condition_state_*`
 - `cr_*`
 
 Every new key must have:
