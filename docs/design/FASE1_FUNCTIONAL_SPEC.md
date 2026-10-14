@@ -60,25 +60,39 @@ El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_
 - El descenso utiliza S2, elevador y S1 existentes. El estado del elevador durante la persecución debe definirse y probarse; no inventar una conexión vertical para salvar un bloqueo.
 - La ruta termina en una salida de servicio alternativa distinta del túnel de entrada. Su nivel, lado del perímetro y conexión final se deciden desde el grafo completo; no se fuerza una boca para encajar el transform local del parking.
 
-## 5.1 Contrato provisional de evasión y percepción de personal
+## 5.1 Contrato de evasión, personal y reacquisición
 
 Esta capa es nueva y aún no está implementada ni validada. No debe mezclarse con el contrato eléctrico ni cambiar el guardado.
 
-- Estados mínimos del personal que participa en la sección: `WORKING`, `SUSPICIOUS`, `INVESTIGATING` y `ALERTED`. Las transiciones se basan en eventos observables (Elena entra en línea de visión, genera un ruido identificable, es vista tras cobertura o se cruza el trigger de carrera); cada estado debe tener una respuesta ambiental legible.
-- Visión: rango y cono explícitos más línea de visión libre. Muros y cobertura opaca bloquean visión. No detectar a través de geometría ni usar conocimiento omnisciente de la posición de Elena.
-- Ruido: interacciones ruidosas y movimiento rápido pueden generar eventos de investigación solo si el sistema de ruido está implementado; no afirmar un modelo de audio que no exista. Si todavía no hay un modelo de ruido, la primera versión puede basarse en LOS y timing, y el alcance debe quedar documentado.
-- Búsqueda: al perder contacto, investigar la última posición conocida y regresar a la rutina tras un tiempo definido; no rastrear indefinidamente la posición actual de Elena.
-- Diseño: cobertura, refugios y rutas de patrulla se dibujan en planta; no se considera cobertura un objeto que no bloquee visión/collider en runtime. El personal no bloquea físicamente toda la ruta y no exige combate, distracción consumible ni takedown obligatorio.
-- La evasión debe poder completarse por movimiento, observación y timing. Si el jugador es detectado antes del umbral previsto, debe existir recuperación legible (búsqueda/persecución temprana), no muerte arbitraria ni reinicio forzado.
-- La transición a carrera en la salida del elevador hacia P0 es una **hipótesis inicial**, no un punto bloqueado. Debe fijarse solo tras validar la topología, la línea de visión real y el ritmo de juego.
+### Personal y ocupación
+
+- **STAFF-M1 — operario de bombas:** ocupa la sala M durante el tramo silencioso. Su rutina corta transcurre entre el panel de bombas y la consola de mantenimiento, sin cruzar el paso crítico hacia el elevador. No es enemigo, no combate ni bloquea el corredor.
+- Antes de abrir G, STAFF-M1 permanece en estado `WORKING`; la presencia de Elena en zonas normales de trabajo no provoca una alarma. Cuando G envía la auditoría, el personal recibe una señal diegética de Containment y pasa a una rutina de alerta/evacuación. El jugador puede evitar su línea de visión usando la masa de las bombas como cobertura C1 y el rack O2 como obstáculo/cobertura secundaria solo si el collider real bloquea visión.
+- Estados mínimos: `WORKING`, `SUSPICIOUS`, `INVESTIGATING`, `ALERTED` y `WITHDRAWING`. Cada estado debe tener una respuesta ambiental legible (orientación, pausa, voz breve o retirada); ninguna transición debe depender de un texto opcional.
+- Visión objetivo de diseño: rango 8 m, cono 100° y línea de visión libre. La cobertura opaca bloquea visión; no se detecta a Elena a través de muros, bombas o racks.
+- Ventana de sospecha objetivo: tras 0,8 s de visión válida, el NPC da una señal de sospecha; tras 1,2 s continuos, confirma alerta. Si pierde LOS, la sospecha decae en 2 s. Estos tiempos son objetivos de diseño para playtest, no valores verificados de código.
+- Ruido: si el sistema de ruido está disponible, caminar genera eventos de corto alcance (objetivo 4 m), correr de alcance medio (objetivo 8 m) e impactos/puertas fuertes de alcance mayor (objetivo 12 m). Si el sistema no existe, la primera implementación puede usar LOS y timing, pero no debe afirmar que el ruido está simulado.
+- Al alertarse, STAFF-M1 emite una única llamada y se retira hacia un refugio fuera del paso crítico. El evento comunica al recovery unit la **última posición conocida**, no las coordenadas actuales de Elena. No activa la carrera por sí solo.
+- La evasión se puede completar con movimiento, observación y timing; no requiere takedown, distracción consumible ni combate. Una detección puede adelantar la persecución solo si la unidad de recuperación obtiene LOS real; no debe producir muerte arbitraria.
+
+### R1 — umbral de reacquisición y comienzo de carrera
+
+**Ubicación de diseño:** P0, en la transición desde la galería de servicio hacia el retorno este, inmediatamente después del rellano del elevador P0↔M; coordenada de referencia aproximada `X≈29, Z≈1` según el grafo actual. El nodo está fijado como intención espacial; las huellas/colliders exactos requieren comprobación en la planta y la escena.
+
+- Elena recorre M en silencio, toma el elevador existente hacia P0 y entra en la galería de servicio. El recovery unit la sigue por el mismo elevador y llega físicamente detrás de ella.
+- R1 activa la transición a carrera cuando la unidad entra en el espacio abierto y reacquiere a Elena por línea de visión real. No se crea una unidad delante del jugador ni se teletransporta al perseguidor.
+- R1 es el punto de reacquisición por defecto si la evasión anterior se completa sin detección. Si la unidad obtiene LOS real antes, la carrera puede comenzar antes; si no está físicamente presente en R1, el trigger espera a que llegue.
+- El cambio de estado se comunica con sonido/animación/feedback y cambio de ritmo, sin corte de cámara, bloqueo de input ni muerte instantánea.
+- Tras R1, la ruta de carrera es P0 retorno este → S1 → P−1 → galería de evacuación → salida exterior alternativa. La boca final y su transform hacia parking se cierran después de reconciliar el recorrido completo; no se inventa otra escalera ni elevador.
 
 Pruebas mínimas:
-1. Un NPC no detecta a Elena detrás de una cobertura opaca.
+1. STAFF-M1 no detecta a Elena detrás de cobertura opaca.
 2. Una detección requiere cono/rango/LOS o un evento de ruido válido.
-3. Al perder visión, el NPC busca la última posición conocida y no sigue la posición real a través de muros.
+3. Al perder visión, STAFF-M1 busca la última posición conocida y no sigue la posición real a través de muros.
 4. La sección silenciosa admite una ruta completa sin takedowns.
-5. El umbral de reacquisición produce una transición audiovisual a carrera sin corte de cámara ni pérdida de input.
-6. Reiniciar la misión restablece los estados temporales sin alterar el estado del circuito ni el guardado.
+5. La unidad sigue una ruta física por S2/M y el elevador; R1 solo cambia a carrera al existir presencia y LOS reales.
+6. La carrera puede comenzar antes de R1 solo por reacquisición real; no hay detección omnisciente.
+7. Reiniciar la misión restablece estados temporales sin alterar el circuito ni el guardado.
 
 ## 6. Transición a Fase 2
 
