@@ -77,14 +77,14 @@ Before design lock, add dimension strings for the narrowest clear passage on eac
 
 ### 2.3 Required plan and section views
 
-A first spatial concept is now recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg). It is deliberately marked **concept v0.1**: its 48 × 30 m envelope, routes and prop placements are design proposals, not approved coordinates and not a representation of the current Godot scene. Its purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the service-exit handoff, world-coordinate transform, clearances and elevation are reconciled.
+A first spatial concept is recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg), with companion section, threat and landmark/lighting overlays. All four drawings are deliberately marked **concept v0.1**: the 48 × 30 m envelope, routes, sightline sectors, light zones and prop placements are design proposals, not approved coordinates and not a representation of the current Godot scene. Their purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the service-exit handoff, world-coordinate transform, clearances and elevation are reconciled.
 
 The parking layout is not accepted from a prose description alone. Its design package must contain:
 1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and patrol/sightline overlays.
 2. **Section:** [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg) is a transverse concept showing the service mouth, optional canopy, vehicle envelope, column, light and perimeter. The exterior datum relative to P−1 remains unresolved; do not infer a ramp or step from this drawing.
 3. **Spatial graph:** nodes, traversable edges, directed drops/climbs, blocked edges and route alternatives.
-4. **Threat overlay:** patrol path, investigation points, alert sightlines, chase shortcuts, search pockets and no-go zones.
-5. **Landmark/lighting overlay:** what the player can see from entry and each critical decision point, by day/night or emergency-light state as appropriate.
+4. **Threat overlay:** [threat_sightline_overlay.svg](design/assets/phase2_parking/threat_sightline_overlay.svg) records a candidate physically bounded pursuit line, sightline sectors and search pockets. It is not a simulation of the final AI; update it whenever cover geometry or the reachable threat route changes.
+5. **Landmark/lighting overlay:** [lighting_landmark_overlay.svg](design/assets/phase2_parking/lighting_landmark_overlay.svg) records the intended landmark chain L1–L5 and exposure/orientation zones. The zones are not photometric values or final light placements.
 
 The existing project has Phase 1 plan/section SVGs. Extend the same disciplined visual conventions for Phase 2 in the existing architecture asset family once the parking dimensions are resolved; do not present a screenshot of the prototype as an architectural plan.
 
@@ -334,7 +334,8 @@ Do not create parallel documents when an existing authority can be updated. Keep
 - [ ] Dimensioned plan, section, coordinate convention and spatial graph agree.
 - [ ] Phase 1 exit and parking entry form a continuous, traversable boundary.
 - [ ] All route branches, checkpoints, obstacles, collision envelopes and recoveries are defined.
-- [ ] Enemy patrol, hearing, vision, last-known-position behavior and accessible routes are overlaid on the plan.
+- [ ] Threat path, candidate sightlines, search pockets, audio investigation points and enemy-accessible routes agree with the final cover geometry; the overlay is updated from measured geometry, not left as a schematic.
+- [ ] Landmark chain L1–L5 is visible from the intended decision points under the actual camera; lighting supports orientation and risk without hiding collisions or relying on colour alone.
 - [ ] Every beat has a player verb, spatial requirement, risk/reward, feedback and narrative purpose.
 - [ ] The route reveals the goal early and communicates safe/unsafe options before commitment.
 - [ ] Story facts are separated from proposals and legacy material; no unsupported canon is asserted.
