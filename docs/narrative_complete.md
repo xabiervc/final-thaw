@@ -49,8 +49,8 @@ The player's emotional progression is: **curiosity → doubt → inference → c
 
 12. **Parking chase.** The running pressure continues into the parking area. The player reads cover, columns, vehicles, sightlines and the service perimeter. The routes trade exposure against time/traversal. The recovery unit remains bound by its senses and physical navigation.
 
-13. **Egress / aftermath.** Elena crosses a physically defined far-side boundary. The immediate pursuit is broken, but the broader threat remains.  
-   *Ending-beat proposal:* a short external security response or access-state change suggests that the facility's response is coordinated. Do not identify a person or settle the wider conspiracy without a separately approved story decision.
+13. **Egress / aftermath.** Elena crosses the physically defined north gate and exits the perimeter. The immediate pursuit is broken, but the broader threat remains.  
+   *Proposed final beat:* after the crossing, a service reader displays “PROTOCOLO DE CONTENCIÓN: ACTIVO / SECTOR EXTERIOR” while perimeter lights/access states change in sequence. Elena says: “Fuera del perímetro. Eso no significa que haya terminado.” Deliver one short, skippable subtitle after the gate crossing, without pausing control. This implies a coordinated response without naming an operator or resolving the wider conspiracy; it remains a proposal for the opening, not locked full-game canon.
 
 ### Recommended narrative baseline (proposal for owner review)
 
