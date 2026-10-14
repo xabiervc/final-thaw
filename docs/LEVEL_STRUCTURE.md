@@ -103,7 +103,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 | P2-B3 Technical cage | (37.1, 12.1) | Service-side traversal | To P2-JOIN; must not be a dead end |
 | P2-A3 West-side bypass | (37.1, 16.8) | Direct route skirts west of P2-O2 before convergence | From P2-A2 to P2-JOIN with ≥2.0 m target clearance |
 | P2-JOIN Convergence | (40.7, 16.8) | Both routes rejoin | To P2-05 |
-| P2-05 Service bottleneck | (44.3, 14.8) | Barrier/shutter encounter | To P2-06; route around/through must be explicit |
+| P2-05 Service bottleneck | (44.3, 14.8) | Partially lowered service barrier with a fixed, visible 1.3 m clear aperture | To P2-06 through the aperture; no timed slide or moving collision across a player already inside |
 | P2-06 Egress approach | (44.3, 5.0) | Final approach, visible from mid-level | To P2-EXIT |
 | P2-EXIT Boundary | (42.8, 1.8) | Physical escape threshold | Mission completion only after crossing actual boundary |
 
@@ -125,7 +125,7 @@ These are design targets for the concept graph, not measured clearances in the c
 | P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
 | P2-A2 → P2-A3 → P2-JOIN / P2-B3 → P2-JOIN | Walk/run; direct route bypasses P2-O2 on its west side | ≥2.0 m at bypass; ≥2.0 m at convergence | Direct route stays exposed; service route keeps more broken sightlines | Show the west-side bypass from approach; no hidden collision lip; both routes remain viable |
 | P2-JOIN → P2-05 | Walk/run, optional short crouch only if geometry clearly signals it | ≥1.5 m | Threat can regain sight near the barrier | Both routes remain viable; no hidden collision lip |
-| P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.5 m at pinch, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; if blocked, use the explicitly drawn bypass or return to cover |
+| P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.2 m at the fixed O3 aperture, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; if blocked, use the explicitly drawn bypass or return to cover |
 
 No jump or climb is currently required by the parking concept. Do not import the prototype's 1.8 m/3.0 m gaps into this level simply because they exist in the mechanics test. If a jump, climb or squeeze is later added, it needs an approach/landing diagram and a measured capability test.
 
@@ -183,7 +183,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Rules:** the threat's detection cone, alert buildup and audio tell must be understandable. Do not require frame-perfect timing. At least one recovery option must exist if the player is detected early.
 
 ### Beat P2-05 — Service bottleneck
-**Player action:** pass a narrow but readable egress mechanism (for example a half-open service shutter or vehicle barrier) with an authored route around or through it.  
+**Player action:** pass through the fixed, visibly open 1.3 m aperture in the service barrier. The current concept does not include a separate bypass; do not make the aperture close dynamically or require a timed slide.  
 **Design purpose:** a final physical decision tied to the site's logistics.  
 **Rules:** the obstacle must have a plausible architectural cause and a clear interaction affordance. Avoid a key hunt, a new unrelated puzzle or an unannounced dead end.
 
