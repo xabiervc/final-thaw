@@ -39,11 +39,11 @@ La progresión debe funcionar por inferencia ambiental, no por una lista de reca
 
 ## Evasión y persecución interior
 
-Abrir G con `SERVICE_OVERRIDE` encolado inicia Containment, pero no obliga a correr inmediatamente. Elena retrocede por F/E y atraviesa una sección silenciosa por espacios que pueden seguir ocupados. La carrera empieza cuando la unidad reacquiere a Elena en un umbral expuesto definido en el grafo (propuesta inicial: salida del elevador hacia la circulación P0). No implementar una transición directa al aparcamiento al abrir G.
+Abrir G con `SERVICE_OVERRIDE` encolado inicia Containment, pero no obliga a correr inmediatamente. Elena retrocede por F/E y atraviesa una sección silenciosa por espacios que pueden seguir ocupados. La carrera empieza en R1, la transición de la galería de servicio al retorno este de P0 (X≈29, Z≈1): Elena sale del elevador existente, la unidad la sigue físicamente y la reacquiere por LOS real. R1 es el punto de diseño por defecto; una detección anterior solo adelanta la carrera si existe LOS real. No implementar una transición directa al aparcamiento al abrir G.
 
 Requisitos del segmento interior:
 - La fase silenciosa tiene cobertura física, NPC con percepción/rutinas y rutas de patrulla legibles; evitar al personal es viable sin eliminarlo.
-- La carrera empieza en un umbral espacial concreto, anunciado por arquitectura y señales del edificio; la unidad reacquiere por percepción real. La posición exacta queda provisional hasta coordinar planta, sección y grafo.
+- La carrera empieza en un umbral espacial concreto, anunciado por arquitectura y señales del edificio; la unidad reacquiere por percepción real. R1 está fijado como objetivo de diseño en P0; deben coordinarse su huella/collider y la línea de visión en planta, sección y grafo.
 - La amenaza tiene un punto de entrada y una línea de persecución explicables por el edificio.
 - O1: estantería caída en F/P2, centro aproximado (8,0; 3,0; −7,0), volumen 1,0 × 1,1 × 0,8 m. La solución es rodearla por el paso visible, con un ancho libre objetivo de 1,2 m.
 - O2: bastidor de tuberías desplazado en M, centro aproximado (18,0; 1,5; −3,0), volumen 2,0 × 0,8 × 1,2 m. La solución es rodearlo sin invadir el acceso a S2 o elevador.
