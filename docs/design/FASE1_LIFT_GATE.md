@@ -2,7 +2,7 @@
 
 **Status:** the service lift is approved for integration into the canonical Phase 1 slice. The existing isolated component is reused; the older question about whether to include it is superseded. No Godot execution or manual validation is claimed.
 
-**Authorities:** `FASE1_FUNCTIONAL_SPEC.md` v1.0 and `FASE1_SPATIAL_GRAPH.md` v0.4.  
+**Authorities:** `FASE1_FUNCTIONAL_SPEC.md` v1.0 and `FASE1_SPATIAL_GRAPH.md` v0.5.  
 **Implementation component:** `scripts/prototypes/service_lift.gd`.  
 **Mission integration, not yet executed:** `scenes/prototypes/phase1_canonical_greybox.tscn`.  
 **Existing tests:** `tests/test_service_lift.tscn` and `tests/test_service_lift_transport.tscn`.
