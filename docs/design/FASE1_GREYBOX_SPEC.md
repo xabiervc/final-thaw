@@ -48,7 +48,7 @@ G X=0..3, Z=−9..−4,5; F X=3..9, Z=−9..−4,5; E X=9..24, Z=−8,5..−4,5;
 
 ## Ruta de huida y obstáculos — posiciones candidatas acotadas
 
-Ruta de referencia: G → F/E → pasarela superior → S2 ↓ M → sala de bombas → elevador ↓ P0 → galería de servicio → S1 ↓ P−1 → D2 → galería de evacuación → exterior este → aparcamiento.
+Ruta de referencia: G → F/E → pasarela superior → S2/M y áreas de trabajo potencialmente ocupadas (evasión silenciosa) → umbral expuesto/trigger de reacquisición → tramo a la carrera por circulación de servicio → conexiones existentes hacia P0/P−1 → salida alternativa elegida en el plano completo → aparcamiento. No se fija el lado de la salida ni un transform mundial del parking antes de cerrar el grafo.
 
 | ID | Cota/centro aproximado | Volumen de referencia | Lectura y solución | Aceptación geométrica |
 |---|---|---|---|---|
@@ -59,9 +59,9 @@ Ruta de referencia: G → F/E → pasarela superior → S2 ↓ M → sala de bom
 Estas posiciones son la primera propuesta de layout de persecución y deben dibujarse en planta antes de construir los colliders. Las dimensiones son máximos iniciales, no autorización para reducir pasos. Ajustar los obstáculos si la cápsula/cámara reales no permiten una solución justa; actualizar SVG y pruebas en el mismo cambio.
 
 - Máximo tres obstáculos principales en la primera pasada; anticipación visual, colisión visible y margen de recuperación.
-- No usar saltos ciegos ni exigir habilidades no enseñadas. No convertir la persecución en combate obligatorio.
+- No usar saltos ciegos ni exigir habilidades no enseñadas. No convertir la persecución en combate obligatorio. La fase silenciosa requiere refugios/cobertura reales, NPC con percepción/estados comprobables y una ruta que no obligue a matar o derribar a nadie.
 - Al abrir G, el elevador está disponible porque mantenimiento debe estar activo en la progresión normal; definir y probar qué ocurre si el estado se altera. No bloquear al jugador por una llamada imposible.
-- La cámara de tercera persona debe conservar lectura del perseguidor, borde de paso y solución; vigas/tuberías no pueden ocluir simultáneamente al jugador y la salida.
+- La cámara de tercera persona debe conservar lectura del perseguidor, borde de paso y solución; vigas/tuberías no pueden ocluir simultáneamente al jugador y la salida. Las zonas de sigilo deben permitir leer qué ve el personal y cuándo Elena queda expuesta.
 
 ## Arquitectura legible como instalación real
 
