@@ -11,6 +11,8 @@ const HALF_DEPTH := 6.0
 const WALL_HEIGHT := 3.2
 const FLOOR_LIFT := 0.006  # lifts art tiles above the greybox floor to avoid z-fighting
 const PANEL_OFFSET := 0.03  # art panel front relief sits this far past its pivot
+const PHOTO_DIR := "res://assets/textures/lab_photo/"
+const USE_PHOTO_TEXTURES := true  # photographic CC0 textures (see docs/art/PROVENANCE.md) instead of the kit's flat colours
 
 var _mesh_cache: Dictionary = {}
 
@@ -46,7 +48,7 @@ func _source(file: String) -> Dictionary:
 
 
 ## One MultiMeshInstance3D for many placements of the same art mesh.
-func _batch(file: String, placements: Array[Transform3D], label: String) -> void:
+func _batch(file: String, placements: Array[Transform3D], label: String, material: Material = null) -> void:
 	var src := _source(file)
 	if src["mesh"] == null or placements.is_empty():
 		push_warning("LabArtDressing: missing art %s" % file)
@@ -60,7 +62,34 @@ func _batch(file: String, placements: Array[Transform3D], label: String) -> void
 	var inst := MultiMeshInstance3D.new()
 	inst.name = label
 	inst.multimesh = mm
+	if material != null and USE_PHOTO_TEXTURES:
+		inst.material_override = material
 	add_child(inst)
+
+
+## Photographic PBR material mapped with world-space triplanar projection (the kit meshes do not need usable UVs).
+## tint multiplies the albedo to keep the lab's cool palette; tile_m is the real-world size of one texture repeat.
+func _photo(texture_name: String, tint: Color, tile_m: float) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.resource_name = texture_name
+	m.albedo_texture = load(PHOTO_DIR + texture_name + "_diff.jpg")
+	m.albedo_color = tint
+	m.normal_enabled = true
+	m.normal_texture = load(PHOTO_DIR + texture_name + "_nor.png")
+	var arm: Texture2D = load(PHOTO_DIR + texture_name + "_arm.jpg")
+	m.ao_enabled = true
+	m.ao_texture = arm
+	m.ao_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_RED
+	m.roughness = 1.0
+	m.roughness_texture = arm
+	m.roughness_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_GREEN
+	m.metallic = 1.0
+	m.metallic_texture = arm
+	m.metallic_texture_channel = BaseMaterial3D.TEXTURE_CHANNEL_BLUE
+	m.uv1_triplanar = true
+	m.uv1_world_triplanar = true
+	m.uv1_scale = Vector3.ONE / tile_m
+	return m
 
 
 func _place(pos: Vector3, yaw_degrees: float = 0.0, scale_z: float = 1.0) -> Transform3D:
@@ -84,14 +113,15 @@ func _dress_floor() -> void:
 			zi += 1
 			z += 2.0
 		x += 2.0
-	_batch("lab_floor_2x2_a.glb", a, "FloorA")
-	_batch("lab_floor_2x2_b.glb", b, "FloorB")
+	var floor_mat := _photo("concrete_floor_worn_001", Color(0.85, 0.93, 0.97), 2.0)
+	_batch("lab_floor_2x2_a.glb", a, "FloorA", floor_mat)
+	_batch("lab_floor_2x2_b.glb", b, "FloorB", floor_mat)
 	var edges: Array[Transform3D] = []
 	x = 1.0
 	while x < ROOMS_X_MAX:
 		edges.append(_place(Vector3(x, FLOOR_LIFT, -HALF_DEPTH + 0.08)))
 		x += 2.0
-	_batch("lab_floor_edge_2m_a.glb", edges, "FloorEdgeBack")
+	_batch("lab_floor_edge_2m_a.glb", edges, "FloorEdgeBack", _photo("metal_plate_02", Color(0.7, 0.75, 0.78), 1.0))
 
 
 func _dress_walls() -> void:
@@ -109,15 +139,16 @@ func _dress_walls() -> void:
 		front_low.append(_place(Vector3(x, 0.0, HALF_DEPTH + PANEL_OFFSET), 180.0))
 		x += 2.0
 		i += 1
-	_batch("lab_wall_2m_a.glb", back_a, "WallBackA")
-	_batch("lab_wall_2m_b.glb", back_b, "WallBackB")
-	_batch("lab_wall_low_2m_a.glb", front_low, "WallFrontLow")
+	var wall_mat := _photo("painted_plaster_wall", Color(0.9, 1.0, 1.0), 2.0)
+	_batch("lab_wall_2m_a.glb", back_a, "WallBackA", wall_mat)
+	_batch("lab_wall_2m_b.glb", back_b, "WallBackB", wall_mat)
+	_batch("lab_wall_low_2m_a.glb", front_low, "WallFrontLow", wall_mat)
 	var left: Array[Transform3D] = []
 	var z := -HALF_DEPTH + 1.0
 	while z < HALF_DEPTH:
 		left.append(_place(Vector3(-PANEL_OFFSET, 0.0, z), 90.0))
 		z += 2.0
-	_batch("lab_wall_2m_a.glb", left, "WallLeft")
+	_batch("lab_wall_2m_a.glb", left, "WallLeft", wall_mat)
 
 
 func _dress_dividers() -> void:
@@ -130,7 +161,7 @@ func _dress_dividers() -> void:
 	for sign in [-1.0, 1.0]:
 		long_panels.append(_place(Vector3(25.0, 0.0, sign * 5.0), 90.0))
 		long_panels.append(_place(Vector3(25.0, 0.0, sign * 3.0), 90.0))
-	_batch("lab_divider_wall_2m_a.glb", long_panels, "Dividers")
+	_batch("lab_divider_wall_2m_a.glb", long_panels, "Dividers", _photo("concrete_panels", Color(0.8, 0.88, 0.92), 4.0))
 
 
 func _dress_set_pieces() -> void:

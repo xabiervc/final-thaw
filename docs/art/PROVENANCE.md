@@ -49,6 +49,17 @@ Stored outside the repo in `D:/Projects/external_assets/` (download scripts in `
 | ambientCG materials | https://ambientcg.com (API v2) | ambientCG, CC0 1.0 | 2026-10-14 | Concrete034, Metal063, Tiles141, Rubber004, Leather037, Fabric085, Asphalt033 (2K-JPG). ~158 MB |
 | Kenney Space Kit, Furniture Kit | https://kenney.nl/assets/space-kit, https://kenney.nl/assets/furniture-kit | Kenney, CC0 (stated on each asset page) | 2026-10-14 | Low-poly kits, ~12 MB zipped; stylised, probably only useful as proxies |
 
+### Textures from the external library now used in the repository
+
+| Files | Source asset | License | Change |
+|---|---|---|---|
+| `assets/textures/lab_photo/concrete_floor_worn_001_{diff,nor,arm}.*` | Poly Haven `concrete_floor_worn_001` | CC0 1.0 | resized 2K -> 1K by `tools/art/prepare_photo_textures.py` (JPG q88 / PNG) |
+| `assets/textures/lab_photo/painted_plaster_wall_{diff,nor,arm}.*` | Poly Haven `painted_plaster_wall` | CC0 1.0 | same |
+| `assets/textures/lab_photo/concrete_panels_{diff,nor,arm}.*` | Poly Haven `concrete_panels` | CC0 1.0 | same |
+| `assets/textures/lab_photo/metal_plate_02_{diff,nor,arm}.*` | Poly Haven `metal_plate_02` | CC0 1.0 | same |
+
+Used by `scripts/levels/lab_art_dressing.gd` (world-space triplanar, tinted cool). ARM = AO (R), roughness (G), metallic (B).
+
 Quaternius packs were not downloaded (hosted behind Google Drive/itch, no stable official direct link).
 
 ## Adding an external resource
