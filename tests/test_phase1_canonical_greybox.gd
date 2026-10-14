@@ -37,6 +37,8 @@ func _run() -> void:
 	_expect(scene.get_node_or_null("NaveWorkshopPierSouth") != null and scene.get_node_or_null("RoofBeam_00") != null, "P0 has room boundaries and industrial roof structure")
 	var workshop_bench := scene.get_node("WorkshopBench") as StaticBody3D
 	_expect(workshop_bench.position.z < -7.5, "workshop bench stays clear of the doorway to the service nave")
+	var service_route_mark := scene.get_node("SouthRouteMark") as Label3D
+	_expect(service_route_mark.position.z < 1.0, "service route marking sits on the walkway, not over the open pit")
 	_expect(scene.get_node_or_null("PumpSkidA") != null and scene.get_node_or_null("ControlStairsS2CollisionRamp") != null, "pump room and S2 stairs connect mezzanine to control")
 	_expect(scene.get_node_or_null("WestShortcutStairsCollisionRamp") == null, "exterior airlock has no stair return to P0")
 	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
