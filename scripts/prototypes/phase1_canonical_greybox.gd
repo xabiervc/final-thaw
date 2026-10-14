@@ -478,10 +478,6 @@ func _build_upper_route() -> void:
 	_body_box("MezzanineSouthRailWest", Vector3(10.0, RAIL_HEIGHT, 0.1), Vector3(14.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
 	_body_box("MezzanineSouthRailEast", Vector3(11.0, RAIL_HEIGHT, 0.1), Vector3(22.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
 	_body_box("MezzanineWestRail", Vector3(0.1, RAIL_HEIGHT, 4.5), Vector3(8.98, 1.5 + RAIL_HEIGHT * 0.5, -6.75), rail)
-	# Fixed shaft rails protect the lift void at M when the deck is on P0.
-	_body_box("LiftShaftSideRailUpperWest", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(24.45, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
-	_body_box("LiftShaftSideRailUpperEast", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(27.55, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
-
 	# S2 is walkable in both directions and has handrails that follow the actual slope.
 	_build_sloped_stairs("ControlStairsS2", 9.0, 13.0, -4.5, -1.5, 3.0, 1.5)
 	# The upper observation walkway is exposed to the atrium; guard both open edges.
