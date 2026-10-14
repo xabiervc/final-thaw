@@ -130,7 +130,7 @@ func _label(parent: Node, pos: Vector2, value: String) -> Label:
 	label.position = pos
 	label.text = value
 	label.add_theme_color_override("font_color", TEXT)
-	label.add_theme_font_size_override("font_size", int(20.0 * GameManager.font_scale))
+	label.add_theme_font_size_override("font_size", int(20.0 * AccessibilityManager.ui_scale()))
 	parent.add_child(label)
 	return label
 
@@ -243,7 +243,7 @@ func _on_accessibility_changed() -> void:
 	_update_ui()
 
 func _update_interactable_visuals() -> void:
-	var high_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
+	var high_contrast := AccessibilityManager.is_high_contrast()
 	var locked := HC_LOCKED if high_contrast else LOCKED
 	var active := HC_ACTIVE if high_contrast else ACTIVE
 	var highlight := HC_HIGHLIGHT if high_contrast else HIGHLIGHT
@@ -284,7 +284,7 @@ func _interactable_prompt(kind: String) -> String:
 	return kind
 
 func _update_ui(message: String = "") -> void:
-	var high_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
+	var high_contrast := AccessibilityManager.is_high_contrast()
 	hud.text = NarrativeTextManager.get_shelter_hud(
 		rules.power_on,
 		rules.valves_open,

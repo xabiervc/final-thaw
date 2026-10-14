@@ -14,7 +14,7 @@ func _ready() -> void:
 	layer = 10
 	var top := PanelContainer.new()
 	top.position = Vector2(20.0, 16.0)
-	top.add_theme_stylebox_override("panel", _style(0.88))
+	top.add_theme_stylebox_override("panel", _style())
 	top.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(top)
 	var box := VBoxContainer.new()
@@ -31,7 +31,7 @@ func _ready() -> void:
 	_status = Label.new()
 	_status.add_theme_font_size_override("font_size", 18)
 	_status.add_theme_color_override("font_color", Color(0.6, 0.92, 0.95))
-	_status.add_theme_stylebox_override("normal", _style(0.88))
+	_status.add_theme_stylebox_override("normal", _style())
 	_status.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	_status.offset_left = -360.0
 	_status.offset_right = -20.0
@@ -46,7 +46,7 @@ func _ready() -> void:
 	_condition = Label.new()
 	_condition.add_theme_font_size_override("font_size", 16)
 	_condition.add_theme_color_override("font_color", Color(0.85, 0.95, 0.92))
-	_condition.add_theme_stylebox_override("normal", _style(0.88))
+	_condition.add_theme_stylebox_override("normal", _style())
 	_condition.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
 	_condition.offset_left = -360.0
 	_condition.offset_right = -20.0
@@ -74,7 +74,7 @@ func _ready() -> void:
 	_prompt = Label.new()
 	_prompt.add_theme_font_size_override("font_size", 24)
 	_prompt.add_theme_color_override("font_color", Color(0.55, 0.9, 0.82))
-	_prompt.add_theme_stylebox_override("normal", _style(0.85))
+	_prompt.add_theme_stylebox_override("normal", _style())
 	_prompt.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM)
 	_prompt.offset_top = -255.0
 	_prompt.offset_bottom = -215.0
@@ -87,7 +87,8 @@ func _ready() -> void:
 	GameManager.stats_changed.connect(_apply_accessibility)
 	_apply_accessibility()
 
-func _style(alpha: float) -> StyleBoxFlat:
+func _style() -> StyleBoxFlat:
+	var alpha := 0.98 if AccessibilityManager.is_high_contrast() else 0.88
 	var s := StyleBoxFlat.new()
 	s.bg_color = Color(0.03, 0.05, 0.07, alpha)
 	s.set_corner_radius_all(6)
@@ -106,7 +107,7 @@ func _make_label(parent: Node, font_size: int, color: Color) -> Label:
 	return l
 
 func _apply_accessibility() -> void:
-	var scale := clampf(GameManager.font_scale, 0.75, 2.0)
+	var scale := AccessibilityManager.ui_scale()
 	_objective.add_theme_font_size_override("font_size", int(22 * scale))
 	_hint.add_theme_font_size_override("font_size", int(17 * scale))
 	_instructions.add_theme_font_size_override("font_size", int(15 * scale))
@@ -114,7 +115,7 @@ func _apply_accessibility() -> void:
 	_condition.add_theme_font_size_override("font_size", int(16 * scale))
 	_prompt.add_theme_font_size_override("font_size", int(24 * scale))
 
-	var high_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
+	var high_contrast := AccessibilityManager.is_high_contrast()
 	var text_color := Color.WHITE if high_contrast else Color(0.94, 0.96, 0.95)
 	var hint_color := Color(1.0, 0.95, 0.65) if high_contrast else Color(0.95, 0.88, 0.55)
 	var instructions_color := Color(0.9, 0.95, 1.0) if high_contrast else Color(0.72, 0.8, 0.84)
@@ -124,19 +125,6 @@ func _apply_accessibility() -> void:
 	_hint.add_theme_color_override("font_color", hint_color)
 	_instructions.add_theme_color_override("font_color", instructions_color)
 	_prompt.add_theme_color_override("font_color", prompt_color)
-
-func _style_alpha() -> float:
-	return 0.98 if GameManager.get_flag("accessibility_high_contrast") else 0.88
-
-func _style(alpha: float) -> StyleBoxFlat:
-	var s := StyleBoxFlat.new()
-	s.bg_color = Color(0.03, 0.05, 0.07, _style_alpha())
-	s.set_corner_radius_all(6)
-	s.content_margin_left = 14.0
-	s.content_margin_right = 14.0
-	s.content_margin_top = 8.0
-	s.content_margin_bottom = 8.0
-	return s
 
 func _process(_delta: float) -> void:
 	var p := get_tree().get_first_node_in_group("player")
@@ -190,14 +178,15 @@ func set_prompt(text: String) -> void:
 	if _tween != null:
 		_tween.kill()
 
-	if GameManager.get_flag("accessibility_reduced_motion"):
+	var duration := AccessibilityManager.animation_duration(0.2)
+	if duration <= 0.0:
 		_prompt.text = text
 		_prompt.modulate.a = 1.0 if not text.is_empty() else 0.0
 		return
 
 	_tween = create_tween()
 	if text.is_empty():
-		_tween.tween_property(_prompt, "modulate:a", 0.0, 0.2)
+		_tween.tween_property(_prompt, "modulate:a", 0.0, duration)
 	else:
 		_prompt.text = text
-		_tween.tween_property(_prompt, "modulate:a", 1.0, 0.2)
+		_tween.tween_property(_prompt, "modulate:a", 1.0, duration)
