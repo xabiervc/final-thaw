@@ -35,7 +35,9 @@ Las coordenadas de la galería de evacuación y la boca de servicio son **extens
 
 ### Handoff geométrico con Fase 2
 
-Se elimina como restricción el transform candidato `X+28,7 / Z−15,8`: se había deducido para hacer coincidir la planta local de parking con una boca provisional de P−1, antes de cerrar el recorrido narrativo. La ruta de huida puede atravesar otras salas de trabajo y terminar en otra boca exterior, si el plano, la sección y el grafo justifican esa solución. El contrato invariable es continuidad física y visual desde el umbral exterior finalmente seleccionado hasta el parking. Cuando se apruebe la topología completa, se mide la boca real, se decide orientación/cota y se deriva un único transform; no se altera el edificio solo para encajar el prototipo.
+La galería de evacuación y la boca exterior dibujadas en P−1 son todavía una **propuesta de coordinación**, no un punto de salida bloqueado. El contrato vigente es: la salida debe ser distinta del túnel oeste, físicamente continua desde la circulación existente de P−1 y conectada con el aparcamiento. La ruta interior completa incluye evasión silenciosa y un trigger espacial de reacquisición antes de la carrera; la posición final de la boca debe derivarse después de cerrar esa ruta y dibujarse en planta y sección.
+
+La planta de parking y sus overlays usan coordenadas locales. Se retira el transform candidato `X+28,7 / Z−15,8`: no se debe copiar al constructor ni usar para decidir la salida interior. Cuando la salida esté cerrada, medir su huella, ancho, orientación y cota; entonces derivar un único transform local-mundo y actualizar en conjunto la planta, sección, grafo y overlays de Fase 2. El checkpoint antiguo del prototipo no decide la arquitectura.
 
 ## Estados de sigilo y transición a carrera (contrato provisional)
 
