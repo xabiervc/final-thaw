@@ -80,7 +80,7 @@ const CEILING_BOTTOM := 1.25
 const CLIMB_HEIGHT := 2.4
 const EXIT_X := 78.0
 const CHECKPOINTS := [Vector3(1.0, 0.2, 0.0), Vector3(17.0, 0.2, 0.0), Vector3(34.5, 0.2, 0.0), Vector3(63.0, 0.2, 0.0)]
-const PATROL_POINTS := [Vector3(36.0, 0.0, -1.0), Vector3(57.0, 0.0, 1.0)]
+const PATROL_POINTS := [Vector3(43.0, 0.0, -1.0), Vector3(57.0, 0.0, 1.0)]
 const STATE_NAMES := {"patrol": "patrulla", "investigate": "investiga", "alert": "alerta", "chase": "persecución", "search": "búsqueda", "return": "regreso"}
 
 var player: CharacterBody3D
@@ -138,6 +138,7 @@ var search_base_yaw: float = 0.0
 var patrol_wait_left: float = 0.0
 var last_known: Vector3 = Vector3.ZERO
 
+@export_range(0, 3, 1) var initial_checkpoint_index: int = 0
 var checkpoint_index: int = 0
 var checkpoint_position: Vector3 = CHECKPOINTS[0]
 var catches: int = 0
@@ -148,6 +149,8 @@ var message_left: float = 0.0
 
 
 func _ready() -> void:
+	checkpoint_index = clampi(initial_checkpoint_index, 0, CHECKPOINTS.size() - 1)
+	checkpoint_position = CHECKPOINTS[checkpoint_index]
 	_ensure_action("crouch", KEY_CTRL)
 	_ensure_action("run", KEY_SHIFT)
 	_build_level()
