@@ -31,6 +31,12 @@ func _run() -> void:
 	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 1.5), "mission lift connects P0 to mezzanine M at +1.5 m")
 	_expect(scene.get_node_or_null("MezzanineFloor_00") != null, "intermediate mezzanine floor is present")
 	_expect(scene.get_node_or_null("D1RoomLabel") != null and scene.get_node_or_null("D2RoomLabel") != null and scene.get_node_or_null("D1PumpA") != null, "both D1 and D2 are built on the continuous maintenance level")
+	var pit_floor := scene.get_node("PitFloor") as StaticBody3D
+	var pit_floor_shape := pit_floor.get_child(0) as CollisionShape3D
+	var pit_floor_box := pit_floor_shape.shape as BoxShape3D
+	_expect(is_equal_approx(pit_floor.position.y - pit_floor_box.size.y * 0.5, -2.125), "pit collision floor has its top surface at the specified Y=-2 m datum")
+	_expect(not _has_ground_slab_at(scene, Vector2(15.0, 4.0)) and not _has_ground_slab_at(scene, Vector2(22.0, 4.0)), "P0 has real collision voids above both D1 and D2")
+	_expect(not _has_ground_slab_at(scene, Vector2(25.0, 9.5)), "S1 stair mouth remains open through the P0 slab")
 	_expect(scene.get_node_or_null("PitRailWest") != null and scene.get_node_or_null("PitRailEast") != null, "maintenance pit perimeter is protected")
 	var pit_rail := scene.get_node("PitRailWest") as StaticBody3D
 	_expect(is_equal_approx(pit_rail.position.y, 0.55), "pit guardrail rises above P0 floor instead of being buried below it")
@@ -143,3 +149,19 @@ func _expect(condition: bool, label: String) -> void:
 	else:
 		failed += 1
 		push_error("FAIL: " + label)
+
+
+func _has_ground_slab_at(scene: Node3D, point: Vector2) -> bool:
+	for child in scene.get_children():
+		if not (child is StaticBody3D) or not String(child.name).begins_with("GroundFloor_"):
+			continue
+		if child.get_child_count() == 0 or not (child.get_child(0) is CollisionShape3D):
+			continue
+		var collision := child.get_child(0) as CollisionShape3D
+		if not (collision.shape is BoxShape3D):
+			continue
+		var box := collision.shape as BoxShape3D
+		var half := box.size * 0.5
+		if point.x >= child.position.x - half.x and point.x <= child.position.x + half.x and point.y >= child.position.z - half.z and point.y <= child.position.z + half.z:
+			return true
+	return false
