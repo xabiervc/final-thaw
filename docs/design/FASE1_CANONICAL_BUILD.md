@@ -11,8 +11,15 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_ar
 - P0 conserva su perímetro, acceso, nave, taller y rutas contractuales; se añaden particiones con pasos anchos, bandejas, armarios y estructura de cubierta.
 - P−1 ahora reserva un hueco continuo para D1/D2 (X=10..28, Z=1..8), con suelo de mantenimiento, bombas/sumidero, señalización y protección perimetral. S1 conserva su abertura.
 - M/P2 mantienen sus cotas, huecos de elevador y S2, pasarela, archivo, control y esclusa G.
-- La instancia de misión usa el elevador Y=0→1,5; el componente genérico y sus tests de 3 m no cambian.
+- La instancia de misión usa el elevador Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. La compuerta fija superior se alinea con el borde del hueco en M.
+- Las barandillas del foso están sobre la losa P0, no enterradas; la abertura de S1 se mantiene deliberadamente.
+- El banco del taller no invade el paso B↔C y la marca del pasillo de servicio queda sobre suelo sólido, no suspendida sobre el foso.
+- El test de integración añade aserciones para estos puntos de regresión.
 - Se conservan circuito, jugador, HUD, rutas de recursos, inputs y guardado; no se altera el contrato lógico.
+
+## Correcciones de revisión estática ya aplicadas
+
+La auditoría geométrica encontró cuatro defectos concretos antes de ejecutar Godot: barandillas del foso con el centro vertical por debajo de P0, banco del taller invadiendo el umbral, marca del pasillo sobre el vacío y compuerta superior del elevador desalineada respecto al plano. Se corrigieron y se añadieron aserciones de integración. Esta revisión de código no demuestra todavía el comportamiento físico.
 
 ## Límites
 
