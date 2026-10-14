@@ -149,7 +149,7 @@ The concept plan marks three provisional anchors: **S** at the service entry, **
 
 | Anchor | Local coordinate (X, Z) | Purpose | Activation rule |
 |---|---:|---|---|
-| S / entry | (6.8, 21.8) | Start the integrated Phase 2 segment at the P−1 handoff | Set by the integrated scene; do not replay the standalone corridor |
+| S / entry spawn pocket | (6.8, 21.8) local; target world (35.5, 6) | Safe spawn point 1.5 m inside the 3 m service threshold | Set by the integrated scene; do not spawn on the threshold collider or replay the standalone corridor |
 | CP1 | (40.7, 16.8) | Avoid replaying both route branches after the player has completed the main traversal | Activate only after Elena physically enters the convergence pocket |
 | CP2 | (44.3, 5.0) | Keep the final bottleneck/egress attempt short after the player reaches the last safe approach | Activate before the final committed crossing, not after an untelegraphed hazard |
 
@@ -192,7 +192,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Design purpose:** deliver release without implying that the larger conflict is resolved.  
 **Narrative result:** the immediate recovery unit is evaded; Helix's ability to identify and track Elena remains a threat. End with a short, authored beat that changes the player's understanding or stakes, not a generic “level complete” message.
 
-The concept currently marks O1 and O2 as illustrative only. They are not final obstacle IDs or locked placements. The number and placement of physical obstacles remain subject to plan and playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
+The plan labels O1/O2/O3 correspond to provisional register entries P2-O1/P2-O2/P2-O3. Their IDs are stable design references, but their placements and dimensions are not production-locked until plan, section, graph and actual collision envelopes are reconciled. The final number and placement of physical obstacles remain subject to playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
 
 ## 4. Route alternatives and threat fairness
 
