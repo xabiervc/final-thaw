@@ -318,9 +318,9 @@ func _build_fixed_geometry() -> void:
 func _build_pit() -> void:
 	# D1 and D2 form one connected lower maintenance level, visually zoned by machinery and markings.
 	_add_floor_rect(Rect2(Vector2(10.0, 1.0), Vector2(18.0, 7.0)), -2.0, "PitFloor", materials.get_material("grate"))
-	_body_box("D1Sump", Vector3(1.3, 0.18, 1.0), Vector3(13.0, -1.86, 6.4), materials.get_material("steel"))
-	_body_box("D1PumpA", Vector3(0.8, 0.9, 0.8), Vector3(15.0, -1.45, 3.0), materials.get_material("steel_light"))
-	_body_box("D1PumpB", Vector3(0.8, 0.9, 0.8), Vector3(17.0, -1.45, 3.0), materials.get_material("steel_light"))
+	_body_box("D1Sump", Vector3(1.3, 0.18, 1.0), Vector3(13.0, -1.91, 6.4), materials.get_material("steel"))
+	_body_box("D1PumpA", Vector3(0.8, 0.9, 0.8), Vector3(15.0, -1.55, 3.0), materials.get_material("steel_light"))
+	_body_box("D1PumpB", Vector3(0.8, 0.9, 0.8), Vector3(17.0, -1.55, 3.0), materials.get_material("steel_light"))
 	_body_box("D1Manifold", Vector3(4.0, 0.16, 0.16), Vector3(16.0, -0.9, 2.0), materials.get_material("steel"))
 	_label3d("D1RoomLabel", "D1 · ACHIQUE / BOMBAS", Vector3(14.5, -1.2, 7.5), Color(0.7, 0.85, 0.9), 16, 0.003)
 	_label3d("D2RoomLabel", "D2 · DISTRIBUCIÓN", Vector3(23.5, -1.2, 7.5), Color(0.7, 0.85, 0.9), 16, 0.003)
@@ -334,9 +334,9 @@ func _build_pit() -> void:
 	# S1 stair has a continuous walkable slope; its visual treads do not replace collision geometry.
 	# A continuous sloped collision surface with visible individual treads.
 	_build_sloped_stairs("FixedPitStairs", 24.0, 26.0, 8.0, 11.0, -2.0, 0.0)
-	_visual_box("SchematicBoard", Vector3(1.6, 1.0, 0.12), Vector3(27.0, -1.35, 6.0), materials.get_material("screen_dark"))
-	_label3d("PitSchematicTitle", "ESQUEMA · DISTRIBUCIÓN PREVISTA", Vector3(27.0, -0.91, 6.08), Color(0.7, 0.9, 0.94), 15, 0.0028)
-	_label3d("SchematicDiagram", "AUXILIAR → DIAGNÓSTICO\nMANTENIMIENTO → LUCES / ASCENSOR\nPROTECCIÓN → SELECTOR\nENSAYO → T\nARCHIVO → A", Vector3(27.0, -1.42, 6.08), Color(0.86, 0.95, 0.96), 12, 0.0024)
+	_visual_box("SchematicBoard", Vector3(1.6, 1.0, 0.12), Vector3(27.0, -1.5, 6.0), materials.get_material("screen_dark"))
+	_label3d("PitSchematicTitle", "ESQUEMA · DISTRIBUCIÓN PREVISTA", Vector3(27.0, -1.06, 6.08), Color(0.7, 0.9, 0.94), 15, 0.0028)
+	_label3d("SchematicDiagram", "AUXILIAR → DIAGNÓSTICO\nMANTENIMIENTO → LUCES / ASCENSOR\nPROTECCIÓN → SELECTOR\nENSAYO → T\nARCHIVO → A", Vector3(27.0, -1.57, 6.08), Color(0.86, 0.95, 0.96), 12, 0.0024)
 	_label3d("BridgeTitle", "PUENTE A → T", Vector3(22.2, -1.0, 4.0), Color(1.0, 0.63, 0.18), 22, 0.0035)
 	_visual_box("TamperedBridge", Vector3(1.5, 0.16, 0.3), Vector3(22.0, -1.92, 4.0), _flat_material(Color(0.95, 0.38, 0.08), 0.42, 0.3, 1.4))
 	_label3d("TamperedBridgeLabel", "CONEXIÓN MANIPULADA", Vector3(22.0, -1.45, 4.0), Color(1.0, 0.66, 0.3), 20, 0.0032)
@@ -349,7 +349,7 @@ func _build_scanner_fixtures() -> void:
 	# Three transient markers communicate continuity at A, the physical bridge and T without naming an action.
 	var marker_a := _label3d("ScanSchematicLabel", "TRAZA DE CONTINUIDAD · A", Vector3(27.0, -0.52, 6.12), Color(0.35, 0.98, 0.95), 18, 0.0035)
 	var marker_bridge := _label3d("ScanBridgeLabel", "CONTINUIDAD A → T", Vector3(22.0, -0.72, 4.0), Color(0.35, 0.98, 0.95), 20, 0.0037)
-	var marker_t := _label3d("ScanNodeTLabel", "TRAZA DETECTADA · T", Vector3(14.5, 3.9, -4.0), Color(0.35, 0.98, 0.95), 18, 0.0035)
+	var marker_t := _label3d("ScanNodeTLabel", "TRAZA DETECTADA · T", Vector3(15.5, 3.9, -4.0), Color(0.35, 0.98, 0.95), 18, 0.0035)
 	var markers: Array[Label3D] = [marker_a, marker_bridge, marker_t]
 	for marker: Label3D in markers:
 		marker.visible = false
