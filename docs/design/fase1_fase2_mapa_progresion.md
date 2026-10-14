@@ -1,53 +1,86 @@
-# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v0.9)
+# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v1.0)
 
-**Estado:** topología espacial y contrato funcional del circuito aprobados conceptualmente; reconstrucción de escena ampliada, validación pendiente. Los beats específicos de Helix/Containment siguen siendo propuestas narrativas, no canon aprobado. Autoridad: FASE1_ARCHITECTURAL_LAYOUT.md v1.1, FASE1_SPATIAL_GRAPH.md v0.7, FASE1_GREYBOX_SPEC.md v1.4, FASE1_FUNCTIONAL_SPEC.md v1.1 y FASE1_LOGIC_CONTRACT.md (sin cambios).
+**Estado:** recorrido y estructura de la experiencia revisados según la dirección arquitectónica de edificio completo, puzle distribuido y huida por una salida alternativa. La escena actual aún no demuestra este recorrido: la nueva galería de evacuación, la persecución interior y el handoff al aparcamiento requieren implementación y pruebas. Los beats narrativos concretos de Helix/Containment siguen pendientes de cierre; no presentarlos como canon sin aprobación.
 
-## Recorrido de Fase 1
+**Autoridad:** `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`, `FASE1_SPATIAL_GRAPH.md v1.0`, `FASE1_GREYBOX_SPEC.md`, `FASE1_FUNCTIONAL_SPEC.md` y `FASE1_LOGIC_CONTRACT.md`. El contrato lógico del circuito no cambia con este mapa.
 
-Túnel exterior → A/B en P0 → S1 ↓ D1/D2 en P−1 → subir por S1 → rodear el foso por el perímetro sur y el retorno este → galería de servicio → elevador P0↔M (+1,5 m) → sala de bombas/galería → S2 ↑ E/P2 (+3 m) → F → G → H.
+## Experiencia objetivo
 
-La escalera directa P0↔P2 está dañada y bloqueada. G no incluye atajo vertical a P0. El elevador termina en M; S2 lleva a control. Cada conexión vertical tiene destino propio.
+La misión ocurre en una instalación clandestina de investigación hidrológica/industrial parcialmente abandonada. La persona jugadora investiga el edificio como un sistema: sigue tuberías y canalizaciones, contrasta la documentación con el estado físico, activa mantenimiento, entiende la anomalía eléctrica y decide cómo alimentar el archivo de forma segura. Tras abrir la puerta G, la experiencia cambia de investigación a huida física. El jugador debe atravesar el edificio bajo persecución y salir por la galería de servicio de P−1, distinta del túnel por el que entró, para llegar al aparcamiento y continuar en Fase 2.
 
-## Sectores funcionales
+## Progresión espacial y de información
 
-| Zona | Cota | Función |
-|---|---:|---|
-| A · Acceso | 0 m | Orientación y primera vista al hito central. |
-| B · Nave | 0 m | Columna Aster, rig y circulación industrial. |
-| C · Taller | 0 m | Cuadros/banco opcionales, sin llaves. |
-| D1/D2 · Foso | −2 m | Contrastar esquema y puente; activar mantenimiento. |
-| M · Bombas | +1,5 m | Ver efecto de mantenimiento y orientarse. |
-| E · Control | +3 m | Probar hipótesis y recuperarse de errores. |
-| F · Archivo | +3 m | Consultar con suministro estable. |
-| G · Esclusa | +3 m | Transmitir auditoría y cruzar a H. |
-| H · Umbral exterior | exterior | Transición espacial directa al aparcamiento de Fase 2. |
+| Beat | Espacio | Qué aprende/hace el jugador | Contrato / condición |
+|---|---|---|---|
+| 1. Entrada | Túnel oeste → A | Entra por una instalación técnica real; identifica protocolo de acceso y ve la nave Aster. | Spawn dentro del túnel; salida oeste no será la ruta final. |
+| 2. Lectura del edificio | A/B/C/P0 | Reconoce el rig central, taller, cuadros y canalizaciones; puede explorar áreas auxiliares sin encontrar llaves arbitrarias. | Los accesos y el perímetro deben tener colisiones coherentes; áreas principales legibles. |
+| 3. Investigar el subsuelo | B → S1 ↓ D1/D2 | Compara el esquema de distribución con el puente físico A→T manipulado. | S1 transitable siempre; suelo continuo en P−1; D1/D2 diferenciados por equipo y señalización. |
+| 4. Restablecer mantenimiento | D2 | Activa mantenimiento y ve cómo cambian iluminación, bombas y disponibilidad del elevador. | Mantenimiento no alimenta la protección de recuperación. |
+| 5. Volver a P0 | S1 ↑ → retorno sur/este → galería de servicio | Aprende la topología; rodea el hueco en lugar de cruzarlo. | La ruta existe físicamente y es verificable con cámara/colliders. |
+| 6. Confirmar el sistema | Elevador ↑ M → bombas/observación | Relaciona el estado del edificio con las instalaciones de P−1 y localiza la ruta a control. | Elevador P0↔M; S2 independiente de alimentación. |
+| 7. Resolver el circuito | S2 ↑ E | Contrasta hipótesis, usa diagnóstico y opera aislador/selector/rearme. Puede fallar y recuperarse. | Contrato lógico existente; el escáner revela continuidad A→T, nunca los controles. |
+| 8. Consultar la evidencia | E → F | Consulta el archivo si ARCHIVO está estable. El texto contextualiza la anomalía; no actúa como llave. | Consulta no equivale a extracción ni modifica el guardado persistente en este hito. |
+| 9. Abrir la puerta | F → G | Abre la puerta de salida/interbloqueo. La respuesta del edificio hace perceptible que la situación ha cambiado. | G no teletransporta al exterior. Este acto inicia la huida. |
+| 10. Huida interior | G → pasarela/corredor técnico → S2 ↓ M | La amenaza persigue a Elena. El jugador interpreta el espacio y atraviesa obstáculos industriales legibles. | Obstáculos con colisión, anticipación visual y al menos una solución justa; no depender de un salto ciego. |
+| 11. Descenso de servicio | M → elevador ↓ P0 → S1 ↓ P−1 | Regresa por la infraestructura técnica y llega al nivel de achique. La ruta es distinta de la entrada y se siente como parte del mismo edificio. | No crear ascensor ni escalera nueva. Estado del elevador durante la huida debe estar diseñado y probado. |
+| 12. Salida alternativa | D2 → galería de evacuación → boca este | Cruza el corredor de descarga/servicio y sale al exterior. | Galería y salida física nuevas en planos/código; nunca un teletransporte. |
+| 13. Handoff | Exterior de servicio → aparcamiento | Entra en la zona de aparcamiento; la persecución exterior continúa como Fase 2. | La escena existente de parking-chase debe arrancar en el checkpoint de entrada, sin reiniciar el corredor standalone. |
 
-## Circuito/evidencia
+## Puzle y evidencia distribuida
 
-Estado inicial: mantenimiento OFF; ENSAYO seleccionado; ensayo conectado; protección disponible; no hay último disparo. Orden seguro recomendado: aislar ENSAYO, seleccionar ARCHIVO, comprobar diagnóstico. ARCHIVO seleccionado con ensayo conectado dispara DEMANDA_SIMULTANEA; aislar y rearmar tras eliminar el fallo recupera. Selector/aislador no rearman implícitamente. La máquina no arranca; mantenimiento no alimenta el circuito de recuperación.
+- **P0, nave/taller:** la disposición de Aster, los cuadros y las canalizaciones establece el contexto y da orientación. La exploración es útil pero no obliga a leer cada objeto.
+- **P−1, D1/D2:** la anomalía principal es física: el esquema previsto y el puente A→T no coinciden. Mantenimiento permite observar el sistema, pero no resuelve la protección.
+- **M:** las bombas y la iluminación hacen visible el efecto del mantenimiento; la elevación cambia la perspectiva y conecta subsistemas.
+- **P2, E:** el diagnóstico presenta estado actual y último disparo como datos separados. ENSAYO conectado al seleccionar ARCHIVO dispara DEMANDA_SIMULTANEA; aislar y rearmar tras eliminar el fallo permite recuperarse.
+- **F:** consulta solo con ARCHIVO estable. El archivo aporta contexto y no desbloquea por sí solo los controles.
+- **Escáner:** mantener `scan` durante 0,9 s; revela continuidad durante 3 s y tiene 4 s de recarga desde activación. No revela la acción correcta.
 
-La evidencia funcional prevista contrapone el acta (alimentación exclusiva a T) con la telemetría (corriente simultánea en A y T). La formulación definitiva del texto y su estatus como pista narrativa deben aprobarse antes de tratarla como canon. Consultar no es extracción y no cambia el guardado.
+La progresión debe funcionar por inferencia ambiental, no por una lista de recados. Las pistas refuerzan el razonamiento, pero los controles siguen operativos sin leer cada una.
 
-## Continuidad de Fase 2 — aparcamiento y huida
+## Diseño de la persecución
 
-La compuerta exterior de G debe desembocar físicamente en una zona exterior de servicio/aparcamiento, no en un espacio abstracto ni en una transición visual sin contexto. La continuidad espacial G→H es requisito de arquitectura. El aparcamiento con plazas, pilares, coches inmóviles, carriles y rutas de huida, así como el comportamiento de la amenaza, pertenece a la integración de Fase 2 y debe validarse en el prototipo existente; no añadir nuevos sistemas ni convertir una propuesta narrativa en canon sin aprobación.
+La persecución comienza **dentro** del edificio al abrir G. No se debe implementar todavía como una transición directa a la escena del aparcamiento.
 
-La escena de persecución conserva su versión standalone desde el inicio del corredor. El handoff canónico propuesto usa `scenes/prototypes/phase2_parking_chase.tscn`, reutiliza el mismo script y arranca en el checkpoint de entrada al aparcamiento (X=34,5). Esto sigue pendiente de ejecución combinada. La señal de sincronización, el motivo concreto de Containment y la reacción/percepción de Elena no se consideran decisiones narrativas aprobadas. No añadir combate obligatorio ni bloquear el progreso por no consultar el archivo.
+Requisitos del segmento interior:
+- La amenaza tiene un punto de entrada y una línea de persecución explicables por el edificio.
+- El primer obstáculo se presenta con anticipación y se entiende sin texto tutorial obligatorio.
+- Cada obstáculo tiene colisión, ruta de aproximación y recuperación ante fallo; la dificultad no se basa en un collider invisible.
+- La cámara de tercera persona mantiene lectura de bordes, escalones, huecos y perseguidor.
+- La velocidad y el ritmo permiten percibir la arquitectura; el recorrido no puede depender de conocer de memoria la ruta.
+- El retorno por S2/M/elevador/S1 debe ser continuo. Si el elevador no está disponible en ese momento, el contrato narrativo y espacial debe ofrecer una solución ya representada en planos; no improvisar una escalera nueva.
+- La galería de evacuación tiene un cambio claro de acústica/luz/espacio al salir al exterior, con continuidad visual al aparcamiento.
+
+La lista definitiva de obstáculos y sus estados se cierra en la especificación de greybox y se cubre con pruebas de comportamiento. No añadir combate obligatorio.
+
+## Fase 2: aparcamiento
+
+El aparcamiento incluye contexto legible —acceso de servicio, carriles, plazas, pilares y vehículos inmóviles— y una ruta que recibe al jugador desde la boca este. Se reutiliza `scenes/prototypes/phase2_parking_chase.tscn` si sus contratos de checkpoint, percepción y navegación lo permiten. La versión standalone del corredor conserva su punto de inicio original.
+
+El handoff se acepta solo cuando:
+1. G inicia la huida interior.
+2. Elena atraviesa la ruta interior con el perseguidor activo.
+3. Llega a la boca de servicio de P−1.
+4. El exterior se conecta visualmente y físicamente al aparcamiento.
+5. La escena de parking empieza en el checkpoint de entrada, no al inicio standalone.
+6. El perseguidor no detecta a Elena antes de que la secuencia lo permita.
+7. No se pierde estado de misión ni se duplica el jugador al cambiar de escena.
 
 ## Estado de decisiones
 
-- **Aprobado conceptualmente:** huellas y cotas de las cuatro plantas; S1 P0↔P−1, elevador P0↔M, S2 M↔P2; G→H como salida horizontal; contrato lógico del circuito; consulta de F condicionada a ARCHIVO estable y separada de extracción.
-- **Propuesto, pendiente de aprobación narrativa:** redacción exacta de la evidencia, eventos de auditoría transmitidos en G, causa y timing de Containment, señal que percibe Elena, comportamiento narrativo inicial de la unidad de recuperación y destino posterior.
-- **Pendiente de validación en Godot:** geometría y colisiones reales, retorno por perímetro sur/este, escaleras, elevador y compuertas, legibilidad desde cámara, interacciones, consulta, recorrido completo y handoff G→H.
-- **Regla de trabajo:** si una prueba contradice el diseño aprobado, registrar la desviación y corregir implementación/documentación con evidencia; no cambiar contratos o canon narrativo para hacer pasar el test.
+- **Dirección fijada:** laboratorio completo y explorable en gran parte; puzle integrado en el edificio; G abre la huida interior; persecución antes de salir; salida alternativa a parking.
+- **Contrato existente que se conserva:** circuito, estados iniciales, recuperación reversible, escáner, mantenimiento y elevador P0↔M.
+- **Diseño por cerrar en plano/greybox:** huella final de la galería de evacuación, medidas del recorrido de persecución, posiciones de obstáculos, puertas y estados de seguridad.
+- **Narrativa pendiente:** evento exacto recibido por Helix, auditoría de F, percepción de Elena, causa y timing de Containment, identidad/entrada de la amenaza y destino posterior.
+- **Validación pendiente:** ejecución de todas las escenas, colisiones, cámara, navegación, secuencia de huida, salida física y transición al aparcamiento.
 
 ## Orden de trabajo
 
-1. Ejecutar la escena canónica ampliada y revisar parse/runtime.
-2. Validar P0/P−1, S1 y el hueco continuo D1/D2.
-3. Probar elevador a M y S2 a P2.
-4. Validar E/F/G, circuito y recorrido completo.
-5. Diseñar/ajustar el arranque de persecución en el aparcamiento usando la escena existente, sin crear otro documento de progresión.
-6. Ejecutar pruebas de circuito, elevador, integración y Fase 0; hacer playtest manual.
+1. Coordinar plantas y sección con el nuevo grafo; cerrar huellas, anchos, puertas y recorrido de huida.
+2. Actualizar la especificación de greybox con galería de evacuación, salida exterior y obstáculos medibles.
+3. Reconciliar la escena canónica con los planos antes de añadir arte o narrativa.
+4. Definir tests de navegación y estados para puerta G, persecución interior, descenso y salida alternativa.
+5. Integrar con la escena existente del aparcamiento y conservar el inicio standalone.
+6. Ejecutar pruebas unitarias, integración y regresión de Fase 0; realizar playtest manual.
+7. Registrar commit, versión de Godot, renderer, comandos, exit codes, errores, warnings y evidencia visual.
 
-Cerrar Fase 1 solo con pruebas automáticas, ruta manual, visibilidad, colisiones, pérdida de potencia y comprensión de jugador nuevo.
+La Fase 1 no se declara terminada hasta que la secuencia completa sea recorrible en runtime y la ruta de huida se comprenda sin conocimiento previo del diseño.
