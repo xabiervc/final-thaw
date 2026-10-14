@@ -1,101 +1,88 @@
-# FASE1 — Especificación funcional de implementación (v1.1)
+# FASE1 — Especificación funcional de implementación (v2.0)
 
-**Estado:** topología espacial y contrato funcional del circuito aprobados conceptualmente; los beats específicos de historia siguen propuestos y pendientes de aprobación. Las pruebas de escena, cámara, colisiones y jugabilidad siguen pendientes; este documento no afirma validación en Godot.  
-**Autoridad funcional:** este documento define la experiencia de Fase 1; el contrato lógico define las reglas del circuito; la arquitectura espacial y el greybox definen su geometría. Autoridad espacial: FASE1_ARCHITECTURAL_LAYOUT.md v1.1, FASE1_SPATIAL_GRAPH.md v0.7 y FASE1_GREYBOX_SPEC.md v1.4.
+**Estado:** contrato funcional revisado para el diseño de edificio completo, puzle distribuido y huida interior. Las nuevas fases de persecución y salida alternativa aún no están implementadas ni validadas en Godot. No se afirma aceptación de runtime.  
+**Autoridad:** arquitectura espacial en `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`; grafo en `FASE1_SPATIAL_GRAPH.md v1.0`; huellas y colisiones en `FASE1_GREYBOX_SPEC.md`; progresión en `fase1_fase2_mapa_progresion.md v1.0`; contrato eléctrico en `FASE1_LOGIC_CONTRACT.md`.
 
 ## 1. Objetivo jugable
 
-Elena debe reconocer una discrepancia física en la distribución eléctrica, poner el circuito en una configuración segura que permita consultar el archivo y salir de la instalación. La máquina de ensayo nunca arranca. La amenaza exterior pertenece a Fase 2; el disparador exacto de su aparición y su relación causal con la salida siguen pendientes de aprobación narrativa.
+Elena investiga una anomalía física en una instalación clandestina de investigación hidrológica/industrial, entiende la distribución eléctrica, activa mantenimiento, configura el circuito de forma segura y consulta el archivo. Después abre G, atraviesa una persecución dentro del edificio y escapa por una galería de servicio a una zona de aparcamiento que enlaza con Fase 2.
 
-La experiencia se basa en inferencia ambiental, no en una secuencia arbitraria de interruptores. El jugador puede operar el circuito sin leer cada pista: las pistas explican el problema, pero no son llaves para los controles. La topología y el contrato del circuito son decisiones aprobadas conceptualmente; los beats específicos de Helix/Containment descritos más abajo deben considerarse propuestas narrativas hasta aprobación explícita.
+La misión debe sentirse como explorar un lugar funcional. Las pistas se distribuyen entre la nave, el taller, el nivel de achique, la sala de bombas, control y archivo. No se exige inspeccionar todos los objetos; no hay llaves arbitrarias ni coleccionables obligatorios. La máquina de ensayo nunca arranca.
 
-## 2. Recorrido espacial de referencia
+## 2. Contratos de exploración y circulación
 
-1. Entrar por el túnel exterior a A en P0: orientarse, observar la nave B y localizar la columna vertical de calibración Aster.
-2. Rodear el rig hasta la escalera fija S1.
-3. Bajar a D (Y=−2 m); comparar esquema y puente A→T y activar mantenimiento.
-4. Subir por S1 y regresar por el perímetro sur del foso y el pasillo este hasta la galería de servicio; no atravesar B ni el hueco para volver al elevador.
-5. Subir desde P0 (Y=0) a M, sala de bombas (Y=+1,5 m). El elevador termina aquí, no en control.
-6. Cruzar M y la galería de observación; subir por S2 a E/P2 (Y=+3 m).
-7. Operar el circuito en E, consultar F con suministro estable, atravesar G y salir a H.
+- El edificio es una sola instalación con perímetro y circulación coherentes. Las salas principales A, B, C, D1, D2, M, E, F y G se distinguen por arquitectura, maquinaria, señalización y líneas de visión, no solo por texto o color.
+- La entrada inicial es el túnel oeste → A. La salida final es una ruta distinta a través de P−1 y la galería de evacuación hacia el exterior este.
+- S1 conecta P0↔P−1 y permanece transitable sin electricidad.
+- El elevador conecta P0↔M (+1,5 m), solo con mantenimiento activo. No llega a P2.
+- S2 conecta M↔P2, independientemente de energía.
+- La escalera directa P0↔P2 permanece bloqueada.
+- El retorno desde el rellano superior de S1 bordea el perímetro sur/este del hueco D1/D2 y llega a la galería de servicio. No se cruza el hueco ni se requiere un salto.
+- G no es la salida exterior. Al abrirse, inicia el segmento de huida y la persecución interior. La ruta continúa por circulación técnica, S2/M, elevador/P0, S1/P−1 y galería de evacuación.
+- La galería de evacuación debe tener suelo, paredes/estructura, altura libre, colisiones y una boca exterior conectada al aparcamiento. No se permite teletransporte para simular la salida.
 
-La escalera directa P0→P2 está colapsada y bloqueada. G no contiene escalera de retorno a P0. Las salas explican la infraestructura; no se exige leer todas las pistas para que funcionen los controles.
+## 3. Circuito eléctrico — reglas preservadas
 
-## 3. Plataforma elevadora y mantenimiento
-
-- **Paradas de misión:** P0 Y=0 y M Y=+1,5 m; huella X=24,5..27,5, Z=−4,5..−1,5.
-- **Inicialización:** deck acoplado abajo; mantenimiento apagado. No se guarda estado del elevador.
-- **Uso normal:** llamada desde ambos rellanos, solo con mantenimiento activo. A 1,2 m/s, los 1,5 m de movimiento duran aprox. 1,25 s, más espera de puertas.
-- **Mantenimiento OFF:** si está acoplado permanece quieto y rechaza llamadas.
-- **Pérdida de energía en movimiento:** la reserva de seguridad lleva el deck a la parada más cercana a velocidad reducida; empate exacto elige M (+1,5 m). Nunca cae ni deja a Elena entre niveles.
-- S1 es la escalera fija P0↔P−1, usable sin electricidad. S2 conecta M↔P2 y no depende de alimentación.
-
-La rampa provisional y el anexo X=30..34 quedan eliminados. El componente service_lift.gd conserva sus tests genéricos de 3 m; la instancia de misión usa upper_y=1.5 y debe tener prueba de integración específica.
-
-## 4. Contrato del circuito aplicado a la experiencia
-
-Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protección disponible; last_trip vacío; diagnóstico siempre operativo.
+Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protección disponible; `last_trip` vacío; diagnóstico siempre operativo.
 
 - El esquema muestra la distribución prevista: ARCHIVO hacia A y ENSAYO hacia T.
-- El puente físico A→T está manipulado y constituye la anomalía. **Escáner cerrado para implementación:** mantener `scan` durante 0,9 s; revelar durante 3 s y aplicar 4 s de recarga desde la activación. Durante la ventana se resaltan esquema/A, el puente A→T y el nodo T; se ocultan al terminar. El escáner revela continuidad, nunca resalta el selector, aislador o rearme ni prescribe una acción.
-- El orden recomendado y más seguro es aislar ENSAYO, seleccionar ARCHIVO y comprobar el estado. Resultado esperado: ARCHIVO estable y protección disponible.
-- Si el jugador selecciona ARCHIVO con ENSAYO conectado, la protección dispara inmediatamente y registra DEMANDA_SIMULTANEA. No hay muerte ni bloqueo permanente. Aislar ENSAYO y luego rearmar permite recuperarse.
+- El puente físico A→T está manipulado y constituye la anomalía.
+- Escáner: mantener `scan` durante 0,9 s; revelar durante 3 s y aplicar 4 s de recarga desde la activación. Durante la ventana se resaltan el esquema/A, el puente A→T y el nodo T. Nunca resalta selector, aislador o rearme ni prescribe una acción.
+- Orden seguro recomendado: aislar ENSAYO, seleccionar ARCHIVO y comprobar el estado. Resultado esperado: ARCHIVO estable y protección disponible.
+- Si se selecciona ARCHIVO con ENSAYO conectado, la protección dispara inmediatamente y registra `DEMANDA_SIMULTANEA`. No hay muerte ni bloqueo permanente. Aislar ENSAYO y rearmar permite recuperarse.
 - Cambiar selector o aislador no rearma por sí solo. Rearme solo tiene éxito con el fallo ausente.
-- La maquinaria de ensayo nunca arranca. El diagnóstico permanece disponible en cualquier estado y muestra estado actual y último disparo como datos separados.
-- Consultar solo está disponible cuando ARCHIVO está estable. Conocimiento adquirido se conserva durante la sesión aunque después se pierda alimentación; no se escribe en el guardado persistente en este hito.
+- El diagnóstico permanece disponible en cualquier estado y muestra estado actual y último disparo como datos separados.
+- Mantenimiento activa iluminación/elevador, pero no alimenta la protección de recuperación.
+- Consultar F solo está disponible cuando ARCHIVO está estable. El conocimiento adquirido se conserva durante la sesión aunque después se pierda alimentación; no se escribe en el guardado persistente en este hito.
 
-### Instrumentación visual definitiva de E
+## 4. Función de cada sector en la investigación
 
-Los controles contractuales mantienen sus centros de interacción: selector (12,3,-7), aislador (19,3,-7). No se mueven para acomodar la arquitectura.
+| Sector | Información/acción | Límite |
+|---|---|---|
+| A/B | Presenta Aster, nave, escala y canalizaciones. | No prescribe el orden de controles. |
+| C | Añade contexto de mantenimiento y reparaciones improvisadas. | No introduce una llave nueva. |
+| D1/D2 | Contrastar esquema y puente físico; activar mantenimiento. | El escáner no resuelve el circuito. |
+| M | Mostrar respuesta de bombas/iluminación y enlazar cotas. | No crea una segunda regla eléctrica. |
+| E | Diagnóstico, selector, aislador y rearme. | Mantener centros de interacción y contrato existentes. |
+| F | Consultar con ARCHIVO estable. | Consulta no es extracción ni condición técnica para que el circuito funcione. |
+| G | Puerta de huida y comienzo de persecución. | No cambiar de escena directamente al aparcamiento. |
 
-- Panel de estado: montado en el muro norte de la sala E, orientado a la zona de operación, centro aproximado (15.5,4.55,-8.15), orientado al sur hacia el punto de observación (15,3,-7). Expone únicamente valores actuales: destino seleccionado, ensayo conectado/aislado, protección disponible/disparada y existencia de último disparo. No da instrucciones ni marca una secuencia correcta.
-- Rearme: botón/asa independiente en (15.5,3.5,-8.15), en el mismo soporte pero claramente separado del panel y de los controles selector/aislador. Se interactúa desde el espacio libre de E; no invade la circulación hacia pasarela ni la puerta F.
-- El panel usa texto/símbolos redundantes; el color nunca es el único canal. La aceptación de legibilidad se probará con la cámara real.
+Las pistas ambientales deben poder leerse en el espacio real y desde la cámara. Si el texto no se puede leer, debe corregirse su montaje/legibilidad; no compensarlo añadiendo marcadores que den la solución.
 
-## 5. Archivo F y evidencia
+## 5. Huida interior
 
-- Consola de consulta en (5,3,-7). Solo acepta la interacción cuando ARCHIVO está estable.
-- Indicador local de suministro en el interior de la entrada este, centro (8.55,3.8,-7), orientado hacia +X para que se lea desde la pasarela antes de entrar. Estados exactos: **SUMINISTRO ESTABLE** y **NO DISPONIBLE**. Es redundante con texto/símbolo, no instruye al jugador ni reemplaza el terminal de diagnóstico.
-- La consulta concede un registro de evidencia a la sesión actual. Texto del registro: «El acta oficial declara alimentación exclusiva del nodo T. La telemetría de bornes registra corriente simultánea en A y T durante la ventana de ensayo; el cierre posterior la atribuye a una interrupción automática». Esto establece la contradicción sin identificar culpables ni explicar toda la trama.
-- El registro no es una acción de extracción ni concede autorización de extracción. No se introduce inventario ni migración de guardado: el indicador de conocimiento existe solo en la sesión del slice.
+El segmento se activa cuando Elena abre G después de completar la condición de salida acordada. El disparador narrativo concreto de la amenaza sigue pendiente de cierre; la condición espacial de la huida queda fijada.
 
-## 6. Salida G y propuesta narrativa de Containment
+- La transición de exploración a huida debe ser perceptible mediante respuesta audiovisual del edificio y cambio de comportamiento de la amenaza.
+- La persecución sucede dentro del laboratorio. La escena del aparcamiento no debe cargarse hasta que Elena alcance la boca de servicio.
+- Obstáculos candidatos para el greybox: compuerta de servicio que desciende, tramo de pasarela parcialmente bloqueado por un equipo desplazado y cruce técnico con tuberías/bandejas. Cada obstáculo requiere anticipación visual, colisión coherente, espacio de cámara y solución justa. No se consideran canon hasta quedar posicionados en el plano/greybox.
+- No añadir combate obligatorio, armas ni nuevos sistemas de progresión.
+- El descenso utiliza S2, elevador y S1 existentes. El estado del elevador durante la persecución debe definirse y probarse; no inventar una conexión vertical para salvar un bloqueo.
+- La ruta termina en la galería de evacuación de P−1 y en una salida exterior distinta del túnel de entrada.
 
-G es una esclusa exterior compacta al oeste de F. La puerta F→G se desbloquea una sola vez desde F y después es bidireccional. La pared oeste contiene la compuerta exterior a H. G no tiene escalera ni conexión interna a P0.
+## 6. Transición a Fase 2
 
-**Propuesta narrativa pendiente de aprobación (no canon cerrado):** el borrador actual plantea que el interruptor de mantenimiento genere `SERVICE_OVERRIDE`, que una consulta de F pueda generar `RESTRICTED_RECORD_READ` y que G transmita esos eventos a Helix. También propone una señal de sincronización para Elena y una unidad de recuperación en patrulla que detecte mediante visión, línea de visión y ruido. Son hipótesis de implementación, no requisitos narrativos definitivos. No ampliar ni declarar cerrada la causa de Containment, la percepción de Elena o el destino posterior hasta resolver esa decisión. La continuidad espacial G→H y el requisito técnico de no conceder conocimiento omnisciente al enemigo se mantienen; la escena standalone de persecución debe conservar su comportamiento.
+La salida de servicio conecta físicamente con el aparcamiento. El handoff reutiliza `scenes/prototypes/phase2_parking_chase.tscn` y su checkpoint de entrada, si la prueba de integración confirma que conserva los contratos existentes. La versión standalone mantiene su propio inicio.
 
-La consulta del archivo no es necesaria para operar los controles ni para abrir físicamente la salida. El prototipo actual asocia la salida con eventos de auditoría y Containment, pero esa causalidad sigue siendo una propuesta narrativa y no debe darse por aprobada. Si se decide conservarla, consultar F seguirá siendo opcional y solo concederá evidencia a la sesión; la decisión definitiva debe registrar qué ocurre cuando Elena omite F.
+Criterios:
+1. G abre y la persecución interior comienza.
+2. Elena puede navegar la ruta de huida con cámara y colisiones reales.
+3. El perseguidor se mantiene dentro de los estados previstos y no detecta a Elena antes de tiempo.
+4. La galería de evacuación desemboca en el exterior y el aparcamiento es visible/continuo.
+5. El cambio de escena no duplica al jugador ni pierde el estado requerido.
+6. El checkpoint de aparcamiento se usa solo en el handoff canónico; el inicio standalone permanece intacto.
 
-## 7. Reglas de interfaz e interacción
+## 7. Historia y estado de decisiones
 
-- Interacción contextual única y consistente para interruptor, selector, aislador, rearme, terminal, consulta y puertas.
-- Todo control expone el estado actual junto al resultado de la interacción. Se evita depender solo de color o de audio.
-- No hay muerte por configurar mal el circuito; el disparo es reversible y diagnosticable.
-- Las pistas del esquema, el puente y los indicadores apoyan la inferencia, pero ninguna lectura de pista es un requisito técnico para que una acción válida funcione.
-- No se añaden tarjetas, fusibles, llaves, habitaciones, máquinas arrancables ni pasos de extracción.
-- No se altera el contrato lógico, los nombres ENSAYO/ARCHIVO, las acciones de entrada de Fase 0, los autoloads, las rutas de recursos, el renderer ni el esquema JSON/CRC32.
+La identidad general del laboratorio y el recorrido de huida son requisitos de diseño. Permanecen pendientes de aprobación narrativa: el evento exacto recibido por Helix, si F se audita, la percepción de Elena, causa/timing de Containment, identidad y punto de entrada de la amenaza, y el destino posterior. No convertir `SERVICE_OVERRIDE`, `RESTRICTED_RECORD_READ` o señales de sincronización en canon sin cerrar esos puntos.
 
-## 8. Alcance, criterios de aceptación y prueba
+## 8. Pruebas y aceptación
 
-Fase 1 está funcionalmente especificada y la escena `scenes/prototypes/phase1_canonical_greybox.tscn` tiene una reconstrucción geométrica ampliada en curso. El builder incluye el foso D1/D2 continuo, límites de salas y estructura industrial, pero la geometría aún requiere ejecución y validación en Godot. La escena de destino debe seguir FASE1_ARCHITECTURAL_LAYOUT.md v1.1, el grafo v0.7 y el greybox v1.4.
+- Pruebas unitarias del circuito y del elevador existente.
+- Prueba de integración de topología: rutas A/B/C, S1, retorno sur/este, elevador P0↔M, S2, E/F/G, descenso de huida y salida de P−1.
+- Pruebas de puerta G, estado de amenaza, obstáculos, elevador durante huida, boca de servicio y handoff al parking.
+- Regresión de Fase 0 y vertical slice existente.
+- Playtest manual con cámara de tercera persona: lectura del edificio, inferencia del puzle, recuperación tras error, navegación bajo persecución, alturas/anchos y continuidad exterior.
+- Registrar commit, versión de Godot, renderer, comandos, exit codes, errores, warnings, resultados y evidencia visual.
 
-Aceptar la implementación solo si:
-0. Mantener `scan` 0,9 s revela únicamente las trazas de A/puente A→T/T durante 3 s; después se ocultan y el escáner entra en recarga de 4 s.
-1. No se puede subir de P0 a M hasta activar mantenimiento en el foso; S1 permanece utilizable sin electricidad.
-2. El elevador conecta Y=0 con Y=+1,5 m y no llega a P2; S2 conecta M con P2 y no depende de energía.
-3. El contrato cumple T1–T9, X1/X2 y las comprobaciones adicionales del documento lógico, incluido recuperar un disparo y conservar last_trip.
-4. El panel de E muestra estado actual e historial por separado; rearme con fallo presente se rechaza sin modificar historial.
-5. El indicador F refleja exactamente la condición ARCHIVO estable y es legible desde la aproximación con la cámara de juego.
-6. No se puede consultar con suministro inestable; la consulta guarda el conocimiento en sesión y no equivale a extracción.
-7. Cruzar G transmite el registro de servicio y activa la transición a H; la unidad externa usa su máquina de estados ordinaria.
-8. No hay huecos transitables, colisión que reduzca el paso, paso por la escalera dañada, acceso a P2 desde elevador ni escalera de retorno en G.
-
-Registrar versión de Godot, commit, resolución, renderer, entrada, comandos exactos, salida de pruebas, fallos y evidencia manual. No declarar aceptación por inspección documental solamente.
-
-## 9. Decisiones cerradas / límites de evidencia
-
-Cerradas conceptualmente: cuatro cotas; S1 P0↔D, elevador P0↔M, S2 M↔P2, G horizontal a H; comportamiento seguro del elevador, circuito recuperable, indicadores y rearme. La concesión/presentación de evidencia está definida funcionalmente a nivel de sesión, pero su texto narrativo definitivo está pendiente de aprobación. La causa, el timing y la presentación de Containment no están cerrados.
-
-Pendiente por definición: ninguna decisión arquitectónica o funcional dentro del slice, salvo cualquier conflicto que revele la ejecución o el playtest y requiera una revisión explícita de autoridad.  
-Pendiente por evidencia: la escena tiene ya una reconstrucción geométrica ampliada, pero aún faltan ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. El aparcamiento de Fase 2 está ambientado en el prototipo de persecución y el código de handoff apunta al checkpoint correcto; la transición G→H aún no está validada en ejecución. Véase `FASE1_CANONICAL_BUILD.md`.
+No aceptar Fase 1 solo porque el circuito funcione o la escena importe. El edificio completo y la secuencia de salida deben poder jugarse de principio a fin.
