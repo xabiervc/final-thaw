@@ -6,6 +6,8 @@
 
 ## Sources of truth
 
+Los documentos existentes se mantienen como fuentes coordinadas; no crear duplicados. Distinguir decisiones conceptuales, propuestas narrativas y validación empírica en cada cambio.
+
 - Architecture: docs/design/FASE1_ARCHITECTURAL_LAYOUT.md v1.1.
 - Plans and section: docs/design/assets/phase1_architecture/ (existing SVGs).
 - Spatial graph: FASE1_SPATIAL_GRAPH.md v0.7.
@@ -24,7 +26,7 @@ Unique vertical routes: S1 P0↔P−1; elevator P0↔M; S2 M↔P2; direct P0↔P
 
 ## Implementation status
 
-The canonical builder now adds room boundaries and industrial fixtures at P0, an open D1/D2 maintenance void with continuous lower floor, sloped handrails on S1/S2, lateral protection at both lift landings, and guardrails on exposed M/P2 edges. The mission lift remains P0↔M (+1.5 m); G→H targets a dedicated parking-entry point in the existing chase script. The existing scene wrapper and regression tests are preserved; a parking-entry scene variant and dedicated smoke test have been added. The latest edits have not been executed in Godot. Visual scale, collision clearances, floor holes, camera readability and the G→H parking handoff are not verified.
+The canonical builder adds room boundaries and industrial fixtures at P0, an open D1/D2 maintenance void with continuous lower floor, sloped handrails on S1/S2, lateral protection at both lift landings, and guardrails on exposed M/P2 edges. The mission lift remains P0↔M (+1.5 m); G→H targets a dedicated parking-entry point in the existing chase script. The existing scene wrapper and regression tests are preserved; a parking-entry scene variant and dedicated smoke test exist. These are code/documentation facts, not acceptance evidence: the latest edits have not been executed in Godot. Visual scale, collision clearances, floor holes, camera readability, continuous south/east return route and G→H handoff remain unverified. Specific Helix/Containment beats remain proposals pending narrative approval.
 
 ## Automated regression
 
