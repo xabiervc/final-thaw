@@ -103,7 +103,7 @@
     <path d="M74 305 L95 305 L130 305 L150 305 L150 270 L200 270 L270 270 L320 270 L405 270 L475 275 L535 275 L570 275 L570 235 L620 235 L620 218 L620 70 L599 25 L599 0 L599 -6" class="routeA"/>
     <path d="M74 305 L95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218 L620 70 L599 25 L599 0 L599 -6" class="routeB"/>
     <!-- threat path -->
-    <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218" class="threat"/>
+    <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 135 L415 135 L500 135 L520 170 L540 200 L570 235 L620 235 L620 218 L620 70 L599 25 L599 0 L599 -6" class="threat"/>
     <!-- route graph waypoints; coordinates correspond to LEVEL_STRUCTURE.md -->
     <circle cx="535" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="520" y="295" class="tiny" text-anchor="middle">A3</text>
     <circle cx="570" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="563" y="295" class="tiny" text-anchor="middle">A4</text>
@@ -126,7 +126,7 @@
   <g transform="translate(830 130)">
     <text x="0" y="0" class="label">LEYENDA</text>
     <line x1="0" y1="24" x2="44" y2="24" class="routeA"/><text x="56" y="28" class="small">Ruta A: rápida/expuesta</text>
-    <line x1="0" y1="52" x2="44" y2="52" class="routeB"/><text x="56" y="56" class="small">Ruta B: cubierta/estrecha</text>
+    <line x1="0" y1="52" x2="44" y2="52" class="routeB"/><text x="56" y="56" class="small">Ruta B: servicio/cobertura parcial</text>
     <line x1="0" y1="80" x2="44" y2="80" class="threat"/><text x="56" y="84" class="small">Ruta de presión del perseguidor</text>
     <rect x="0" y="94" width="44" height="18" fill="#d96c4c" fill-opacity=".12" stroke="#d96c4c" stroke-dasharray="4 4"/><text x="56" y="106" class="small">Cono visual conceptual</text>
     <rect x="0" y="124" width="22" height="18" class="car"/><text x="32" y="137" class="small">Vehículo estático / cobertura</text>
