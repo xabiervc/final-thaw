@@ -39,6 +39,7 @@ func _run() -> void:
 	var tunnel_floor_box := tunnel_floor_shape.shape as BoxShape3D
 	_expect(is_equal_approx(tunnel_floor.position.y + tunnel_floor_box.size.y * 0.5, 0.0), "entrance tunnel floor is flush with P0")
 	_expect(scene.player.global_position.x < 0.0, "the canonical slice starts in the entrance tunnel before entering A")
+	_expect(is_equal_approx(scene.player.visual.rotation.y, PI * 0.5), "Elena faces the opening into A at the initial spawn")
 	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 1.5), "mission lift connects P0 to mezzanine M at +1.5 m")
 	_expect(scene.get_node_or_null("MezzanineFloor_00") != null, "intermediate mezzanine floor is present")
 	_expect(scene.get_node_or_null("D1RoomLabel") != null and scene.get_node_or_null("D2RoomLabel") != null and scene.get_node_or_null("D1PumpA") != null, "both D1 and D2 are built on the continuous maintenance level")
