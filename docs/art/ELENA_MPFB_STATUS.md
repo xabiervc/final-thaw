@@ -41,6 +41,6 @@ The source `.blend` files live outside the repo (`D:/Projects/evidence/final-tha
 - Hair: since 2026-10-14 it is hair cards (about 1,900 triangles of alpha-scissor strips following the skull from the hairline and centre part to the nape, plus ponytail strips) over a heavily decimated shell. Strand texture and material are procedural (`make_hair_card_texture.py`, `elena_hair_cards.tres`). Second pass (crown strips, staggered strand roots) removed the dark crown patch and the hard fringe line. Remaining: alpha-scissor edges alias at distance, the silhouette is a smooth dome. It reads as hair with a parting and a ponytail, not yet as the concept's flowing style. Eyelash lines added for eye definition.
 - Boot toes show the foot's toe shapes through the rubber.
 - Coat hem is slightly wavy; piping edges are face-stepped.
-- A-pose only. The Aster hangs at the right hand and needs a posed arm to look held.
-- In the playable controller Elena keeps the A-pose while moving, jumping and falling (no walk, jump or idle animation yet), so she slides across the floor.
+- Animations: 13 clips are embedded since 2026-10-14 (`docs/art/ELENA_ANIMATIONS.md`); the controller does not play them yet. The A-pose is only the rest pose.
+- In the playable controller Elena still keeps the A-pose and slides, until it is wired to the clips above.
 - The base mesh licence from MakeHuman/MPFB has not been verified against the official source and is **not** recorded in `PROVENANCE.md` yet.
