@@ -84,7 +84,7 @@ La consulta del archivo no es necesaria para operar los controles ni para abrir 
 
 ## 8. Alcance, criterios de aceptación y prueba
 
-Fase 1 está funcionalmente especificada; la construcción de escena debe seguir el grafo v0.4 y el greybox v1.1.
+Fase 1 está funcionalmente especificada y tiene una primera escena en `scenes/prototypes/phase1_canonical_greybox.tscn`; el código aún requiere ejecución y validación. La escena debe seguir el grafo v0.4 y el greybox v1.1.
 
 Aceptar la implementación solo si:
 1. No se puede ascender por la plataforma hasta activar mantenimiento en el foso; la escalera del foso sigue siendo utilizable sin electricidad.
@@ -103,4 +103,4 @@ Registrar versión de Godot, commit, resolución, renderer, entrada, comandos ex
 Cerradas para implementación: topología A, plataforma sin rampa paralela, comportamiento mecánico de pérdida de energía, estado inicial y solución recuperable del circuito, posición y significado de indicadores, interacción de rearme, registro de evidencia y desencadenante de Containment.
 
 Pendiente por definición: ninguna decisión de diseño dentro de este slice.  
-Pendiente por evidencia: ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano.
+Pendiente por evidencia: ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. Véase `FASE1_CANONICAL_BUILD.md`.
