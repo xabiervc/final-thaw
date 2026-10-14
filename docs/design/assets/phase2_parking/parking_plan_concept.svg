@@ -96,15 +96,15 @@
     <ellipse cx="445" cy="190" rx="70" ry="38" fill="#f0d88b" fill-opacity=".17" stroke="#c5a54f" stroke-width="1" stroke-dasharray="4 4"/>
     <!-- routes -->
     <path d="M74 305 L95 305 L150 305 L195 270 L270 270 L320 305 L405 305 L475 275 L535 275 L570 275 L570 235 L620 207 L620 70 L599 25" class="routeA"/>
-    <path d="M74 305 L95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L450 135 L500 135 L520 170 L540 200 L570 235 L620 207 L620 70 L599 25" class="routeB"/>
+    <path d="M95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L450 135 L500 135 L520 170 L540 200 L570 235 L620 207 L620 70 L599 25" class="routeB"/>
     <!-- threat path -->
     <path d="M74 305 L95 305 L145 280 L180 240 L250 190 L330 190 L415 190 L500 190 L560 205" class="threat"/>
     <!-- provisional checkpoints: entry is the integration spawn; CP1 and CP2 are retry anchors -->
-    <circle cx="74" cy="305" r="9" fill="#ffffff" stroke="#263849" stroke-width="2.2"/><text x="74" y="308" class="tiny" text-anchor="middle">S</text>
+    <circle cx="95" cy="305" r="9" fill="#ffffff" stroke="#263849" stroke-width="2.2"/><text x="95" y="308" class="tiny" text-anchor="middle">S</text>
     <circle cx="570" cy="235" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="570" y="238" class="tiny" text-anchor="middle">1</text>
     <circle cx="620" cy="70" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="620" y="73" class="tiny" text-anchor="middle">2</text>
     <!-- labels -->
-    <text x="112" y="320" class="label">UMBRAL / ENTRADA</text>
+    <text x="78" y="344" class="tiny">UMBRAL GALLERY → PARKING</text><text x="130" y="320" class="label">ENTRADA / DECISIÓN</text>
     <text x="308" y="255" class="label" fill="#b94e30">A · DIRECTA / EXPUESTA</text>
     <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / CUBIERTA</text>
     <text x="365" y="205" class="small" text-anchor="middle">APRON / CRUCE EXPUESTO</text>
