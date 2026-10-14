@@ -5,7 +5,7 @@
 
 ## 1. Objetivo jugable
 
-Elena investiga una anomalía física en una instalación clandestina de investigación hidrológica/industrial, entiende la distribución eléctrica, activa mantenimiento, configura el circuito de forma segura y consulta el archivo. Después abre G, atraviesa una persecución dentro del edificio y escapa por una galería de servicio a una zona de aparcamiento que enlaza con Fase 2.
+Elena investiga una anomalía física en una instalación clandestina de investigación hidrológica/industrial, entiende la distribución eléctrica, activa mantenimiento, configura el circuito de forma segura y consulta el archivo. Después abre G y escapa en dos ritmos: evasión silenciosa por áreas que pueden seguir ocupadas y una persecución a la carrera tras una reacquisición espacialmente legible. La salida alternativa se conecta físicamente con el aparcamiento de Fase 2.
 
 La misión debe sentirse como explorar un lugar funcional. Las pistas se distribuyen entre la nave, el taller, el nivel de achique, la sala de bombas, control y archivo. No se exige inspeccionar todos los objetos; no hay llaves arbitrarias ni coleccionables obligatorios. La máquina de ensayo nunca arranca.
 
@@ -58,19 +58,21 @@ El segmento se activa cuando Elena abre la compuerta exterior de G con `SERVICE_
 - Obstáculos candidatos para el greybox: compuerta de servicio que desciende, tramo de pasarela parcialmente bloqueado por un equipo desplazado y cruce técnico con tuberías/bandejas. Cada obstáculo requiere anticipación visual, colisión coherente, espacio de cámara y solución justa. No se consideran canon hasta quedar posicionados en el plano/greybox.
 - No añadir combate obligatorio, armas ni nuevos sistemas de progresión.
 - El descenso utiliza S2, elevador y S1 existentes. El estado del elevador durante la persecución debe definirse y probarse; no inventar una conexión vertical para salvar un bloqueo.
-- La ruta termina en la galería de evacuación de P−1 y en una salida exterior distinta del túnel de entrada.
+- La ruta termina en una salida de servicio alternativa distinta del túnel de entrada. Su nivel, lado del perímetro y conexión final se deciden desde el grafo completo; no se fuerza una boca para encajar el transform local del parking.
 
 ## 6. Transición a Fase 2
 
-La salida de servicio conecta físicamente con el aparcamiento. El handoff reutiliza `scenes/prototypes/phase2_parking_chase.tscn` y su checkpoint de entrada, si la prueba de integración confirma que conserva los contratos existentes. La versión standalone mantiene su propio inicio.
+La salida de servicio seleccionada conecta físicamente con el aparcamiento. No se exige que use una boca ni coordenada provisional específica: la continuidad se resuelve al cerrar la ruta y el plano del parking. El handoff reutiliza `scenes/prototypes/phase2_parking_chase.tscn` y su checkpoint de entrada, si la prueba de integración confirma que conserva los contratos existentes. La versión standalone mantiene su propio inicio.
 
 Criterios:
-1. G abre y la persecución interior comienza.
-2. Elena puede navegar la ruta de huida con cámara y colisiones reales.
+1. G abre y Containment comienza; la evasión silenciosa inicia sin transición instantánea de escena.
+2. La fase silenciosa tiene cobertura, NPC/estados y percepción verificables.
+3. Un umbral espacial legible produce la transición a carrera cuando la unidad reacquiere a Elena.
+4. Elena puede navegar la ruta de huida con cámara y colisiones reales.
 3. El perseguidor se mantiene dentro de los estados previstos y no detecta a Elena antes de tiempo.
-4. La galería de evacuación desemboca en el exterior y el aparcamiento es visible/continuo.
+6. La salida desemboca en el exterior y el aparcamiento es visible/continuo.
 5. El cambio de escena no duplica al jugador ni pierde el estado requerido.
-6. El checkpoint de aparcamiento se usa solo en el handoff canónico; el inicio standalone permanece intacto.
+8. El checkpoint de aparcamiento se usa solo en el handoff canónico; el inicio standalone permanece intacto.
 
 ## 7. Historia y estado de decisiones
 
