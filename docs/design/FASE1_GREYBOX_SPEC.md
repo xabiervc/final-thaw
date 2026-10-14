@@ -54,6 +54,7 @@ The final slice uses one powered platform in the existing lift shaft. Do not bui
 - Upper landing X 24..28, Z -7..-4.5, Y=3 adjoins the platform's north edge. Guard or gate the shaft when the platform is not at the stop.
 - Public walkway X 9..26, Z -8..-6, Y=3; 2 m clear width plus rails outside. It joins the cabin through the east entrance.
 - The platform begins at the lower stop with maintenance off; it only runs with maintenance enabled. See the functional spec for timing and loss-of-power behavior. The fixed stairs always work.
+- Fixed shaft safety gates: lower gate centre `(26,0.55,-1.1)`, upper gate centre `(26,3.55,-4.9)`. These are stationary landing gates, distinct from the gates on the moving deck. Open only the gate at the docked landing; both fixed gates remain closed throughout motion. Place them so they do not collide visually or physically with the deck gates and verify walking clearance in scene.
 - There is no ramp, no X=30..34 transport annex and no B-route acceptance test. Keep the main volume X 30..34 free of new transport geometry.
 
 ## Controls and status fixtures
