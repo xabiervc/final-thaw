@@ -19,13 +19,13 @@ Keep existing documents coordinated; do not create duplicates.
 
 ## Architectural target
 
-The facility is one coherent building with access/decontamination, Aster test hall, workshop, service galleries, lower pumping/distribution level, pump mezzanine, control, archive and a door G that initiates an interior escape. The final route returns through S2/M, the existing lift to P0, S1 to P−1 and a new evacuation gallery to an exterior service mouth connected to the parking area. This exit differs from the west entrance tunnel.
+The facility is one coherent building with access/decontamination, Aster test hall, workshop, service galleries, lower pumping/distribution level, pump mezzanine, control, archive and a door G that initiates an interior escape. G is a two-door airlock: opening its exterior leaf triggers the interior pursuit, and Elena retreats through the inner leaf toward F/E. The final route returns through S2/M, the existing lift to P0, S1 to P−1 and a new evacuation gallery to an exterior service mouth connected to the parking area. This exit differs from the west entrance tunnel.
 
 The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S2 M↔P2; collapsed P0↔P2 stair remains blocked. Do not add a second lift or arbitrary secret stair.
 
 ## Implemented vs planned
 
-- **Documented:** revised architectural program, spatial graph, progression contract, functional spec and greybox requirements; existing SVGs annotated/revised for the new alternate exit.
+- **Documented:** revised architectural program, spatial graph, progression contract, functional spec and greybox requirements; existing SVGs now show the P−1 evacuation gallery, G pursuit trigger, and initial O1/O2/O3 obstacle footprints.
 - **Previously present in code, not runtime-verified:** west entrance tunnel, P0 rooms/perimeter, D1/D2 lower floor and P0 void, south/east return route, S1/S2, mission lift P0↔M, control/archive fixtures and safety rails.
 - **Not yet implemented/verified against the revised architecture:** P−1 evacuation gallery and exterior mouth, G as the start of an interior chase, the obstacle sequence, the full chase traversal back through existing vertical connections, physical continuity into parking, and the end-to-end handoff.
 - **Narrative decisions still open:** exact Helix event, audit status of F, Elena’s perception, Containment cause/timing, pursuer identity/entry and post-parking destination.
