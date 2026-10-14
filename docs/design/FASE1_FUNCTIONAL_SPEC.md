@@ -12,7 +12,7 @@ La misión debe sentirse como explorar un lugar funcional. Las pistas se distrib
 ## 2. Contratos de exploración y circulación
 
 - El edificio es una sola instalación con perímetro y circulación coherentes. Las salas principales A, B, C, D1, D2, M, E, F y G se distinguen por arquitectura, maquinaria, señalización y líneas de visión, no solo por texto o color.
-- La entrada inicial es el túnel oeste → A. La salida final es una ruta distinta a través de P−1 y la galería de evacuación hacia el exterior este.
+- La entrada inicial es el túnel oeste → A. La salida final es una ruta distinta de la entrada; su nivel, lado del perímetro y conexión se deciden desde el grafo completo.
 - S1 conecta P0↔P−1 y permanece transitable sin electricidad.
 - El elevador conecta P0↔M (+1,5 m), solo con mantenimiento activo. No llega a P2.
 - S2 conecta M↔P2, independientemente de energía.
@@ -81,7 +81,7 @@ La identidad del laboratorio, el recorrido de huida y el contrato de evento del 
 ## 8. Pruebas y aceptación
 
 - Pruebas unitarias del circuito y del elevador existente.
-- Prueba de integración de topología: rutas A/B/C, S1, retorno sur/este, elevador P0↔M, S2, E/F/G, descenso de huida y salida de P−1.
+- Prueba de integración de topología: rutas A/B/C, S1, retorno, elevador P0↔M, S2, E/F/G, evasión silenciosa, reacquisición, carrera y salida alternativa seleccionada.
 - Pruebas de puerta G, estado de amenaza, obstáculos, elevador durante huida, boca de servicio y handoff al parking.
 - Regresión de Fase 0 y vertical slice existente.
 - Playtest manual con cámara de tercera persona: lectura del edificio, inferencia del puzle, recuperación tras error, navegación bajo persecución, alturas/anchos y continuidad exterior.
