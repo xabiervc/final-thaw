@@ -16,11 +16,17 @@ En esta demo, controlarás a Elena en un refugio de emergencia inundado.
 Cada decisión afecta a quienes dependen de ti.
 """
 @export var menu_start_button: String = "Iniciar Demo"
+@export var menu_options_button: String = "Opciones"
+@export var menu_credits_button: String = "Créditos"
 
 ## HUD
 @export_group("HUD")
 @export var hud_oxygen_label: String = "Oxígeno: %d%%"
 @export var hud_oxygen_low_threshold: float = 30.0
+@export var hud_civilian_aid: String = "Ayuda civil %d/10"
+@export var hud_prototype_integrity: String = "Prototipo %d/3"
+@export var hud_elena_safety: String = "Elena %d/3"
+@export var hud_fps: String = "FPS: %d"
 @export var hud_civilian_trapped: String = "Civil: Atrapada"
 @export var hud_civilian_rescued: String = "Civil: Rescatada"
 @export var hud_civilian_dead: String = "Civil: Fallecida"
@@ -78,6 +84,59 @@ No todos pueden ser salvados. Eso también es una decisión.
 
 @export var end_button_menu: String = "Volver al menú"
 @export var end_button_restart: String = "Reiniciar demo"
+
+## Prompts y condiciones
+@export_group("Prompts")
+@export var prompt_instructions: String = "WASD / flechas: moverse   |   E: interactuar   |   Q / Tab: escanear   |   F2: guardar   F3: cargar   |   ESC: menú"
+@export var prompt_condition: String = "AGUANTE %d%%  |  %s"
+@export var prompt_aster_load: String = "Carga del Aster"
+
+## Opciones
+@export_group("Options")
+@export var options_text_scale: String = "Escala de texto: %.2f"
+@export var options_back_button: String = "Volver"
+@export var options_high_contrast: String = "Alto contraste"
+@export var options_reduced_motion: String = "Reducir movimiento"
+@export var options_subtitle_background: String = "Fondo de subtítulos"
+@export var options_subtitle_none: String = "Ninguno"
+@export var options_subtitle_dim: String = "Tenue"
+@export var options_subtitle_solid: String = "Sólido"
+@export var options_colorblind_mode: String = "Modo daltonismo"
+@export var options_colorblind_none: String = "Ninguno"
+@export var options_colorblind_deuteranopia: String = "Deuteranopía"
+@export var options_colorblind_protanopia: String = "Protanopía"
+@export var options_colorblind_tritanopia: String = "Tritanopía"
+@export var options_remap_title: String = "Controles"
+@export var options_press_key: String = "Pulsa una tecla..."
+
+## Créditos
+@export_group("Credits")
+@export_multiline var credits_title: String = "FINAL THAW\nPrototipo Fase 0"
+
+## Refugio
+@export_group("Shelter")
+@export var shelter_intro: String = "E: generador, válvulas, rescate y salida. WASD/flechas para moverte. ESC: menú."
+@export var shelter_scan: String = "Ruta: generador -> válvulas -> rescate opcional -> salida."
+@export var shelter_power_restored: String = "Generador activado."
+@export var shelter_power_already_on: String = "El generador ya está activo."
+@export var shelter_valves_opened: String = "Válvulas abiertas. El oxígeno se está agotando."
+@export var shelter_valves_need_power: String = "Activa primero el generador."
+@export var shelter_civilian_rescued: String = "Civil rescatada. Aumenta la ayuda civil; partida guardada."
+@export var shelter_civilian_blocked: String = "Abre las válvulas para llegar a la civil."
+@export var shelter_exit_blocked: String = "La salida sigue bloqueada. Activa el generador y abre las válvulas."
+@export var shelter_oxygen_empty: String = "Sin oxígeno. Reiniciando desde la entrada; tu rescate guardado se mantiene."
+@export var shelter_yes: String = "SÍ"
+@export var shelter_no: String = "NO"
+@export_multiline var shelter_exit_title: String = "REFUGIO DESPEJADO\nCivil rescatada: %s\nAyuda civil: %d/10\nPulsa E para volver al menú"
+@export var shelter_exit_ready: String = "Salir"
+@export var shelter_exit_locked: String = "Salida bloqueada"
+@export var shelter_state_on: String = "ON"
+@export var shelter_state_off: String = "OFF"
+@export var shelter_state_open: String = "ABIERTAS"
+@export var shelter_state_closed: String = "CERRADAS"
+@export var shelter_state_civilian_rescued: String = "Civil rescatada"
+@export var shelter_previous_state: String = "Estado anterior del refugio:"
+@export var shelter_hud: String = "FINAL THAW | Generador %s | Válvulas %s | Oxígeno %.0fs | Ayuda civil %d/10"
 
 ## Puzle de registros y cableado (Fase 1, sala de control)
 @export_group("Control Room Puzzle")
