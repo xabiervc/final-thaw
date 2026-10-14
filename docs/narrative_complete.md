@@ -6,7 +6,7 @@
 
 ### Dramatic premise
 
-Elena returns to a clandestine Helix facility to investigate a discrepancy around an Aster test. The official record and the physical state of the installation disagree. The player discovers that the test result was diverted or withheld, but does not yet learn the entire motive or chain of command. Elena's action to restore the system queues a `SERVICE_OVERRIDE`; crossing the exterior leaf of G sends the queued audit and initiates Containment. The recovery unit is the physical consequence of the system response, not a random enemy spawn.
+Elena returns to a clandestine Helix facility to investigate a discrepancy around an Aster test. The official record and the physical state of the installation disagree. The player discovers that the test result was diverted or withheld, but does not yet learn the entire motive or chain of command. Activating maintenance queues a mission-level `SERVICE_OVERRIDE` without changing the circuit model; opening the exterior leaf of G sends the queued audit and initiates Containment. The recovery unit is the physical consequence of the system response, not a random enemy spawn.
 
 The player's emotional progression is: **curiosity → doubt → inference → confirmation → alarm → urgent improvisation → temporary escape**.
 
@@ -27,7 +27,7 @@ The player's emotional progression is: **curiosity → doubt → inference → c
    *Proposed terminal text:* “Ensayo Aster: resultado retenido. Recomendación de despliegue: suprimida.”  
    This is a proposed line for narrative review, not locked final copy. It establishes suppression, not who ordered it or why.
 
-5. **Approach to G.** The player understands enough to leave, but the facility is still active. The maintenance action has queued `SERVICE_OVERRIDE`; reading the record is not itself the trigger.
+5. **Approach to G.** The player understands enough to leave, but the facility is still active. The maintenance interaction has queued `SERVICE_OVERRIDE`; reading the record is not itself the trigger.
 
 6. **G / causal trigger.** Opening the exterior leaf of G and crossing the threshold sends the queued audit. Containment activates. The exterior side must be visible enough to explain the trigger; the recovery unit must enter through a physically plausible approach. No scene teleport.
 
@@ -55,7 +55,7 @@ The player's emotional progression is: **curiosity → doubt → inference → c
 To keep the opening coherent without inventing a full conspiracy explanation, use the following as the recommended direction for this slice:
 
 - **Aster fact:** the physical circuit state and restricted record disagree with the official summary; the record says the result was retained and the deployment recommendation suppressed. The opening establishes suppression, not motive.
-- **Containment cause:** maintenance queues `SERVICE_OVERRIDE`; crossing G transmits the queued audit and starts the facility's recovery protocol. The event is automated at the facility level. No named executive is shown ordering the pursuit.
+- **Containment cause:** the maintenance interaction queues `SERVICE_OVERRIDE` as separate mission state; opening G transmits the queued audit and starts the facility's recovery protocol. The event is automated at the facility level. No named executive is shown ordering the pursuit.
 - **Recovery unit:** treat it as an autonomous facility recovery/security unit, not a supernatural pursuer or a combat enemy. It uses bounded senses, has a recognizable mechanical signature and cannot pass through physical barriers. Do not lock a specific manufacturer, model or human operator in final art yet.
 - **Mission 2 new information:** the response affects more than one local door: a perimeter light/access state changes in a sequence that implies coordinated facility control. This implies coordination, not who controls it or why.
 - **Elena's personal history:** do not insert an Iris memory or name Selene in the chase just to add emotion. Use either only when a specific established chronology and a quiet, gameplay-safe trigger justify it. Keep Marcus out of this opening unless full-campaign reconciliation makes him necessary.
@@ -71,7 +71,7 @@ All lines below are proposed Spanish source copy for the prototype. They must be
 | N1-01 | First clear view of Aster rig; movement not blocked | Elena: “El registro no coincide con el estado del circuito.” | One short subtitle; no camera lock; skippable | Establish discrepancy without solving it |
 | N1-02 | Player scans the A→T bridge after first seeing the diagram | Optional Elena reaction: “Este puente no figura en el esquema.” | Only once; no repeat spam; can be omitted if environmental cue is clear | Reinforce physical manipulation |
 | N1-03 | Player reads restricted record | Terminal: “ENSAYO ASTER — RESULTADO RETENIDO. RECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.” | Static readable text, accessible again from archive during Mission 1; not required during chase | State the specific contradiction |
-| N1-04 | Crossing G after maintenance queued SERVICE_OVERRIDE | No mandatory spoken line. Alarm changes state; status light changes; exterior door mechanism is audible/visible | Gameplay continues; no forced camera | Make cause and consequence legible |
+| N1-04 | Opening G's exterior leaf after maintenance queued SERVICE_OVERRIDE | No mandatory spoken line. Alarm changes state; status light changes; exterior door mechanism is audible/visible | Gameplay continues; no forced camera | Make cause and consequence legible |
 | N2-01 | Recovery unit becomes audible/visible beyond G | Elena: “Han recibido la auditoría.” | Trigger only after line of sight or audio establishes the unit; subtitle; skippable | Connect the audit to the response without naming an operator |
 | N2-02 | Elena reaches P−1 service gallery and the threat loses sight | No dialogue required; pump/ventilation bed gives way to exterior ambience | Audio transition with visual threshold | Create breath and spatial transition |
 | N2-03 | First view of parking exit/perimeter | No mandatory line. A service reader displays “PROTOCOLO DE CONTENCIÓN: ACTIVO / SECTOR EXTERIOR” while perimeter lights/access states change in sequence | Environmental storytelling; readable without sound; no forced stop or log interaction | Show coordinated facility response without naming an operator or explaining the motive |
@@ -94,7 +94,7 @@ All lines below are proposed Spanish source copy for the prototype. They must be
 | Decision | Current status | Required owner decision |
 |---|---|---|
 | Why the Aster result was suppressed | The suppression is evidenced; motive is open | Decide the minimum truth revealed in the opening |
-| Who receives/acts on `SERVICE_OVERRIDE` | Queued audit triggers Containment in the current brief; specific chain of command is open | Decide whether response is automated, remotely supervised or both |
+| Who receives/acts on `SERVICE_OVERRIDE` | Opening G's exterior leaf sends the queued audit and triggers Containment; the specific chain of command is open | Decide whether response is automated, remotely supervised or both |
 | Recovery-unit identity | Recovery unit exists in prototype; final identity is open | Decide visual/story identity before final art and VO |
 | Elena's relationship to Iris in this exact moment | Emotional history exists in legacy material; opening beat is not locked | Choose one specific, restrained personal reaction or omit it |
 | Selene's responsibility | Open | Preserve ambiguity until full campaign reconciliation |
