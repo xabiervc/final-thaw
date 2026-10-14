@@ -42,6 +42,12 @@ var _lift_upper_button: MeshInstance3D
 var _lift_deck_label: Label3D
 var _safe_point: Vector3 = Vector3(3.0, 0.2, 7.0)
 var _lift_deck_button: MeshInstance3D
+var _lower_lift_gate: StaticBody3D
+var _upper_lift_gate: StaticBody3D
+var _lower_lift_gate_shape: CollisionShape3D
+var _upper_lift_gate_shape: CollisionShape3D
+var _lower_lift_gate_mesh: MeshInstance3D
+var _upper_lift_gate_mesh: MeshInstance3D
 var _switch_lamp: MeshInstance3D
 var _archive_status_label: Label3D
 var _status_panel_label: Label3D
@@ -415,6 +421,15 @@ func _build_lift() -> void:
 	lift.position = Vector3(26.0, 0.0, -3.0)
 	lift.powered = false
 	add_child(lift)
+	lift.state_changed.connect(_on_lift_state_changed)
+	# Fixed landing gates are separate from the gates carried by the deck: the shaft stays protected when the deck is elsewhere.
+	_lower_lift_gate = _body_box("LiftSafetyGateLower", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 0.55, -1.51), materials.get_material("safety_paint"))
+	_lower_lift_gate_shape = _lower_lift_gate.get_child(0) as CollisionShape3D
+	_lower_lift_gate_mesh = _lower_lift_gate.get_child(1) as MeshInstance3D
+	_upper_lift_gate = _body_box("LiftSafetyGateUpper", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 3.55, -4.49), materials.get_material("safety_paint"))
+	_upper_lift_gate_shape = _upper_lift_gate.get_child(0) as CollisionShape3D
+	_upper_lift_gate_mesh = _upper_lift_gate.get_child(1) as MeshInstance3D
+	_refresh_stationary_lift_gates()
 	# No ramp or second platform: the original lift shaft is the one canonical transport.
 	_lift_lower_button = _visual_box("LiftCallLower", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 0.28, -0.2), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
 	_label3d("LiftCallLowerLabel", "LLAMAR · NIVEL INFERIOR", Vector3(26.7, 0.72, -0.2), Color(0.95, 0.8, 0.4), 16, 0.003)
@@ -422,6 +437,22 @@ func _build_lift() -> void:
 	_label3d("LiftCallUpperLabel", "LLAMAR · NIVEL SUPERIOR", Vector3(26.8, 3.72, -6.1), Color(0.95, 0.8, 0.4), 16, 0.003)
 	_lift_deck_button = _visual_box("LiftDeckButton", Vector3(0.25, 0.08, 0.2), Vector3(26.0, float(lift.platform_y) + 0.06, -3.0), _flat_material(Color(0.25, 0.9, 0.6), 0.4, 0.0, 1.2))
 	_lift_deck_label = _label3d("LiftDeckButtonLabel", "ENVIAR AL OTRO NIVEL", Vector3(26.0, float(lift.platform_y) + 0.32, -3.0), Color(0.6, 1.0, 0.75), 14, 0.0028)
+
+
+func _on_lift_state_changed(_description: String) -> void:
+	_refresh_stationary_lift_gates()
+
+
+func _refresh_stationary_lift_gates() -> void:
+	if lift == null or _lower_lift_gate_shape == null or _upper_lift_gate_shape == null:
+		return
+	var opened: Dictionary = lift.gates_open()
+	var lower_open: bool = bool(opened["south"])
+	var upper_open: bool = bool(opened["north"])
+	_lower_lift_gate_shape.set_deferred("disabled", lower_open)
+	_lower_lift_gate_mesh.visible = not lower_open
+	_upper_lift_gate_shape.set_deferred("disabled", upper_open)
+	_upper_lift_gate_mesh.visible = not upper_open
 
 
 func _build_controls_and_fixtures() -> void:
