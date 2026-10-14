@@ -99,11 +99,15 @@
     <path d="M95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L450 135 L500 135 L520 170 L540 200 L570 235 L620 207 L620 70 L599 25" class="routeB"/>
     <!-- threat path -->
     <path d="M95 305 L145 280 L180 240 L250 190 L330 190 L415 190 L500 190 L560 205" class="threat"/>
+    <!-- provisional checkpoints: entry is the integration spawn; CP1 and CP2 are retry anchors -->
+    <circle cx="95" cy="305" r="9" fill="#ffffff" stroke="#263849" stroke-width="2.2"/><text x="95" y="308" class="tiny" text-anchor="middle">S</text>
+    <circle cx="570" cy="235" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="570" y="238" class="tiny" text-anchor="middle">1</text>
+    <circle cx="620" cy="70" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="620" y="73" class="tiny" text-anchor="middle">2</text>
     <!-- labels -->
     <text x="125" y="320" class="label">ENTRADA</text>
     <text x="308" y="255" class="label" fill="#b94e30">A · DIRECTA / EXPUESTA</text>
     <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / CUBIERTA</text>
-    <text x="365" y="205" class="small" text-anchor="middle">CRUCE EXPUESTO</text>
+    <text x="365" y="205" class="small" text-anchor="middle">APRON / CRUCE EXPUESTO</text>
     <text x="599" y="300" class="small" text-anchor="middle">EMBUDO DE SALIDA</text>
     <text x="450" y="53" class="small" text-anchor="middle">FILAS DE APARCAMIENTO</text>
     <text x="340" y="416" class="tiny" text-anchor="middle">Límite sur / muro perimetral</text>
@@ -122,18 +126,19 @@
     <rect x="0" y="184" width="22" height="18" class="obstacle"/><text x="32" y="197" class="small">Obstáculo de encuentro</text>
     <rect x="0" y="214" width="22" height="18" class="service"/><text x="32" y="227" class="small">Equipamiento / cubierta</text>
     <rect x="0" y="244" width="22" height="18" fill="#f0d88b" fill-opacity=".3" stroke="#c5a54f" stroke-dasharray="4 4"/><text x="32" y="257" class="small">Zona de iluminación conceptual</text>
-    <text x="0" y="286" class="label">ESTADO</text>
-    <text x="0" y="307" class="small">Propuesta espacial, no plano de obra.</text>
-    <text x="0" y="326" class="small">Dimensiones por validar con cápsula,</text>
-    <text x="0" y="343" class="small">cámara, colisiones y flujo real.</text>
-    <text x="0" y="375" class="label">DECISIONES ABIERTAS</text>
-    <text x="0" y="396" class="small">• Cota y pendiente del acceso</text>
-    <text x="0" y="414" class="small">• Altura de cubierta / pilares</text>
-    <text x="0" y="432" class="small">• Footprints definitivos de obstáculos</text>
-    <text x="0" y="450" class="small">• Ruta final del perseguidor</text>
-    <text x="0" y="480" class="label">REGLAS</text>
-    <text x="0" y="501" class="small">Sin colisiones invisibles ni saltos ciegos.</text>
-    <text x="0" y="519" class="small">Toda alternativa debe tener un coste real.</text>
+    <circle cx="11" cy="275" r="8" fill="#fff" stroke="#278c83" stroke-width="2"/><text x="11" y="278" class="tiny" text-anchor="middle">1</text><text x="28" y="279" class="small">Checkpoint provisional</text>
+    <text x="0" y="306" class="label">ESTADO</text>
+    <text x="0" y="327" class="small">Propuesta espacial, no plano de obra.</text>
+    <text x="0" y="346" class="small">Dimensiones por validar con cápsula,</text>
+    <text x="0" y="363" class="small">cámara, colisiones y flujo real.</text>
+    <text x="0" y="393" class="label">DECISIONES ABIERTAS</text>
+    <text x="0" y="414" class="small">• Cota y pendiente del acceso</text>
+    <text x="0" y="432" class="small">• Altura de cubierta / pilares</text>
+    <text x="0" y="450" class="small">• Footprints definitivos de obstáculos</text>
+    <text x="0" y="468" class="small">• Ruta final del perseguidor</text>
+    <text x="0" y="496" class="label">REGLAS</text>
+    <text x="0" y="517" class="small">Sin colisiones invisibles ni saltos ciegos.</text>
+    <text x="0" y="535" class="small">Toda alternativa debe tener un coste real.</text>
   </g>
   <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
   <text x="48" y="710" class="small">Concept coordinates: X east/right, Z south/down; origin at northwest inside corner. Candidate handoff transform: world X = local X + 27.2 m; world Z = local Z − 15.8 m. This aligns the entry centre with the Phase 1 target (X≈34, Z≈6); confirm the actual opening footprint and elevation before approval.</text>
