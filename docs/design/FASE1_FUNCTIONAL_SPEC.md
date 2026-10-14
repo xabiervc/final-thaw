@@ -18,7 +18,7 @@ La misión debe sentirse como explorar un lugar funcional. Las pistas se distrib
 - S2 conecta M↔P2, independientemente de energía.
 - La escalera directa P0↔P2 permanece bloqueada.
 - El retorno desde el rellano superior de S1 bordea el perímetro sur/este del hueco D1/D2 y llega a la galería de servicio. No se cruza el hueco ni se requiere un salto.
-- G es una esclusa de doble puerta. Al abrir la compuerta exterior se envía la auditoría e inicia Containment; Elena retrocede por la puerta interior hacia F/E. La primera sección es evasión silenciosa por áreas potencialmente ocupadas. La carrera comienza tras una reacquisición real en un umbral expuesto definido en el grafo (propuesta inicial: salida del elevador hacia P0). La ruta y la salida final se deciden desde el grafo completo. G no es la salida final.
+- G es una esclusa de doble puerta. Al abrir la compuerta exterior se envía la auditoría e inicia Containment; Elena retrocede por la puerta interior hacia F/E. La primera sección es evasión silenciosa por áreas potencialmente ocupadas. La carrera comienza en R1, la transición de la galería de servicio al retorno este de P0 (X≈29, Z≈1), tras una reacquisición real por LOS cuando la unidad sigue a Elena por el elevador existente. La ruta y la salida final se deciden desde el grafo completo. G no es la salida final.
 - La galería de evacuación debe tener suelo, paredes/estructura, altura libre, colisiones y una boca exterior conectada al aparcamiento. No se permite teletransporte para simular la salida.
 
 ## 3. Circuito eléctrico — reglas preservadas
