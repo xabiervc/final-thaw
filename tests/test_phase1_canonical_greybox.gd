@@ -47,7 +47,6 @@ func _run() -> void:
 	_expect(workshop_bench.position.z < -7.5, "workshop bench stays clear of the doorway to the service nave")
 	var workshop_cabinet := scene.get_node("WorkshopCabinet") as StaticBody3D
 	_expect(workshop_bench.position.x + 1.0 < workshop_cabinet.position.x - 0.375, "workshop bench does not intersect the adjacent cabinet")
-	var aster_column := scene.get_node("AsterVerticalColumn") as StaticBody3D
 	var aster_mesh := aster_column.get_node("AsterVerticalColumnMesh") as MeshInstance3D
 	var aster_box := aster_mesh.mesh as BoxMesh
 	_expect(is_equal_approx(aster_column.position.y - aster_box.size.y * 0.5, 0.0), "Aster calibration column is grounded at P0")
