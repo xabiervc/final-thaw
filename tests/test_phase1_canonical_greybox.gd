@@ -32,7 +32,8 @@ func _run() -> void:
 	_expect(scene.circuit.destination == "ENSAYO" and not scene.circuit.trial_isolated and scene.circuit.protection_available, "circuit starts in the contract initial state")
 	_expect(scene.get_node_or_null("SelectorBody") != null and scene.get_node_or_null("IsolatorBody") != null, "selector and isolator fixtures exist")
 	_expect(scene.get_node_or_null("EStatusPanelBoard") != null and scene.get_node_or_null("ArchiveStatusBoard") != null, "E panel and local F indicator fixtures exist")
-	_expect(not scene.circuit.consult(), "archive cannot be consulted before stable supply")
+	scene._consult_archive()
+	_expect(not scene._archive_consulted, "archive cannot be consulted before stable supply")
 	_expect(not scene._archive_consulted and not scene._audit_events.has("RESTRICTED_RECORD_READ"), "a denied consultation does not grant knowledge or queue a record-read audit")
 
 	# Unsafe order trips protection and rejected rearm is non-destructive.
