@@ -63,7 +63,22 @@
 
 These rows define requirements and evidence, not passing results. No Phase 2 requirement is marked runtime-verified by this document.
 
-## 5. Protected regression boundary
+## 5. Design-package traceability and ownership
+
+| Requirement ID | Design requirement | Source of truth | Evidence required before design acceptance | Owner |
+|---|---|---|---|---|
+| P2-DOC-01 | Parking plan and section agree on dimensions, orientation, facade and service opening | `LEVEL_STRUCTURE.md`, `parking_plan_concept.svg`, `section_parking_concept.svg` | Coordinate/footprint reconciliation sheet; dimension and opening check | Design owner + programming owner |
+| P2-DOC-02 | Local-to-world transform aligns the parking entry with Phase 1's P−1 service mouth | `FASE1_SPATIAL_GRAPH.md`, `LEVEL_STRUCTURE.md` | Measured mouth bounds and transform checked against current scene | Design owner defines; programmer verifies in scene |
+| P2-DOC-03 | Two routes are meaningfully different in exposure and traversal cost | `LEVEL_STRUCTURE.md` route graph and edge contract | Plan overlay plus route-by-route playtest observations | Design owner + programmer |
+| P2-DOC-04 | Every obstacle has stable ID, dimensions, approach, bypass and recovery | `LEVEL_STRUCTURE.md` obstacle register | Reviewed collision envelopes and manual traversal evidence | Design owner defines; programmer implements |
+| P2-DOC-05 | Threat line-of-sight, patrol, hearing, search and route access are bounded and spatially possible | `LEVEL_STRUCTURE.md` threat contract and concept overlay | Threat overlay against actual scene; tests for occlusion and last-known position | Shared |
+| P2-DOC-06 | The opening reveal, trigger and chase dialogue are causal and non-blocking | `narrative_complete.md`, `CORE_LOOP.md`, `DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Trigger table and first-time-player comprehension answers | Design owner + programmer |
+| P2-DOC-07 | Environmental clues, lighting and sound communicate critical facts accessibly | `LEVEL_STRUCTURE.md`, `narrative_complete.md` | Landmark/light/audio map, subtitle and visual-equivalent review | Design owner |
+| P2-DOC-08 | Every claim distinguishes proposal, specification, implementation and validation | `DESIGN_AUTHORITY.md`, `PROJECT_STATUS.md` | Status/evidence record tied to a commit and actual results | Both owners |
+
+These requirements are design/verification gates, not passing results. The concept SVGs currently contain proposed sightline and light zones only; they do not represent the final enemy perception model or Godot lighting.
+
+## 6. Protected regression boundary
 
 Preserve Phase 0 InputMap action names/remaps, autoload names/public signals, resource paths, JSON/CRC32 save behavior and Compatibility renderer assumptions. Run:
 
@@ -73,11 +88,11 @@ godot --headless --path . res://tests/test_phase_0.tscn
 
 Record the exact command, Godot version, commit, exit code, pass/fail summary, warnings and remaining verification. This matrix does not claim that the command has run for the current commit.
 
-## 6. Deferred legacy traceability
+## 7. Deferred legacy traceability
 
 Requirements for Marcus combat, character switching, civilian-aid thresholds, three endings, a fixed 16-phase campaign and legacy survival counters remain historical until the owner explicitly reconciles the full campaign after reviewing the combined opening. Their presence in older files is not proof that they belong to current scope.
 
-## 7. Evidence vocabulary
+## 8. Evidence vocabulary
 
 Use these labels consistently:
 - **Specified:** written in an active design authority.
