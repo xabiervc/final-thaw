@@ -1,6 +1,7 @@
 extends Node
 
 const Rules = preload("res://scripts/vertical_slice/shelter_rules.gd")
+const SoundCueHUDScript = preload("res://scripts/ui/sound_cue_hud.gd")
 var failed: int = 0
 
 func _ready() -> void:
@@ -16,6 +17,7 @@ func _ready() -> void:
 	_check_accessibility_manager()
 	_check_colorblind_palettes()
 	_check_input_remapping()
+	_check_sound_cues()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -185,6 +187,20 @@ func _check_input_remapping() -> void:
 	InputRemapManager.rebind("interact", original_key, false)
 	GameStateManager.set_nested(["input_rebinds", "interact"], KEY_NONE)
 	_expect(InputRemapManager.current_keycode("interact") == original_key, "Interact original binding is restored")
+
+func _check_sound_cues() -> void:
+	var cue_hud: SoundCueHUD = SoundCueHUDScript.new()
+	add_child(cue_hud)
+	await get_tree().process_frame
+
+	cue_hud.show_cue("generator")
+	_expect(cue_hud._cue_label.text == NarrativeTextManager.get_sound_cue("generator"), "Generator cue displays localized text")
+	_expect(cue_hud._cue_label.modulate.a == 1.0, "Generator cue is visible")
+
+	cue_hud.show_cue("unknown_cue")
+	_expect(cue_hud._cue_label.text == NarrativeTextManager.get_sound_cue("generator"), "Unknown cue does not clear current cue")
+
+	cue_hud.queue_free()
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid

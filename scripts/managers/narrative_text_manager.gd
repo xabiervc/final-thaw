@@ -32,6 +32,9 @@ static func _text(property_name: String, fallback: String = "") -> String:
 static func get_option(property_name: String, fallback: String = "") -> String:
 	return _text(property_name, fallback)
 
+static func get_sound_cue(cue_key: String) -> String:
+	return _text("sound_cue_%s" % cue_key, "")
+
 static func get_menu_title() -> String:
 	return _text("menu_title", "Final Thaw")
 

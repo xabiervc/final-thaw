@@ -2,6 +2,7 @@ extends Node2D
 
 const Rules = preload("res://scripts/vertical_slice/shelter_rules.gd")
 const PlayerScript = preload("res://scripts/entities/player.gd")
+const SoundCueHUDScript = preload("res://scripts/ui/sound_cue_hud.gd")
 
 const BG := Color("182b39")
 const WATER := Color("245975")
@@ -17,6 +18,7 @@ var player: CharacterBody2D
 var hud: Label
 var hint: Label
 var result: Label
+var sound_cues: SoundCueHUD
 var objects: Array[Area2D] = []
 var interactables: Dictionary = {}
 var highlighted_kind: String = ""
@@ -58,6 +60,9 @@ func _ready() -> void:
 	hint = _label(ui, Vector2(24, 56), "")
 	result = _label(ui, Vector2(230, 245), "")
 	result.visible = false
+
+	sound_cues = SoundCueHUDScript.new()
+	add_child(sound_cues)
 
 	rules.power_activated.connect(_on_rules_changed)
 	rules.valves_opened.connect(_on_rules_changed)
@@ -179,12 +184,14 @@ func _interact_with(kind: String) -> void:
 		"POWER":
 			if rules.activate_power():
 				GameStateManager.set_flag("shelter_power_restored", true)
+				sound_cues.show_cue("generator")
 				_update_ui(NarrativeTextManager.get_shelter_power_restored())
 			else:
 				_update_ui(NarrativeTextManager.get_shelter_power_already_on())
 		"VALVES":
 			if rules.open_valves():
 				GameStateManager.set_flag("shelter_valves_opened", true)
+				sound_cues.show_cue("valves")
 				_update_ui(NarrativeTextManager.get_shelter_valves_opened())
 			else:
 				_update_ui(NarrativeTextManager.get_shelter_valves_need_power())
@@ -194,6 +201,7 @@ func _interact_with(kind: String) -> void:
 				GameManager.civilian_aid = mini(10, GameManager.civilian_aid + 1)
 				GameManager.stats_changed.emit()
 				GameManager.save_game(0)
+				sound_cues.show_cue("rescue")
 				_update_ui(NarrativeTextManager.get_shelter_civilian_rescued())
 			else:
 				_update_ui(NarrativeTextManager.get_shelter_civilian_blocked())
@@ -212,6 +220,7 @@ func _on_oxygen_empty() -> void:
 	rules.reset()
 	GameStateManager.set_flag("shelter_power_restored", false)
 	GameStateManager.set_flag("shelter_valves_opened", false)
+	sound_cues.show_cue("oxygen_empty")
 	_update_interactable_visuals()
 	_update_ui(NarrativeTextManager.get_shelter_oxygen_empty())
 
@@ -280,3 +289,10 @@ func _update_ui(message: String = "") -> void:
 
 	if not message.is_empty():
 		hint.text = message
+
+func _finish(message: String) -> void:
+	ended = true
+	player.set_physics_process(false)
+	GameManager.save_game(0)
+	result.text = message
+	result.visible = true
