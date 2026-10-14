@@ -59,13 +59,13 @@ Los controles contractuales mantienen sus centros de interacción: selector (12,
 - La consulta concede un registro de evidencia a la sesión actual. Texto del registro: «El acta oficial declara alimentación exclusiva del nodo T. La telemetría de bornes registra corriente simultánea en A y T durante la ventana de ensayo; el cierre posterior la atribuye a una interrupción automática». Esto establece la contradicción sin identificar culpables ni explicar toda la trama.
 - El registro no es una acción de extracción ni concede autorización de extracción. No se introduce inventario ni migración de guardado: el indicador de conocimiento existe solo en la sesión del slice.
 
-## 6. Salida G y causa de Containment
+## 6. Salida G y propuesta narrativa de Containment
 
 G es una esclusa exterior compacta al oeste de F. La puerta F→G se desbloquea una sola vez desde F y después es bidireccional. La pared oeste contiene la compuerta exterior a H. G no tiene escalera ni conexión interna a P0.
 
 **Propuesta narrativa pendiente de aprobación (no canon cerrado):** el borrador actual plantea que el interruptor de mantenimiento genere `SERVICE_OVERRIDE`, que una consulta de F pueda generar `RESTRICTED_RECORD_READ` y que G transmita esos eventos a Helix. También propone una señal de sincronización para Elena y una unidad de recuperación en patrulla que detecte mediante visión, línea de visión y ruido. Son hipótesis de implementación, no requisitos narrativos definitivos. No ampliar ni declarar cerrada la causa de Containment, la percepción de Elena o el destino posterior hasta resolver esa decisión. La continuidad espacial G→H y el requisito técnico de no conceder conocimiento omnisciente al enemigo se mantienen; la escena standalone de persecución debe conservar su comportamiento.
 
-La consulta del archivo no es necesaria para operar los controles ni para abrir físicamente la salida; sí es el objetivo narrativo recomendado antes de salir. Si se omite, el evento SERVICE_OVERRIDE aún puede iniciar Containment, pero la sesión no concede el registro de evidencia.
+La consulta del archivo no es necesaria para operar los controles ni para abrir físicamente la salida. El prototipo actual asocia la salida con eventos de auditoría y Containment, pero esa causalidad sigue siendo una propuesta narrativa y no debe darse por aprobada. Si se decide conservarla, consultar F seguirá siendo opcional y solo concederá evidencia a la sesión; la decisión definitiva debe registrar qué ocurre cuando Elena omite F.
 
 ## 7. Reglas de interfaz e interacción
 
@@ -95,7 +95,7 @@ Registrar versión de Godot, commit, resolución, renderer, entrada, comandos ex
 
 ## 9. Decisiones cerradas / límites de evidencia
 
-Cerradas: cuatro cotas; S1 P0↔D, elevador P0↔M, S2 M↔P2, G horizontal a H; comportamiento seguro del elevador, circuito recuperable, indicadores, rearme, evidencia y Containment.
+Cerradas conceptualmente: cuatro cotas; S1 P0↔D, elevador P0↔M, S2 M↔P2, G horizontal a H; comportamiento seguro del elevador, circuito recuperable, indicadores y rearme. La concesión/presentación de evidencia está definida funcionalmente a nivel de sesión, pero su texto narrativo definitivo está pendiente de aprobación. La causa, el timing y la presentación de Containment no están cerrados.
 
 Pendiente por definición: ninguna decisión arquitectónica o funcional dentro del slice, salvo cualquier conflicto que revele la ejecución o el playtest y requiera una revisión explícita de autoridad.  
 Pendiente por evidencia: la escena tiene ya una reconstrucción geométrica ampliada, pero aún faltan ejecución en Godot, corrección de errores, colisiones, cámara, legibilidad, flujo de recorrido, interacción y playtest humano. El aparcamiento de Fase 2 está ambientado en el prototipo de persecución y el código de handoff apunta al checkpoint correcto; la transición G→H aún no está validada en ejecución. Véase `FASE1_CANONICAL_BUILD.md`.
