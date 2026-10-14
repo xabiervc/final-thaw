@@ -13,8 +13,8 @@ Convención: [R] geometría base anterior; [D] decisión ahora cerrada; ninguna 
 1. **Recorrido único A:** foso y mantenimiento antes de subir a E. El estado inicial de mantenimiento es OFF y la plataforma elevadora no se mueve sin él. No existe una ruta de rampa en el slice final; la variante B queda retirada y no es un criterio de aceptación.
 2. **Una única plataforma:** es la plataforma del elevador en la huella original X=24.5..27.5, Z=-4.5..-1.5, de Y=0 a Y=3. Se elimina la segunda reserva de plataforma X=30..34 y se elimina la rampa provisional. No hay dos transportes compitiendo por el anexo.
 3. **Fallo de energía:** parada segura hacia el rellano más cercano con reserva de seguridad; empate exacto se resuelve hacia el rellano superior, de acuerdo con `service_lift.gd`. Al llegar, plataforma deshabilitada hasta reactivar mantenimiento. Nunca caída ni atrapamiento entre niveles.
-4. **Rearme:** interacción en soporte fuera del borde norte de la pasarela, centrada aproximadamente en (15.5,3.5,-5.85). Selector y aislador conservan exactamente (12,3,-7) y (19,3,-7).
-5. **Panel E:** soporte de estado cerca de (15.5,4.25,-5.85), cara al sur; el punto (15,3,-7) sigue siendo punto de observación, no una ubicación de indicador.
+4. **Rearme:** interacción en soporte fuera del borde norte de la pasarela, centrada aproximadamente en (15.5,3.5,-8.15). Selector y aislador conservan exactamente (12,3,-7) y (19,3,-7).
+5. **Panel E:** soporte de estado cerca de (15.5,4.55,-8.15), cara al sur; el punto (15,3,-7) sigue siendo punto de observación, no una ubicación de indicador.
 6. **Indicador F:** interior de la entrada este, (8.55,3.8,-7), cara hacia +X y visible desde la pasarela antes de entrar. La consola de archivo sigue en (5,3,-7).
 7. **Salida G→H:** G usa el vestíbulo oeste de la cabina. La compuerta exterior se abre hacia H desde la pared oeste X=0; la escalera del vestíbulo hacia Y=0 es un retorno secundario y no la transición a H. No se simula presurización. El cruce exterior transmite la auditoría de servicio y activa Containment.
 8. **Iluminación:** el mantenimiento apaga/enciende luces de servicio, pero la escalera del foso y su ruta conservan iluminación ambiental mínima y legible.
@@ -59,8 +59,8 @@ La estimación horizontal entre el pie de la escalera del foso (25,-2,8) y el in
 ## 4. Detalle espacial de controles
 
 - **Selector y aislador:** conservar sus coordenadas contractuales e interacción. Sus cuerpos visuales deben montarse de modo que el recorrido conserve el ancho claro especificado.
-- **Panel E:** centro aproximado (15.5,4.25,-5.85), mirando hacia +Z. Presenta destino, conexión del ensayo, estado de protección y si existe último disparo. No recomienda acciones.
-- **Rearme:** interacción independiente en (15.5,3.5,-5.85), en el soporte norte fuera del área libre Z=-8..-6; alcance desde la pasarela de aproximadamente 0.55 m. Separar visualmente la interacción del panel y de selector/aislador.
+- **Panel E:** centro aproximado (15.5,4.55,-8.15), mirando hacia +Z. Presenta destino, conexión del ensayo, estado de protección y si existe último disparo. No recomienda acciones.
+- **Rearme:** interacción independiente en (15.5,3.5,-8.15), en el soporte norte fuera del área libre Z=-8..-6; alcance desde la pasarela de aproximadamente 0.55 m. Separar visualmente la interacción del panel y de selector/aislador.
 - **Indicador F:** (8.55,3.8,-7), montado en el interior del acceso este, cara +X. Textos únicos: SUMINISTRO ESTABLE / NO DISPONIBLE. No indica qué control accionar.
 - **Diagnóstico:** terminal completo siempre accesible en la cabina F, aunque la protección esté disparada.
 
