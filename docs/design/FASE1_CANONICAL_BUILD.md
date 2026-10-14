@@ -28,7 +28,7 @@ Distinguir siempre diseño objetivo, código implementado, test automatizado y v
 
 La reconstrucción anterior contiene túnel oeste, perímetro/salas P0, hueco D1/D2, retorno sur/este, elevador P0↔M, S1/S2, control/archivo y protecciones. Esas modificaciones siguen pendientes de ejecución Godot.
 
-**Brecha principal contra arquitectura v2.0:** el constructor y la escena aún no implementan de forma completa la nueva galería de evacuación, la puerta G como inicio de persecución interior, los obstáculos de huida, la ruta de descenso como secuencia de juego ni la salida física al aparcamiento. Los SVG marcan O1 (estantería caída), O2 (bastidor de tuberías) y O3 (bandeja desprendida) como footprints iniciales medibles; son posiciones de diseño, no implementación ni evidencia de runtime. No afirmar que el código esté coordinado hasta reconstruir la geometría y las pruebas.
+**Brecha principal contra arquitectura v2.0:** el constructor y la escena aún no implementan de forma completa la evasión silenciosa en áreas potencialmente ocupadas, la reacquisición que inicia la carrera, los obstáculos de huida, la ruta completa de descenso y la salida física al aparcamiento. Los SVG marcan O1 (estantería caída), O2 (bastidor de tuberías) y O3 (bandeja desprendida) como footprints iniciales medibles; son posiciones de diseño, no implementación ni evidencia de runtime. No afirmar que el código esté coordinado hasta reconstruir la geometría y las pruebas.
 
 ## Secuencia de implementación obligatoria
 
@@ -40,7 +40,7 @@ La reconstrucción anterior contiene túnel oeste, perímetro/salas P0, hueco D1
 6. Conectar el estado de amenaza con el recorrido interior; no arrancar la escena de aparcamiento al abrir G.
 7. Crear el handoff a la escena de aparcamiento al cruzar la boca de servicio; conservar el checkpoint standalone.
 8. Añadir pruebas para ruta G→S2/M→elevador/P0→S1/P−1→salida, estados del elevador y handoff.
-9. Cubrir el contrato de evento de misión: mantenimiento OFF→ON encola `SERVICE_OVERRIDE` una sola vez; volver a OFF no lo borra; consultar F solo establece `RESTRICTED_RECORD_READ`; abrir G con la cola envía la auditoría y activa Containment una sola vez; abrir G sin cola no activa la persecución; reiniciar la misión limpia los flags de sesión.
+9. Cubrir el contrato de evento de misión: mantenimiento OFF→ON encola `SERVICE_OVERRIDE` una sola vez; volver a OFF no lo borra; consultar F solo establece `RESTRICTED_RECORD_READ`; abrir G con la cola envía la auditoría y activa Containment una sola vez; abrir G sin cola no activa Containment; reiniciar la misión limpia los flags de sesión.
 10. Verificar que el evento de misión no altera las salidas ni el historial del modelo eléctrico definido en `FASE1_LOGIC_CONTRACT.md`.
 9. Ejecutar todas las pruebas y playtest manual; corregir parse/runtime antes de añadir detalle visual.
 10. Registrar commit, versión, renderer, comandos, exit codes, salida, errores/warnings, QA y limitaciones.
