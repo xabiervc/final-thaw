@@ -1,6 +1,6 @@
 # FINAL THAW — Fase 1: grafo espacial (v0.7)
 
-**Estado:** topología arquitectónica decidida; primera reconstrucción geométrica ampliada en código, aún sin validación de runtime. Autoridad: FASE1_ARCHITECTURAL_LAYOUT.md v1.1 y planos SVG; footprints en FASE1_GREYBOX_SPEC.md v1.4; función en FASE1_FUNCTIONAL_SPEC.md v1.1. FASE1_LOGIC_CONTRACT.md no cambia.
+**Estado:** topología espacial aprobada conceptualmente; primera reconstrucción geométrica ampliada en código, aún sin validación de runtime. Autoridad: FASE1_ARCHITECTURAL_LAYOUT.md v1.1 y planos SVG; footprints en FASE1_GREYBOX_SPEC.md v1.4; función en FASE1_FUNCTIONAL_SPEC.md v1.1. FASE1_LOGIC_CONTRACT.md no cambia.
 
 | Nodo | Cota | Huella/posición | Función |
 |---|---:|---|---|
@@ -30,7 +30,7 @@ A ── B ── galería de servicio ── elevador inferior
                                                        E (+3 m) ─ F ─ G ─ H → aparcamiento
 ~~~
 
-Aristas aceptadas: exterior↔túnel↔A↔pasillo oeste↔B; B↔D por S1; D↔S1↔perímetro sur↔retorno este↔galería de servicio↔elevador; B↔galería de servicio; P0↔M solo por elevador, después de mantenimiento; M↔P2 por S2; E↔F; F↔G; G↔H.
+Aristas espaciales de referencia: exterior↔túnel↔A↔pasillo oeste↔B; B↔D por S1; desde el rellano superior de S1, D↔perímetro sur↔retorno este↔galería de servicio↔elevador; B↔galería de servicio; P0↔M solo por elevador, después de mantenimiento; M↔P2 por S2; E↔F; F↔G; G↔H. La arista de retorno desde S1 por el perímetro sur y el pasillo este es crítica y sigue pendiente de validación física.
 
 D1 y D2 comparten un hueco vertical abierto en P0 (X=10..28, Z=1..8), con suelo continuo a Y=−2. B termina en Z=1, de modo que no se superponen suelo jugable y vacío. El pasillo A→B ocupa X=7..10, Z=1..8 y bordea la barandilla oeste del hueco.
 
@@ -38,4 +38,6 @@ No son aristas: escalera colapsada P0↔P2; escalera desde G a P0; rampa paralel
 
 Los controles conservan posiciones lógicas de referencia: selector (12,3,-7), aislador (19,3,-7), panel (15.5,4.55,-8.15), rearme (15.5,3.5,-8.15), consola (5,3,-7), indicador F (8.55,3.8,-7). Ajustar montajes, no reglas.
 
-La aceptación requiere que B quede al norte del foso, el pasillo A→B bordee el hueco sin cruzarlo, que los bordes abiertos de M/P2 y ambos lados del hueco del elevador estén protegidos, y que M se lea como sala de bombas, el elevador termine en M, S2 llegue a P2, G conduzca al exterior, la escalera dañada no se atraviese, la huella D1 exista realmente en P−1 y la orientación entre cotas sea legible. Planos no validan cámara ni colisiones.
+La aceptación requiere que B quede al norte del foso, el pasillo A→B bordee el hueco sin cruzarlo, que los bordes abiertos de M/P2 y ambos lados del hueco del elevador estén protegidos, y que M se lea como sala de bombas, el elevador termine en M, S2 llegue a P2, G conduzca al exterior, la escalera dañada no se atraviese, la huella D1 exista realmente en P−1, la orientación entre cotas sea legible y el retorno desde S1 hasta la galería de servicio sea continuo y transitable. Planos no validan cámara ni colisiones.
+
+El grafo define conectividad espacial; no convierte por sí mismo los beats narrativos propuestos para Helix/Containment en canon aprobado. Véase el mapa de progresión para distinguir decisiones conceptuales, propuestas y validaciones pendientes.
