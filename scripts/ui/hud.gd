@@ -20,7 +20,7 @@ func _ready() -> void:
 	character_label.position = Vector2(1100, 20)
 	fps_label = _label(self)
 	fps_label.position = Vector2(20, 680)
-	GameManager.stats_changed.connect(refresh)
+	GameManager.stats_changed.connect(_on_stats_changed)
 	refresh()
 
 func _label(parent: Node) -> Label:
@@ -29,14 +29,26 @@ func _label(parent: Node) -> Label:
 	parent.add_child(l)
 	return l
 
+func _on_stats_changed() -> void:
+	_apply_font_scale()
+	refresh()
+
+func _apply_font_scale() -> void:
+	var scaled := int(20 * GameManager.font_scale)
+	aid_label.add_theme_font_size_override("font_size", scaled)
+	integrity_label.add_theme_font_size_override("font_size", scaled)
+	safety_label.add_theme_font_size_override("font_size", scaled)
+	character_label.add_theme_font_size_override("font_size", scaled)
+	fps_label.add_theme_font_size_override("font_size", scaled)
+
 func refresh() -> void:
-	aid_label.text = "Ayuda civil %d/10" % GameManager.civilian_aid
-	integrity_label.text = "Prototipo %d/3" % GameManager.prototype_integrity
-	safety_label.text = "Elena %d/3" % GameManager.elena_safety
+	aid_label.text = NarrativeTextManager.get_hud_civilian_aid(GameManager.civilian_aid)
+	integrity_label.text = NarrativeTextManager.get_hud_prototype_integrity(GameManager.prototype_integrity)
+	safety_label.text = NarrativeTextManager.get_hud_elena_safety(GameManager.elena_safety)
 
 func set_character(character_name: String) -> void:
 	character_label.text = character_name.to_upper()
 
 func _process(_delta: float) -> void:
 	fps_label.visible = DebugManager.show_fps
-	fps_label.text = "FPS: %d" % Engine.get_frames_per_second()
+	fps_label.text = NarrativeTextManager.get_hud_fps(Engine.get_frames_per_second())

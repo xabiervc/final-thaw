@@ -38,8 +38,26 @@ static func get_menu_context() -> String:
 static func get_menu_start_button() -> String:
 	return _text("menu_start_button", "Start Demo")
 
+static func get_menu_options_button() -> String:
+	return _text("menu_options_button", "Options")
+
+static func get_menu_credits_button() -> String:
+	return _text("menu_credits_button", "Credits")
+
 static func get_hud_oxygen_label(value: float) -> String:
 	return _text("hud_oxygen_label", "Oxygen: %d%%") % int(value)
+
+static func get_hud_civilian_aid(value: int) -> String:
+	return _text("hud_civilian_aid", "Civilian aid %d/10") % value
+
+static func get_hud_prototype_integrity(value: int) -> String:
+	return _text("hud_prototype_integrity", "Prototype %d/3") % value
+
+static func get_hud_elena_safety(value: int) -> String:
+	return _text("hud_elena_safety", "Elena %d/3") % value
+
+static func get_hud_fps(value: int) -> String:
+	return _text("hud_fps", "FPS: %d") % value
 
 static func get_hud_civilian_state(trapped: bool, rescued: bool, dead: bool) -> String:
 	if dead:
@@ -167,6 +185,15 @@ static func get_shelter_hud(power_on: bool, valves_open: bool, oxygen: float, ci
 		oxygen,
 		civilian_aid,
 	]
+
+static func get_options_text_scale() -> String:
+	return _text("options_text_scale", "Text scale: %.2f")
+
+static func get_options_back_button() -> String:
+	return _text("options_back_button", "Back")
+
+static func get_credits_title() -> String:
+	return _text("credits_title", "FINAL THAW\nPhase 0 Prototype")
 
 ## Claves de texto del puzle de registros y cableado. Cada clave debe existir y no estar vacia en ES y EN.
 const CONTROL_ROOM_KEYS: Array[String] = [

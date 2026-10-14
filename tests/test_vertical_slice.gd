@@ -10,6 +10,7 @@ func _ready() -> void:
 	_check_state_restore()
 	_check_shelter_text_fallbacks()
 	_check_menu_text_contract()
+	_check_hud_text_contract()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -102,6 +103,17 @@ func _check_shelter_text_fallbacks() -> void:
 func _check_menu_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_shelter_civilian_state_short().is_empty(), "Menu civilian state fallback exists")
 	_expect(not NarrativeTextManager.get_shelter_previous_state().is_empty(), "Menu previous-state fallback exists")
+	_expect(not NarrativeTextManager.get_menu_options_button().is_empty(), "Menu options fallback exists")
+	_expect(not NarrativeTextManager.get_menu_credits_button().is_empty(), "Menu credits fallback exists")
+	_expect(not NarrativeTextManager.get_options_text_scale().is_empty(), "Options text-scale fallback exists")
+	_expect(not NarrativeTextManager.get_options_back_button().is_empty(), "Options back fallback exists")
+	_expect(not NarrativeTextManager.get_credits_title().is_empty(), "Credits title fallback exists")
+
+func _check_hud_text_contract() -> void:
+	_expect(not NarrativeTextManager.get_hud_civilian_aid(4).is_empty(), "HUD civilian aid fallback exists")
+	_expect(not NarrativeTextManager.get_hud_prototype_integrity(3).is_empty(), "HUD prototype integrity fallback exists")
+	_expect(not NarrativeTextManager.get_hud_elena_safety(3).is_empty(), "HUD Elena safety fallback exists")
+	_expect(not NarrativeTextManager.get_hud_fps(60).is_empty(), "HUD FPS fallback exists")
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid
