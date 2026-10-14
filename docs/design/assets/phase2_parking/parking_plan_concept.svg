@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="760" viewBox="0 0 1120 760">
+  <defs>
+    <pattern id="grid" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M14 0H0V14" fill="none" stroke="#dce2e8" stroke-width="0.7"/></pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#263849"/></marker>
+    <marker id="dim" markerWidth="7" markerHeight="7" refX="3.5" refY="3.5" orient="auto-start-reverse"><path d="M0,0 L7,3.5 L0,7 Z" fill="#526171"/></marker>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#182533}
+      .title{font-size:23px;font-weight:700;letter-spacing:.5px}
+      .subtitle{font-size:13px;fill:#536273}
+      .label{font-size:12px;font-weight:600}
+      .small{font-size:10px}
+      .tiny{font-size:9px}
+      .boundary{fill:#f5f6f7;stroke:#263849;stroke-width:3}
+      .wall{fill:#d4dbe2;stroke:#263849;stroke-width:1.5}
+      .service{fill:#d9e4e9;stroke:#617988;stroke-width:1.5}
+      .car{fill:#aab7c2;stroke:#405465;stroke-width:1.3;rx:5}
+      .carGlass{fill:#e8eef2;stroke:#627789;stroke-width:1}
+      .column{fill:#4b5b68;stroke:#fff;stroke-width:1.2}
+      .obstacle{fill:#e7c27a;stroke:#94691e;stroke-width:1.5}
+      .routeA{fill:none;stroke:#d96c4c;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#arrow)}
+      .routeB{fill:none;stroke:#278c83;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;marker-end:url(#arrow)}
+      .threat{fill:none;stroke:#7d4aa8;stroke-width:2.5;stroke-dasharray:7 5;marker-end:url(#arrow)}
+      .dimline{stroke:#526171;stroke-width:1;marker-start:url(#dim);marker-end:url(#dim)}
+      .thin{stroke:#8795a3;stroke-width:1;fill:none}
+    </style>
+  </defs>
+  <rect width="1120" height="760" fill="#ffffff"/>
+  <text x="48" y="42" class="title">FINAL THAW · PHASE 2 PARKING — CONCEPT PLAN</text>
+  <text x="48" y="64" class="subtitle">Design proposal v0.1 · schematic coordinates · not yet reconciled with the Godot builder or player capsule</text>
+  <g transform="translate(120 112)">
+    <rect x="0" y="0" width="672" height="420" fill="url(#grid)" stroke="#263849" stroke-width="2.5"/>
+    <!-- dimensions -->
+    <line x1="0" y1="-24" x2="672" y2="-24" class="dimline"/>
+    <line x1="0" y1="-18" x2="0" y2="-4" class="thin"/><line x1="672" y1="-18" x2="672" y2="-4" class="thin"/>
+    <text x="336" y="-31" class="label" text-anchor="middle">48 m (provisional)</text>
+    <line x1="-25" y1="0" x2="-25" y2="420" class="dimline"/>
+    <line x1="-18" y1="0" x2="-4" y2="0" class="thin"/><line x1="-18" y1="420" x2="-4" y2="420" class="thin"/>
+    <text x="-36" y="210" class="label" text-anchor="middle" transform="rotate(-90 -36 210)">30 m (provisional)</text>
+    <!-- boundary/service building -->
+    <rect x="0" y="0" width="74" height="420" class="wall"/>
+    <text x="37" y="190" class="label" text-anchor="middle" transform="rotate(-90 37 190)">FACADE LABORATORIO</text>
+    <rect x="74" y="278" width="42" height="54" class="service"/>
+    <text x="95" y="300" class="tiny" text-anchor="middle">BOCA</text><text x="95" y="312" class="tiny" text-anchor="middle">SERVICIO</text>
+    <path d="M74 278 H116 M74 332 H116" stroke="#278c83" stroke-width="3"/>
+    <!-- north boundary and egress -->
+    <rect x="0" y="0" width="672" height="18" class="wall"/>
+    <rect x="574" y="0" width="50" height="18" fill="#ffffff" stroke="#263849" stroke-width="1.5"/>
+    <text x="599" y="-4" class="tiny" text-anchor="middle">EGRESS</text>
+    <rect x="654" y="18" width="18" height="402" class="wall"/>
+    <rect x="0" y="402" width="672" height="18" class="wall"/>
+    <!-- bays north row -->
+    <g stroke="#94a2ad" stroke-width="1" fill="none">
+      <path d="M120 18V88 M162 18V88 M204 18V88 M246 18V88 M288 18V88 M330 18V88 M372 18V88 M414 18V88 M456 18V88 M498 18V88 M540 18V88 M582 18V88 M624 18V88"/>
+      <path d="M120 88H646"/>
+      <path d="M120 330V402 M162 330V402 M204 330V402 M246 330V402 M288 330V402 M330 330V402 M372 330V402 M414 330V402 M456 330V402 M498 330V402 M540 330V402 M582 330V402 M624 330V402"/>
+      <path d="M120 330H646"/>
+    </g>
+    <!-- vehicles -->
+    <g>
+      <g transform="translate(128 28)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(212 28)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(296 28)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(380 28)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(464 28)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(548 28)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(128 345)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(212 345)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(296 345)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(380 345)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(464 345)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+      <g transform="translate(548 345)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
+    </g>
+    <!-- columns -->
+    <g>
+      <rect x="168" y="110" width="14" height="14" class="column"/><rect x="252" y="110" width="14" height="14" class="column"/><rect x="336" y="110" width="14" height="14" class="column"/><rect x="420" y="110" width="14" height="14" class="column"/><rect x="504" y="110" width="14" height="14" class="column"/>
+      <rect x="168" y="284" width="14" height="14" class="column"/><rect x="252" y="284" width="14" height="14" class="column"/><rect x="336" y="284" width="14" height="14" class="column"/><rect x="420" y="284" width="14" height="14" class="column"/><rect x="504" y="284" width="14" height="14" class="column"/>
+    </g>
+    <!-- service cage and bottleneck -->
+    <rect x="520" y="145" width="78" height="48" class="service"/>
+    <text x="559" y="164" class="small" text-anchor="middle">JAULA</text><text x="559" y="177" class="small" text-anchor="middle">TÉCNICA</text>
+    <rect x="596" y="196" width="48" height="22" class="obstacle"/>
+    <text x="620" y="210" class="tiny" text-anchor="middle">BARRERA</text>
+    <rect x="548" y="250" width="72" height="30" class="obstacle"/>
+    <text x="584" y="268" class="tiny" text-anchor="middle">O2</text>
+    <!-- cover blocks -->
+    <rect x="130" y="145" width="52" height="36" class="service"/><text x="156" y="167" class="tiny" text-anchor="middle">COVER</text>
+    <rect x="228" y="215" width="58" height="34" class="service"/><text x="257" y="236" class="tiny" text-anchor="middle">COVER</text>
+    <rect x="336" y="145" width="52" height="36" class="service"/><text x="362" y="167" class="tiny" text-anchor="middle">COVER</text>
+    <rect x="424" y="215" width="58" height="34" class="service"/><text x="453" y="236" class="tiny" text-anchor="middle">COVER</text>
+    <!-- O1 obstruction -->
+    <rect x="190" y="188" width="27" height="30" class="obstacle"/><text x="203" y="206" class="tiny" text-anchor="middle">O1</text>
+    <!-- routes -->
+    <path d="M95 305 L150 305 L195 270 L270 270 L320 305 L405 305 L475 275 L535 275 L570 235 L620 207 L620 70 L599 25" class="routeA"/>
+    <path d="M95 305 L130 305 L130 230 L156 195 L156 135 L220 135 L290 135 L362 135 L450 135 L500 135 L520 170 L540 200 L570 235 L620 207 L620 70 L599 25" class="routeB"/>
+    <!-- threat path -->
+    <path d="M95 305 L145 280 L180 240 L250 190 L330 190 L415 190 L500 190 L560 205" class="threat"/>
+    <!-- labels -->
+    <text x="125" y="320" class="label">ENTRADA</text>
+    <text x="308" y="255" class="label" fill="#b94e30">A · DIRECTA / EXPUESTA</text>
+    <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / CUBIERTA</text>
+    <text x="365" y="205" class="small" text-anchor="middle">CRUCE EXPUESTO</text>
+    <text x="599" y="300" class="small" text-anchor="middle">EMBUDO DE SALIDA</text>
+    <text x="450" y="53" class="small" text-anchor="middle">FILAS DE APARCAMIENTO</text>
+    <text x="340" y="416" class="tiny" text-anchor="middle">Límite sur / muro perimetral</text>
+    <!-- north arrow -->
+    <path d="M635 60 L635 35" stroke="#263849" stroke-width="2" marker-end="url(#arrow)"/><text x="635" y="30" class="label" text-anchor="middle">N</text>
+  </g>
+  <!-- legend -->
+  <g transform="translate(830 130)">
+    <text x="0" y="0" class="label">LEYENDA</text>
+    <line x1="0" y1="24" x2="44" y2="24" class="routeA"/><text x="56" y="28" class="small">Ruta A: rápida/expuesta</text>
+    <line x1="0" y1="52" x2="44" y2="52" class="routeB"/><text x="56" y="56" class="small">Ruta B: cubierta/estrecha</text>
+    <line x1="0" y1="80" x2="44" y2="80" class="threat"/><text x="56" y="84" class="small">Ruta de presión del perseguidor</text>
+    <rect x="0" y="102" width="22" height="18" class="car"/><text x="32" y="115" class="small">Vehículo estático / cobertura</text>
+    <rect x="0" y="132" width="22" height="18" class="column"/><text x="32" y="145" class="small">Pilar estructural</text>
+    <rect x="0" y="162" width="22" height="18" class="obstacle"/><text x="32" y="175" class="small">Obstáculo de encuentro</text>
+    <rect x="0" y="192" width="22" height="18" class="service"/><text x="32" y="205" class="small">Equipamiento / cubierta</text>
+    <text x="0" y="250" class="label">ESTADO</text>
+    <text x="0" y="272" class="small">Propuesta espacial, no plano de obra.</text>
+    <text x="0" y="291" class="small">Dimensiones por validar con cápsula,</text>
+    <text x="0" y="308" class="small">cámara, colisiones y flujo real.</text>
+    <text x="0" y="350" class="label">DECISIONES ABIERTAS</text>
+    <text x="0" y="372" class="small">• Cota real y pendiente de accesos</text>
+    <text x="0" y="390" class="small">• Altura de cubierta / pilares</text>
+    <text x="0" y="408" class="small">• Posición exacta de O1/O2</text>
+    <text x="0" y="426" class="small">• Ruta final del enemigo</text>
+    <text x="0" y="464" class="label">REGLAS</text>
+    <text x="0" y="486" class="small">Ninguna ruta debe depender de</text>
+    <text x="0" y="503" class="small">colisiones invisibles o saltos ciegos.</text>
+    <text x="0" y="520" class="small">Toda alternativa necesita un coste real.</text>
+  </g>
+  <line x1="48" y1="685" x2="1072" y2="685" stroke="#d6dde4"/>
+  <text x="48" y="710" class="small">Coordinate convention for this concept only: X east/right, Z south/down; origin at northwest interior corner. Final mapping to Godot world coordinates is pending.</text>
+  <text x="48" y="730" class="small">Do not implement as-is without reconciliation against Phase 1 service-exit location and current prototype geometry.</text>
+</svg>
