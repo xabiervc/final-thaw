@@ -35,7 +35,7 @@ Las coordenadas de la galería de evacuación y la boca de servicio son **extens
 
 ### Handoff geométrico con Fase 2
 
-La boca de servicio se sitúa aproximadamente en `(X=34, Z=6)`, con la galería de evacuación llegando desde X=28..34 y Z=4,5..7,5. El plano de parking define un sistema local separado. Su transformación candidata es `X_mundo = X_local + 27,2 m` y `Z_mundo = Z_local − 15,8 m`, que coloca el centro de entrada conceptual en `(34, 6)`. Esta transformación es una hipótesis de coordinación, no un dato de runtime: antes de aceptarla hay que comprobar el ancho/orientación de la boca, la altura de suelo y el volumen de colisión en los SVG y la escena canónica. La planta de Fase 2 no debe desplazarse para acomodar el checkpoint antiguo del prototipo.
+La boca de servicio se sitúa aproximadamente en `(X=34, Z=4,5..7,5)`, con la galería de evacuación llegando desde X=28..34 y Z=4,5..7,5. El plano de parking define un sistema local separado: el umbral está en `(X_local≈5,3, Z_local≈21,8)` y el bolsillo interior de aparición en `(X_local≈6,8, Z_local≈21,8)`. La transformación candidata es `X_mundo = X_local + 28,7 m` y `Z_mundo = Z_local − 15,8 m`. Sitúa el plano del umbral en `(X≈34, Z≈6)` y el spawn seguro en `(X≈35,5, Z≈6)`. Esta transformación es una hipótesis de coordinación, no un dato de runtime: antes de aceptarla hay que comprobar el ancho/orientación de la boca, la altura de suelo y el volumen de colisión en los SVG y la escena canónica. La planta de Fase 2 no debe desplazarse para acomodar el checkpoint antiguo del prototipo.
 
 ## Grafo de circulación
 
