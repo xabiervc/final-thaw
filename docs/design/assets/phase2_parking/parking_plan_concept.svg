@@ -58,7 +58,9 @@
     <!-- representative internal dimensions: 3 m bay width, 5 m bay depth -->
     <line x1="120" y1="99" x2="162" y2="99" class="dimline"/><line x1="120" y1="88" x2="120" y2="103" class="thin"/><line x1="162" y1="88" x2="162" y2="103" class="thin"/><text x="141" y="95" class="tiny" text-anchor="middle">3,0 m</text>
     <line x1="108" y1="18" x2="108" y2="88" class="dimline"/><line x1="104" y1="18" x2="116" y2="18" class="thin"/><line x1="104" y1="88" x2="116" y2="88" class="thin"/><text x="101" y="53" class="tiny" text-anchor="middle" transform="rotate(-90 101 53)">5,0 m</text>
-    <!-- overhead service pipe racks along the two column rows; open-air apron, no continuous canopy -->\n    <path d="M120 107 H646 M120 307 H646" fill="none" stroke="#607585" stroke-width="2" stroke-dasharray="6 5" opacity="0.8"/><text x="365" y="95" class="tiny" text-anchor="middle">RACK AÉREO DE SERVICIO</text><text x="365" y="295" class="tiny" text-anchor="middle">RACK AÉREO DE SERVICIO</text>\n    <!-- vehicles -->
+    <!-- overhead service pipe racks along the two column rows; open-air apron, no continuous canopy -->
+    <path d="M120 107 H646 M120 307 H646" fill="none" stroke="#607585" stroke-width="2" stroke-dasharray="6 5" opacity="0.8"/><text x="365" y="95" class="tiny" text-anchor="middle">RACK AÉREO DE SERVICIO</text><text x="365" y="295" class="tiny" text-anchor="middle">RACK AÉREO DE SERVICIO</text>
+    <!-- vehicles -->
     <g>
       <g transform="translate(128 25)"><rect class="car" width="27" height="63"/><rect class="carGlass" x="4" y="9" width="19" height="14"/><rect class="carGlass" x="4" y="40" width="19" height="14"/></g>
       <g transform="translate(212 25)"><rect class="car" width="27" height="63"/><rect class="carGlass" x="4" y="9" width="19" height="14"/><rect class="carGlass" x="4" y="40" width="19" height="14"/></g>
