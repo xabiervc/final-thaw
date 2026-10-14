@@ -19,7 +19,7 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_ar
 
 ## Correcciones de revisión estática ya aplicadas
 
-La auditoría geométrica encontró cuatro defectos concretos antes de ejecutar Godot: barandillas del foso con el centro vertical por debajo de P0, banco del taller invadiendo el umbral, marca del pasillo sobre el vacío y compuerta superior del elevador desalineada respecto al plano. Se corrigieron y se añadieron aserciones de integración. Esta revisión de código no demuestra todavía el comportamiento físico.
+La auditoría geométrica encontró cuatro defectos concretos antes de ejecutar Godot: barandillas del foso con el centro vertical por debajo de P0, banco del taller invadiendo el umbral y solapando un armario, marca del pasillo sobre el vacío, columna Aster suspendida sobre el suelo, y compuerta superior del elevador desalineada respecto al plano. Se corrigieron y se añadieron aserciones de integración. También se apoyaron sobre el suelo el puente manipulado y el alojamiento del interruptor de mantenimiento. Esta revisión de código no demuestra todavía el comportamiento físico.
 
 ## Límites
 
