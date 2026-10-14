@@ -78,7 +78,7 @@ The design does not yet establish whether the recovery unit is a human, robot or
 | Cover route | Player uses vehicles/columns as spatial information | Make the site feel operational and dangerous | Sightline breaks and distinct route trade-off |
 | Exposed crossing | Player chooses when to move | Turn tension into agency | Fair telegraph, recoverable detection |
 | Service bottleneck | Player commits to a physical route | Show security is embedded in infrastructure | Plausible shutter/barrier state and visible affordance |
-| Escape threshold | Immediate pursuit is broken | Deliver temporary release, not resolution | Brief aftermath beat with one new implication |
+| Escape threshold | Immediate pursuit is broken | Deliver temporary release, not resolution | After crossing the gate, the reader shows “PROTOCOLO DE CONTENCIÓN: ACTIVO / SECTOR EXTERIOR”; perimeter lights/access states change in sequence. Elena: “Fuera del perímetro. Eso no significa que haya terminado.” Short, skippable, no input lock |
 
 The recommended implication is that the facility's security response is coordinated across the site. This remains a **proposal**, not established canon. Do not name a person responsible, reveal a wider conspiracy or decide Marcus's role through environmental dressing alone.
 
