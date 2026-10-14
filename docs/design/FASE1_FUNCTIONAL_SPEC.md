@@ -1,11 +1,11 @@
 # FASE1 — Especificación funcional de implementación (v1.1)
 
-**Estado:** decisiones de diseño y comportamiento cerradas para construir el primer slice. Las pruebas de escena, cámara, colisiones y jugabilidad siguen pendientes; este documento no afirma validación en Godot.  
+**Estado:** topología espacial y contrato funcional del circuito aprobados conceptualmente; los beats específicos de historia siguen propuestos y pendientes de aprobación. Las pruebas de escena, cámara, colisiones y jugabilidad siguen pendientes; este documento no afirma validación en Godot.  
 **Autoridad funcional:** este documento define la experiencia de Fase 1; el contrato lógico define las reglas del circuito; la arquitectura espacial y el greybox definen su geometría. Autoridad espacial: FASE1_ARCHITECTURAL_LAYOUT.md v1.1, FASE1_SPATIAL_GRAPH.md v0.7 y FASE1_GREYBOX_SPEC.md v1.4.
 
 ## 1. Objetivo jugable
 
-Elena debe reconocer una discrepancia física en la distribución eléctrica, poner el circuito en una configuración segura que permita consultar el archivo y salir de la instalación. La máquina de ensayo nunca arranca. La amenaza exterior pertenece a Fase 2 y empieza cuando el controlador de salida sincroniza el registro de mantenimiento.
+Elena debe reconocer una discrepancia física en la distribución eléctrica, poner el circuito en una configuración segura que permita consultar el archivo y salir de la instalación. La máquina de ensayo nunca arranca. La amenaza exterior pertenece a Fase 2; el disparador exacto de su aparición y su relación causal con la salida siguen pendientes de aprobación narrativa.
 
 La experiencia se basa en inferencia ambiental, no en una secuencia arbitraria de interruptores. El jugador puede operar el circuito sin leer cada pista: las pistas explican el problema, pero no son llaves para los controles. La topología y el contrato del circuito son decisiones aprobadas conceptualmente; los beats específicos de Helix/Containment descritos más abajo deben considerarse propuestas narrativas hasta aprobación explícita.
 
