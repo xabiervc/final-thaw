@@ -18,7 +18,7 @@ La misión debe sentirse como explorar un lugar funcional. Las pistas se distrib
 - S2 conecta M↔P2, independientemente de energía.
 - La escalera directa P0↔P2 permanece bloqueada.
 - El retorno desde el rellano superior de S1 bordea el perímetro sur/este del hueco D1/D2 y llega a la galería de servicio. No se cruza el hueco ni se requiere un salto.
-- G no es la salida exterior. Al abrirse, inicia el segmento de huida y la persecución interior. La ruta continúa por circulación técnica, S2/M, elevador/P0, S1/P−1 y galería de evacuación.
+- G es una esclusa de doble puerta. Al abrir la compuerta exterior se inicia la persecución; la amenaza entra desde ese umbral y Elena retrocede por la puerta interior hacia F/E. La ruta continúa por S2/M, elevador/P0, S1/P−1 y galería de evacuación. G no es la salida final.
 - La galería de evacuación debe tener suelo, paredes/estructura, altura libre, colisiones y una boca exterior conectada al aparcamiento. No se permite teletransporte para simular la salida.
 
 ## 3. Circuito eléctrico — reglas preservadas
