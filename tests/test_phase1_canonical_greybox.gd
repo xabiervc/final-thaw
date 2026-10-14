@@ -42,7 +42,7 @@ func _run() -> void:
 	_expect(is_equal_approx(pit_rail.position.y, 0.55), "pit guardrail rises above P0 floor instead of being buried below it")
 	_expect(scene.get_node_or_null("NaveWorkshopPierSouth") != null and scene.get_node_or_null("RoofBeam_00") != null, "P0 has room boundaries and industrial roof structure")
 	var aster_column := scene.get_node("AsterVerticalColumn") as StaticBody3D
-	_expect(is_equal_approx(aster_column.position.z, -4.0) and not _has_ground_slab_at(scene, Vector2(aster_column.position.x, aster_column.position.z)), "Aster column stands on the nave floor, clear of the maintenance void")
+	_expect(is_equal_approx(aster_column.position.z, -4.0) and _has_ground_slab_at(scene, Vector2(aster_column.position.x, aster_column.position.z)), "Aster column stands on the nave floor, clear of the maintenance void")
 	var workshop_bench := scene.get_node("WorkshopBench") as StaticBody3D
 	_expect(workshop_bench.position.z < -7.5, "workshop bench stays clear of the doorway to the service nave")
 	var workshop_cabinet := scene.get_node("WorkshopCabinet") as StaticBody3D
