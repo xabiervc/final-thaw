@@ -107,7 +107,7 @@
     <!-- route graph waypoints; coordinates correspond to LEVEL_STRUCTURE.md -->
     <circle cx="535" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="520" y="295" class="tiny" text-anchor="middle">A3</text>
     <circle cx="570" cy="275" r="5" fill="#ffffff" stroke="#d96c4c" stroke-width="2"/><text x="563" y="295" class="tiny" text-anchor="middle">A4</text>
-    <!-- provisional checkpoints: entry is the integration spawn; CP1 and CP2 are retry anchors -->
+    <!-- P2-01 is the continuous handoff threshold; CP is recovery-only, never the initial scene spawn -->
     <circle cx="95" cy="305" r="9" fill="#ffffff" stroke="#263849" stroke-width="2.2"/><text x="95" y="308" class="tiny" text-anchor="middle">S</text>
     <circle cx="570" cy="235" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="570" y="238" class="tiny" text-anchor="middle">1</text>
     <circle cx="620" cy="70" r="9" fill="#ffffff" stroke="#278c83" stroke-width="2.2"/><text x="620" y="73" class="tiny" text-anchor="middle">2</text>
