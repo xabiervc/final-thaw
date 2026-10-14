@@ -12,7 +12,7 @@ La arquitectura es el sistema que sostiene exploración, investigación, puzle y
 - Un perímetro de edificio legible, con espesor de muros, umbrales, patios/huecos y conexiones verticales coherentes.
 - La mayoría de las áreas representadas son explorables y tienen un propósito. Las áreas restringidas deben explicarse por cerraduras, derrumbes, riesgo industrial o seguridad, nunca por límites invisibles.
 - El puzle se descubre a través del conjunto de la instalación. Las pistas pueden encontrarse en distintos sectores; ninguna lectura opcional debe convertirse en una llave arbitraria.
-- La ruta principal y la ruta de huida son diferentes. El jugador no sale por el túnel de entrada ni se limita a cruzar una puerta que teletransporta al aparcamiento.
+- La ruta principal y la ruta de huida son diferentes. La huida puede atravesar áreas de trabajo potencialmente ocupadas: el diseño debe soportar primero evasión silenciosa y después una carrera bajo persecución. No se sale por el túnel de entrada ni se teletransporta al aparcamiento.
 - La arquitectura, los SVG, el grafo, la progresión, los contratos funcionales, la escena Godot y las pruebas deben compartir nombres, cotas, huellas y conexiones.
 - La escala y la circulación se validan con el volumen real de Elena, su cámara y los colliders; el dibujo bonito no sustituye a una prueba de recorrido.
 
@@ -22,11 +22,11 @@ La instalación mantiene cuatro cotas interiores conectadas y una salida de serv
 
 | Cota | Programa arquitectónico |
 |---|---|
-| **P−1 · Y=−2 m** | D1 galería de achique; D2 distribución hidráulica/eléctrica; puente A→T manipulado; interruptor de mantenimiento; sumidero y colectores; galería de evacuación/descarga de servicio hacia el exterior este. |
+| **P−1 · Y=−2 m** | D1 galería de achique; D2 distribución hidráulica/eléctrica; puente A→T manipulado; interruptor de mantenimiento; sumidero y colectores; conexión a la ruta de salida de servicio. El lado exacto de salida queda sujeto a la ruta de huida aprobada. |
 | **P0 · Y=0 m** | Túnel de entrada oeste; A esclusa de acceso; B nave de ensayos Aster; C taller; cuadros auxiliares; galería de servicio; retorno por perímetro sur/este; acceso inferior del elevador; boca superior de S1. |
 | **M · Y=+1,5 m** | Sala de bombas, colectores y manómetros; galería de observación; rellano del elevador; llegada de S2; corredor técnico de conexión. |
 | **P2 · Y=+3 m** | E control y diagnóstico; F archivo restringido; pasarela superior; G esclusa de doble puerta. Abrir la compuerta exterior activa la amenaza; Elena retrocede al interior y escapa por conexiones técnicas existentes. G no es la salida final. |
-| **Exterior · cota variable** | Boca de servicio/descarga al este del nivel P−1 y conexión legible al aparcamiento. El aparcamiento y la persecución exterior continúan en Fase 2. |
+| **Exterior · cota variable** | Boca de servicio/descarga conectada físicamente al aparcamiento. El lado del perímetro y la cota exterior se deciden desde la ruta completa de huida; no se fuerza una coordenada para coincidir con el plano local de parking. |
 
 La huella puede crecer si el plano acotado demuestra que el recorrido de huida no cabe con anchos seguros. No comprimir pasillos, escaleras ni espacios de combate/persecución para preservar una dimensión arbitraria del prototipo.
 
@@ -45,7 +45,7 @@ La huella puede crecer si el plano acotado demuestra que el recorrido de huida n
 | E · Control | Supervisión del circuito | Probar hipótesis, ver diagnóstico y recuperarse de un error. |
 | F · Archivo | Registro restringido | Consultar con ARCHIVO estable; la consulta no equivale a extracción. |
 | G · Esclusa de doble puerta | Interbloqueo de seguridad exterior | Tras resolver lo necesario, abrir la compuerta exterior inicia la persecución; Elena retrocede por la puerta interior hacia F/E. No es la salida final ni un cambio de escena inmediato. |
-| Ruta de huida | Circulación de emergencia y mantenimiento | Recorrer pasarela/corredor técnico, sortear obstáculos físicos y descender por conexiones existentes hasta P−1. |
+| Ruta de huida | Circulación de emergencia y mantenimiento, con posibles áreas operativas ocupadas | Evitar personal y percepción de Containment en un primer tramo de bajo perfil; después correr por un tramo expuesto con obstáculos físicos legibles. No requiere combate. |
 | Galería de evacuación | Descarga de servicio | Ruta final alternativa; conduce a una boca exterior distinta del túnel de entrada. |
 | Aparcamiento | Logística exterior | Primer espacio de Fase 2; handoff continuo a la persecución existente. |
 
@@ -58,7 +58,7 @@ Se preservan las conexiones verticales ya definidas:
 2. **Elevador · P0↔M:** elevador de mantenimiento, habilitado por mantenimiento; no llega a P2.
 3. **S2 · M↔P2:** escalera fija, independiente de alimentación.
 4. **Escalera directa P0↔P2:** colapsada y bloqueada; se ve como parte del historial del edificio, no como ruta alternativa.
-5. **G → ruta interior de huida → S2/M/P0/S1 → P−1 → galería de evacuación → aparcamiento:** ruta de salida de la Fase 1. La secuencia exacta de puertas, obstáculos y estados de amenaza se detallará en el mapa de progresión y deberá aparecer en los planos.
+5. **G → F/E → pasarela/S2/M → áreas de trabajo y servicio → P0/S1/P−1 → salida alternativa → aparcamiento:** ruta objetivo de Fase 1. El primer tramo prioriza sigilo entre áreas potencialmente ocupadas; un trigger espacial legible eleva la presión a carrera antes de la salida. La secuencia exacta debe aparecer en planos y grafo. No se exige que la salida coincida con el transform provisional del parking.
 6. **Entrada → túnel oeste → A:** solo entrada inicial; no reutilizar como salida final.
 
 La galería de evacuación de P−1 es una nueva conexión arquitectónica respecto a v1.1. Debe dibujarse en el plano de P−1 y en sección; no puede implementarse como teletransporte. Si la cota exterior exige rampa, escalera o tramo de descarga, debe representarse y tener pendiente/altura transitables. No añadir conexiones secretas arbitrarias: la salida debe ser una infraestructura de servicio coherente con el edificio.
@@ -81,13 +81,13 @@ Las pistas deben reforzarse entre sí mediante geometría, texto, estado de maqu
 La secuencia final prevista es:
 1. Elena completa la configuración funcional necesaria y llega a G.
 2. La puerta se abre físicamente y el jugador ve/oye una respuesta del edificio; no se produce una transición instantánea al aparcamiento.
-3. Comienza una persecución dentro de la instalación. El jugador debe atravesar obstáculos industriales legibles (p. ej. una compuerta que baja, una pasarela parcialmente bloqueada o equipo desplazado), con alternativas de movimiento coherentes con el espacio y sin exigir una única maniobra no comunicada.
+3. La huida interior empieza con evasión silenciosa en áreas potencialmente ocupadas. Después, en un umbral espacial definido y anticipado, la unidad reacquiere a Elena y la secuencia pasa a una persecución a la carrera. El jugador debe atravesar obstáculos industriales legibles (p. ej. una compuerta que baja, una pasarela parcialmente bloqueada o equipo desplazado), con alternativas de movimiento coherentes con el espacio y sin exigir una única maniobra no comunicada.
 4. La ruta obliga a abandonar P2 y descender por la circulación técnica hacia M/P0/P−1. No se inventa un ascensor adicional ni una escalera nueva para resolver el guion.
 5. La galería de evacuación conduce a una salida exterior distinta de la entrada oeste.
-6. El exterior de servicio conecta de forma continua con el aparcamiento. El checkpoint de entrada de la escena de persecución de Fase 2 se usa como punto de integración, no como inicio standalone.
+6. La salida exterior seleccionada conecta de forma continua con el aparcamiento. El checkpoint de entrada de Fase 2 se integra a partir de la boca real; no se fuerza el recorrido interior para conservar coordenadas del prototipo.
 7. Fase 2 continúa la huida en el aparcamiento. La escena standalone del corredor conserva su checkpoint propio.
 
-El contrato narrativo provisional define que mantenimiento encola `SERVICE_OVERRIDE` y que cruzar el umbral exterior de G envía la auditoría e inicia Containment. Esto fija la causalidad jugable para el opening, pero no acredita su implementación. Siguen abiertas la identidad del destinatario, el grado de supervisión humana, la motivación de la supresión y la identidad final de la unidad de recuperación. La necesidad arquitectónica de la huida y su ruta alternativa sí quedan fijadas por esta dirección.
+El contrato narrativo provisional define que mantenimiento encola `SERVICE_OVERRIDE` y que cruzar el umbral exterior de G envía la auditoría e inicia Containment. La huida se diseña en dos ritmos: bajo perfil entre personal y cobertura real, seguido de una carrera cuando la unidad reacquiere a Elena en un punto espacial definido. Esto fija intención jugable, no acredita implementación. Siguen abiertas la identidad del destinatario, el grado de supervisión humana, la motivación de la supresión y la identidad final de la unidad de recuperación. La necesidad arquitectónica de la huida y su ruta alternativa sí quedan fijadas por esta dirección.
 
 ## 7. Autoridad, coordinación y criterios de aceptación
 
@@ -106,7 +106,7 @@ La arquitectura solo se acepta cuando:
 3. Las zonas principales son accesibles y las restricciones están justificadas.
 4. La ruta de ida, el retorno tras D1/D2 y la ruta de huida se distinguen y se recorren sin saltos.
 5. Los anchos, escaleras, puertas, barandillas, obstáculos y altura libre funcionan con la cápsula, cámara y controles reales.
-6. La puerta G inicia la huida; la persecución ocurre dentro del edificio; la salida exterior es diferente de la entrada y conecta físicamente con el aparcamiento.
+6. La puerta G inicia Containment; la huida interior incluye una sección silenciosa y otra a la carrera; la salida exterior es diferente de la entrada y conecta físicamente con el aparcamiento.
 7. Se ejecutan las pruebas automáticas y el playtest manual; se registra versión de Godot, renderer, commit, comandos, resultados, incidencias y evidencia visual.
 
 No se afirma aceptación geométrica o jugable hasta ejecutar Godot y completar las pruebas.
