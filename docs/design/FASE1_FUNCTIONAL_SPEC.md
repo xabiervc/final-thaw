@@ -41,7 +41,7 @@ La rampa provisional y la reserva de plataforma X=30..34 se eliminan del diseño
 Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protección disponible; last_trip vacío; diagnóstico siempre operativo.
 
 - El esquema muestra la distribución prevista: ARCHIVO hacia A y ENSAYO hacia T.
-- El puente físico A→T está manipulado y constituye la anomalía; el escáner puede revelar continuidad, pero no nombra el control que debe accionar el jugador.
+- El puente físico A→T está manipulado y constituye la anomalía. **Escáner cerrado para implementación:** mantener `scan` durante 0,9 s; revelar durante 3 s y aplicar 4 s de recarga desde la activación. Durante la ventana se resaltan esquema/A, el puente A→T y el nodo T; se ocultan al terminar. El escáner revela continuidad, nunca resalta el selector, aislador o rearme ni prescribe una acción.
 - El orden recomendado y más seguro es aislar ENSAYO, seleccionar ARCHIVO y comprobar el estado. Resultado esperado: ARCHIVO estable y protección disponible.
 - Si el jugador selecciona ARCHIVO con ENSAYO conectado, la protección dispara inmediatamente y registra DEMANDA_SIMULTANEA. No hay muerte ni bloqueo permanente. Aislar ENSAYO y luego rearmar permite recuperarse.
 - Cambiar selector o aislador no rearma por sí solo. Rearme solo tiene éxito con el fallo ausente.
@@ -87,6 +87,7 @@ La consulta del archivo no es necesaria para operar los controles ni para abrir 
 Fase 1 está funcionalmente especificada y tiene una primera escena en `scenes/prototypes/phase1_canonical_greybox.tscn`; el código aún requiere ejecución y validación. La escena debe seguir el grafo v0.4 y el greybox v1.1.
 
 Aceptar la implementación solo si:
+0. Mantener `scan` 0,9 s revela únicamente las trazas de A/puente A→T/T durante 3 s; después se ocultan y el escáner entra en recarga de 4 s.
 1. No se puede ascender por la plataforma hasta activar mantenimiento en el foso; la escalera del foso sigue siendo utilizable sin electricidad.
 2. El ascensor/plataforma conecta ambos rellanos, acepta llamadas desde ambos extremos y nunca deja a Elena atrapada o en caída ante una pérdida de energía.
 3. El contrato cumple T1–T9, X1/X2 y las comprobaciones adicionales del documento lógico, incluido recuperar un disparo y conservar last_trip.
