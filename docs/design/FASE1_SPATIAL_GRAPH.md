@@ -4,7 +4,7 @@
 
 | Nodo | Cota | Huella/posición | Función |
 |---|---:|---|---|
-| A · Acceso | 0 m | X 1..7, Z 4..10 | Esclusa y orientación. |
+| Túnel exterior | 0 m | X −3..0, Z 4,5..7,5 | Aproximación cubierta y entrada física a A. |\n| A · Acceso | 0 m | X 1..7, Z 4..10 | Esclusa y orientación. |
 | B · Nave | 0 m | X 7..20, Z −9..1 | Columna Aster, rig central y circulación. |
 | C · Taller | 0 m | X 20..24, Z −9..−2 | Cuadros, banco y colectores. |
 | S1 · Escalera | 0↔−2 m | X 24..26, Z 8..11 | Conexión fija al foso. |
@@ -29,7 +29,7 @@ A ── B ── galería de servicio ── elevador inferior
                                                        E (+3 m) ─ F ─ G ─ H → aparcamiento
 ~~~
 
-Aristas aceptadas: A↔pasillo de servicio↔B; B↔galería de servicio; B↔D por S1; P0↔M solo por elevador, después de mantenimiento; M↔P2 por S2; E↔F; F↔G; G↔H.
+Aristas aceptadas: exterior↔túnel↔A↔pasillo de servicio↔B; B↔galería de servicio; B↔D por S1; P0↔M solo por elevador, después de mantenimiento; M↔P2 por S2; E↔F; F↔G; G↔H.
 
 D1 y D2 comparten un hueco vertical abierto en P0 (X=10..28, Z=1..8), con suelo continuo a Y=−2. B termina en Z=1, de modo que no se superponen suelo jugable y vacío. El pasillo A→B ocupa X=7..10, Z=1..8 y bordea la barandilla oeste del hueco.
 
