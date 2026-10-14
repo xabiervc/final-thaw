@@ -35,6 +35,17 @@ func _run() -> void:
 	var pit_floor_shape := pit_floor.get_child(0) as CollisionShape3D
 	var pit_floor_box := pit_floor_shape.shape as BoxShape3D
 	_expect(is_equal_approx(pit_floor.position.y + pit_floor_box.size.y * 0.5, -2.0), "pit collision floor has its top surface at the specified Y=-2 m datum")
+	var sump := scene.get_node("D1Sump") as StaticBody3D
+	var sump_shape := sump.get_child(0) as CollisionShape3D
+	var sump_box := sump_shape.shape as BoxShape3D
+	_expect(is_equal_approx(sump.position.y - sump_box.size.y * 0.5, -2.0), "D1 sump base rests on the maintenance floor")
+	var bridge := scene.get_node("TamperedBridge") as MeshInstance3D
+	var bridge_box := bridge.mesh as BoxMesh
+	_expect(is_equal_approx(bridge.position.y - bridge_box.size.y * 0.5, -2.0), "the tampered A→T bridge rests on the maintenance floor")
+	var maintenance_housing := scene.get_node("MaintenanceHousing") as StaticBody3D
+	var housing_shape := maintenance_housing.get_child(0) as CollisionShape3D
+	var housing_box := housing_shape.shape as BoxShape3D
+	_expect(is_equal_approx(maintenance_housing.position.y - housing_box.size.y * 0.5, -2.0), "maintenance switch housing rests on the maintenance floor")
 	_expect(not _has_ground_slab_at(scene, Vector2(15.0, 4.0)) and not _has_ground_slab_at(scene, Vector2(22.0, 4.0)), "P0 has real collision voids above both D1 and D2")
 	_expect(not _has_ground_slab_at(scene, Vector2(25.0, 9.5)), "S1 stair mouth remains open through the P0 slab")
 	_expect(scene.get_node_or_null("PitRailWest") != null and scene.get_node_or_null("PitRailEast") != null, "maintenance pit perimeter is protected")
