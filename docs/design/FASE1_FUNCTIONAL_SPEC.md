@@ -52,8 +52,8 @@ Estado inicial: mantenimiento OFF; selector ENSAYO; ensayo conectado; protecció
 
 Los controles contractuales mantienen sus centros de interacción: selector (12,3,-7), aislador (19,3,-7). No se mueven para acomodar la arquitectura.
 
-- Panel de estado: montado en el borde norte de la pasarela, centro aproximado (15.5,4.25,-5.85), orientado al sur hacia el punto de observación (15,3,-7). Expone únicamente valores actuales: destino seleccionado, ensayo conectado/aislado, protección disponible/disparada y existencia de último disparo. No da instrucciones ni marca una secuencia correcta.
-- Rearme: botón/asa independiente en (15.5,3.5,-5.85), en el mismo soporte pero claramente separado del panel y de los controles selector/aislador. Se interactúa desde la pasarela; el soporte y su collider quedan fuera del rectángulo libre Z=-8..-6.
+- Panel de estado: montado en el borde norte de la pasarela, centro aproximado (15.5,4.55,-8.15), orientado al sur hacia el punto de observación (15,3,-7). Expone únicamente valores actuales: destino seleccionado, ensayo conectado/aislado, protección disponible/disparada y existencia de último disparo. No da instrucciones ni marca una secuencia correcta.
+- Rearme: botón/asa independiente en (15.5,3.5,-8.15), en el mismo soporte pero claramente separado del panel y de los controles selector/aislador. Se interactúa desde la pasarela; el soporte y su collider quedan fuera del rectángulo libre Z=-8..-6, al norte de la pasarela (Z más negativo).
 - El panel usa texto/símbolos redundantes; el color nunca es el único canal. La aceptación de legibilidad se probará con la cámara real.
 
 ## 5. Archivo F y evidencia
