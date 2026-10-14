@@ -32,7 +32,7 @@ A GitHub Actions workflow now imports project resources and runs Phase 0, the ex
 
 ## Next verification
 
-1. Run circuit, generic lift, transport, canonical integration, and Phase 0 regression under Godot 4.7.x/Compatibility.
+1. Run circuit, generic lift, transport, canonical integration, parking-entry smoke test, existing vertical-slice regression and Phase 0 regression under Godot 4.7.x/Compatibility.
 2. Fix parse/runtime/test failures before adding detail.
 3. Manually traverse A→B→D1/D2→B→service gallery→M→S2→E→F→G→H.
 4. Inspect sightlines, camera, collisions, clearances, doors, lift power loss and clues.
