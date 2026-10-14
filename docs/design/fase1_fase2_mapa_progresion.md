@@ -32,7 +32,7 @@ El registro contradice el acta: el acta declara alimentación exclusiva a T, per
 
 La compuerta exterior de G debe desembocar en una zona exterior de servicio/aparcamiento, no en un espacio abstracto ni en una transición visual sin contexto. El aparcamiento es el primer espacio jugable de Containment: plazas, pilares, coches inmóviles, carriles, una ruta principal de huida y al menos una alternativa visible, sin convertirlo en un laberinto. La amenaza detecta mediante sus reglas normales de visión, línea de visión y ruido; no conoce la posición del jugador por guion.
 
-La escena de persecución actual es un prototipo separado. La integración G→H debe comprobarse en una ejecución combinada; no se considera implementada solo por cambiar de escena. Fase 2 puede iniciar con Elena cruzando hacia el aparcamiento, recibir la señal de sincronización y correr para alcanzar una salida segura. No añadir combate obligatorio ni bloqueo de progreso por no consultar el archivo.
+La escena de persecución conserva su versión standalone desde el inicio del corredor. Para el handoff canónico se usa `scenes/prototypes/phase2_parking_chase.tscn`, que reutiliza el mismo script y arranca en el checkpoint de entrada al aparcamiento (X=34,5). El enemigo debe comenzar fuera del alcance de detección inmediata y detectar por sus reglas normales. La integración G→H debe comprobarse en una ejecución combinada; no se considera implementada solo por cambiar de escena. Fase 2 puede iniciar con Elena cruzando hacia el aparcamiento, recibir la señal de sincronización y correr para alcanzar una salida segura. No añadir combate obligatorio ni bloqueo de progreso por no consultar el archivo.
 
 ## Orden de trabajo
 
