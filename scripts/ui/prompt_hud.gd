@@ -139,6 +139,8 @@ func _apply_accessibility() -> void:
 	_prompt.add_theme_font_size_override("font_size", int(20 * scale))
 
 	var high_contrast := AccessibilityManager.is_high_contrast()
+	_section_label.add_theme_font_size_override("font_size", maxi(11, int(11 * scale)))
+	_section_label.add_theme_color_override("font_color", Color.WHITE if high_contrast else Color(0.35, 0.83, 0.85))
 	var text_color := Color.WHITE if high_contrast else Color(0.94, 0.96, 0.95)
 	var hint_color := Color(1.0, 0.95, 0.65) if high_contrast else Color(0.95, 0.88, 0.55)
 	var instructions_color := Color(0.9, 0.95, 1.0) if high_contrast else Color(0.72, 0.8, 0.84)
