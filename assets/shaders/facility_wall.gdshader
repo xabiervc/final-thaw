@@ -1,6 +1,6 @@
 shader_type spatial;
 // Facility architecture surface for Final Thaw (Compatibility renderer).
-// World-space triplanar photo texture + the "meltwater line": a dark tide stain and wet band near the floor,
+// World-space projected photo texture + the "meltwater line": a dark tide stain and wet band near the floor,
 // grime that darkens towards the base, panel seams and optional frost near the top. No UVs required.
 
 uniform sampler2D albedo_tex : source_color, filter_linear_mipmap, repeat_enable;
@@ -33,8 +33,16 @@ void vertex() {
 	wnrm = normalize((MODEL_MATRIX * vec4(NORMAL, 0.0)).xyz);
 }
 
-vec4 triplanar(sampler2D tex, vec3 p, vec3 w) {
-	return texture(tex, p.zy / tile_m) * w.x + texture(tex, p.xz / tile_m) * w.y + texture(tex, p.xy / tile_m) * w.z;
+// The architecture is axis-aligned boxes, so one projection along the dominant normal axis is enough
+// (a third of the texture fetches of a blended triplanar, which matters on integrated GPUs).
+vec2 project(vec3 p, vec3 w) {
+	if (w.x >= w.y && w.x >= w.z) {
+		return p.zy;
+	}
+	if (w.y >= w.z) {
+		return p.xz;
+	}
+	return p.xy;
 }
 
 float seam_line(float coord, float spacing, float width_px) {
@@ -54,10 +62,10 @@ void fragment() {
 	if (dither_fade > 0.0 && bayer4(FRAGCOORD.xy) < dither_fade) {
 		discard;
 	}
-	vec3 w = pow(abs(wnrm), vec3(4.0));
-	w /= (w.x + w.y + w.z);
-	vec3 base = triplanar(albedo_tex, wpos, w).rgb;
-	vec3 arm = triplanar(arm_tex, wpos, w).rgb;
+	vec3 w = abs(wnrm);
+	vec2 uv = project(wpos, w) / tile_m;
+	vec3 base = texture(albedo_tex, uv).rgb;
+	vec3 arm = texture(arm_tex, uv).rgb;
 	float n = texture(noise_tex, vec2(wpos.x + wpos.z, wpos.y) * 0.18).r;
 	float n2 = texture(noise_tex, wpos.xz * 0.11 + vec2(wpos.y * 0.07)).r;
 

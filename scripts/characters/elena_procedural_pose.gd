@@ -2,7 +2,7 @@ extends Node
 ## Procedural pose layer for Elena's MPFB rig, which ships without animations (bind pose = arms-out A-pose).
 ##
 ## Every frame it poses a handful of bones from the controller's state:
-##   - rest stance: arms lowered to the sides with a slight elbow bend, a breathing sway in the spine;
+##   - rest stance: arms lowered to the sides with a slight elbow bend (written once, then left alone);
 ##   - walk: legs and arms swing in opposition, knees bend on the forward swing, the torso leans into the motion,
 ##     the hips bob; amplitude and cadence follow the real horizontal speed (no foot sliding at low speed);
 ##   - airborne: knees tucked and arms raised for balance;
@@ -25,7 +25,6 @@ const AIR_TUCK_THIGH := deg_to_rad(28.0)
 const AIR_TUCK_KNEE := deg_to_rad(55.0)
 const AIR_ARMS_OUT := deg_to_rad(28.0)
 const LAND_DIP := 0.06
-const BREATH_PERIOD := 3.6
 
 var body: CharacterBody3D = null
 var skeleton: Skeleton3D = null
@@ -45,6 +44,8 @@ var _t: float = 0.0
 var _was_on_floor: bool = true
 var _model_rest_y: float = 0.0
 var ready_ok: bool = false
+var _rest_parent_cache: Dictionary = {}
+var _settled: bool = false  # the standing pose has been written and nothing is moving: skip re-posing
 
 
 func setup(character: CharacterBody3D, model_root: Node3D) -> void:
@@ -105,17 +106,22 @@ func _process(delta: float) -> void:
 		_phase = fmod(_phase + speed * delta / STRIDE * TAU, TAU)
 	elif _walk < 0.05:
 		_phase = lerp_angle(_phase, 0.0, clampf(delta * 4.0, 0.0, 1.0))
+	# Standing still with no landing dip: the pose is constant, so write it once and stop touching the skeleton
+	# (every write re-skins the model).
+	var still := _walk <= 0.0 and _air <= 0.0 and _dip <= 0.0
+	if still and _settled:
+		return
 	_apply()
+	_settled = still
 
 
 func _apply() -> void:
 	var s := sin(_phase)
 	var c := cos(_phase)
-	var breath := sin(_t * TAU / BREATH_PERIOD)
 	var posed := {}  # bone -> global basis
 
 	# Torso: lean into the walk, breathe at rest.
-	var lean := FORWARD_LEAN * _walk + deg_to_rad(0.8) * breath * (1.0 - _walk) + deg_to_rad(6.0) * _dip
+	var lean := FORWARD_LEAN * _walk + deg_to_rad(6.0) * _dip
 	_set_global("spine_01", _pitch(lean * 0.5) * _rest_global["spine_01"], posed)
 	_set_global("spine_02", _pitch(lean) * _rest_global["spine_02"], posed)
 	_set_global("spine_03", _pitch(lean) * Basis(_up, deg_to_rad(5.0) * s * _walk) * _rest_global["spine_03"], posed)
@@ -152,6 +158,12 @@ func _apply() -> void:
 		model.position.y = _model_rest_y - HIP_BOB * _walk * absf(s) * 0.8 - LAND_DIP * _dip
 
 
+func _parent_rest(bone_index: int) -> Basis:
+	if not _rest_parent_cache.has(bone_index):
+		_rest_parent_cache[bone_index] = skeleton.get_bone_global_rest(bone_index).basis
+	return _rest_parent_cache[bone_index]
+
+
 ## Sets a bone so its skeleton-space orientation equals `global_basis`, given the already posed parents.
 func _set_global(bone: String, global_basis: Basis, posed: Dictionary) -> void:
 	var idx: int = _ids[bone]
@@ -162,7 +174,9 @@ func _set_global(bone: String, global_basis: Basis, posed: Dictionary) -> void:
 		if posed.has(parent_name):
 			parent_basis = posed[parent_name]
 		else:
-			parent_basis = skeleton.get_bone_global_pose(parent).basis
+			# Unposed parents (pelvis, clavicles) stay at rest. Reading get_bone_global_pose() here would force a
+			# full skeleton recompute mid-frame after every bone write, which was measured as the dominant cost.
+			parent_basis = _parent_rest(parent)
 	posed[bone] = global_basis
 	var local := (parent_basis.inverse() * global_basis).orthonormalized()
 	skeleton.set_bone_pose_rotation(idx, local.get_rotation_quaternion())

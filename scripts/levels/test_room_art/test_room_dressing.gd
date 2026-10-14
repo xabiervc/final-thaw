@@ -277,19 +277,31 @@ func _reskin_static(body: StaticBody3D) -> void:
 		box("cap_edge", Vector3(size.x + 0.06, 0.03, 0.05), Vector3(p.x, top - 0.02, p.z + size.z * 0.5 + 0.01), 0.0, false)
 
 
+## The floor is split into FLOOR_TILE tiles: on the Compatibility renderer every omni light touching a mesh costs an
+## extra pass over it, so small tiles keep each light's cost to the floor it actually reaches.
+const FLOOR_TILE := 4.0
+
 func _build_floor() -> void:
-	var plane := PlaneMesh.new()
-	plane.size = Vector2(ROOM_X.y - ROOM_X.x, ROOM_Z.y - ROOM_Z.x)
-	var mi := MeshInstance3D.new()
-	mi.name = "FacilityFloor"
-	mi.mesh = plane
-	mi.position = Vector3(0.0, 0.003, 0.0)
-	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	var m := mats.get_material("floor") as ShaderMaterial
 	m.set_shader_parameter("wet_spot_a", Vector4(-0.45, -6.9, 2.6, 0.9))  # meltwater seeping under the shutter
 	m.set_shader_parameter("wet_spot_b", Vector4(-5.3, -5.0, 1.8, 0.6))   # around the pump drain
-	mi.material_override = m
-	add_child(mi)
+	var plane := PlaneMesh.new()
+	plane.size = Vector2(FLOOR_TILE, FLOOR_TILE)
+	var floor_root := Node3D.new()
+	floor_root.name = "FacilityFloor"
+	add_child(floor_root)
+	var x := ROOM_X.x
+	while x < ROOM_X.y - 0.01:
+		var z := ROOM_Z.x
+		while z < ROOM_Z.y - 0.01:
+			var mi := MeshInstance3D.new()
+			mi.mesh = plane
+			mi.position = Vector3(x + FLOOR_TILE * 0.5, 0.003, z + FLOOR_TILE * 0.5)
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mi.material_override = m
+			floor_root.add_child(mi)
+			z += FLOOR_TILE
+		x += FLOOR_TILE
 
 
 ## Dark structural mass around the room, so the camera never shows empty void past the outer walls.

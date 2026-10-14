@@ -46,15 +46,12 @@ var _door_lamps: Array = []  # {door, mat}: compact lock-state lamps on both fac
 func _ready() -> void:
 	name = "PowerRig"
 	# Emergency circuit (always on).
-	_emergency.append(_light("EmergencyAccess", Vector3(-10.0, 2.3, -6.4), COLD, 1.9, 8.0))
-	_emergency.append(_light("EmergencyHallWest", Vector3(-5.35, 2.3, -6.4), COLD, 1.7, 8.0))
-	_emergency.append(_light("EmergencyHallEast", Vector3(2.75, 2.3, -6.4), COLD, 1.5, 7.5))
+	_emergency.append(_light("EmergencyAccess", Vector3(-10.0, 2.3, -6.4), COLD, 1.9, 6.5))
+	_emergency.append(_light("EmergencyHallWest", Vector3(-5.35, 2.3, -6.4), COLD, 1.7, 6.5))
+	_emergency.append(_light("EmergencyHallEast", Vector3(2.75, 2.3, -6.4), COLD, 1.5, 6.0))
 	_emergency.append(_light("Heater", Vector3(-0.4, 1.7, 0.0), WARM, 2.2, 3.6))
-	_emergency.append(_light("AccessFill", Vector3(-9.5, 3.4, 3.5), COLD, 0.35, 8.0))
-	_emergency.append(_light("HallFill", Vector3(-2.5, 3.6, 4.5), COLD, 0.3, 9.0))
 	_flicker_light = _light("FailingFixture", Vector3(-3.45, 2.3, -6.4), COLD, 1.1, 6.0)
-	_beacon = _light("GeneratorBeacon", Vector3(5.55, 2.9, -7.0), RED, BEACON_LIGHT, 6.5)
-	_light("GeneratorBaySpill", Vector3(6.2, 2.6, 1.5), RED, 0.35, 7.0)
+	_beacon = _light("GeneratorBeacon", Vector3(5.55, 2.9, -7.0), RED, BEACON_LIGHT, 5.5)
 	# Generator circuit, in the order it comes online.
 	_circuit.append({"light": _light("PowerGenerator", Vector3(7.6, 2.3, -6.4), COLD, 0.0, 7.0), "energy": 1.4})
 	_circuit.append({"light": _light("PowerBayFront", Vector3(5.9, 2.5, -3.6), COLD, 0.0, 7.0), "energy": 1.25})
@@ -197,6 +194,11 @@ func _process(delta: float) -> void:
 			beacon_mat.emission_energy_multiplier = 1.0 + 4.0 * pulse
 	_update_flicker(delta, reduced)
 	_update_door_lamps()
+	# A dark light still costs a render pass per lit object on Compatibility: hide it while it is off.
+	for entry in _circuit:
+		var l := entry["light"] as OmniLight3D
+		l.visible = l.light_energy > 0.001
+	_beacon.visible = _beacon.light_energy > 0.001
 
 
 func _update_flicker(delta: float, reduced: bool) -> void:
