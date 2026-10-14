@@ -92,6 +92,24 @@ The following coordinates are derived from the concept plan only. Origin is the 
 
 The concept section is available at [section_parking_concept.svg](design/assets/phase2_parking/section_parking_concept.svg). Both drawings remain proposals until reconciled against the Phase 1 service mouth and the Godot world.
 
+**Candidate world transform for handoff review:** Phase 1 places the service mouth at approximately `(X=34, Z=6)`. The parking concept entry centre is `(local X=6.8, local Z=21.8)`. A candidate transform that aligns these centres is `world X = local X + 27.2`; `world Z = local Z − 15.8`. This is a derived alignment hypothesis, not an approved implementation coordinate. Confirm the actual opening footprint, orientation and elevation in the Phase 1 SVG/scene before adopting it. Do not rotate or offset the scene independently of the mouth collider.
+
+### 2.5 Provisional edge and clearance contract
+
+These are design targets for the concept graph, not measured clearances in the current prototype. Clear width means the narrowest continuous collision-free path, excluding cover that intentionally occupies the route.
+
+| Edge | Traversal | Target clear width | Sightline / exposure | Recovery and threat rule |
+|---|---|---:|---|---|
+| P2-01 → P2-02 | Walk/run, no jump | ≥2.0 m | Entry is briefly sheltered by facade | Unit enters from the same service mouth after a readable delay; no spawn in front of Elena |
+| P2-02 → P2-A1 → P2-A2 | Direct walk/run | ≥3.5 m at aisle; ≥1.5 m at turns | High exposure across the central aisle | Nearest cover cluster remains reachable; threat may pursue only along visible, traversable aisle |
+| P2-02 → P2-B1 → P2-B2 | Walk/crouch where needed | ≥1.2 m at the single authored pinch; otherwise ≥1.5 m | Broken sightline behind parked vehicles | No required jump; player can retreat to P2-02 until the final commitment |
+| P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
+| P2-A2 / P2-B3 → P2-JOIN | Walk/run lateral convergence | ≥2.0 m | Short exposed transition | Provide one visible cover pocket before the bottleneck |
+| P2-JOIN → P2-05 | Walk/run, optional short crouch only if geometry clearly signals it | ≥1.5 m | Threat can regain sight near the barrier | Both routes remain viable; no hidden collision lip |
+| P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.5 m at pinch, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; if blocked, use the explicitly drawn bypass or return to cover |
+
+No jump or climb is currently required by the parking concept. Do not import the prototype's 1.8 m/3.0 m gaps into this level simply because they exist in the mechanics test. If a jump, climb or squeeze is later added, it needs an approach/landing diagram and a measured capability test.
+
 ## 3. Parking route topology and encounter sequence
 
 The parking area must be a compact, legible route network with meaningful risk differences. It should not be a single 80 m straight sprint with decorative cars.
