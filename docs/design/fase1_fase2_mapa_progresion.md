@@ -3,7 +3,8 @@
 **Estado:** diseño funcional cerrado para el primer slice; validación de escena y jugabilidad pendiente.  
 **Autoridad de experiencia:** FASE1_FUNCTIONAL_SPEC.md v1.0.  
 **Autoridad espacial:** FASE1_SPATIAL_GRAPH.md v0.4 y FASE1_GREYBOX_SPEC.md v1.1.  
-**Autoridad eléctrica:** FASE1_LOGIC_CONTRACT.md.
+**Autoridad eléctrica:** FASE1_LOGIC_CONTRACT.md.  
+**Implementación inicial pendiente de ejecutar:** `scenes/prototypes/phase1_canonical_greybox.tscn`; criterios de comprobación en `FASE1_CANONICAL_BUILD.md`.
 
 ## 1. Intención
 
