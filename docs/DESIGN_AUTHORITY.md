@@ -13,11 +13,11 @@ This document separates current design direction, actual implementation evidence
 | Core gameplay and narrative loop | `docs/CORE_LOOP.md` | Active design contract for the opening; implementation state is separately tracked |
 | Opening level structure and Phase 2 spatial design | `docs/LEVEL_STRUCTURE.md` plus `docs/design/assets/phase2_parking/` | Design authority for route, concept v0.3 plan/section, edge clearances, obstacle register and selected handoff transform; dimensions/colliders require runtime reconciliation |
 | Mission 1 puzzle | `docs/design/MISSION1_GHOST_PROTOCOL.md` plus `docs/design/FASE1_LOGIC_CONTRACT.md` | Puzzle design and logic contract; implementation and integration must be evidenced |
-| Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v2.0 | Current spatial intent; plans, graph and scene must remain aligned |
+| Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v2.1 | Current spatial intent; plans, graph and scene must remain aligned |
 | Phase 1 plans and section | `docs/design/assets/phase1_architecture/` | Current drawing authority for Phase 1; physical alignment remains pending verification |
-| Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v1.0 | Current target topology; verify footprints and traversability in Godot |
-| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.0 | Target measurements and collision contract, not proof of built geometry |
-| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.0 | Target interactions, puzzle and escape flow; some escape requirements are not implemented |
+| Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v1.1 | Current target topology; verify footprints and traversability in Godot |
+| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.1 | Target measurements and collision contract, not proof of built geometry |
+| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.1 | Target interactions, puzzle and escape flow; some escape requirements are not implemented |
 | Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v1.1 | Quiet evasion → perceptible reacquisition → running chase → selected exit and physical parking handoff; implementation pending |
 | Movement/chase prototype mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus current code | Prototype behavior and known limits; v2 test/playtest status must be recorded |
 | Requirement-to-evidence mapping | `docs/TRACEABILITY_MATRIX.md` | Maps intended behavior to implementation, tests and verification gaps |
@@ -49,7 +49,7 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 
 ## Conflict resolution
 
-1. For Phase 1 spatial intent, use `FASE1_ARCHITECTURAL_LAYOUT.md` v2.0, the current plan/section SVGs, `FASE1_SPATIAL_GRAPH.md` v1.0 and `FASE1_GREYBOX_SPEC.md` v2.0. Older references to v1.0/v0.6 are superseded.
+1. For Phase 1 spatial intent, use `FASE1_ARCHITECTURAL_LAYOUT.md` v2.1, the current plan/section SVGs, `FASE1_SPATIAL_GRAPH.md` v1.1 and `FASE1_GREYBOX_SPEC.md` v2.1. Older references to v1.0/v0.6 are superseded.
 2. For the opening's player-facing behavior and mission boundaries, use `DESIGN_PIVOT_PROTOTYPE_BRIEF.md`, `CORE_LOOP.md` and `LEVEL_STRUCTURE.md`.
 3. For Phase 1 circuit behavior, `FASE1_LOGIC_CONTRACT.md` remains authoritative unless a specific change is explicitly approved.
 4. For what exists, inspect current code, scenes and tests. Design documentation does not prove implementation.
