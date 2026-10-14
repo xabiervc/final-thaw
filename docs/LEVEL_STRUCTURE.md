@@ -274,7 +274,7 @@ Audio must communicate distance/state without making silent play impossible. Pro
 
 **Can Elena get beyond the facility's immediate recovery perimeter after discovering that the Aster record was deliberately suppressed?**
 
-The parking area should add a new fact, not repeat the same revelation. The current opening brief defines the causal trigger: maintenance queues `SERVICE_OVERRIDE`; crossing the exterior leaf of G sends the queued audit and starts Containment. The specific recipient, chain of command and degree of human supervision remain open. The recommended story function for the parking area is to show that the response is operationally coordinated through door, light or access-state changes. This broader implication is a **design proposal**, not locked canon, and must not identify a named person as responsible.
+The parking area should add a new fact, not repeat the same revelation. The current opening brief defines the causal trigger: the maintenance interaction queues `SERVICE_OVERRIDE` as separate mission state; opening the exterior leaf of G sends the queued audit and starts Containment. The specific recipient, chain of command and degree of human supervision remain open. The recommended story function for the parking area is to show that the response is operationally coordinated through door, light or access-state changes. This broader implication is a **design proposal**, not locked canon, and must not identify a named person as responsible.
 
 ### 6.3 Beat-to-information contract
 
