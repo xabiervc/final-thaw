@@ -41,13 +41,15 @@ The player's emotional progression is: **curiosity → doubt → inference → c
    *Dialogue proposal, only if a quiet window exists:* “Han recibido la auditoría.”  
    This line is provisional and must not explain a fact already made obvious by the world.
 
-9. **Vertical escape.** The player returns via S2 to M, the existing lift to P0, S1 to P−1 and the service evacuation gallery. The level must never invent a new stair or lift to make the script work.
+9. **Reacquisition / running chase.** The first running segment begins at an exposed threshold, provisionally the lift opening onto the P0 service/workshop circulation: the recovery unit reacquires Elena through actual line of sight or a clearly signalled facility event. The trigger and NPC positions must be authored on the plan and graph; no omniscient detection or camera cut.
 
-10. **Alternative service exit.** Elena leaves through a physically justified exterior mouth different from the west entrance. Its location is chosen to support the full route and can differ from the current provisional P−1 mouth. The selected exit connects continuously to the parking area; the parking plan's local coordinate frame is fitted afterward.
+10. **Vertical escape.** The player returns through existing vertical/service circulation toward P0/P−1 and the selected alternative exit. The level must never invent a new stair or lift to make the script work.
 
-11. **Parking chase.** The running pressure continues into the parking area. The player reads cover, columns, vehicles, sightlines and the service perimeter. The routes trade exposure against time/traversal. The recovery unit remains bound by its senses and physical navigation.
+11. **Alternative service exit.** Elena leaves through a physically justified exterior mouth different from the west entrance. Its location is chosen to support the full route and can differ from the current provisional P−1 mouth. The selected exit connects continuously to the parking area; the parking plan's local coordinate frame is fitted afterward.
 
-12. **Egress / aftermath.** Elena crosses a physically defined far-side boundary. The immediate pursuit is broken, but the broader threat remains.  
+12. **Parking chase.** The running pressure continues into the parking area. The player reads cover, columns, vehicles, sightlines and the service perimeter. The routes trade exposure against time/traversal. The recovery unit remains bound by its senses and physical navigation.
+
+13. **Egress / aftermath.** Elena crosses a physically defined far-side boundary. The immediate pursuit is broken, but the broader threat remains.  
    *Ending-beat proposal:* a short external security response or access-state change suggests that the facility's response is coordinated. Do not identify a person or settle the wider conspiracy without a separately approved story decision.
 
 ### Recommended narrative baseline (proposal for owner review)
@@ -74,6 +76,7 @@ All lines below are proposed Spanish source copy for the prototype. They must be
 | N1-04 | Opening G's exterior leaf after maintenance queued SERVICE_OVERRIDE | No mandatory spoken line. Alarm changes state; status light changes; exterior door mechanism is audible/visible | Gameplay continues; no forced camera | Make cause and consequence legible |
 | N2-01 | Recovery unit becomes audible/visible beyond G | Elena: “La auditoría ha activado Containment.” | Trigger only after line of sight or audio establishes the unit; subtitle; skippable | Connect the audit to the response without naming an operator |
 | N2-05 | First occupied work area during quiet evasion | No mandatory spoken line. Staff voices, work posture and a readable sightline establish who may notice Elena | NPC routines are deterministic enough to learn; no required takedown; optional dialogue never blocks movement | Establish stealth pressure before the running chase |
+| N2-06 | Recovery unit reacquires Elena at the authored exposed P0 threshold (provisional) | No mandatory line. Footsteps/servo, alert-state change and a clear silhouette communicate the switch to pursuit | No camera cut or input lock; trigger requires actual LOS or a clearly telegraphed authored event | Turn quiet evasion into a readable running chase |
 | N2-02 | Elena reaches P−1 service gallery and the threat loses sight | No dialogue required; pump/ventilation bed gives way to exterior ambience | Audio transition with visual threshold | Create breath and spatial transition |
 | N2-03 | First view of parking exit/perimeter | No mandatory line. A service reader displays “PROTOCOLO DE CONTENCIÓN: ACTIVO / SECTOR EXTERIOR” while perimeter lights/access states change in sequence | Environmental storytelling; readable without sound; no forced stop or log interaction | Show coordinated facility response without naming an operator or explaining the motive |
 | N2-04 | Escape boundary crossed | Elena: “Fuera del perímetro. Eso no significa que haya terminado.” | One short, skippable subtitle after control is safe | Deliver temporary release, preserve stakes |
