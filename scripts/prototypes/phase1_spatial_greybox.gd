@@ -1,9 +1,10 @@
 extends Node3D
 ## Phase 1 spatial review: six rooms on four levels joined by fixed stairs (layout in phase1_layout.gd).
-## Reuses the art team's FacilityMaterials, prompt HUD and wall dither, and Elena's animations.
-## No circuit, archive extraction, pursuit or containment. The lift is not installed.
+## Reuses the art team's FacilityMaterials, prompt HUD and wall dither, and Elena's animations. The rooms are dressed by
+## phase1_dressing.gd. No circuit, archive extraction, pursuit or containment. The lift is not installed.
 const Layout = preload("res://scripts/prototypes/phase1_layout.gd")
 const Player = preload("res://scripts/prototypes/phase1_spatial_player.gd")
+const Dressing = preload("res://scripts/prototypes/phase1_dressing.gd")
 const FacilityMaterials = preload("res://scripts/levels/test_room_art/facility_materials.gd")
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
@@ -16,12 +17,21 @@ const FADED := 0.8
 const FADE_SPEED := 5.0
 const SHORTCUT_REACH := 2.5
 const SHORTCUT_CENTER := Vector3(2.0, 3.0, -10.0)
+## Standing meltwater per room: Vector4(x, z, radius, strength) pairs for the floor shader.
+const WET_SPOTS := {
+	"entry": [Vector4(6.0, 2.0, 2.2, 0.8), Vector4(2.0, 3.5, 1.4, 0.6)],
+	"test_hall": [Vector4(14.0, 6.0, 3.0, 0.8), Vector4(23.0, -7.0, 2.6, 0.7)],
+	"pit": [Vector4(18.0, 19.0, 5.0, 1.0), Vector4(22.5, 22.0, 3.0, 0.9)],
+	"pump": [Vector4(36.0, -3.0, 2.4, 0.7), Vector4(41.0, 4.0, 2.0, 0.6)],
+}
 
 var materials = FacilityMaterials.new()
+var dressing = null
 var player: CharacterBody3D
 var hud: CanvasLayer
 var fade_groups: Array = []
 var body_group: Dictionary = {}
+var marker_labels: Array = []
 var shortcut_body: StaticBody3D
 var shortcut_open: bool = false
 var safe_point: Vector3 = Vector3(2.0, 0.2, 1.0)
@@ -34,6 +44,9 @@ func _ready() -> void:
 	for stair in Layout.STAIRS:
 		_build_stairs(stair)
 	_build_shortcut_door()
+	dressing = Dressing.new()
+	add_child(dressing)
+	dressing.build(materials)
 	_build_markers()
 	player = Player.new()
 	player.position = Layout.ROOMS["entry"]["spawn"]
@@ -68,6 +81,8 @@ func _update_room() -> void:
 	current_room = id
 	safe_point = Layout.ROOMS[id]["spawn"]
 	hud.call("set_status", "Zona: " + str(Layout.ROOMS[id]["name"]))
+	for entry in marker_labels:
+		(entry["label"] as Label3D).visible = entry["room"] == id
 
 # --- Shortcut (unlockable only from the cabin side) ---------------------------------------------------
 
@@ -165,6 +180,16 @@ func _new_fade_group(wall_key: String) -> int:
 	fade_groups.append({"material": material, "amount": 0.0})
 	return fade_groups.size() - 1
 
+func _floor_material(id: String, key: String) -> Material:
+	var base: Material = materials.get_material(key)
+	if key != "floor" or not WET_SPOTS.has(id):
+		return base
+	var wet := base.duplicate() as ShaderMaterial
+	var spots: Array = WET_SPOTS[id]
+	wet.set_shader_parameter("wet_spot_a", spots[0])
+	wet.set_shader_parameter("wet_spot_b", spots[1])
+	return wet
+
 func _build_room(id: String) -> void:
 	var r: Dictionary = Layout.ROOMS[id]
 	var x0: float = float(r["x0"])
@@ -172,7 +197,7 @@ func _build_room(id: String) -> void:
 	var z0: float = float(r["z0"])
 	var z1: float = float(r["z1"])
 	var y: float = float(r["y"])
-	_body("Floor_" + id, Vector3(x1 - x0, SLAB, z1 - z0), Vector3((x0 + x1) * 0.5, y - SLAB * 0.5, (z0 + z1) * 0.5), materials.get_material(str(r.get("floor", "floor"))))
+	_body("Floor_" + id, Vector3(x1 - x0, SLAB, z1 - z0), Vector3((x0 + x1) * 0.5, y - SLAB * 0.5, (z0 + z1) * 0.5), _floor_material(id, str(r.get("floor", "floor"))))
 	var gaps: Dictionary = Layout.openings(id)
 	var skipped: Array = Layout.skipped_sides(id)
 	var rails: Array = r.get("rail_sides", [])
@@ -211,7 +236,7 @@ func _build_room(id: String) -> void:
 	light.position = Vector3((x0 + x1) * 0.5, y + 3.6, (z0 + z1) * 0.5)
 	light.light_color = Color(0.78, 0.88, 1.0)
 	light.light_energy = 0.7
-	light.omni_range = maxf(x1 - x0, z1 - z0) * 0.6 + 4.0
+	light.omni_range = maxf(x1 - x0, z1 - z0) * 0.5 + 2.0
 	add_child(light)
 
 func _segments(run_lo: float, run_hi: float, gaps: Array) -> Array:
@@ -274,14 +299,19 @@ func _build_stairs(stair: Dictionary) -> void:
 		var wall := _body("StairWall_" + str(stair["id"]), wall_size, wall_center, fade_groups[group]["material"] as Material)
 		body_group[wall] = group
 
+## Position signs are shown only for the room the player is in, so they never pile up over the HUD or show through walls.
 func _build_markers() -> void:
 	for key in Layout.POSITIONS:
 		var entry: Dictionary = Layout.POSITIONS[key]
+		var at: Vector3 = entry["at"]
 		var label := Label3D.new()
 		label.text = str(entry["label"])
-		label.position = (entry["at"] as Vector3) + Vector3(0.0, 1.8, 0.0)
+		label.position = at + Vector3(0.0, 1.8, 0.0)
 		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-		label.font_size = 36
+		label.font_size = 28
 		label.pixel_size = 0.008
 		label.outline_size = 8
+		label.modulate = Color(0.7, 0.9, 0.95, 0.85)
+		label.visible = false
 		add_child(label)
+		marker_labels.append({"label": label, "room": Layout.room_at(at)})
