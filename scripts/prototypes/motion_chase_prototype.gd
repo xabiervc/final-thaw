@@ -10,6 +10,7 @@ extends Node3D
 
 const SfxSynth = preload("res://scripts/audio/sfx_synth.gd")
 const PoseScript = preload("res://scripts/characters/elena_procedural_pose.gd")
+const Handoff = preload("res://scripts/phase1/phase1_handoff.gd")
 
 const MENU_PATH := "res://scenes/ui/main_menu.tscn"
 const MODEL_PATH := "res://assets/models/lab_ref/ref_elena_mpfb.glb"
@@ -140,6 +141,12 @@ var last_known: Vector3 = Vector3.ZERO
 
 @export_range(0, 3, 1) var initial_checkpoint_index: int = 0
 @export var parking_entry_mode: bool = false
+## Phase 1 state received at the east service mouth (empty in a standalone run). Session memory only.
+var handoff: Dictionary = {}
+var mission_flags: Dictionary = {}
+## Seconds until the recovery unit comes out of the same service mouth (continuing the Phase 1 pursuit).
+var unit_arrival_left: float = -1.0
+const MOUTH_X := 33.0
 var checkpoint_index: int = 0
 var checkpoint_position: Vector3 = CHECKPOINTS[0]
 var catches: int = 0
@@ -154,16 +161,25 @@ func _ready() -> void:
 	checkpoint_position = CHECKPOINTS[checkpoint_index]
 	if parking_entry_mode:
 		patrol_points = [Vector3(43.0, 0.0, -1.0), Vector3(57.0, 0.0, 1.0)]
+		if Handoff.has_pending():
+			handoff = Handoff.consume()
+			mission_flags = handoff.get("mission", {})
 	_ensure_action("crouch", KEY_CTRL)
 	_ensure_action("run", KEY_SHIFT)
 	_build_level()
+	if not handoff.is_empty():
+		_build_service_mouth()
 	_build_player()
 	_build_enemy()
+	if not handoff.is_empty():
+		_continue_pursuit()
 	_build_scan_markers()
 	_build_audio()
 	_build_ui()
 	_update_camera(100.0)
-	if parking_entry_mode:
+	if not handoff.is_empty():
+		_show_message("Containment sigue activo. Aléjate de la boca de servicio.", 5.0)
+	elif parking_entry_mode:
 		_show_message("Containment activado. Encuentra una salida.", 7.0)
 	else:
 		_show_message("Llega a la salida. Una unidad de recuperación patrulla la zona central: usa el escáner, el sigilo y el entorno.", 7.0)
@@ -201,7 +217,12 @@ func _physics_process(delta: float) -> void:
 	_update_checkpoint()
 	_move_player(delta)
 	_update_climb_prompt()
-	_update_enemy(delta)
+	if unit_arrival_left > 0.0:
+		unit_arrival_left -= delta
+		if unit_arrival_left <= 0.0:
+			_unit_emerges()
+	else:
+		_update_enemy(delta)
 	_update_scan(delta)
 	_update_camera(delta)
 	_update_occluders(delta)
@@ -209,6 +230,48 @@ func _physics_process(delta: float) -> void:
 	_update_hud(delta)
 	if not finished and player.global_position.x >= EXIT_X:
 		_finish()
+
+
+# --- Continuity with Phase 1 ----------------------------------------------------------------------------
+
+## The east service mouth Elena has just come out of: the end of the P-1 drainage gallery, now the parking entry.
+## Built only when the scene starts from the Phase 1 handoff; the standalone corridor keeps its own layout.
+func _build_service_mouth() -> void:
+	_add_box(Vector3(0.6, 4.0, HALF_DEPTH - 1.5), Vector3(MOUTH_X - 0.3, 2.0, -(HALF_DEPTH + 1.5) * 0.5), WALL_COLOR, false)
+	_add_box(Vector3(0.6, 4.0, HALF_DEPTH - 1.5), Vector3(MOUTH_X - 0.3, 2.0, (HALF_DEPTH + 1.5) * 0.5), WALL_COLOR, false)
+	_add_box(Vector3(0.6, 1.6, 3.0), Vector3(MOUTH_X - 0.3, 3.2, 0.0), WALL_COLOR, false)
+	_add_box(Vector3(3.4, 0.3, 3.0), Vector3(MOUTH_X - 2.0, -0.15, 0.0), FLOOR_COLOR, false)
+	_add_box(Vector3(3.4, 0.3, 3.6), Vector3(MOUTH_X - 2.0, 2.55, 0.0), WALL_COLOR, false)
+	_add_box(Vector3(3.4, 2.4, 0.3), Vector3(MOUTH_X - 2.0, 1.2, -1.65), WALL_COLOR, false)
+	_add_box(Vector3(3.4, 2.4, 0.3), Vector3(MOUTH_X - 2.0, 1.2, 1.65), WALL_COLOR, false)
+	_add_box(Vector3(0.3, 2.4, 3.0), Vector3(MOUTH_X - 3.7, 1.2, 0.0), WALL_COLOR, false)
+	_add_sign("GALERÍA DE DESCARGA", Vector3(MOUTH_X + 0.1, 2.75, 0.0))
+	# N2-03 (docs/narrative_complete.md): the facility response, readable without sound or a forced stop.
+	_add_sign("PROTOCOLO DE CONTENCIÓN: ACTIVO\nSECTOR EXTERIOR", Vector3(MOUTH_X + 0.3, 2.2, -4.5))
+
+
+## Phase 1 handed over mid-escape: Elena keeps her heading and momentum, and the unit is still behind her.
+func _continue_pursuit() -> void:
+	var v: Vector3 = handoff.get("velocity", Vector3.ZERO)
+	player.velocity = Vector3(maxf(v.x, 0.0), 0.0, v.z)
+	player_visual.rotation.y = float(handoff.get("facing", PI * 0.5))
+	enemy.visible = false
+	enemy.global_position = Vector3(MOUTH_X - 2.6, -20.0, 0.0)
+	var gap: float = float(handoff.get("unit_gap", 12.0))
+	unit_arrival_left = clampf(gap / ENEMY_CHASE_SPEED, 0.8, 4.0)
+
+
+## The unit comes out of the same mouth already hunting: it heads for where it last had her (the mouth itself).
+func _unit_emerges() -> void:
+	enemy.global_position = Vector3(MOUTH_X - 2.6, 0.0, 0.0)
+	enemy.velocity = Vector3.ZERO
+	enemy.visible = true
+	enemy_visual.rotation.y = PI * 0.5
+	last_known = Vector3(MOUTH_X + 1.5, 0.0, 0.0)
+	enemy_state = "chase"
+	awareness = 1.0
+	if enemy_alert_player != null:
+		enemy_alert_player.play()
 
 
 # --- Jugador ----------------------------------------------------------------------------------------
