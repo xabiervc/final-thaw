@@ -6,7 +6,7 @@
 
 | Área | Footprint | Requisitos |
 |---|---|---|
-| D1 · Achique | X 10..20, Z 1..8 | Suelo continuo, bombas, sumidero, colector y luz mínima. |
+| D1 · Achique | X 10..20, Z 1..8 | Galería cubierta bajo B; suelo continuo, bombas, sumidero, colector y luz mínima. La altura libre es una condición crítica: no aceptar si el paso obliga a agacharse. |
 | D2 · Distribución | X 20..28, Z 1..8 | Suelo continuo, esquema, puente A→T y mantenimiento. |
 | Boca S1 | X 24..26, Z 8..11 | Escalera P0↔P−1, salida continua y barandillas sin bloquearla. |
 
@@ -17,14 +17,14 @@ Referencias: esquema (27,−2,6), puente (22,−2,4), switch (26,−2,2). D1 y D
 | Área | Footprint | Requisitos |
 |---|---|---|
 | A · Esclusa | X 1..7, Z 4..10 | Entrada desde túnel, señal y vista a B. |
-| B · Nave | X 7..20, Z −3..8 | Columna Aster, rig bajo, bandejas, barreras y circulación alrededor de maquinaria. |
+| B · Nave | X 7..20, Z −9..1 | Columna Aster, rig bajo, bandejas, barreras y circulación alrededor de maquinaria. |
 | C · Taller | X 20..24, Z −9..−2 | Cuadros y banco; utilería perimetral; paso de servicio a B. |
 | Galería servicio | X 20..30, Z −2..1 | Paso al elevador, ancho libre mínimo 2 m. |
-| Hueco D1/D2 | X 10..28, Z 1..8 | Hueco real, protegido y con acceso únicamente por S1. |
+| Hueco D2 | X 20..28, Z 1..8 | Hueco real, protegido y con acceso únicamente por S1; D1 queda cubierto por la losa P0. |
 | Elevador inferior | X 24,5..27,5, Z −4,5..−1,5 | Parada Y=0. |
 | Tramo dañado | X 2..4, Z −3..3 | Barrera/collider; no paso a P2. |
 
-La planta debe leerse como vestíbulo, nave principal y taller, no como una sala diáfana sin función.
+La planta debe leerse como vestíbulo, nave principal y taller, no como una sala diáfana sin función. El pasillo A→B discurre por X=7..10, Z=1..8 y bordea la barandilla oeste del hueco D2. D1 queda bajo una zona cubierta de B y debe conservar una altura libre suficiente para recorrerlo sin agacharse; verificarlo con la cámara y la cápsula reales.
 
 ## M · Mezzanine, Y=+1,5
 
