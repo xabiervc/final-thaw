@@ -22,7 +22,7 @@ This document separates current design direction, actual implementation evidence
 | Movement/chase prototype mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus current code | Prototype behavior and known limits; v2 test/playtest status must be recorded |
 | Requirement-to-evidence mapping | `docs/TRACEABILITY_MATRIX.md` | Maps intended behavior to implementation, tests and verification gaps |
 | Implementation status | `PROJECT_STATUS.md`, current scene/script/test state and recorded results | Source of truth for what exists and what was actually verified |
-| Narrative legacy archive | `docs/narrative_complete.md` and explicitly marked legacy documents | Historical source material only where it conflicts with the active prototype direction |
+| Opening script and legacy narrative archive | `docs/narrative_complete.md` | Opening beats N2-01…N2-06 and unresolved decisions at the top are current proposals; the legacy full-campaign material below is historical where it conflicts with the active prototype direction |
 | Technical/workflow contracts | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Protected engineering, testing and evidence requirements |
 | Asset provenance | `docs/art/PROVENANCE.md` | Active source/licence record |
 
