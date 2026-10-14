@@ -2,79 +2,92 @@
 
 ## Current phase
 
-**Design pivot / prototype validation.** The next goal is a small, evidence-driven third-person 3D gameplay prototype. The full campaign design is not yet re-approved.
+**Prototype validation for the redesign.** The branch now contains an isolated third-person motion/chase prototype (v2) in addition to earlier shelter and Elena-room experiments.
 
-## Current design direction
+## Active design direction
 
-See [`docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md`](docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md).
+See:
+- [Working vision](docs/VISION.md)
+- [Design pivot brief](docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md)
+- [Motion/chase prototype specification](docs/design/MOTION_CHASE_PROTOTYPE.md)
+- [Current core loop](docs/CORE_LOOP.md)
 
-Working hypothesis:
-- Mission 1: Elena investigates Helix/Aster evidence and solves one compact, inference-driven system puzzle.
-- Mission 2: activating the system triggers containment; Elena escapes through physical traversal while a readable pursuer searches for her.
-- Third-person 3D is the first camera/movement hypothesis because the proposed mechanics need spatial depth. The choice remains subject to playtest, camera readability, performance, and target-platform validation.
-- The existing Elena/Helix/Iris/Selene/Aster narrative material is retained provisionally. The dual-protagonist campaign, Marcus combat, fixed 16-phase structure, total duration, and final platform scope are not reconfirmed by this prototype.
+The working hypothesis is an Elena-led opening with an investigation/system puzzle followed by a traversal/stealth escape. This is not yet an approved full-campaign redesign.
 
-## Implementation status — existing branch content
+## Motion/chase prototype v2
 
-The `feat/godot-vertical-slice` branch contains earlier experiments:
-1. The Flooded Shelter 2.5D gameplay skeleton, including movement, oxygen, interactions, rescue, localization and a decision summary.
-2. An early 3D Elena test room with movement, interaction, scanning, environmental presentation, HUD and synthesized audio experiments.
-3. Lab greybox scenes, visual wrappers, props, materials, character models and shader/capture tooling.
+Files:
+- Scene: `scenes/prototypes/motion_chase_prototype.tscn`
+- Code: `scripts/prototypes/motion_chase_prototype.gd`
+- Test: `tests/test_motion_chase_prototype.tscn`
+- Test code: `tests/test_motion_chase_prototype.gd`
 
-These are useful comparison points and asset sources. They do not implement the proposed crawl/climb/pursuit loop unless a specific feature is verified in code and by playtest.
+Implemented in code:
+- Third-person camera orbit and fading of occluding walls, ceilings, pillars and catwalk.
+- Walk, run, crouch, jump, gravity, jump buffer, coyote time and landing/footstep audio.
+- Three gaps, a low vent tunnel, a low duct, a climb trigger and an elevated catwalk.
+- Recovery-unit state machine: patrol, investigate, alert, chase, search and return.
+- Vision cone and line-of-sight checks, bounded last-known-position pursuit and noise-based investigation.
+- Scanner reveal, route labels, cooldown, checkpoint recovery, catches, exit state and HUD.
+- Elena model/pose layer with primitive fallback and synthesized audio.
 
-## Next milestone
+These are implementation facts from code inspection, not a claim of validated gameplay quality.
 
-**M0 — Five-minute third-person proof of concept.**
+### Verification boundary
 
-Build in this order:
-1. Movement sandbox: camera, movement, jump, fall/land, crouch/crawl, one reliable climb affordance, quick restart.
-2. Traversal greybox: gap, low passage, ledge, visible alternate route.
-3. Pursuer prototype: telegraphed investigation/detection/pursuit/search, breakable line of sight and fair recovery.
-4. One multi-step investigation puzzle using physical clues and optional scanner/hint support.
-5. Connect puzzle completion to lockdown, pursuit, and a story-relevant evidence reveal.
+The prototype design document states that v2 code and its automated test have not yet been run. The next technical action is to run:
 
-Do not expand combat, inventory, Marcus gameplay, full-campaign content, or production art before the proof of concept passes.
+```sh
+godot --headless --path . res://tests/test_motion_chase_prototype.tscn
+godot --headless --path . res://tests/test_phase_0.tscn
+```
 
-## Acceptance gate
+Then run `scenes/prototypes/motion_chase_prototype.tscn` manually. Record engine version, command output, movement/camera observations, detection fairness, failures and retries. Do not mark v2 as passing until that evidence exists.
 
-A hands-on playtest must establish that:
-- a new player understands the immediate goal without the HUD giving away the solution;
-- traversal is readable and does not routinely fail due to camera/collision issues;
-- the pursuer is threatening but fair and its states are legible;
-- the escape requires at least one meaningful route/timing/concealment decision;
-- failure teaches and retries are short;
-- puzzle, escape and narrative feel causally connected;
-- the scene loads cleanly and runs acceptably on the actual target configuration;
-- Phase 0 acceptance remains green.
+### Known limitations
 
-Record Godot version, exact steps, PASS/FAIL, console output, captures, performance notes, and unresolved issues.
+- The recovery unit steers with probes, not a navigation mesh.
+- Climbing is a defined point and tween, not free climbing.
+- Crouching visually squashes the model; there is no dedicated crouch or climb pose.
+- Detection/noise tuning has not been validated by recorded playtest.
+- Prototype text is hard-coded Spanish and is not integrated with `NarrativeText`.
+- Web performance and target GPU profiling have not been performed.
+- Mission 1's inference puzzle and the puzzle-to-containment transition are not implemented.
+- The test is not integrated into the campaign.
+
+## Earlier prototypes retained
+
+### Flooded Shelter 2.5D
+
+The branch retains the earlier oxygen, interaction, generator, valves, rescue, localization and decision-summary experiment. It remains available for comparison; it is not the current direction for new gameplay work.
+
+### Elena test room and art wrappers
+
+The branch retains the earlier 3D room with movement, interaction, scanning, visual dressing, HUD and synthesized audio. Reusable elements include camera/presentation experiments, interaction targeting, scan feedback, Elena model/pose, environmental art and capture tooling. These do not automatically become production-approved assets.
+
+## Art and asset status
+
+Current models, lab kit, materials, shaders, lighting and HUD are a prototype library. Reassess scale, collision, traversal clearance, camera occlusion and silhouette from the third-person camera before production use. The MPFB/MakeHuman base-mesh licence remains unverified in the recorded provenance and must be resolved before shipping derived assets.
 
 ## Technical foundation and regression boundary
 
-Phase 0 acceptance testing remains the only formally recorded foundation result in this status record: the last recorded run reported 11 passed, 0 failed, exit code 0. Re-run it after changes; do not assume a historical pass covers new code.
+The last recorded Phase 0 run reported 11 passed, 0 failed, exit code 0. That historical result does not verify later changes. Re-run Phase 0 after relevant modifications and record the result.
 
-Preserve existing input/autoload/resource contracts, save compatibility and CRC32 behavior. Keep previous prototype scenes available until migration is reviewed and the new prototype has been compared in a hands-on session.
+Preserve input/autoload/resource-path contracts, save JSON/CRC32 behavior and Compatibility renderer assumptions unless an explicit impact review authorizes a change. Keep legacy scenes until the new slice has passed a human review.
 
-## Art and asset review
+## Next milestone: combined five-minute opening
 
-Current art is a prototype library, not a set of approved final assets.
-- Reusable candidates: Elena concept/model/materials, lab kit and props, scan effects, HUD patterns, wall cutaway, synthesized audio, lighting experiments, capture harness.
-- Revalidate all scale, collision, traversal clearance, camera occlusion, silhouette and interaction needs against the third-person camera.
-- Marcus model and combat-related assets are not a reason to retain the earlier dual-protagonist/combat direction.
-- The MPFB/MakeHuman base-mesh licence is not yet verified in the documented source; do not ship derived assets until resolved.
-- Visual captures do not substitute for hands-on playtesting. Animation, audio by ear, broad accessibility and target-platform performance still require verification.
-
-See `docs/art/PROVENANCE.md` and the model status documents for asset-specific caveats.
+1. Run/fix the motion/chase v2 test and record a manual playtest.
+2. Tune movement, camera, climb, low tunnel, checkpoints and enemy fairness.
+3. Design one compact Aster/Helix investigation puzzle with multiple clues, scan support and optional hints.
+4. Connect puzzle completion to a lockdown response and the recovery unit.
+5. Playtest the combined sequence; collect evidence on comprehension, fairness, tension, accessibility and performance.
+6. Reconcile the full narrative and campaign specifications only after the owner reviews results.
 
 ## Documentation migration policy
 
-Legacy documents currently specify a 16-phase, dual-protagonist, isometric/combat-heavy campaign as normative. Those assumptions conflict with the new prototype direction. They are to be marked **legacy / under review for the redesign**, not followed as implementation requirements for the new prototype. Do not mass-rewrite them until prototype evidence informs a deliberate design decision.
-
-## Next action
-
-Implement and test M0 from `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md`, starting with movement and camera feel. Keep changes narrow and reversible; do not continue broad art production first.
+The former 16-phase, dual-protagonist, combat-arena and ending specifications are marked legacy/under review for prototype work. Preserve their useful narrative and technical details; do not implement them as requirements for the current prototype without explicit reconciliation.
 
 ## Reporting rule
 
-Do not mark a feature as verified, playable, accessible, performant or release-ready without evidence.
+Distinguish code present, automated test coverage, test run successfully, manual playtest and production readiness. Never claim one on the basis of another.
