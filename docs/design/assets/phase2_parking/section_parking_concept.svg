@@ -25,7 +25,7 @@
     <!-- datum / pavement -->
     <line x1="0" y1="320" x2="960" y2="320" stroke="#344657" stroke-width="3"/>
     <rect x="0" y="320" width="960" height="22" fill="#dce2e7" stroke="#344657" stroke-width="1"/>
-    <text x="480" y="373" class="small" text-anchor="middle">Pavimento continuo; cotas de P−1 y pendiente del umbral de servicio pendientes de medición</text>
+    <text x="480" y="414" class="small" text-anchor="middle">Pavimento continuo; cotas de P−1 y pendiente del umbral de servicio pendientes de medición</text>
     <!-- south and north site limits -->
     <rect x="0" y="250" width="14" height="70" class="concrete"/>
     <text x="6" y="236" class="tiny" text-anchor="middle">SUR</text>
