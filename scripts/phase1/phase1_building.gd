@@ -34,7 +34,7 @@ const R1_CRANK_AT := Vector3(29.4, 0.0, 0.3)
 
 # Interaction anchors used by the scene script.
 const MAINTENANCE_AT := Vector3(26.4, -2.0, 2.2)
-const SCHEMATIC_AT := Vector3(27.6, -2.0, 6.0)
+const SCHEMATIC_AT := Vector3(27.3, -2.0, 2.9)
 const BRIDGE_AT := Vector3(21.5, -2.0, 4.2)
 const SELECTOR_AT := Vector3(12.0, 6.0, -7.6)
 const ISOLATOR_AT := Vector3(19.0, 6.0, -7.6)
@@ -164,7 +164,7 @@ func _p0() -> void:
 # --- P-1: pit, S1, maintenance and the tampered bridge ------------------------------------------------------------
 
 func _pit() -> void:
-	b.slab("PitFloor", PIT, Y_P1, mats.get_material("grate"))
+	b.slab("PitFloor", PIT, Y_P1, mats.get_material("floor"))
 	# Retaining walls between the pit floor and the P0 slab (no hidden void under the floor edge).
 	b.wall_z("PitWallNorth", 0.85, 9.7, 28.3, Y_P1, -0.25)
 	b.wall_z("PitWallSouthWest", 8.15, 9.7, 23.85, Y_P1, -0.25)
@@ -194,8 +194,9 @@ func _pit() -> void:
 	b.paint_sign("D1TideMark", "NIVEL MÁX. 14/03", Vector3(10.05, Y_P1 + 0.6, 4.0), "+x", 26, Color(0.85, 0.3, 0.25))
 	b.paint_sign("D2Label", "D2  ·  DISTRIBUCIÓN", Vector3(23.0, Y_P1 + 0.02, 7.2), "floor", 48)
 	# D2: intended-distribution schematic (east pit wall), tampered A->T bridge, maintenance switch.
-	b.visual("SchematicBoard", Vector3(0.1, 1.3, 2.2), Vector3(27.95, Y_P1 + 1.3, 6.0), mats.get_material("screen_dark"), false)
-	b.screen_text("SchematicDiagram", "ESQUEMA DE DISTRIBUCIÓN PREVISTA\n\nFUENTE AUXILIAR\n├ EMERGENCIA → DIAGNÓSTICO\n├ MANTENIMIENTO → LUCES / ELEVADOR\n└ PROTECCIÓN → SELECTOR\n      ├ ENSAYO → T\n      └ ARCHIVO → A", Vector3(27.88, Y_P1 + 1.32, 6.0), "-x", 18, Color(0.75, 0.92, 0.95))
+	# On the east pit wall north of the gallery opening (Z 4.5..7.5 stays clear).
+	b.visual("SchematicBoard", Vector3(0.1, 1.5, 2.3), Vector3(27.95, Y_P1 + 1.35, 2.9), mats.get_material("screen_dark"), false)
+	b.screen_text("SchematicDiagram", "ESQUEMA DE DISTRIBUCIÓN PREVISTA\n\nFUENTE AUXILIAR\n├ EMERGENCIA → DIAGNÓSTICO\n├ MANTENIMIENTO → LUCES / ELEVADOR\n└ PROTECCIÓN → SELECTOR\n      ├ ENSAYO → T\n      └ ARCHIVO → A", Vector3(27.88, Y_P1 + 1.37, 2.9), "-x", 26, Color(0.75, 0.92, 0.95))
 	b.visual("BridgeTerminalA", Vector3(0.5, 0.7, 0.4), Vector3(20.2, Y_P1 + 0.35, 4.2), mats.get_material("steel_light"), true)
 	b.visual("BridgeTerminalT", Vector3(0.5, 0.7, 0.4), Vector3(22.8, Y_P1 + 0.35, 4.2), mats.get_material("steel_light"), true)
 	b.paint_sign("BridgeLabelA", "A", Vector3(20.2, Y_P1 + 0.8, 4.41), "+z", 64)
@@ -224,7 +225,7 @@ func _east_bridge_and_gallery() -> void:
 	r1_shutter = b.body("R1Shutter", Vector3(1.9, 2.3, 0.1), Vector3(29.0, R1_OPEN_Y, 1.05), mats.get_material("steel_light"))
 	r1_beacon = b.visual("R1Beacon", Vector3(0.2, 0.12, 0.12), Vector3(29.0, 2.82, 0.88), b.flat(Color(0.2, 0.2, 0.2), 0.4), false)
 	b.visual("R1CrankWheel", Vector3(0.08, 0.45, 0.45), Vector3(29.85, 1.1, 0.35), mats.get_material("pipe_red"), false)
-	b.paint_sign("R1CrankSign", "DESBLOQUEO\nDE EMERGENCIA", Vector3(29.84, 1.55, 0.35), "-x", 20, Color(1.0, 0.8, 0.4))
+	b.paint_sign("R1CrankSign", "DESBLOQUEO\nDE EMERGENCIA", Vector3(29.84, 1.7, 0.35), "-x", 32, Color(1.0, 0.8, 0.4))
 	# P-1 evacuation gallery X 28..34, Z 4.5..7.5, floor Y -2, 2.23 m clear, roofed, walled.
 	b.slab("EvacGalleryFloor", GALLERY, Y_P1, mats.get_material("floor"))
 	b.wall_z("EvacGalleryNorth", 4.35, 28.0, MOUTH_X, Y_P1, 0.23)
@@ -279,8 +280,8 @@ func _mezzanine() -> void:
 	# Staff work panels on the north wall and the staff refuge (office door, north-east).
 	b.visual("PumpPanelA", Vector3(1.2, 1.4, 0.15), Vector3(16.5, Y_M + 1.1, -9.9), mats.get_material("screen_dark"), true)
 	b.visual("PumpPanelB", Vector3(1.2, 1.4, 0.15), Vector3(21.5, Y_M + 1.1, -9.9), mats.get_material("screen_dark"), true)
-	b.screen_text("PumpPanelAText", "BOMBEO B-1\nPRESIÓN 2,4 bar", Vector3(16.5, Y_M + 1.3, -9.8), "+z", 18)
-	b.screen_text("PumpPanelBText", "BOMBEO B-2\nPRESIÓN 2,1 bar", Vector3(21.5, Y_M + 1.3, -9.8), "+z", 18)
+	b.screen_text("PumpPanelAText", "BOMBEO B-1\nPRESIÓN 2,4 bar", Vector3(16.5, Y_M + 1.3, -9.8), "+z", 30)
+	b.screen_text("PumpPanelBText", "BOMBEO B-2\nPRESIÓN 2,1 bar", Vector3(21.5, Y_M + 1.3, -9.8), "+z", 30)
 	b.visual("StaffRefugeDoor", Vector3(1.4, 2.3, 0.1), Vector3(28.6, Y_M + 1.15, -9.95), mats.get_material("locker"), true)
 	b.paint_sign("StaffRefugeSign", "OFICINA DE TURNO", Vector3(28.6, Y_M + 2.5, -9.88), "+z", 26)
 
@@ -318,26 +319,26 @@ func _p2() -> void:
 	b.paint_sign("AirlockLabel", "G  ·  ESCLUSA", Vector3(1.5, Y_P2 + 0.02, -5.4), "floor", 44)
 	# E controls (contract centres shifted by the +3 m datum change): selector, isolator, panel, rearm.
 	b.visual("SelectorBody", Vector3(0.6, 1.1, 0.4), SELECTOR_AT + Vector3(0.0, 0.55, -0.45), mats.get_material("steel_light"), true)
-	b.paint_sign("SelectorLabel", "SELECTOR DE RECUPERACIÓN\nENSAYO · ARCHIVO", SELECTOR_AT + Vector3(0.0, 1.35, -0.24), "+z", 22, Color(0.95, 0.75, 0.35))
+	b.paint_sign("SelectorLabel", "SELECTOR\nENSAYO · ARCHIVO", SELECTOR_AT + Vector3(0.0, 1.4, -0.24), "+z", 40, Color(0.95, 0.75, 0.35))
 	b.visual("IsolatorBody", Vector3(0.6, 1.1, 0.4), ISOLATOR_AT + Vector3(0.0, 0.55, -0.45), mats.get_material("steel_light"), true)
-	b.paint_sign("IsolatorLabel", "AISLADOR  ·  RAMA ENSAYO", ISOLATOR_AT + Vector3(0.0, 1.35, -0.24), "+z", 22, Color(0.95, 0.75, 0.35))
+	b.paint_sign("IsolatorLabel", "AISLADOR\nRAMA ENSAYO", ISOLATOR_AT + Vector3(0.0, 1.4, -0.24), "+z", 40, Color(0.95, 0.75, 0.35))
 	b.visual("EStatusPanelBoard", Vector3(2.8, 1.3, 0.12), PANEL_AT, mats.get_material("screen_dark"), false)
-	panel_text = b.screen_text("EStatusPanelText", "", PANEL_AT + Vector3(0.0, 0.0, 0.08), "+z", 20)
+	panel_text = b.screen_text("EStatusPanelText", "", PANEL_AT + Vector3(0.0, 0.0, 0.08), "+z", 34)
 	b.visual("RearmButtonBody", Vector3(0.5, 0.9, 0.3), REARM_AT + Vector3(0.0, 0.45, -0.5), b.flat(Color(0.2, 0.42, 0.28), 0.5), true)
-	b.paint_sign("RearmLabel", "REARME DE PROTECCIÓN", REARM_AT + Vector3(0.0, 1.05, -0.34), "+z", 20)
-	indicator_text = b.screen_text("IndicatorText", "", Vector3(15.5, Y_P2 + 0.95, -7.25), "+z", 18, Color(0.9, 0.8, 0.5))
+	b.paint_sign("RearmLabel", "REARME\nPROTECCIÓN", REARM_AT + Vector3(0.0, 1.15, -0.34), "+z", 36)
+	indicator_text = b.screen_text("IndicatorText", "", Vector3(15.5, Y_P2 + 0.75, -8.3), "+z", 30, Color(0.9, 0.8, 0.5))
 	# F: archive console and diagnostic terminal (always on emergency supply).
 	b.visual("ArchiveConsole", Vector3(1.0, 1.0, 0.5), ARCHIVE_AT + Vector3(0.0, 0.5, -0.55), mats.get_material("steel"), true)
-	archive_text = b.screen_text("ArchiveStatusText", "", ARCHIVE_AT + Vector3(0.0, 1.25, -0.28), "+z", 20)
+	archive_text = b.screen_text("ArchiveStatusText", "", ARCHIVE_AT + Vector3(0.0, 1.25, -0.28), "+z", 32)
 	b.visual("DiagnosticTerminal", Vector3(0.4, 1.1, 0.7), DIAGNOSTIC_AT + Vector3(-0.55, 0.55, 0.0), mats.get_material("steel_light"), true)
-	b.paint_sign("DiagnosticLabel", "DIAGNÓSTICO\n(EMERGENCIA)", DIAGNOSTIC_AT + Vector3(-0.33, 1.3, 0.0), "+x", 20)
+	b.paint_sign("DiagnosticLabel", "DIAGNÓSTICO\n(EMERGENCIA)", DIAGNOSTIC_AT + Vector3(-0.33, 1.3, 0.0), "+x", 34)
 	# O1: archive shelving, upright against the north wall until Containment knocks it over.
 	o1_shelf = b.body("O1ArchiveShelf", Vector3(1.0, 2.2, 0.45), Vector3(8.0, Y_P2 + 1.1, -9.6), mats.get_material("locker"))
 	# G airlock: inner leaf (to F) and outer leaf (to the exterior gantry).
 	g_inner_door = b.body("GInnerDoor", Vector3(0.12, 2.2, 1.5), Vector3(3.0, Y_P2 + 1.1, -7.25), mats.get_material("safety_paint"))
 	g_outer_door = b.body("GOuterDoor", Vector3(0.12, 2.2, 1.5), Vector3(-0.15, Y_P2 + 1.1, -7.5), mats.get_material("steel_light"))
 	g_status_lamp = b.visual("GStatusLamp", Vector3(0.08, 0.12, 0.6), Vector3(0.05, Y_P2 + 2.45, -7.5), b.flat(Color(0.95, 0.2, 0.1), 0.4, 0.0, 1.6), false)
-	b.paint_sign("GOuterSign", "COMPUERTA EXTERIOR\nSOLO PERSONAL AUTORIZADO", Vector3(0.05, Y_P2 + 2.9, -7.5), "+x", 20, Color(1.0, 0.8, 0.4))
+	b.paint_sign("GOuterSign", "COMPUERTA EXTERIOR\nSOLO PERSONAL AUTORIZADO", Vector3(0.05, Y_P2 + 2.6, -7.5), "+x", 30, Color(1.0, 0.8, 0.4))
 
 
 # --- exterior gantry beyond G (where the recovery unit approaches) -------------------------------------------------
@@ -390,7 +391,8 @@ func _lighting() -> void:
 	b.light("SouthBandLight", Vector3(20.0, 2.6, 11.0), Color(0.72, 0.84, 0.95), 0.6, 9.0)
 	b.light("ControlLight", Vector3(16.0, Y_P2 + 2.4, -6.5), Color(0.75, 0.88, 1.0), 0.9, 10.0)
 	b.light("ArchiveLight", Vector3(5.0, Y_P2 + 2.3, -7.0), Color(0.75, 0.95, 0.9), 0.7, 6.0)
-	b.light("PumpRoomEmergency", Vector3(18.0, Y_M + 2.3, -5.5), Color(0.75, 0.85, 1.0), 0.45, 9.0)
+	b.light("PumpRoomEmergency", Vector3(18.0, Y_M + 2.3, -5.5), Color(0.75, 0.85, 1.0), 0.7, 10.0)
+	b.light("PitEmergency", Vector3(20.0, -0.6, 6.5), Color(0.95, 0.5, 0.35), 0.55, 11.0)
 	for spec in [["PitServiceLight", Vector3(15.0, -0.4, 4.5), 10.0], ["D2ServiceLight", Vector3(24.0, -0.4, 4.0), 7.0], ["PumpServiceLight", Vector3(22.0, Y_M + 2.3, -6.5), 9.0], ["LiftServiceLight", Vector3(26.0, 2.4, 0.0), 6.0]]:
 		var l: OmniLight3D = b.light(spec[0], spec[1], Color(0.8, 0.9, 1.0), 0.12, spec[2])
 		service_lights.append(l)

@@ -123,7 +123,7 @@ func _environment() -> void:
 	env.background_color = Color(0.015, 0.02, 0.028)
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
 	env.ambient_light_color = Color(0.36, 0.43, 0.52)
-	env.ambient_light_energy = 0.42
+	env.ambient_light_energy = 0.52
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
 	env.glow_enabled = true
 	env.glow_intensity = 0.4
@@ -351,6 +351,7 @@ func _available(id: String) -> bool:
 
 
 func _interact(id: String) -> void:
+	player.call("play_gesture", "interact", 0.7)
 	match id:
 		"maintenance":
 			_toggle_maintenance()
@@ -580,6 +581,7 @@ func _on_caught() -> void:
 	_caught_left = 1.2
 	player.set("input_enabled", false)
 	player.velocity = Vector3.ZERO
+	player.call("play_gesture", "caught", 1.2)
 	_sound("denied")
 	_banner("Te ha atrapado", "Vuelves al último punto seguro. Lo que has descubierto sigue contigo.", Color(1.0, 0.35, 0.25), 2.5)
 	_log("caught", "#%d at %s" % [catches, player.global_position])
@@ -733,7 +735,7 @@ func _build_scan_parts() -> void:
 	_scan_parts.append(building.b.visual("ScanBridge", Vector3(2.7, 0.06, 0.16), Vector3(21.5, Building.Y_P1 + 0.62, 4.2), glow, false))
 	_scan_parts.append(building.b.visual("ScanTerminalA", Vector3(0.55, 0.06, 0.45), Vector3(20.2, Building.Y_P1 + 0.72, 4.2), glow, false))
 	_scan_parts.append(building.b.visual("ScanTerminalT", Vector3(0.55, 0.06, 0.45), Vector3(22.8, Building.Y_P1 + 0.72, 4.2), glow, false))
-	_scan_parts.append(building.b.visual("ScanSchematicA", Vector3(0.05, 0.08, 1.9), Vector3(27.88, Building.Y_P1 + 0.62, 6.0), glow, false))
+	_scan_parts.append(building.b.visual("ScanSchematicA", Vector3(0.05, 0.08, 2.0), Vector3(27.88, Building.Y_P1 + 0.58, 2.9), glow, false))
 	_scan_parts.append(building.b.visual("ScanTRiser", Vector3(0.08, 2.2, 0.08), Vector3(22.8, Building.Y_P1 + 1.8, 1.05), glow, false))
 	_scan_parts.append(building.b.screen_text("ScanBridgeLabel", "CONTINUIDAD A → T\n(no figura en el esquema)", Vector3(21.5, Building.Y_P1 + 1.35, 4.45), "+z", 22, Color(0.35, 1.0, 0.95)))
 	for part in _scan_parts:
@@ -757,6 +759,7 @@ func _update_scanner(delta: float) -> void:
 			_scan_cooldown_left = SCAN_COOLDOWN
 			_set_scan(true)
 			_sound("scan")
+			player.call("play_gesture", "scan", 1.0)
 			_log("scan", "%s" % player.global_position)
 			if clues_seen.has("schematic") and player.global_position.y < -1.0 and not _said.has("N1-02"):
 				_say("N1-02", "Elena: «Este puente no figura en el esquema.»", 3.5)

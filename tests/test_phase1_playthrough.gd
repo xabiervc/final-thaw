@@ -65,7 +65,7 @@ func _investigation() -> bool:
 	_expect(scene.clues_seen.has("workshop_tag"), "the workshop repair tag can be examined")
 	if not _leg(await bot.walk("workshop -> around the pit -> S1 top", [Vector3(19, 0, -6.0), Vector3(16.5, 0, -1.2), Vector3(8.6, 0, 0.6), Vector3(8.6, 0, 10.0), Vector3(22.5, 0, 10.0), Vector3(23.2, 0, 12.4), Vector3(25, 0, 12.4)], {"min_y": -0.5})):
 		return false
-	if not _leg(await bot.walk("S1 down -> D2", [Vector3(25, -1, 9.5), Vector3(25, -2, 7.2), Vector3(26.6, -2, 6.0)], {"min_y": -2.5})):
+	if not _leg(await bot.walk("S1 down -> D2", [Vector3(25, -1, 9.5), Vector3(25, -2, 7.2), Vector3(26.7, -2, 3.6)], {"min_y": -2.5})):
 		return false
 	await bot.interact("schematic")
 	_expect(scene.clues_seen.has("schematic"), "the schematic is readable from the pit floor")

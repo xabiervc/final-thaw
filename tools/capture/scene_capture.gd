@@ -10,6 +10,8 @@ extends Node
 ##   --scan                  trigger a scan before capturing
 ##   --overview=h,d          review framing of the whole room: camera offset (0, h, d), no limits
 ##   --hold=a,b              hold these input actions (e.g. move_right,jump) during the wait
+##   --yaw=r --pitch=r       orbit camera angles (radians) for scenes with an orbit player (Phase 1)
+##   --call=m1,m2            call these methods on the level root, in order (state setup, e.g. _toggle_maintenance)
 ##   --tweak=a,b             profiling switches: glow_off, shadows_off, omni_off, floor_off, pose_off, dressing_off
 ##   --wait=90               frames to wait before the capture
 ##   --bench=240             frames to measure after the capture (0 = skip)
@@ -43,6 +45,19 @@ func _run() -> void:
 	await get_tree().process_frame
 	var load_ms := float(Time.get_ticks_usec() - t0) / 1000.0
 	_apply_tweaks(level)
+	for method in String(_args.get("call", "")).split(",", false):
+		if level.has_method(method):
+			level.call(method)
+			await get_tree().create_timer(0.2).timeout
+	var orbit = level.get("player")
+	if orbit != null and orbit.get("orbit_yaw") != null:
+		if _args.has("pos"):
+			var op := String(_args["pos"]).split_floats(",")
+			orbit.global_position = Vector3(op[0], op[1], op[2])
+		if _args.has("yaw"):
+			orbit.set("orbit_yaw", float(_args["yaw"]))
+		if _args.has("pitch"):
+			orbit.set("orbit_pitch", float(_args["pitch"]))
 	var room := _find_room(level)
 	if room != null:
 		var elena = room.get("elena")
