@@ -31,7 +31,7 @@ No hay rampa paralela en el slice final. La variante B —subir antes de visitar
 - **Uso normal:** pulsador de llamada en ambos rellanos; solo responde con mantenimiento activo. Viaje de una terminal a la otra en 2.5 s, con arranque y frenado suaves. Las puertas de acceso impiden entrar al hueco durante el movimiento.
 - **Mantenimiento apagado estando parada:** permanece en su rellano, no acepta llamadas ni inicia movimiento.
 - **Pérdida de mantenimiento en movimiento:** activa la reserva de seguridad, reduce velocidad y llega al rellano más cercano; si la posición está exactamente a mitad de camino, el destino es el rellano inferior. Se detiene allí y queda deshabilitada. Nunca cae ni deja a Elena entre niveles.
-- **Si la reserva de seguridad no puede completarse:** comportamiento de recuperación de prototipo: la plataforma se detiene con freno, los accesos quedan bloqueados al hueco, y Elena puede solicitar rescate desde cualquiera de los dos rellanos; no se simula caída ni se aplica daño.
+- La reserva de seguridad se considera parte obligatoria del mecanismo, no una segunda rama de comportamiento: la implementación debe garantizar la llegada al rellano más cercano. Si la prueba induce una detención entre niveles o requiere un rescate manual, la prueba falla y la plataforma no se acepta; no se añade un minijuego de rescate ni una ruta alternativa.
 - **Interruptor:** posición (26,-2,2). Las luces de servicio y la plataforma comparten el estado de mantenimiento. La escalera fija del foso no depende de electricidad. La iluminación ambiental mínima conserva legible la ruta con mantenimiento apagado.
 
 La rampa provisional y la reserva de plataforma X=30..34 se eliminan del diseño implementable. No construirlas ni medirlas como rutas alternativas.
