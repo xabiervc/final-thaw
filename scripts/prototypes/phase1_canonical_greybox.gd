@@ -46,6 +46,7 @@ var _switch_lamp: MeshInstance3D
 var _archive_status_label: Label3D
 var _status_panel_label: Label3D
 var _inner_door: StaticBody3D
+var _inner_door_mesh: MeshInstance3D
 var _outer_door: StaticBody3D
 var _outer_door_shape: CollisionShape3D
 var _outer_door_mesh: MeshInstance3D
@@ -451,6 +452,7 @@ func _build_controls_and_fixtures() -> void:
 
 func _build_doors() -> void:
 	_inner_door = _body_box("ShortcutInnerDoor", Vector3(0.2, 2.2, 2.0), Vector3(2.0, 4.1, -7.5), materials.get_material("safety_paint"))
+	_inner_door_mesh = _inner_door.get_child(1) as MeshInstance3D
 	_outer_door = _body_box("OuterHatch", Vector3(0.2, 2.2, 1.5), Vector3(0.0, 4.1, -7.5), materials.get_material("safety_paint"))
 	_outer_door_shape = _outer_door.get_child(0) as CollisionShape3D
 	_outer_door_mesh = _outer_door.get_child(1) as MeshInstance3D
@@ -631,7 +633,8 @@ func _unlock_shortcut() -> void:
 	if _inner_door != null:
 		var shape := _inner_door.get_child(0) as CollisionShape3D
 		shape.set_deferred("disabled", true)
-		_inner_door.visible = false
+		if _inner_door_mesh != null:
+			_inner_door_mesh.visible = false
 	_banner("Vestíbulo oeste desbloqueado", "La puerta queda abierta en ambos sentidos. La compuerta exterior lleva a Containment.", Color(0.45, 0.95, 0.65), 5.0)
 	_log("shortcut", "unlocked_from_archive_side")
 
