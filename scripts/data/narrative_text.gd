@@ -19,6 +19,13 @@ Cada decisión afecta a quienes dependen de ti.
 @export var menu_options_button: String = "Opciones"
 @export var menu_credits_button: String = "Créditos"
 
+## Visual equivalents of audio cues (accessibility)
+@export_group("Sound cues")
+@export var sound_cue_generator: String = "[Sonido] Generador en marcha"
+@export var sound_cue_valves: String = "[Sonido] Las válvulas se abren"
+@export var sound_cue_rescue: String = "[Sonido] Rescate completado"
+@export var sound_cue_oxygen_empty: String = "[Sonido] Oxígeno agotado"
+
 ## HUD
 @export_group("HUD")
 @export var hud_oxygen_label: String = "Oxígeno: %d%%"

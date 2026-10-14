@@ -18,11 +18,6 @@ func _ready() -> void:
 	print("=== %d passed, %d failed ===" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
 
-func _new_room() -> Node:
-	var room = load("res://scenes/levels/test_room.tscn").instantiate()
-	add_child(room)
-	return room
-
 func _run() -> void:
 	check("01 GameManager autoload existe", get_node_or_null("/root/GameManager") != null)
 
@@ -32,31 +27,8 @@ func _run() -> void:
 	var missing := actions.filter(func(a): return not InputMap.has_action(a))
 	check("02 Input Map tiene las 16 acciones", missing.is_empty())
 
-	var room = _new_room()
-	await get_tree().process_frame
-	var p = room.player
-	var x0: float = p.position.x
-	Input.action_press("move_right")
-	for i in 20:
-		await get_tree().physics_frame
-	Input.action_release("move_right")
-	check("03 El jugador se mueve con move_right", p.position.x > x0 + 10.0)
-
-	p.position = room.interactables[0].position
-	for i in 4:
-		await get_tree().physics_frame
-	var did: bool = p.try_interact()
-	check("04 Interaccion con objeto cercano", did and room.interactables[0].interact_count == 1)
-
-	var old_aid: int = GameManager.civilian_aid
-	GameManager.civilian_aid = 4
-	room.hud.refresh()
-	check("05 HUD refleja civilian_aid", room.hud.aid_label.text.contains("4/10"))
-	GameManager.civilian_aid = old_aid
-
-	check("10 Test room tiene 3 interactuables", room.interactables.size() == 3)
-	room.queue_free()
-	await get_tree().process_frame
+	# Checks 03-05 and 10 exercised the Phase 0 graybox room (test_room.tscn), removed in e31d1b6.
+	# Movement, interaction and HUD are covered by test_vertical_slice, test_first_room_rules and the control room tests.
 
 	GameManager.civilian_aid = 7
 	GameManager.font_scale = 1.5

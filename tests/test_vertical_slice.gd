@@ -48,17 +48,14 @@ func _check_rules() -> void:
 
 func _check_rule_signals() -> void:
 	var rules = Rules.new()
-	var power_count := 0
-	var valve_count := 0
-	var rescue_count := 0
-	var depleted_count := 0
-	var reset_count := 0
+	# GDScript lambdas capture locals by value, so the counters live in a dictionary
+	var counts := {"power": 0, "valve": 0, "rescue": 0, "depleted": 0, "reset": 0}
 
-	rules.power_activated.connect(func(): power_count += 1)
-	rules.valves_opened.connect(func(): valve_count += 1)
-	rules.civilian_rescued.connect(func(): rescue_count += 1)
-	rules.oxygen_depleted.connect(func(): depleted_count += 1)
-	rules.state_reset.connect(func(): reset_count += 1)
+	rules.power_activated.connect(func(): counts["power"] += 1)
+	rules.valves_opened.connect(func(): counts["valve"] += 1)
+	rules.civilian_rescued.connect(func(): counts["rescue"] += 1)
+	rules.oxygen_depleted.connect(func(): counts["depleted"] += 1)
+	rules.state_reset.connect(func(): counts["reset"] += 1)
 
 	rules.activate_power()
 	rules.activate_power()
@@ -69,11 +66,11 @@ func _check_rule_signals() -> void:
 	rules.drain_oxygen(30.0)
 	rules.reset()
 
-	_expect(power_count == 1, "Power signal emitted once")
-	_expect(valve_count == 1, "Valve signal emitted once")
-	_expect(rescue_count == 1, "Rescue signal emitted once")
-	_expect(depleted_count == 1, "Oxygen depletion signal emitted once")
-	_expect(reset_count == 1, "Reset signal emitted once")
+	_expect(counts["power"] == 1, "Power signal emitted once")
+	_expect(counts["valve"] == 1, "Valve signal emitted once")
+	_expect(counts["rescue"] == 1, "Rescue signal emitted once")
+	_expect(counts["depleted"] == 1, "Oxygen depletion signal emitted once")
+	_expect(counts["reset"] == 1, "Reset signal emitted once")
 
 func _check_oxygen_states() -> void:
 	var rules = Rules.new()
