@@ -47,7 +47,15 @@ Run from the repository root:
 ```sh
 godot --headless --path . res://tests/test_motion_chase_prototype.tscn
 godot --headless --path . res://tests/test_phase_0.tscn
+godot --headless --path . res://tests/test_vertical_slice.tscn
+godot --headless --path . res://tests/test_phase1_circuit_model.tscn
+godot --headless --path . res://tests/test_service_lift.tscn
+godot --headless --path . res://tests/test_service_lift_transport.tscn
+godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
+godot --headless --path . res://tests/test_phase2_parking_entry.tscn
 ```
+
+The CI workflow `.github/workflows/godot-headless-tests.yml` lists the same suite for Godot 4.7.1, but it is currently disabled (`if: false`, manual dispatch only). Its results are not recorded as passing.
 
 Then run the prototype manually. Automated tests do not verify camera comfort, movement feel, enemy fairness, audio quality or whether the chase is fun.
 

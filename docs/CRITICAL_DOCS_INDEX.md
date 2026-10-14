@@ -34,6 +34,9 @@ Commands from repository root:
 godot --path . res://scenes/prototypes/motion_chase_prototype.tscn
 godot --headless --path . res://tests/test_motion_chase_prototype.tscn
 godot --headless --path . res://tests/test_phase_0.tscn
+godot --headless --path . res://tests/test_vertical_slice.tscn
+godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
+godot --headless --path . res://tests/test_phase2_parking_entry.tscn
 ```
 
 The v2 prototype document says its automated test has not yet been run. A successful headless test is necessary but insufficient: movement feel, camera readability, enemy fairness, audio and enjoyment require a hands-on playtest.

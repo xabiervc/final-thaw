@@ -14,7 +14,7 @@
 **Pasos:**
 
 1. Clonar el repositorio y cambiar a `feat/godot-vertical-slice`.
-2. Abrir Godot 4.4+.
+2. Abrir Godot 4.7.x.
 3. Importar el proyecto desde `project.godot`.
 4. Abrir la consola de depuración (Debugger → Output).
 

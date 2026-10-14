@@ -36,7 +36,7 @@ Este es el primer vertical slice jugable de *Final Thaw*. Controlas a Elena en u
 ## Cómo probarlo
 
 1. Cambia a la rama `feat/godot-vertical-slice`.
-2. Abre el proyecto en Godot 4.4+.
+2. Abre el proyecto en Godot 4.7.x.
 3. Sigue `docs/SETUP_FLOODED_SHELTER.md` para:
    - Asignar nodos en `ShelterController`.
    - Configurar colisiones y capas.

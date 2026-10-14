@@ -33,7 +33,7 @@ Do not implement those assumptions as requirements for the current prototype. Do
 
 ## Conflict resolution
 
-1. For **Phase 1 spatial architecture**, use FASE1_ARCHITECTURAL_LAYOUT.md v1.0, plan SVGs, FASE1_SPATIAL_GRAPH.md v0.6 and FASE1_GREYBOX_SPEC.md v1.3. They supersede older single-bay geometry but not the logic contract.
+1. For **Phase 1 spatial architecture**, use FASE1_ARCHITECTURAL_LAYOUT.md v1.1, plan SVGs, FASE1_SPATIAL_GRAPH.md v0.7 and FASE1_GREYBOX_SPEC.md v1.4 (with FASE1_FUNCTIONAL_SPEC.md v1.1 for experience). They supersede older single-bay geometry but not the logic contract.
 2. For **the next prototype's intended behavior**, use the functional spec and working brief.
 3. For **what exists**, inspect code and scene files. Documentation is not proof of implementation.
 4. For **test status**, require an exact command and observed result. Automated checks do not replace a manual playtest.

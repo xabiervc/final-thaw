@@ -4,7 +4,7 @@ Este documento explica paso a paso cómo abrir el proyecto y dejar funcional la 
 
 ## 1. Abrir el proyecto
 
-1. Abre Godot 4.4 o superior.
+1. Abre Godot 4.7.x (el proyecto declara 4.7 en `project.godot`).
 2. Importa el proyecto desde la carpeta `final-thaw`.
 3. Asegúrate de que la rama activa es `feat/godot-vertical-slice`.
 

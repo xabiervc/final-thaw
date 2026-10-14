@@ -28,7 +28,7 @@ The canonical builder now adds room boundaries and industrial fixtures at P0, an
 
 ## Automated regression
 
-A GitHub Actions workflow now imports project resources and runs Phase 0, the existing vertical slice, circuit, generic lift, lift transport and canonical integration tests with Godot 4.7.1. The actual GitHub Actions run result has not been verified in this review; CI is not claimed green.
+A GitHub Actions workflow (`.github/workflows/godot-headless-tests.yml`) defines the import step and the Phase 0, vertical slice, circuit, generic lift, lift transport, canonical integration and parking-entry tests for Godot 4.7.1. The workflow is currently disabled (`if: false`, manual dispatch only), and no run result is recorded. CI is not claimed green or active.
 
 ## Next verification
 
