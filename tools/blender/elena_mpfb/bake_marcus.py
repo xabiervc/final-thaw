@@ -42,6 +42,10 @@ RECTS = {
 	"Marcus_Radio": (0.25, 0.00, 0.375, 0.125),
 	"Marcus_Antenna": (0.375, 0.00, 0.50, 0.125),
 	"Marcus_Collar": (0.75, 0.125, 1.00, 0.25),
+	"Marcus_Eye_L_LashUp": (0.875, 0.3125, 1.00, 0.375),
+	"Marcus_Eye_L_LashLo": (0.875, 0.3125, 1.00, 0.375),
+	"Marcus_Eye_R_LashUp": (0.875, 0.3125, 1.00, 0.375),
+	"Marcus_Eye_R_LashLo": (0.875, 0.3125, 1.00, 0.375),
 }
 SCREEN = "Marcus_RadioScreen"  # own emissive material, not in the atlas
 HAND_BONES = ("hand_", "index_", "middle_", "pinky_", "ring_", "thumb_")
@@ -75,6 +79,52 @@ def make_materials():
 			scratch=0.4, scratch_scale=26.0),
 		"eye": eye_material(),
 	}
+
+
+def add_stubble(skin, top):
+	"""Dark speckled beard shadow on the lower face, mixed into the skin base colour by object-space height."""
+	nodes, links = skin.node_tree.nodes, skin.node_tree.links
+	bsdf = next(n for n in nodes if n.type == "BSDF_PRINCIPLED")
+	socket = bsdf.inputs["Base Color"]
+	source = socket.links[0].from_socket
+	coord = nodes.new("ShaderNodeTexCoord")
+	sep = nodes.new("ShaderNodeSeparateXYZ")
+	links.new(coord.outputs["Object"], sep.inputs[0])
+
+	def ramp(inp, lo, hi):
+		node = nodes.new("ShaderNodeMapRange")
+		node.clamp = True
+		node.inputs["From Min"].default_value = lo
+		node.inputs["From Max"].default_value = hi
+		links.new(inp, node.inputs["Value"])
+		return node.outputs["Result"]
+
+	def mul(a, b):
+		node = nodes.new("ShaderNodeMath")
+		node.operation = "MULTIPLY"
+		links.new(a, node.inputs[0])
+		links.new(b, node.inputs[1])
+		return node.outputs[0]
+
+	up = ramp(sep.outputs["Z"], top - 0.262, top - 0.235)
+	down = ramp(sep.outputs["Z"], top - 0.160, top - 0.172)  # 1 below the nose, 0 above
+	front = ramp(sep.outputs["Y"], 0.04, 0.01)  # 1 on the face, 0 behind the ears
+	region = mul(mul(up, down), front)
+	noise = nodes.new("ShaderNodeTexNoise")
+	noise.inputs["Scale"].default_value = 900.0
+	noise.inputs["Detail"].default_value = 2.0
+	links.new(coord.outputs["Object"], noise.inputs["Vector"])
+	speckle = ramp(noise.outputs["Fac"], 0.42, 0.62)
+	factor = mul(region, speckle)
+	strong = nodes.new("ShaderNodeMath")
+	strong.operation = "MULTIPLY"
+	strong.inputs[1].default_value = 0.75
+	links.new(factor, strong.inputs[0])
+	mix = nodes.new("ShaderNodeMixRGB")
+	mix.inputs["Color2"].default_value = (0.045, 0.032, 0.028, 1.0)
+	links.new(strong.outputs[0], mix.inputs["Fac"])
+	links.new(source, mix.inputs["Color1"])
+	links.new(mix.outputs["Color"], socket)
 
 
 def assign_jacket(jacket, rig):
@@ -129,14 +179,16 @@ def main():
 
 	set_materials(objs["Marcus_Jacket"], [mats["orange"], mats["red"], mats["lining"]])
 	assign_jacket(objs["Marcus_Jacket"], rig)
+	add_stubble(mats["skin"], max(v.co.z for v in objs["Marcus_Base"].data.vertices))
 	set_materials(objs["Marcus_Base"], [mats["skin"], mats["lips"], mats["glove"]])
 	assign_gloves(objs["Marcus_Base"])
 	for name, mat in (("Knit", "knit"), ("Trousers", "trousers"), ("Boots", "boot"), ("Hair", "hair"), ("Brow_L", "hair"), ("Brow_R", "hair"),
 			("Eye_L", "eye"), ("Eye_R", "eye"), ("Belt", "webbing"), ("Buckle", "steel"), ("Pouch_0", "pouch"), ("Pouch_1", "pouch"),
-			("Radio", "device"), ("Antenna", "device"), ("Collar", "orange")):
+			("Radio", "device"), ("Antenna", "device"), ("Collar", "orange"), ("Eye_L_LashUp", "hair"),
+			("Eye_L_LashLo", "hair"), ("Eye_R_LashUp", "hair"), ("Eye_R_LashLo", "hair")):
 		set_materials(objs["Marcus_" + name], [mats[mat]])
 	for name, rect in RECTS.items():
-		unwrap(objs[name], rect, keep_default=name.startswith("Marcus_Eye"))
+		unwrap(objs[name], rect, keep_default=name in ("Marcus_Eye_L", "Marcus_Eye_R"))
 	bpy.context.view_layer.update()
 
 	bake_list = list(objs.values())

@@ -158,6 +158,7 @@ cc.skin_to(hair, rig, 'head')
 eye_z = top - 0.115
 eyes = cc.make_eyes(P, body, rig, 0.032, eye_z, radius=0.0125)
 brows = cc.make_brows(P, body, rig, eye_z + 0.027)
+cc.make_lashes(P, rig, eyes)
 
 for obj in (jacket, knit, trousers, boots):
 	if 'Armature' not in obj.modifiers:

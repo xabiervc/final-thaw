@@ -39,6 +39,10 @@ RECTS = {
 	"Elena_Strap_R": (0.75, 0.25, 1.00, 0.3125),
 	"Elena_Eye_L": (0.00, 0.125, 0.125, 0.25),
 	"Elena_Eye_R": (0.00, 0.125, 0.125, 0.25),
+	"Elena_Eye_L_LashUp": (0.875, 0.3125, 1.00, 0.375),
+	"Elena_Eye_L_LashLo": (0.875, 0.3125, 1.00, 0.375),
+	"Elena_Eye_R_LashUp": (0.875, 0.3125, 1.00, 0.375),
+	"Elena_Eye_R_LashLo": (0.875, 0.3125, 1.00, 0.375),
 }
 FRONT_BIN = 0.03   # height bin (m) used to estimate the front edge position
 FRONT_BAND = 0.024  # width (m) of the front piping band, measured inward from the open edge
@@ -193,10 +197,11 @@ def main():
 	assign_lips(objs["Elena_Base"])
 	for name, mat in (("Elena_Knit", "knit"), ("Elena_Trousers", "trousers"), ("Elena_Boots", "boot"), ("Elena_Hair", "hair"),
 			("Elena_Ponytail", "hair"), ("Elena_Brow_L", "hair"), ("Elena_Brow_R", "hair"), ("Elena_Strap_L", "strap"),
-			("Elena_Strap_R", "strap"), ("Elena_Eye_L", "eye"), ("Elena_Eye_R", "eye")):
+			("Elena_Strap_R", "strap"), ("Elena_Eye_L", "eye"), ("Elena_Eye_R", "eye"),
+			("Elena_Eye_L_LashUp", "hair"), ("Elena_Eye_L_LashLo", "hair"), ("Elena_Eye_R_LashUp", "hair"), ("Elena_Eye_R_LashLo", "hair")):
 		set_materials(objs[name], [mats[mat]])
 	for name, rect in RECTS.items():
-		unwrap(objs[name], rect, keep_default=name.startswith("Elena_Eye"))
+		unwrap(objs[name], rect, keep_default=name in ("Elena_Eye_L", "Elena_Eye_R"))
 	bpy.context.view_layer.update()
 
 	bake_list = list(objs.values())

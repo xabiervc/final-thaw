@@ -174,16 +174,16 @@ HAIRLINE_NORMAL = Vector((0.0, 0.14, 0.175)).normalized()
 
 def hairline(y):
 	if y < -0.06:
-		return 1.655
+		return 1.640
 	if y < 0.03:
-		return 1.655 - (y + 0.06) / 0.09 * 0.055
+		return 1.640 - (y + 0.06) / 0.09 * 0.050
 	return 1.600 - min((y - 0.03) / 0.06, 1.0) * 0.060
 
 
 def keep_scalp(co, bone, bmv):
 	if bone is None or not bone.startswith(('head', 'neck_')):
 		return False
-	if abs(co.x) > 0.072 and -0.04 < co.y < 0.05 and co.z < 1.668:
+	if abs(co.x) > 0.072 and -0.04 < co.y < 0.05 and co.z < 1.640:
 		return False  # leave the ears uncovered
 	return co.z > hairline(co.y)
 
@@ -203,7 +203,7 @@ def make_hair_shell():
 	mod.target = body
 	mod.wrap_method = 'NEAREST_SURFACEPOINT'
 	mod.wrap_mode = 'ABOVE_SURFACE'
-	mod.offset = 0.014
+	mod.offset = 0.016
 	obj.modifiers.move(len(obj.modifiers) - 1, 0)
 	garments.apply_modifier_stack_to_mesh(obj)
 	for poly in obj.data.polygons:
@@ -295,3 +295,12 @@ def strip_covered_body():
 	bmesh.ops.delete(bm, geom=doomed, context='VERTS')
 	bm.to_mesh(body.data)
 	bm.free()
+
+
+# ---------------------------------------------------------------- lashes
+import importlib as _il
+import sys as _sys
+_sys.path.insert(0, 'D:/Projects/github/final-thaw/tools/blender/elena_mpfb')
+import char_common as _cc
+_il.reload(_cc)
+_cc.make_lashes('Elena', rig, [bpy.data.objects['Elena_Eye_L'], bpy.data.objects['Elena_Eye_R']])

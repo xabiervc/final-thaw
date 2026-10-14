@@ -14,7 +14,7 @@ Status: **textured asset, imports in Godot, not integrated in any scene, not fin
 - Not run: animation, profiling, grayscale readability, integration, owner review against the concept.
 
 ## Known limits (why it is not final)
-- Face is a generic tuned MPFB male head; no likeness to the concept, no stubble, hairline is stepped.
+- Face is a generic tuned MPFB male head; no likeness to the concept. Stubble (procedural speckle on the lower face) and eyelash lines were added 2026-10-14; hairline is still stepped.
 - Jacket: no real stand collar (padded ring added instead), no pockets/zipper detail, yoke and elbow-patch edges are face-stepped, jacket is a smoothed shell without fold detail.
 - Boots show toe lobes; gloves are texture only on the skin hands.
 - A-pose only; MPFB licence not yet verified for `PROVENANCE.md`.

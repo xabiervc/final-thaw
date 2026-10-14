@@ -38,7 +38,7 @@ The source `.blend` files live outside the repo (`D:/Projects/evidence/final-tha
 
 - Procedural cloth/skin only: no painted detail, no fold detail, no freckles or skin variation beyond noise.
 - Face is a tuned MPFB head with simple eyes and brows; it does not reproduce the concept's painted likeness.
-- Hairline is blocky (hair is a shell cut at a plane/height function) and the ponytail is a tube.
+- Hair is still a smooth shell (lower hairline, covers the top of the ears) plus a tube ponytail: it reads as a bowl cut with a straight fringe, not the parted, flowing hair of the concept. Reaching that needs hair cards (alpha strand strips). Eyelash lines added 2026-10-14 for eye definition.
 - Boot toes show the foot's toe shapes through the rubber.
 - Coat hem is slightly wavy; piping edges are face-stepped.
 - A-pose only. The Aster hangs at the right hand and needs a posed arm to look held.

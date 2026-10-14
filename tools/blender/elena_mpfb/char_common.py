@@ -198,3 +198,24 @@ def count_triangles():
 			counts[obj.name] = len(mesh.loop_triangles)
 			ev.to_mesh_clear()
 	return counts
+
+
+def make_lashes(prefix, rig, eyes, radius=0.0125, thickness=0.0011):
+	"""Upper and lower lash lines as thin dark tubes hugging the front of each eye sphere (gives the eyes definition)."""
+	made = []
+	for eye in eyes:
+		c = eye.location.copy()
+		for tag, z_of, span in (('Up', lambda dx: 0.55 * radius * (1.0 - 0.45 * (dx / radius) ** 2) + 0.0008, 1.02),
+				('Lo', lambda dx: -0.50 * radius * (1.0 - 0.7 * (dx / radius) ** 2) - 0.0008, 0.85)):
+			pts = []
+			for k in range(9):
+				dx = radius * span * (-1.0 + 2.0 * k / 8.0) * 0.98
+				dz = z_of(dx)
+				d2 = radius * radius - dx * dx - dz * dz
+				if d2 <= 0:
+					continue
+				pts.append(c + Vector((dx, -math.sqrt(d2) - 0.0007, dz)))
+			if len(pts) >= 3:
+				radii = [thickness * (0.5 + 0.5 * math.sin(math.pi * i / (len(pts) - 1))) + 0.0002 for i in range(len(pts))]
+				made.append(make_tube(f'{eye.name}_Lash{tag}', rig, pts, radii, segs=4))
+	return made
