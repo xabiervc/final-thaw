@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid:flooded_shelter_2_5d"]
+[gd_scene load_steps=16 format=3 uid="uid:flooded_shelter_2_5d"]
 
 [ext_resource type="Script" path="res://scripts/levels/flooded_shelter_controller.gd" id="1_shelter"]
 [ext_resource type="Script" path="res://scripts/entities/elena.gd" id="2_elena"]
@@ -11,11 +11,31 @@
 [ext_resource type="PackedScene" path="res://scenes/ui/demo_hud.tscn" id="9_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/demo_end.tscn" id="10_end"]
 
+[sub_resource type="RectangleShape2D" id="elena_shape"]
+size = Vector2(28, 48)
+
+[sub_resource type="RectangleShape2D" id="interaction_shape"]
+size = Vector2(120, 120)
+
+[sub_resource type="RectangleShape2D" id="win_shape"]
+size = Vector2(120, 160)
+
+[sub_resource type="RectangleShape2D" id="floor_shape"]
+size = Vector2(2400, 40)
+
+[sub_resource type="RectangleShape2D" id="wall_shape"]
+size = Vector2(40, 600)
+
 [node name="FloodedShelter25D" type="Node2D"]
-groups = ["flooded_shelter"]
 
 [node name="ShelterController" type="Node" parent="."]
 script = ExtResource("1_shelter")
+elena = NodePath("../Elena")
+civilian = NodePath("../Civilian")
+power_console = NodePath("../PowerRoom/PowerConsole")
+valve_station_left = NodePath("../ValveRoom/ValveLeft")
+valve_station_right = NodePath("../ValveRoom/ValveRight")
+flood_gate_exit = NodePath("../RescueRoom/FloodGateExit")
 
 [node name="Background" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.2, 0.2)
@@ -26,45 +46,78 @@ scroll_scale = Vector2(0.5, 0.5)
 [node name="Foreground" type="Parallax2D" parent="."]
 scroll_scale = Vector2(1.1, 1.1)
 
+[node name="LevelGeometry" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="LevelGeometry"]
+position = Vector2(600, 420)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelGeometry/Floor"]
+shape = SubResource("floor_shape")
+
+[node name="LeftWall" type="StaticBody2D" parent="LevelGeometry"]
+position = Vector2(-580, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelGeometry/LeftWall"]
+shape = SubResource("wall_shape")
+
+[node name="RightWall" type="StaticBody2D" parent="LevelGeometry"]
+position = Vector2(1780, 180)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LevelGeometry/RightWall"]
+shape = SubResource("wall_shape")
+
 [node name="Elena" type="CharacterBody2D" parent="."]
+position = Vector2(80, 360)
 script = ExtResource("2_elena")
 
 [node name="Sprite2D" type="Sprite2D" parent="Elena"]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Elena"]
+shape = SubResource("elena_shape")
 
 [node name="InteractionArea" type="Area2D" parent="Elena"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Elena/InteractionArea"]
+shape = SubResource("interaction_shape")
 
 [node name="OxygenTimer" type="Timer" parent="Elena"]
 
 [node name="Civilian" type="Node2D" parent="."]
+position = Vector2(1500, 370)
 script = ExtResource("3_civilian")
 
 [node name="PowerRoom" type="Node2D" parent="."]
 
 [node name="PowerConsole" type="Node2D" parent="PowerRoom"]
+position = Vector2(220, 370)
 script = ExtResource("4_console")
 
 [node name="ShelterLight" type="Node2D" parent="PowerRoom"]
+position = Vector2(220, 300)
 script = ExtResource("7_light")
 
 [node name="ValveRoom" type="Node2D" parent="."]
 
 [node name="ValveLeft" type="Node2D" parent="ValveRoom"]
+position = Vector2(700, 370)
 script = ExtResource("5_valve")
 
 [node name="ValveRight" type="Node2D" parent="ValveRoom"]
+position = Vector2(900, 370)
 script = ExtResource("5_valve")
 
 [node name="RescueRoom" type="Node2D" parent="."]
 
 [node name="FloodGateExit" type="Node2D" parent="RescueRoom"]
+position = Vector2(1650, 370)
 script = ExtResource("6_gate")
 
 [node name="WinZone" type="Area2D" parent="RescueRoom"]
+position = Vector2(1720, 340)
 script = ExtResource("8_win")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="WinZone"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RescueRoom/WinZone"]
+shape = SubResource("win_shape")
 
 [node name="DemoHUD" instance=ExtResource("9_hud") parent="."]
 

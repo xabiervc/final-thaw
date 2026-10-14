@@ -33,12 +33,18 @@ func _ready() -> void:
 		valve_station_right.connect("valve_opened", _on_valve_opened)
 	if civilian:
 		civilian.connect("civilian_rescued", _on_civilian_rescued)
+	if elena:
+		elena.player_died.connect(_on_elena_died)
 
 	restore_from_persistence()
 	_emit_initial_state()
 
+func _on_elena_died() -> void:
+	complete_level(false)
+
 func _emit_initial_state() -> void:
-	power_restored.emit() if has_power else null
+	if has_power:
+		power_restored.emit()
 	valves_progress_changed.emit(valves_open)
 	civilian_status_changed.emit(civilian_rescued)
 
@@ -65,7 +71,7 @@ func _on_civilian_rescued() -> void:
 	civilian_rescued = true
 	civilian_status_changed.emit(true)
 
-func complete_level(success: bool) -> void:
+func complete_level(success: bool = true) -> void:
 	if level_complete:
 		return
 	level_complete = true
@@ -97,9 +103,6 @@ func restore_from_persistence() -> void:
 	else:
 		valves_open = 0
 	civilian_rescued = gsm.get_flag("shelter_civilian_rescued", false)
-
-	if has_power and flood_gate_exit == null:
-		return
 
 	if valves_open >= 2 and flood_gate_exit:
 		flood_gate_exit.open_gate()

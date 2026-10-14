@@ -8,13 +8,28 @@ enum State { TRAPPED, RESCUED, DEAD }
 
 var state: State = State.TRAPPED
 var is_alive: bool = true
+var interactable: Interactable
 
 signal state_changed(new_state: State)
 signal civilian_rescued
 
 func _ready() -> void:
 	state = start_state
+	create_interactable()
 	update_visuals()
+
+func create_interactable() -> void:
+	interactable = Interactable.new()
+	interactable.interact_text = NarrativeTextManager.get_interact_civilian(true)
+	interactable.can_interact_func = Callable(self, "_can_interact")
+	interactable.on_interact_func = Callable(self, "_on_interact")
+	add_child(interactable)
+
+func _can_interact(_interactor: Node2D) -> bool:
+	return is_alive and state == State.TRAPPED
+
+func _on_interact(_interactor: Node2D) -> void:
+	rescue()
 
 func trap() -> void:
 	if not is_alive:
@@ -40,7 +55,6 @@ func kill() -> void:
 	update_visuals()
 
 func update_visuals() -> void:
-	# Placeholder: en el slice real esto cambiará sprites, animaciones, etc.
 	match state:
 		State.TRAPPED:
 			modulate = Color(0.7, 0.7, 0.9)
