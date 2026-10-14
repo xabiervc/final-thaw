@@ -1,0 +1,80 @@
+extends Node
+## Smoke/integration tests for the canonical Phase 1 scene. Not a substitute for spatial/camera playtest.
+## Run: godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
+
+const CanonicalScene = preload("res://scripts/prototypes/phase1_canonical_greybox.gd")
+var passed: int = 0
+var failed: int = 0
+var completed: bool = false
+
+
+func _ready() -> void:
+	get_tree().create_timer(30.0).timeout.connect(_watchdog)
+	call_deferred("_run")
+
+
+func _watchdog() -> void:
+	if not completed:
+		push_error("Canonical Phase 1 test did not reach completion (possible script error or stuck scene).")
+		get_tree().quit(1)
+
+
+func _run() -> void:
+	print("Godot: ", Engine.get_version_info()["string"])
+	var scene = CanonicalScene.new()
+	add_child(scene)
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+
+	_expect(scene.circuit != null, "canonical scene owns a circuit model")
+	_expect(scene.lift != null and scene.player != null, "scene creates player and service lift")
+	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
+	_expect(scene.circuit.destination == "ENSAYO" and not scene.circuit.trial_isolated and scene.circuit.protection_available, "circuit starts in the contract initial state")
+	_expect(scene.get_node_or_null("SelectorBody") != null and scene.get_node_or_null("IsolatorBody") != null, "selector and isolator fixtures exist")
+	_expect(scene.get_node_or_null("EStatusPanelBoard") != null and scene.get_node_or_null("ArchiveStatusBoard") != null, "E panel and local F indicator fixtures exist")
+
+	# Unsafe order trips protection and rejected rearm is non-destructive.
+	scene._toggle_selector()
+	_expect(not scene.circuit.protection_available and scene.circuit.last_trip == "DEMANDA_SIMULTANEA", "ARCHIVO with connected trial trips protection")
+	var before_rejected_rearm: Dictionary = scene.circuit.snapshot()
+	scene._request_rearm()
+	_expect(not scene.circuit.protection_available, "rearm is rejected while the fault remains")
+	_expect(scene.circuit.snapshot() == before_rejected_rearm, "rejected rearm preserves state and last_trip")
+
+	# Correct the fault, then rearm. The trip history remains.
+	scene._toggle_isolator()
+	scene._request_rearm()
+	_expect(scene.circuit.protection_available and bool(scene.circuit.outputs()["archive"]), "isolation and rearm restore stable archive supply")
+	_expect(scene.circuit.last_trip == "DEMANDA_SIMULTANEA", "successful rearm preserves last_trip")
+	scene._consult_archive()
+	_expect(scene._archive_consulted, "archive consultation is recorded in the current session")
+	_expect(scene.circuit.known_clues().size() == 1, "consultation grants session knowledge without save migration")
+	_expect(scene._audit_events.has("RESTRICTED_RECORD_READ"), "archive reading queues its optional audit event")
+
+	# Maintenance and platform power are wired independently of the recovery circuit.
+	scene._toggle_maintenance()
+	_expect(scene.circuit.maintenance_on and scene.lift.powered, "maintenance enables the service lift")
+	_expect(scene.circuit.outputs()["diagnostic"], "diagnostics remain available with maintenance on")
+	_expect(scene._audit_events.has("SERVICE_OVERRIDE"), "maintenance queues SERVICE_OVERRIDE")
+
+	# The F→G door and exterior hatch are controllable from their intended sides.
+	scene.player.global_position = Vector3(3.0, 3.2, -7.5)
+	scene._unlock_shortcut()
+	_expect(scene._shortcut_unlocked, "inner shortcut unlocks from the cabin side")
+	scene.player.global_position = Vector3(1.0, 3.2, -7.5)
+	scene._open_outer_hatch()
+	_expect(scene._outer_hatch_open, "outer hatch opens from the west vestibule")
+
+	completed = true
+	print("Canonical Phase 1 integration: %d passed, %d failed; COMPLETED" % [passed, failed])
+	scene.queue_free()
+	get_tree().quit(1 if failed > 0 else 0)
+
+
+func _expect(condition: bool, label: String) -> void:
+	if condition:
+		passed += 1
+		print("PASS: ", label)
+	else:
+		failed += 1
+		push_error("FAIL: " + label)
