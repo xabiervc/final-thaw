@@ -92,7 +92,7 @@ The Phase 2 asset family now includes the plan, north–south section, threat/si
 
 ### 2.4 Provisional spatial graph
 
-The parking graph uses local metres, origin at the northwest inside corner, X east and Z south. The selected design-baseline transform is X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. Values are still approximate and must not be copied into the production builder until the physical handoff is verified against the canonical scene.
+The parking graph uses local metres with origin at the northwest corner of the combined facade/site plan; X increases east and Z increases south. The 48 × 30 m envelope is measured to the inside faces of the north/south/east perimeter walls; the 5.3 m facade band is included in X. The selected design-baseline transform is X_world=X_local+28.7 m, Z_world=Z_local−15.8 m, Y=−2.0 m. Values remain approximate and must not be copied into the production builder until the physical handoff is verified against the canonical scene.
 
 | Node | Approx. coordinate (X, Z) | Spatial role | Connected nodes / rule |
 |---|---:|---|---|
