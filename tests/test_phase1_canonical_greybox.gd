@@ -43,8 +43,10 @@ func _run() -> void:
 	_expect(scene._service_lights.size() == 2 and scene._service_lights[0].light_energy < 0.2 and scene._service_lights[1].light_energy < 0.2, "service lights start at safe ambient minimum while maintenance is off")
 	var lower_gate_shape := scene.get_node("LiftSafetyGateLower").get_child(0) as CollisionShape3D
 	var lower_gate_mesh := scene.get_node("LiftSafetyGateLower").get_child(1) as MeshInstance3D
-	var upper_gate_shape := scene.get_node("LiftSafetyGateUpper").get_child(0) as CollisionShape3D
-	var upper_gate_mesh := scene.get_node("LiftSafetyGateUpper").get_child(1) as MeshInstance3D
+	var upper_gate_body := scene.get_node("LiftSafetyGateUpper") as StaticBody3D
+	_expect(is_equal_approx(upper_gate_body.position.z, -4.49), "upper lift gate aligns with the mezzanine shaft edge")
+	var upper_gate_shape := upper_gate_body.get_child(0) as CollisionShape3D
+	var upper_gate_mesh := upper_gate_body.get_child(1) as MeshInstance3D
 	_expect(lower_gate_shape.disabled and not lower_gate_mesh.visible, "lower landing gate is open only because the lift is docked there")
 	_expect(not upper_gate_shape.disabled and upper_gate_mesh.visible, "upper landing gate protects the empty shaft")
 	_expect(scene.circuit.destination == "ENSAYO" and not scene.circuit.trial_isolated and scene.circuit.protection_available, "circuit starts in the contract initial state")
