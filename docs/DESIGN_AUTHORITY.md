@@ -18,7 +18,7 @@ This document separates current design direction, actual implementation evidence
 | Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v1.0 | Current target topology; verify footprints and traversability in Godot |
 | Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.0 | Target measurements and collision contract, not proof of built geometry |
 | Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.0 | Target interactions, puzzle and escape flow; some escape requirements are not implemented |
-| Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v1.0 | Intended route and handoff; implementation pending |
+| Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v1.0 | Quiet evasion → perceptible reacquisition → running chase → selected exit and physical parking handoff; implementation pending |
 | Movement/chase prototype mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus current code | Prototype behavior and known limits; v2 test/playtest status must be recorded |
 | Requirement-to-evidence mapping | `docs/TRACEABILITY_MATRIX.md` | Maps intended behavior to implementation, tests and verification gaps |
 | Implementation status | `PROJECT_STATUS.md`, current scene/script/test state and recorded results | Source of truth for what exists and what was actually verified |
@@ -54,7 +54,7 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 ### Mission 2 — Containment and parking
 - Review the provisional plan, section, spatial graph, edge-clearance contract, obstacle register and conceptual threat/light overlays as a consistent package; reconcile the local-to-world transform with the Phase 1 mouth and current builder before locking dimensions.
 - Run `godot --headless --path . res://tests/test_motion_chase_prototype.tscn` and `godot --headless --path . res://tests/test_phase_0.tscn`.
-- Run the scene manually; review movement, jump range, crouch clearance, climb, camera occlusion, enemy sight/hearing/search, cover routes, catches, checkpoints, exit and handoff.
+- Run the scene manually; review movement, camera occlusion, staff NPC routines/perception, noise and cover in the quiet section, the mapped transition to running chase, enemy sight/hearing/search, catches, checkpoints, selected exit and physical handoff.
 - Verify the Phase 1 interior pursuit and distinct P−1 service exit before accepting the parking integration.
 - Record engine version, renderer, commit, commands/output, warnings/errors, manual QA, evidence and remaining limitations.
 
