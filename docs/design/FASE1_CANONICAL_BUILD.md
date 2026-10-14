@@ -20,6 +20,7 @@ The earlier `phase1_spatial_greybox.tscn` is preserved as a six-room comparison 
 - Ground slab split around the lift shaft, service pit and fixed pit stair opening.
 - Pit schematic, tampered A→T bridge, maintenance switch and service lights.
 - Original-shaft service lift, unpowered initially and wired to the maintenance state.
+- Fixed safety gates at both landings, interlocked to the service-lift state; the empty shaft is blocked while the deck travels or is docked at the opposite level.
 - The upper-landing protective rail stops at X=26, leaving the X=24..26 overlap clear for lift-to-walkway transfer.
 - Upper walkway and archive cabin, selector, trial isolator, diagnostic panel and independent rearm interaction.
 - Local F archive-status display and a separate consultation control.
@@ -50,7 +51,7 @@ Record Godot version, commit, exact command, output, and exit code. Any script p
 
 ## Manual gate
 
-Open the canonical scene with F6 and test in sequence: enter; inspect the broken access and central rig; descend and leave the pit with maintenance off; operate maintenance; return through the fixed stairs; summon, board, ride and leave the lift from both ends; cut power while docked and at early, midpoint and late positions; solve and deliberately trip the circuit; inspect diagnostics before and after rearm; consult archive only with stable supply; unlock F→G; open and cross G→H.
+Open the canonical scene with F6 and test in sequence: enter; inspect the broken access and central rig; descend and leave the pit with maintenance off; operate maintenance; return through the fixed stairs; summon, board, ride and leave the lift from both ends; verify that fixed landing gates open only at the docked floor; cut power while docked and at early, midpoint and late positions; solve and deliberately trip the circuit; inspect diagnostics before and after rearm; consult archive only with stable supply; unlock F→G; open and cross G→H.
 
 Capture camera and collision issues, whether the status panel and F indicator are readable without approaching the wrong control, whether the lift gates read clearly, whether the player can pass every opening without jumping, and whether the circuit is inferred instead of brute-forced. A human playtest with a new player remains mandatory.
 
