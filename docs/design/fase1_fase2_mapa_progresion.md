@@ -1,8 +1,8 @@
-# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v1.0)
+# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v1.1)
 
 **Estado:** recorrido y estructura de la experiencia revisados según la dirección arquitectónica de edificio completo, puzle distribuido y huida por una salida alternativa. La escena actual aún no demuestra este recorrido: la evasión silenciosa, la transición a carrera, la salida alternativa seleccionada y el handoff al aparcamiento requieren implementación y pruebas. La galería/boca este dibujada actualmente es una candidata, no una restricción de guion. El inicio narrativo y sus beats/diálogos provisionales se especifican en `docs/narrative_complete.md`; no son canon completo aprobado. La respuesta automática de la instalación es la dirección narrativa propuesta; siguen abiertas la supervisión exacta, el destinatario concreto y la identidad final de la unidad.
 
-**Autoridad:** `FASE1_ARCHITECTURAL_LAYOUT.md v2.0`, `FASE1_SPATIAL_GRAPH.md v1.0`, `FASE1_GREYBOX_SPEC.md`, `FASE1_FUNCTIONAL_SPEC.md` y `FASE1_LOGIC_CONTRACT.md`. El contrato lógico del circuito no cambia con este mapa.
+**Autoridad:** `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`, `FASE1_SPATIAL_GRAPH.md v1.1`, `FASE1_GREYBOX_SPEC.md v2.1`, `FASE1_FUNCTIONAL_SPEC.md v2.1` y `FASE1_LOGIC_CONTRACT.md`. El contrato lógico del circuito no cambia con este mapa.
 
 ## Experiencia objetivo
 
