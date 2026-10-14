@@ -27,7 +27,7 @@ Coordenadas en metros; X positivo hacia el este, Z positivo hacia el sur, norte 
 | S2 · Escalera fija | +1,5↔+3 | X 9..13, Z −4,5..−1,5 | M a P2, independiente de alimentación. |
 | E · Control | +3 | X 9..24, Z −8,5..−4,5 | Selector, aislador, diagnóstico y rearme. |
 | F · Archivo | +3 | X 3..9, Z −9..−4,5 | Consulta con ARCHIVO estable. |
-| G · Puerta/interbloqueo de huida | +3 | X 0..3, Z −9..−4,5 | Abre hacia el recorrido interior de huida; no conecta directamente al exterior. |
+| G · Esclusa de doble puerta | +3 | X 0..3, Z −9..−4,5 | La compuerta exterior activa la persecución; la puerta interior devuelve a F. No es la salida final. |
 | Pasarela superior | +3 | X 9..26, Z −4,5..−1,5, con hueco S2 | Circulación y observación protegidas. |
 | Aparcamiento | exterior | Al este de la boca de servicio | Inicio del tramo exterior de Fase 2. |
 
@@ -62,7 +62,7 @@ ENTRADA OESTE → túnel → A → B ─────→ galería de servicio ─
 - Desde el rellano superior de S1: retorno por perímetro sur/este y galería de servicio; el jugador no necesita saltar el hueco.
 - Galería de servicio ↔ elevador P0↔M; la llegada superior desemboca en la sala de bombas, no en control.
 - M ↔ galería de observación ↔ S2 ↔ P2; E ↔ F ↔ G.
-- **Ruta de huida:** G inicia el segmento de persecución dentro del edificio; la ruta regresa por circulación técnica a S2/M, desciende por el elevador a P0, baja por S1 a P−1 y sale por la galería de evacuación hacia el aparcamiento. El orden exacto de obstáculos se fija en progresión y greybox.
+- **Ruta de huida:** al abrir la compuerta exterior de G, la amenaza entra por ese umbral y Elena retrocede por la puerta interior a F/E; después vuelve por S2/M, desciende por el elevador a P0, baja por S1 a P−1 y sale por la galería de evacuación hacia el aparcamiento. G no es la salida final.
 - La galería de evacuación conecta D2 con el exterior este. No conecta con el túnel de entrada ni crea una escalera vertical nueva.
 
 ## No-aristas y restricciones
