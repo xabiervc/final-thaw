@@ -25,10 +25,13 @@ const GLOW_INTENSITY := 0.5
 const GLOW_THRESHOLD := 1.0
 const CONTRAST := 1.06
 const SATURATION := 0.92
-const FIXTURE_ENERGY := 1.1
-const FIXTURE_RANGE := 7.5
+## Keep local lights sparse on Compatibility / integrated GPUs. The lamps remain visible meshes;
+## these lights add restrained pools of light without adding dynamic shadows.
+const FIXTURE_ENERGY := 0.72
+const FIXTURE_RANGE := 5.5
 const FIXTURE_HEIGHT := 2.3
 const FIXTURE_DEPTH := 1.6  # metres in front of the wall
+const FIXTURE_LIGHT_STRIDE := 2  # one dynamic fixture light for every two visible fixtures
 const COLD_LIGHT := Color(0.72, 0.88, 1.0)
 const WARM_LIGHT := Color(1.0, 0.8, 0.55)
 
@@ -242,11 +245,16 @@ func _brighten() -> void:
 func _fixture_lights(layout: Dictionary) -> void:
 	var half: float = layout["half"]
 	var i := 0
-	for lx in layout["lights"]:
+	for light_index in layout["lights"].size():
+		# Keep the emissive fixture meshes at every position, but only add a local light
+		# every second fixture. This caps dynamic lighting cost while preserving the rhythm.
+		if light_index % FIXTURE_LIGHT_STRIDE != 0:
+			continue
+		var lx: float = float(layout["lights"][light_index])
 		var light := OmniLight3D.new()
-		light.name = "FixtureLight%d" % i
-		light.position = Vector3(float(lx), FIXTURE_HEIGHT, -half + FIXTURE_DEPTH)
-		light.light_color = COLD_LIGHT if i % 2 == 0 else WARM_LIGHT
+		light.name = "FixtureLight%d" % light_index
+		light.position = Vector3(lx, FIXTURE_HEIGHT, -half + FIXTURE_DEPTH)
+		light.light_color = COLD_LIGHT if light_index % 2 == 0 else WARM_LIGHT
 		light.light_energy = FIXTURE_ENERGY
 		light.omni_range = FIXTURE_RANGE
 		light.shadow_enabled = false
