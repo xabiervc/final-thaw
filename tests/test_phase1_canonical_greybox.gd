@@ -34,7 +34,7 @@ func _run() -> void:
 	var pit_floor := scene.get_node("PitFloor") as StaticBody3D
 	var pit_floor_shape := pit_floor.get_child(0) as CollisionShape3D
 	var pit_floor_box := pit_floor_shape.shape as BoxShape3D
-	_expect(is_equal_approx(pit_floor.position.y - pit_floor_box.size.y * 0.5, -2.125), "pit collision floor has its top surface at the specified Y=-2 m datum")
+	_expect(is_equal_approx(pit_floor.position.y + pit_floor_box.size.y * 0.5, -2.0), "pit collision floor has its top surface at the specified Y=-2 m datum")
 	_expect(not _has_ground_slab_at(scene, Vector2(15.0, 4.0)) and not _has_ground_slab_at(scene, Vector2(22.0, 4.0)), "P0 has real collision voids above both D1 and D2")
 	_expect(not _has_ground_slab_at(scene, Vector2(25.0, 9.5)), "S1 stair mouth remains open through the P0 slab")
 	_expect(scene.get_node_or_null("PitRailWest") != null and scene.get_node_or_null("PitRailEast") != null, "maintenance pit perimeter is protected")
