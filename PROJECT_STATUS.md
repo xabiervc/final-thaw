@@ -7,9 +7,9 @@
 ## Phase 1 sources of truth
 
 - Functional behaviour and narrative handoff: `docs/design/FASE1_FUNCTIONAL_SPEC.md` (v1.0).
-- Spatial graph: `docs/design/FASE1_SPATIAL_GRAPH.md` (v0.4).
-- Greybox geometry: `docs/design/FASE1_GREYBOX_SPEC.md` (v1.1).
-- Progression map: `docs/design/fase1_fase2_mapa_progresion.md` (v0.6).
+- Spatial graph: `docs/design/FASE1_SPATIAL_GRAPH.md` (v0.5).
+- Greybox geometry: `docs/design/FASE1_GREYBOX_SPEC.md` (v1.2).
+- Progression map: `docs/design/fase1_fase2_mapa_progresion.md` (v0.7).
 - Electrical logic: `docs/design/FASE1_LOGIC_CONTRACT.md`.
 
 No design alternative remains open inside the Phase 1 slice. Scene, collision, camera, timing and playtest results remain unverified.
