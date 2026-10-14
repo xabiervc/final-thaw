@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+signal narrative_dismissed
+
 var _panel: PanelContainer = null
 var _label: Label = null
 var _timer: Timer = null
@@ -29,7 +31,7 @@ func _ready() -> void:
 	add_child(_panel)
 	_label = Label.new()
 	_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_label.add_theme_font_size_override("font_size", 22)
+	_apply_font_scale()
 	_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -38,6 +40,11 @@ func _ready() -> void:
 	_timer.one_shot = true
 	_timer.timeout.connect(_hide_panel)
 	add_child(_timer)
+	GameManager.stats_changed.connect(_apply_font_scale)
+
+func _apply_font_scale() -> void:
+	if _label != null:
+		_label.add_theme_font_size_override("font_size", int(22.0 * clampf(GameManager.font_scale, 0.75, 2.0)))
 
 func show_message(text: String, duration: float = 8.0) -> void:
 	_label.text = text
@@ -45,8 +52,14 @@ func show_message(text: String, duration: float = 8.0) -> void:
 	_shown_msec = Time.get_ticks_msec()
 	_timer.start(duration)
 
+func is_visible() -> bool:
+	return _panel != null and _panel.visible
+
 func _hide_panel() -> void:
+	if _panel == null or not _panel.visible:
+		return
 	_panel.visible = false
+	narrative_dismissed.emit()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if _panel.visible and event.is_action_pressed("interact") and not event.is_echo():

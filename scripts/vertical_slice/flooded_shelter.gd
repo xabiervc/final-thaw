@@ -17,6 +17,7 @@ const PLAYER_START := Vector2(125, 390)
 const WORLD_MIN := Vector2(80, 130)
 const WORLD_MAX := Vector2(2020, 640)
 const INTERACT_RANGE := 110.0
+const NARRATIVE_GRACE_SECONDS := 0.35
 
 var rules = Rules.new()
 var player: CharacterBody2D
@@ -27,6 +28,7 @@ var objects: Array[Area2D] = []
 var interactables: Dictionary = {}
 var highlighted_kind: String = ""
 var ended: bool = false
+var narrative_grace_left: float = 0.0
 
 func _ready() -> void:
 	add_to_group("vertical_slice")
@@ -69,6 +71,10 @@ func _ready() -> void:
 	rules.civilian_rescued.connect(_on_rules_changed)
 	rules.oxygen_depleted.connect(_on_oxygen_empty)
 	rules.state_reset.connect(_on_rules_changed)
+
+	var narrative_panel := get_tree().get_first_node_in_group("narrative_panel")
+	if narrative_panel != null and narrative_panel.has_signal("narrative_dismissed"):
+		narrative_panel.narrative_dismissed.connect(_on_narrative_dismissed)
 
 	_update_interactable_visuals()
 	_update_ui(NarrativeTextManager.get_shelter_intro())
@@ -123,6 +129,8 @@ func _process(delta: float) -> void:
 		return
 
 	player.position = player.position.clamp(WORLD_MIN, WORLD_MAX)
+	if narrative_grace_left > 0.0:
+		narrative_grace_left = maxf(0.0, narrative_grace_left - delta)
 	_update_highlight()
 
 	if rules.valves_open:
@@ -143,6 +151,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("scan"):
 		_update_ui(NarrativeTextManager.get_shelter_scan())
 	elif event.is_action_pressed("interact"):
+		if narrative_grace_left > 0.0:
+			return
 		var target := _closest_object()
 		if target != null:
 			_interact_with(str(target.get_meta("kind")))
@@ -152,8 +162,7 @@ func _closest_object() -> Area2D:
 	if sensor_target != null:
 		return sensor_target
 
-	# Fallback for headless tests and scenes where the physics sensor has not
-	# registered an overlap yet.
+	# Compatibility fallback for headless tests and dynamically built scenes.
 	var best: Area2D = null
 	var distance := INTERACT_RANGE
 	for item in objects:
@@ -214,6 +223,10 @@ func _on_oxygen_empty() -> void:
 	GameStateManager.set_flag("shelter_valves_opened", false)
 	_update_interactable_visuals()
 	_update_ui(NarrativeTextManager.get_shelter_oxygen_empty())
+
+func _on_narrative_dismissed() -> void:
+	narrative_grace_left = NARRATIVE_GRACE_SECONDS
+	_update_interactable_visuals()
 
 func _update_interactable_visuals() -> void:
 	for kind in interactables:
