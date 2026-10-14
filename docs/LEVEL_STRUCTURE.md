@@ -98,7 +98,7 @@ The following coordinates are derived from the concept plan only. Origin is the 
 | P2-02 Route decision | (9.3, 21.8) | First readable split | Branches to P2-A1 or P2-B1 |
 | P2-A1 Direct aisle | (13.9, 19.3) | Short exposed path | To P2-A2; limited cover |
 | P2-A2 Exposed crossing | (22.9, 21.8) | High-risk crossing | To P2-A3; retain recovery cover nearby |
-| P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
+| P2-A3 Southern bypass | (38.2, 19.6) | Southern bypass around P2-O2; still exposed | To P2-JOIN; minimum clear width 2.0 m |\n| P2-B1 Service lane | (11.1, 13.9) | Covered route behind vehicle row | To P2-B2; narrower clearances |
 | P2-B2 North cover chain | (25.9, 9.6) | Longer route with broken sightlines | To P2-B3 |
 | P2-B3 Technical cage | (37.1, 12.1) | Service-side traversal | To P2-JOIN; must not be a dead end |
 | P2-A3 West-side bypass | (37.1, 16.8) | Direct route skirts west of P2-O2 before convergence | From P2-A2 to P2-JOIN with ≥2.0 m target clearance |
@@ -123,9 +123,9 @@ These are design targets for the concept graph, not measured clearances in the c
 | P2-02 → P2-A1 → P2-A2 | Direct walk/run | ≥3.5 m at aisle; ≥1.5 m at turns | High exposure across the central aisle | Nearest cover cluster remains reachable; threat may pursue only along visible, traversable aisle |
 | P2-02 → P2-B1 → P2-B2 | Walk/crouch where needed | ≥1.2 m at the single authored pinch; otherwise ≥1.5 m | Broken sightline behind parked vehicles | No required jump; player can retreat to P2-02 until the final commitment |
 | P2-B2 → P2-B3 | Walk/run around technical cage | ≥1.5 m | Intermittent exposure through column gaps | Cage cannot become a dead end; enemy must take the same valid bypass or search the last-known position |
-| P2-A2 → P2-A3 → P2-JOIN / P2-B3 → P2-JOIN | Walk/run; direct route bypasses P2-O2 on its west side | ≥2.0 m at bypass; ≥2.0 m at convergence | Direct route stays exposed; service route keeps more broken sightlines | Show the west-side bypass from approach; no hidden collision lip; both routes remain viable |
+| P2-A2 → P2-A3 → P2-JOIN / P2-B3 → P2-JOIN | Walk/run; direct route passes south of P2-O2 | ≥2.0 m at bypass; ≥2.0 m at convergence | Direct route stays exposed; service route keeps more broken sightlines | Show the southern bypass from approach; no hidden collision lip; both routes remain viable |
 | P2-JOIN → P2-05 | Walk/run, optional short crouch only if geometry clearly signals it | ≥1.5 m | Threat can regain sight near the barrier | Both routes remain viable; no hidden collision lip |
-| P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.2 m at the fixed O3 aperture, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; if blocked, use the explicitly drawn bypass or return to cover |
+| P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.2 m at the fixed O3 aperture, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; the 1.3 m aperture stays open and collision-free; any future blocked state requires a drawn bypass |
 
 No jump or climb is currently required by the parking concept. Do not import the prototype's 1.8 m/3.0 m gaps into this level simply because they exist in the mechanics test. If a jump, climb or squeeze is later added, it needs an approach/landing diagram and a measured capability test.
 
@@ -220,9 +220,9 @@ These entries turn the concept symbols into reviewable design proposals. Their p
 
 | ID | Approx. position (X, Z) | Proposed physical element | Intended decision | Fairness and recovery contract |
 |---|---:|---|---|---|
-| P2-O1 | (13.6, 13.4) | Abandoned maintenance cart/pallet intruding into the covered service lane | Read the remaining side clearance and choose to squeeze/walk around rather than sprint blindly | Keep a visibly continuous passage with at least 1.2 m clear target; no hidden collision protrusions; route remains recoverable if detected |
-| P2-O2 | (41.7, 19.9) | Displaced service equipment rack south-east of route convergence | Blocks the naive straight line and makes Route A take the documented west-side bypass at P2-A3 | Preserve ≥2.0 m clear on the bypass; do not block Route B; threat must use a physically valid path |
-| P2-O3 | (44.3, 14.8) | Partially lowered vehicle/service barrier at the egress bottleneck (P2-05) | Decide whether to pass through the clear opening or use the adjacent service bypass | Never require a timed, frame-perfect slide; the open aperture must fit the actual capsule/camera; failure returns to the previous safe pocket |
+| P2-O1 | (13.3, 13.4) | Abandoned maintenance cart/pallet, approx. 1.9 × 2.1 m footprint, intruding into the covered service lane | Read the remaining side clearance and choose to walk around rather than sprint blindly | Keep a visibly continuous passage of at least 1.2 m; no hidden collision protrusions; route remains recoverable if detected |
+| P2-O2 | (37.2, 17.0) | Displaced service equipment rack, approx. 3.0 × 2.0 m footprint, between the routes near convergence | Use it as cover; Route A passes south of it while Route B approaches from the north-east | Must not intersect either route's minimum clear envelope; it changes sightline but does not block route connectivity |
+| P2-O3 | (44.3, 14.8) | Partially lowered service barrier; plan shows a fixed 1.3 m clear aperture | Read the opening and pass through without a timed slide | Validate player/camera/threat clearance; aperture never closes on a character; any impassable variant needs a dimensioned bypass in plan and graph |
 
 No obstacle is approved merely because it appears in the SVG. Before implementation, the design owner must review each item's measured footprint, approach view, collision shape, camera behavior, player and enemy traversability, audio/visual tell, alternative, checkpoint relationship and acceptance test. If an obstacle changes, update the plan, section/overlay, graph, register and traceability together.
 
