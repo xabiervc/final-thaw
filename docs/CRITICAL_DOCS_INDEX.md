@@ -11,6 +11,8 @@
 5. [Level structure and Phase 2 spatial design](LEVEL_STRUCTURE.md) — parking architecture, candidate transform, route graph, clearances, obstacle register, narrative beats and acceptance gates.
    - [Parking concept plan](design/assets/phase2_parking/parking_plan_concept.svg) — provisional 48 × 30 m layout, two routes, cover, obstacles, sightline and light overlays.
    - [Parking concept section](design/assets/phase2_parking/section_parking_concept.svg) — provisional vertical relationships; exterior datum still unresolved.
+   - [Threat/sightline overlay](design/assets/phase2_parking/threat_sightline_overlay.svg) — candidate bounded pursuit route, visibility sectors and search pockets; not AI verification.
+   - [Lighting/landmark overlay](design/assets/phase2_parking/lighting_landmark_overlay.svg) — intended L1–L5 navigation chain and exposure zones; not a photometric plan.
 6. [Mission 1 puzzle](design/MISSION1_GHOST_PROTOCOL.md) — investigation, clue relationships and puzzle feedback.
 7. [Phase 1 architecture](design/FASE1_ARCHITECTURAL_LAYOUT.md) — building program, routes and escape intent.
 8. [Phase 1 progression](design/fase1_fase2_mapa_progresion.md) — route, state transitions, chase sequence and parking handoff.
