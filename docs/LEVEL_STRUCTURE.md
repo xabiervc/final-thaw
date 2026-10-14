@@ -20,7 +20,7 @@ This document defines the intended level experience. It does not claim that the 
 
 ### 2.1 Site identity
 
-The parking area is the service forecourt of the same clandestine hydrological/industrial research facility. It must read as a plausible operational space used by staff, maintenance and emergency logistics—not a generic arena populated with cars.
+The parking area is the service forecourt of the same clandestine hydrological/industrial research facility. It must read as a plausible operational space used by staff, maintenance and emergency logistics—not a generic arena populated with cars. The broad central area in the concept is a **service/maneuvering apron**, not a conventional narrow parking aisle; justify its width with turning, loading or maintenance activity and use the parked rows, columns and technical cage to create cover and route choices.
 
 The architecture should communicate:
 - the laboratory service facade and the exit Elena has just used;
@@ -109,6 +109,20 @@ These are design targets for the concept graph, not measured clearances in the c
 | P2-05 → P2-06 → P2-EXIT | Walk/run through service egress | ≥1.5 m at pinch, ≥2.0 m otherwise | Final approach is exposed but readable from earlier landmark | No frame-perfect timing; if blocked, use the explicitly drawn bypass or return to cover |
 
 No jump or climb is currently required by the parking concept. Do not import the prototype's 1.8 m/3.0 m gaps into this level simply because they exist in the mechanics test. If a jump, climb or squeeze is later added, it needs an approach/landing diagram and a measured capability test.
+
+### 2.6 Checkpoint and retry contract
+
+The concept plan marks three provisional anchors: **S** at the service entry, **CP1** at P2-JOIN after both routes converge, and **CP2** at the egress approach before the final bottleneck. These are design locations, not current code checkpoints.
+
+| Anchor | Local coordinate (X, Z) | Purpose | Activation rule |
+|---|---:|---|---|
+| S / entry | (6.8, 21.8) | Start the integrated Phase 2 segment at the P−1 handoff | Set by the integrated scene; do not replay the standalone corridor |
+| CP1 | (40.7, 16.8) | Avoid replaying both route branches after the player has completed the main traversal | Activate only after Elena physically enters the convergence pocket |
+| CP2 | (44.3, 5.0) | Keep the final bottleneck/egress attempt short after the player reaches the last safe approach | Activate before the final committed crossing, not after an untelegraphed hazard |
+
+On catch/fall/retry, restore Elena to the anchor with zero velocity, restore a fair threat state at a physically reachable position, clear transient alert/search timers and ensure the unit does not have an automatic fresh sightline to the respawn point. Preserve the current mission's in-memory puzzle/story knowledge; a retry must not silently erase the Aster discovery or add a new persistent save field. Reinitialize local obstacle states only if their state is consistent with the anchor; do not reset a barrier behind the player or place a collision over the respawn capsule.
+
+Before acceptance, test each anchor with repeated catches, pause/restart and scene exit. Record the actual retry duration and verify that no checkpoint is inside a collider or enemy catch radius. The entry checkpoint must be translated with the approved world transform, not copied from the current prototype's old `(34.5, 0, 0)` value.
 
 ## 3. Parking route topology and encounter sequence
 
