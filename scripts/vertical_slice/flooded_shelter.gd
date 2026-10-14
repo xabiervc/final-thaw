@@ -152,7 +152,8 @@ func _closest_object() -> Area2D:
 	if sensor_target != null:
 		return sensor_target
 
-	# Compatibility fallback for headless tests and dynamically built scenes.
+	# Fallback for headless tests and scenes where the physics sensor has not
+	# registered an overlap yet.
 	var best: Area2D = null
 	var distance := INTERACT_RANGE
 	for item in objects:
