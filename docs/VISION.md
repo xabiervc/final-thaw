@@ -1,199 +1,75 @@
-# FINAL THAW — Vision Document
+# FINAL THAW — Working Vision (Prototype-Led Redesign)
 
-## Purpose
+**Status:** working vision for the next playable prototype; not yet locked full-game canon.  
+**Implementation reference:** [Motion/chase prototype](design/MOTION_CHASE_PROTOTYPE.md).
 
-This document defines the CORE IDENTITY of Final Thaw: player fantasy, core emotion, target audience, differentiation, pillars, ANTI-PILLARS (what we explicitly reject), scope, and target duration. This is the NORTH STAR for all design decisions.
+## North star
 
----
+Final Thaw is a cinematic science-fiction climate thriller about a scientist uncovering a consequential truth and surviving the system that wants to silence her. Its moment-to-moment identity should come from physical traversal, environmental inference, stealth under pressure, and discoveries that change the player's understanding of Helix.
 
-## Player Fantasy
+The player should feel intelligent and vulnerable—not powerless, not an action hero. The world is dangerous, but its rules are legible enough to learn.
 
-### Who the Player Imagines Themselves As
+## Player fantasy
 
-**Elena Vast**: "I am a brilliant scientist who must use her intellect to navigate a collapsing world. I am not a soldier—I solve problems with my mind, not a gun. I carry the weight of my past choices (my sister's death), but I am not defined by them. I choose to save the world, not just survive."
+As Elena Vast, the player reads a hostile industrial environment as a system that can be understood, uses a scanner to find evidence and routes, crosses physical obstacles through timing and movement, manages the risk of being heard or seen, and uncovers evidence connecting Helix to the Aster project and personal loss.
 
-**Marcus Reyes**: "I am a former protector who failed those he swore to protect. I am not a hero—I am a man seeking redemption through action. I protect Elena not because she is weak, but because she represents hope. I choose to protect the future, not dwell on the past."
+Elena is a scientist, not a soldier. Combat, firearms and elaborate melee are not part of the current prototype.
 
-**Together**: "We are two halves of a whole—the thinker and the doer, the idealist and the pragmatist. We do not always agree, but we NEED each other. Our partnership is the only way to save the world."
+## Core emotional target: tension with agency
 
-### What the Player Experiences
+| Emotion | Design mechanism |
+|---|---|
+| Curiosity | Environmental clues, scan traces, machine states and unexplained evidence |
+| Tension | Sound, line of sight, a searching pursuer and risky traversal |
+| Competence | Consistent movement, learnable hazard rules and clear enemy tells |
+| Consequence | Solving a system changes the environment and triggers a response |
+| Hope | Evidence shows Helix's actions are not inevitable and Elena can still act |
 
-**Core Fantasy**: "I am making IMPOSSIBLE CHOICES in a collapsing world. Every decision has consequences—some I can control, others I cannot. I am not fighting the climate; I am navigating it, surviving it, and ultimately deciding who deserves to inherit what remains."
+## Working pillars (hypotheses to validate)
 
-**Key Moments**:
-- **Elena**: Navigating a flooded shelter, choosing between saving civilians (moral) or reaching the exit quickly (pragmatic). The water rises either way—can I save everyone, or must I choose?
-- **Marcus**: Protecting Elena from waves of enemies, knowing that if she dies, the world dies. Do I rush to her side (risky) or hold the line (safer, but she may be overwhelmed)?
-- **Joint**: Switching between Elena and Marcus mid-encounter, coordinating their skills to overcome obstacles neither could solo. We are stronger together—but trust must be EARNED.
+1. **Physical traversal is the action.** Gaps, low passages, authored climbs, cover and unstable machinery create varied decisions.
+2. **Investigation rewards inference.** The scanner reveals useful information; it does not simply mark the correct switch.
+3. **Threats obey readable rules.** Detection, sound, line of sight, search and recovery need understandable feedback and counterplay.
+4. **Actions cause the next situation.** The investigation and escape are linked: activating a system reveals something and triggers containment.
+5. **Failure teaches and retries quickly.** Players understand what went wrong and return close to the failed challenge.
 
----
+## Proposed opening
 
-## Core Emotion
+### Mission 1 — The Ghost Protocol (not yet implemented)
+Elena investigates a Helix facility to reconstruct what happened to an Aster test. The player combines environmental clues and infers a system configuration. The result changes the environment, reveals one meaningful contradiction in Helix's account and triggers a containment response.
 
-### Primary Emotion: "Weighted Hope"
+### Mission 2 — Containment (prototype foundation exists)
+Elena traverses an industrial facility while a recovery unit searches for her. She jumps gaps, crouches through a duct, uses a defined climb, manages noise and line of sight, and chooses between routes the unit cannot all use.
 
-**Definition**: The feeling that every choice MATTERS, that the world is collapsing around you, but that YOUR ACTIONS can still make a difference—not a difference that saves everyone, but a difference that saves ENOUGH.
+**Code boundary:** the isolated motion/chase prototype implements movement, jump, crouch, a defined climb, scanner reveal, checkpoints and a recovery-unit state machine. It does not yet implement Mission 1's inference puzzle or the narrative bridge. See `docs/design/MOTION_CHASE_PROTOTYPE.md`.
 
-**How It's Achieved**:
-- **Mechanically**: Consequence systems (Elena Safety, Prototype Integrity, Civilian Aid) track every meaningful choice. Players see their choices accumulate and affect the ending.
-- **Narratively**: NPCs remember your choices. Rescued civilians appear later as resistance helpers. Skipped civilians appear as bitter survivors. The world REACTS.
-- **Environmentally**: Climate collapse is VISIBLE (rising water, electrical storms, collapsing structures). You are not just told the world is ending—you SEE it, NAVIGATE it, SURVIVE it.
+## Narrative material to preserve provisionally
 
-### Secondary Emotions
+Elena, Iris, Helix, the Aster climate-stabilization project, evidence of a concealed/manipulated Aster test, Dr. Selene Voss, and a recovery unit sent after Elena remain the opening's narrative foundation. The precise chronology, Marcus's role, full campaign structure, ending rules and total duration remain under review. Do not silently discard established story facts; propose changes explicitly.
 
-| Emotion | When It's Felt | How It's Achieved |
-|---------|----------------|-------------------|
-| **Urgency** | Timers (oxygen, fire), hazards with telegraphs | Time pressure + visible consequences |
-| **Responsibility** | Protecting Elena (Marcus), protecting civilians (Elena) | NPCs depend on player, failure has visible consequences |
-| **Accomplishment** | Solving complex puzzles, clearing difficult arenas | Challenge → mastery → reward (checkpoint, narrative progression) |
-| **Regret** | Choosing to skip a civilian rescue, losing integrity | Permanent consequences (cannot undo choices, only live with them) |
-| **Hope** | Reaching a checkpoint, seeing rescued civilians thrive later | Small victories accumulate into meaningful change |
+## Anti-pillars
 
----
+- No generic combat arenas or enemy waves just to create action.
+- No arbitrary symbols or trial-and-error as the main puzzle method.
+- No enemy that knows Elena's position after losing sight.
+- No instant-fail hazards without clear warning.
+- No long backtracking after a mistake.
+- No scanner that turns the environment into a list of answers.
+- No production-art expansion before camera, movement and readability are tested.
+- No award-readiness or full-game-quality claims without evidence.
 
-## Target Audience
+## Prototype scope
 
-### Primary Audience
+**In scope:** third-person movement/camera; jump, crouch and one authored climb; recovery unit with patrol/investigate/alert/chase/search/return; noise and line-of-sight; scanner reveal; one compact investigation puzzle and a causal containment transition after traversal is validated.
 
-**Demographic**: 25-45 years old, PC/console gamers, experienced with narrative-driven games (The Last of Us, Disco Elysium, Life is Strange, Firewatch).
+**Out of scope for this test:** the full 16-phase campaign, final duration/endings, Marcus combat, weapons, boss fights, skill trees, large inventory, wholesale art replacement, renderer migration, save-schema changes.
 
-**Psychographic**:
-- Values **meaningful choices** over action-for-action's-sake
-- Enjoys **moral complexity** (no clear "good" vs. "evil")
-- Appreciates **atmospheric storytelling** (environmental details, subtle narrative)
-- Willing to **fail and retry** (sees failure as learning, not frustration)
-- Interested in **climate themes** (not preachy, but honest about the stakes)
+## Technical and accessibility constraints
 
-### Secondary Audience
+Preserve the Godot 4.7.x baseline, Compatibility renderer and Phase 0 input/autoload/resource/save/CRC32 contracts unless an explicit review approves a change. Measure performance on target rather than assuming it.
 
-**Demographic**: 18-24 years old, PC gamers, fans of indie games with unique mechanics (Hades, Celeste, Gris, Spiritfarer).
+From prototype stage provide non-colour-only threat cues, readable text, remappable actions, adjustable camera sensitivity, clear audio/visual detection signals and short retry loops. Crouch/climb animation, camera comfort, localization, controller parity, Web performance and broader accessibility still need validation.
 
-**Psychographic**:
-- Values **unique mechanics** (dual-protagonist, consequence systems)
-- Enjoys **challenge** (speedruns, 100% completion, achievement hunting)
-- Appreciates **artistic vision** (stylized art, atmospheric audio)
-- Willing to **support indie devs** (buys early, provides feedback)
+## Evidence gate
 
-### Audience NOT Targeted
-
-- **Casual mobile gamers** (game is too complex, too long)
-- **Pure action gamers** (combat is only 50% of gameplay, puzzles are equally important)
-- **Players seeking power fantasy** (player is NAVIGATING collapse, not STOPPING it)
-- **Players seeking escapism** (game is intentionally grounded, not escapist)
-
----
-
-## Differentiation
-
-### How Final Thaw Is Different from Other Games
-
-| Competitor | Their Focus | Our Focus | Key Difference |
-|------------|-------------|-----------|----------------|
-| **The Long Dark** | Pure survival (calories, cold, wolves) | Survival + MORAL CHOICES (civilians to save, evidence to preserve) | We are not just surviving—we are DECIDING who survives |
-| **Subnautica** | Exploration + crafting (underwater, base building) | Exploration + CONSEQUENCES (choices affect ending, not just resources) | We are not just exploring—we are LEAVING A MARK |
-| **Frostpunk** | City management (hope, despair, resource allocation) | Individual agency (Elena + Marcus, not a city) | We are not managing a society—we are TWO PEOPLE making impossible choices |
-| **Death Stranding** | Delivery + connection (asynchronous multiplayer) | Partnership + COORDINATION (Elena + Marcus, real-time switching) | We are not connecting a world—we are CONNECTING TWO PEOPLE |
-| **Disco Elysium** | Dialogue + internal monologue (skills as characters) | Action + dialogue (puzzles + combat + choices) | We are not just thinking—we are ACTING on our thoughts |
-
-### Unique Selling Points (USPs)
-
-1. **Dual-Protagonist, Real-Time Switching**: Not just aesthetic—Elena and Marcus have FUNDAMENTALLY DIFFERENT gameplay (puzzle vs. combat). Switching reflects growing trust (2s cooldown early → instant late-game).
-
-2. **Consequence Counters (Visible, Persistent)**: Elena Safety, Prototype Integrity, Civilian Aid—always visible on HUD. Players KNOW where they stand for ending eligibility.
-
-3. **Meaningful Moral Choices (Not "Good vs. Evil")**: Not "save everyone" vs. "kill everyone"—but "save 3 civilians (+5 min, +3 aid)" vs. "skip all (0 min, 0 aid)". Both are VALID, both have CONSEQUENCES.
-
-4. **Environmental Hazards as PUZZLES, Not Just Threats**: Steam vents have patterns, electrical hazards have safe windows. Player can MASTER environment, not just ENDURE it.
-
-5. **Tight Checkpointing (No 2-Hour Survival Marathons)**: Checkpoints every 3-5 minutes. Failure = 3-5 minute setback, not "restart the entire day."
-
----
-
-## Pillars
-
-### The 4 Non-Negotiable Pillars
-
-| Pillar | Definition | Example |
-|--------|------------|---------|
-| **1. Choices Have Mechanical Consequences** | Every meaningful decision changes GAMEPLAY, not just dialogue. Civilian Aid ≥4 REQUIRED for Public Thaw. Prototype Integrity ≤1 FORCES Fragile Thaw. | Rescuing 3 civilians in Phase 6 = +3 Civilian Aid. If Civilian Aid <4 at game end, Public Thaw ending is LOCKED OUT. |
-| **2. Environment Is Masterable** | Every hazard has a pattern, telegraph, safe window. Player can LEARN, OPTIMIZE, SPEEDRUN. Nothing is random. Nothing is a "gotcha." | Steam vent erupts every 10s. 1.0s telegraph (hissing sound, steam preview). Safe window: 8s. Player can memorize timing, walk through safely. |
-| **3. Dual-Protagonist Is Core** | Elena = puzzle mastery, Marcus = combat mastery. Switching reflects growing trust (2s cooldown → instant). Synergy moves require BOTH characters. | Phase 12 Room 1: Elena hacks terminal (10s) while Marcus defends against 3 waves. Neither can complete alone. |
-| **4. Failure Teaches, Doesn't Punish** | Death = 3-5 min setback (checkpoint), not 30+ min. Collectibles persist through death. After 3 deaths, offer skip/hint. | Player dies to steam vent (didn't see 1.0s telegraph). Restarts at checkpoint (2 min back). Thinks: "Okay, steam vent has 1-second warning. I'll wait next time." Continues, successfully navigates vent. |
-
----
-
-## Anti-Pillars (What We Explicitly Reject)
-
-### What Final Thaw Is NOT
-
-| Anti-Pillar | Why We Reject It | What We Do Instead |
-|-------------|------------------|-------------------|
-| **Random Environmental Damage** | Randomness = frustration, not challenge. Player cannot learn or optimize. | All hazards have FIXED patterns, telegraphs, safe windows. Player can MASTER them. |
-| **Illusion of Choice** | Choices that only change dialogue, not gameplay, are INSULTING. Player feels railroaded. | Every choice changes GAMEPLAY (Civilian Aid, Integrity, Safety). Endings are LOCKED/UNLOCKED based on choices. |
-| **Interchangeable Protagonists** | If Elena and Marcus can do the same things, switching is AESTHETIC, not CORE. | Elena CANNOT combat (no attack, no dodge). Marcus CANNOT hack terminals (no hack skill). They NEED each other. |
-| **Long Checkpoint Gaps (>5 min)** | Losing 30+ minutes of progress is FRUSTRATING, not challenging. Player quits. | Checkpoints every 3-5 minutes. Death = 3-5 min setback, not "restart the entire level."
-| **Resource Grinding** | Grinding for resources (food, water, materials) is BUSYWORK, not meaningful gameplay. | Resources are CONVENIENCE (health packs, batteries), not SURVIVAL-CRITICAL. Focus is on time pressure and hazard navigation. |
-| **Cartoon Villainy** | Helix Commander as a mustache-twirling villain is LAZY writing. | Voss has BELIEVABLE ideology ("Democracy failed. We need benevolent dictatorship."), TRAGIC backstory (daughter died in Mumbai), UNDERSTANDABLE motivation ("Never again. Even if I have to become the monster."). |
-| **Climate Porn** | Suffering as SPECTACLE (cities burning, millions dying) is EXPLOITATIVE. | Climate collapse is NAVIGATED (hazards, timers), not WATCHED (cutscenes of destruction). Player is ACTIVE, not PASSIVE. |
-
----
-
-## Scope
-
-### What's In Scope (Phase 1, Launch)
-
-**Campaign**: 16 phases (0-16), 13-15 hours (novice), 8-10 hours (competent), 5-6 hours (expert).
-
-**Platforms**: Windows PC (P0), Steam Deck (P0), macOS (P1), Linux (P1). PS5/Xbox (P2, post-launch).
-
-**Languages**: 6 at launch (EN, ES, FR, DE, PT-BR, RU). 4 post-launch (JA, ZH, KO, IT).
-
-**Accessibility**: 38 requirements (ALL must PASS for shippable).
-
-**Content**: 3 endings (Public, Guarded, Fragile), 24 memory fragments, 8-10 civilian rescues, 16 phases.
-
-### What's Out of Scope (Phase 1, Launch)
-
-**Multiplayer**: No co-op, no PvP. Single-player only.
-
-**Open World**: No open world. Linear phase progression (0→1→2→...→16).
-
-**Crafting**: No crafting system. Resources are CONVENIENCE (health packs, batteries), not SURVIVAL-CRITICAL.
-
-**Romance Subplots**: No romance between Elena/Marcus (professional partnership only).
-
-**DLC**: No DLC planned for Phase 1. Post-launch: Free accessibility updates, photo mode, developer commentary. Potential DLC (Marcus prequel, Elena's sister story) considered for Phase 2.
-
----
-
-## Target Duration
-
-### By Playstyle
-
-| Playstyle | Target Duration | Justification |
-|-----------|-----------------|---------------|
-| **Novice (first playthrough)** | 13-15 hours | Exploration, reading all dialogue, rescuing all civilians, learning mechanics |
-| **Competent (second playthrough)** | 8-10 hours | Optimal path known, selective rescues, faster hazard navigation |
-| **Expert (speedrun)** | 5-6 hours | No exploration, 0 rescues, perfect hazard timing, skips all non-essential dialogue |
-| **100% completion** | 10-12 hours | All 24 memories, all civilian rescues, all achievements |
-
-### Why This Duration?
-
-**Not Bloated (15h max)**: Respects player time. No filler chapters, no "fetch 10 items" quests, no "talk to 5 NPCs" padding.
-
-**Not Rushed (13h min)**: Enough time for character arcs to land emotionally. Elena and Marcus need 13-15 hours to go from distrust → cooperation → trust → partnership.
-
-**Replayability**: 3 endings encourage 2-3 playthroughs (13h + 8h + 5h = 26h total for 100%).
-
----
-
-## Sign-Off
-
-**Lead Designer**: [ ] Vision aligns with design pillars, anti-pillars
-**Lead Writer**: [ ] Vision aligns with narrative themes, character arcs
-**Lead Programmer**: [ ] Vision is implementable within scope, technical constraints
-**Producer**: [ ] Vision is achievable within timeline, budget
-**Marketing**: [ ] Vision is marketable, clear USPs, target audience defined
-
-**Date**: September 30, 2026
-
-**Status**: ✅ VISION COMPLETE. PLAYER FANTASY, CORE EMOTION, TARGET AUDIENCE, DIFFERENTIATION, PILLARS, ANTI-PILLARS, SCOPE, DURATION ALL DEFINED.
+Before promoting this vision to full-game canon, record a hands-on playtest demonstrating responsive movement, readable camera/collision, fair threat behavior, a meaningful route/timing/concealment decision, useful scanner trade-offs, a causally linked puzzle/escape, short informative failure recovery, clean loading and acceptable target performance. Only then revise the full-campaign documents.
