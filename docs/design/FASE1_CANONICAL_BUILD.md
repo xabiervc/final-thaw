@@ -23,6 +23,7 @@ The earlier `phase1_spatial_greybox.tscn` is preserved as a six-room comparison 
 - The upper-landing protective rail stops at X=26, leaving the X=24..26 overlap clear for lift-to-walkway transfer.
 - Upper walkway and archive cabin, selector, trial isolator, diagnostic panel and independent rearm interaction.
 - Local F archive-status display and a separate consultation control.
+- Hold-to-scan continuity reveal (0.9 s charge, 3 s visible, 4 s cooldown) at schematic A, physical A→T bridge and node T; it does not point at an interaction.
 - F→G inner door unlocked once from the cabin side; G→H outer hatch; queued audit and a delayed transition to the existing motion/chase prototype after crossing outside.
 - Reuses `phase1_circuit_model.gd`, `service_lift.gd`, `phase1_spatial_player.gd`, `prompt_hud.gd` and the shared FacilityMaterials palette. No save-format, autoload, input-action or renderer changes.
 
