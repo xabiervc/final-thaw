@@ -55,6 +55,9 @@
       <path d="M120 330V402 M162 330V402 M204 330V402 M246 330V402 M288 330V402 M330 330V402 M372 330V402 M414 330V402 M456 330V402 M498 330V402 M540 330V402 M582 330V402 M624 330V402"/>
       <path d="M120 330H646"/>
     </g>
+    <!-- representative internal dimensions: 3 m bay width, 5 m bay depth -->
+    <line x1="120" y1="99" x2="162" y2="99" class="dimline"/><line x1="120" y1="88" x2="120" y2="103" class="thin"/><line x1="162" y1="88" x2="162" y2="103" class="thin"/><text x="141" y="95" class="tiny" text-anchor="middle">3,0 m</text>
+    <line x1="108" y1="18" x2="108" y2="88" class="dimline"/><line x1="104" y1="18" x2="116" y2="18" class="thin"/><line x1="104" y1="88" x2="116" y2="88" class="thin"/><text x="101" y="53" class="tiny" text-anchor="middle" transform="rotate(-90 101 53)">5,0 m</text>
     <!-- vehicles -->
     <g>
       <g transform="translate(128 28)"><rect class="car" width="27" height="51"/><rect class="carGlass" x="4" y="7" width="19" height="12"/><rect class="carGlass" x="4" y="31" width="19" height="11"/></g>
@@ -110,7 +113,7 @@
     <text x="78" y="344" class="tiny">UMBRAL GALLERY → PARKING</text><text x="130" y="320" class="label">ENTRADA / DECISIÓN</text>
     <text x="308" y="255" class="label" fill="#b94e30">A · DIRECTA / EXPUESTA</text>
     <text x="230" y="117" class="label" fill="#1b746d">B · SERVICIO / CUBIERTA</text>
-    <text x="365" y="205" class="small" text-anchor="middle">APRON / CRUCE EXPUESTO</text>
+    <text x="365" y="205" class="small" text-anchor="middle">APRON / CRUCE EXPUESTO · 17,3 m</text>
     <text x="599" y="300" class="small" text-anchor="middle">EMBUDO DE SALIDA</text>
     <text x="450" y="53" class="small" text-anchor="middle">FILAS DE APARCAMIENTO</text>
     <text x="340" y="416" class="tiny" text-anchor="middle">Límite sur / muro perimetral</text>
