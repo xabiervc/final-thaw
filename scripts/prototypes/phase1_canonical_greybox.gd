@@ -1,98 +1,233 @@
 extends Node3D
-## Canonical Phase 1 slice following FASE1_ARCHITECTURAL_LAYOUT.md v1.1 and FASE1_SPATIAL_GRAPH.md v0.7.
-## This scene deliberately does not alter the preserved six-room comparison prototype.
-## Logic comes from phase1_circuit_model.gd; lift mechanics come from service_lift.gd.
+## Canonical Phase 1 slice, "The Ghost Protocol" -> "Containment" (FASE1_* design documents, geometry v3.0).
+##
+## One continuous playthrough: west entry tunnel -> A/B/C -> S1 down to D1/D2 (schematic, tampered A->T bridge,
+## maintenance) -> S1 up, east return -> lift to M -> S2 to P2 (control E, archive F) -> G airlock. Opening G's
+## outer leaf with the queued service audit starts Containment: the recovery unit comes along the exterior gantry,
+## Elena retreats through F/E and the pump room past STAFF-M1 (quiet evasion), takes the lift down, the unit follows
+## by the same lift and reacquires her by real line of sight around R1 (run), and she escapes by S1, the P-1 drainage
+## gallery and the east service mouth straight into the parking area, where Phase 2 continues the same pursuit.
+##
+## Contracts kept: the circuit model (phase1_circuit_model.gd, FASE1_LOGIC_CONTRACT.md) decides every circuit outcome;
+## mission flags live in phase1_mission_state.gd and never touch the circuit or the save file.
+
 const Player = preload("res://scripts/prototypes/phase1_spatial_player.gd")
 const CircuitModel = preload("res://scripts/prototypes/phase1_circuit_model.gd")
 const ServiceLift = preload("res://scripts/prototypes/service_lift.gd")
 const FacilityMaterials = preload("res://scripts/levels/test_room_art/facility_materials.gd")
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
+const PanelScript = preload("res://scripts/ui/narrative_panel.gd")
+const Building = preload("res://scripts/phase1/phase1_building.gd")
+const MissionState = preload("res://scripts/phase1/phase1_mission_state.gd")
+const UnitScript = preload("res://scripts/phase1/phase1_recovery_unit.gd")
+const StaffScript = preload("res://scripts/phase1/phase1_staff.gd")
+const Handoff = preload("res://scripts/phase1/phase1_handoff.gd")
+const Synth = preload("res://scripts/audio/sfx_synth.gd")
 
 const CHASE_SCENE := "res://scenes/prototypes/phase2_parking_chase.tscn"
-const SLAB := 0.25
-const WALL_THICKNESS := 0.3
-const RAIL_HEIGHT := 1.1
-const INTERACTION_REACH := 2.15
-const HANDOFF_DELAY := 2.4
+const SPAWN := Vector3(-2.3, 0.0, 6.0)
+const INTERACTION_REACH := 1.8
 const SCAN_CHARGE_TIME := 0.9
 const SCAN_REVEAL_TIME := 3.0
 const SCAN_COOLDOWN := 4.0
-## Draft clue text: narrative wording is provisional until the Phase 1 story beat is approved.
-const ARCHIVE_RECORD := "El acta oficial declara alimentación exclusiva del nodo T. La telemetría de bornes registra corriente simultánea en A y T durante la ventana de ensayo; el cierre posterior la atribuye a una interrupción automática."
+const UNIT_DELAY := 1.6
+const EXIT_X := 35.0
+const FALL_MARGIN := 2.5
+## R1 sector shutter: opening (bottom edge height, m), manual release rate and the rate the unit forces it.
+const R1_FULL := 2.35
+const R1_CRANK_RATE := 0.17
+const R1_FORCE_RATE := 0.9
+const R1_CROUCH_CLEAR := 1.1
+## N1-03 (docs/narrative_complete.md): proposed terminal copy, pending narrative approval. Context, not a key.
+const ARCHIVE_RECORD := "ENSAYO ASTER — RESULTADO RETENIDO.\nRECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.\n\nActa oficial: alimentación exclusiva del nodo T.\nTelemetría de bornes: corriente simultánea en A y T durante la ventana de ensayo."
+## Requested hints (H): three steps that explain relationships and never name a control.
+const HINTS := [
+	"El esquema del foso describe cómo debería repartirse la energía. Compáralo con lo que hay físicamente entre A y T.",
+	"Si A y T están unidos por un puente, pedir ARCHIVO mientras el ensayo sigue conectado es pedir dos cosas a la vez.",
+	"La protección no vuelve sola tras un disparo. Elimina primero la doble demanda; después, comprueba el estado.",
+]
+## Escape checkpoints: Elena's restore point and the route node the unit restarts from (always well behind her).
+const CHECKPOINTS := [
+	{"id": "F", "pos": Vector3(6.0, 6.0, -6.2), "unit": "gantry_far"},
+	{"id": "M", "pos": Vector3(10.2, 3.0, -5.6), "unit": "f_mid"},
+	{"id": "P0", "pos": Vector3(25.0, 0.0, 0.4), "unit": "lift_m"},
+	{"id": "P-1", "pos": Vector3(25.0, -2.0, 6.8), "unit": "lift_p0"},
+]
 
 var materials = FacilityMaterials.new()
 var circuit = CircuitModel.new()
+var mission = MissionState.new()
+var building = null
 var lift = null
 var player: CharacterBody3D
 var hud: CanvasLayer
+var subtitles: CanvasLayer
+var unit: CharacterBody3D = null
+var staff: CharacterBody3D = null
+## "investigation" -> "containment" (quiet evasion) -> "run" -> "exited".
+var phase: String = "investigation"
+var checkpoint_index: int = -1
+var catches: int = 0
+var hints_used: int = 0
+var clues_seen: Dictionary = {}
+## Test seams: route tests can run the escape without the unit, and capture the handoff instead of changing scene.
+var spawn_unit_enabled: bool = true
+var handoff_override: Callable = Callable()
 
 var _hotspot_id := ""
-var _shortcut_unlocked := false
-var _outer_hatch_open := false
+var _g_inner_open := false
+var _g_outer_open := false
+var _scan_charge := 0.0
+var _scan_reveal_left := 0.0
+var _scan_cooldown_left := 0.0
+var _scan_parts: Array[Node3D] = []
+var _safe_point: Vector3 = SPAWN
+var _safe_left := 0.0
+var _said: Dictionary = {}
+var _o3_dropped := false
+var r1_opening: float = R1_FULL
+var _r1_cranking := false
+var _r1_reported := false
+var _rider_send := false
 var _handoff_started := false
-var _archive_consulted := false
-## Candidate audit events only; their story meaning/trigger is not an approved narrative contract.
-var _audit_events: Array[String] = []
-var _service_lights: Array[OmniLight3D] = []
-var _scan_charge: float = 0.0
-var _scan_reveal_left: float = 0.0
-var _scan_cooldown_left: float = 0.0
-var _scan_labels: Array[Label3D] = []
-var _scan_highlights: Array[MeshInstance3D] = []
-var _lift_lower_button: MeshInstance3D
-var _lift_upper_button: MeshInstance3D
-var _lift_deck_label: Label3D
-var _safe_point: Vector3 = Vector3(-2.3, 0.2, 6.0)
-var _lift_deck_button: MeshInstance3D
-var _lower_lift_gate: StaticBody3D
-var _upper_lift_gate: StaticBody3D
-var _lower_lift_gate_shape: CollisionShape3D
-var _upper_lift_gate_shape: CollisionShape3D
-var _lower_lift_gate_mesh: MeshInstance3D
-var _upper_lift_gate_mesh: MeshInstance3D
-var _switch_lamp: MeshInstance3D
-var _archive_status_label: Label3D
-var _status_panel_label: Label3D
-var _inner_door: StaticBody3D
-var _inner_door_mesh: MeshInstance3D
-var _outer_door: StaticBody3D
-var _outer_door_shape: CollisionShape3D
-var _outer_door_mesh: MeshInstance3D
+var _caught_left := 0.0
+var _alarm_t := 0.0
+var _parking_request := false
+var _sfx: Dictionary = {}
+var _alarm_loop: AudioStreamPlayer
+var _steps: Array[AudioStreamPlayer] = []
+var _step_dist := 0.0
+var _step_i := 0
 
 
 func _ready() -> void:
-	_build_environment()
-	_build_ground_floor()
-	_build_fixed_geometry()
-	_build_pit()
-	_build_scanner_fixtures()
-	_build_upper_route()
+	_environment()
+	building = Building.new(self, materials)
+	building.build()
 	_build_lift()
-	_build_controls_and_fixtures()
-	_build_doors()
-	_build_player_and_hud()
+	_build_scan_parts()
+	_build_actors()
+	_build_audio()
 	_refresh_state_fixtures()
-	_log("slice_ready", "Fase 1 canónica v1.1 · cuatro cotas")
+	_set_objective("Investiga la anomalía eléctrica de la instalación")
+	_log("slice_ready", "Fase 1 canónica v3.0 · P-1 -2 / P0 0 / M +3 / P2 +6")
 
 
 func _exit_tree() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 
+func _environment() -> void:
+	var env := Environment.new()
+	env.background_mode = Environment.BG_COLOR
+	env.background_color = Color(0.015, 0.02, 0.028)
+	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+	env.ambient_light_color = Color(0.36, 0.43, 0.52)
+	env.ambient_light_energy = 0.42
+	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.glow_enabled = true
+	env.glow_intensity = 0.4
+	env.glow_hdr_threshold = 1.2
+	var world := WorldEnvironment.new()
+	world.environment = env
+	add_child(world)
+	var sun := DirectionalLight3D.new()
+	sun.rotation_degrees = Vector3(-55.0, 205.0, 0.0)
+	sun.light_color = Color(0.62, 0.72, 0.86)
+	sun.light_energy = 0.35
+	sun.shadow_enabled = true
+	sun.directional_shadow_max_distance = 40.0
+	add_child(sun)
+
+
+func _build_lift() -> void:
+	lift = ServiceLift.new()
+	lift.name = "ServiceLift"
+	lift.position = Vector3(26.0, 0.0, -3.0)
+	lift.lower_y = Building.Y_P0
+	lift.upper_y = Building.Y_M
+	lift.powered = false
+	add_child(lift)
+	lift.state_changed.connect(func(_d): _refresh_lift_gates())
+	lift.departed.connect(func(_o, _d): _rider_send = false)
+	lift.hold_departure = func() -> bool: return player != null and _player_on_deck() and not _rider_send
+	_refresh_lift_gates()
+
+
+func _build_actors() -> void:
+	player = Player.new()
+	player.name = "Elena"
+	player.position = SPAWN
+	add_child(player)
+	player.visual.rotation.y = PI * 0.5  # facing the opening into A
+	player.set("orbit_yaw", -PI * 0.5)
+	hud = HudScript.new()
+	hud.name = "PromptHUD"
+	add_child(hud)
+	subtitles = PanelScript.new()
+	subtitles.name = "Subtitles"
+	add_child(subtitles)
+	staff = StaffScript.new()
+	staff.name = "StaffM1"
+	add_child(staff)
+	staff.player = player
+	staff.alerted.connect(_on_staff_alerted)
+
+
+func _build_audio() -> void:
+	var streams := {"beep": Synth.terminal_beep(), "denied": Synth.denied(), "door": Synth.door_open(), "clunk": Synth.lever_clunk(),
+		"power_up": Synth.power_up(), "power_down": Synth.power_down(), "scan": Synth.scan_pulse(), "tick": Synth.inspect_tick(),
+		"land": Synth.land(), "chime": Synth.complete_chime()}
+	for key in streams:
+		var p := AudioStreamPlayer.new()
+		p.stream = streams[key]
+		p.volume_db = -7.0
+		add_child(p)
+		_sfx[key] = p
+	_alarm_loop = AudioStreamPlayer.new()
+	_alarm_loop.stream = Synth.alarm_pip()
+	_alarm_loop.volume_db = -14.0
+	add_child(_alarm_loop)
+	var tone := AudioStreamPlayer.new()
+	tone.stream = Synth.room_tone()
+	tone.volume_db = -18.0
+	tone.autoplay = true
+	add_child(tone)
+	for v in 4:
+		var s := AudioStreamPlayer.new()
+		s.stream = Synth.footstep(v)
+		s.volume_db = -15.0
+		add_child(s)
+		_steps.append(s)
+
+
+func _sound(key: String) -> void:
+	var p := _sfx.get(key) as AudioStreamPlayer
+	if p != null:
+		p.play()
+
+
+# --- frame ------------------------------------------------------------------------------------------------------
+
 func _physics_process(delta: float) -> void:
-	if player == null or hud == null:
+	if player == null:
+		return
+	if _caught_left > 0.0:
+		_caught_left -= delta
+		if _caught_left <= 0.0:
+			_restore_checkpoint()
 		return
 	_update_interaction_prompt()
 	_update_scanner(delta)
 	if not _hotspot_id.is_empty() and Input.is_action_just_pressed("interact"):
 		_interact(_hotspot_id)
-	_update_safe_point()
-	if player.global_position.y < -8.0:
-		player.global_position = _safe_point
-		player.velocity = Vector3.ZERO
-	if _outer_hatch_open and not _handoff_started and player.global_position.x < -0.25 and player.global_position.y > 2.3 and absf(player.global_position.z + 7.5) < 1.0:
-		_begin_handoff()
-	_refresh_dynamic_lift_button()
+	if InputMap.has_action("hint") and Input.is_action_just_pressed("hint") and phase == "investigation":
+		_show_hint()
+	_track_safety(delta)
+	_story_beats()
+	_footsteps(delta)
+	if phase != "investigation":
+		_update_escape(delta)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -103,549 +238,116 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_tree().change_scene_to_file("res://scenes/ui/main_menu.tscn")
 
 
-# --------------------------------------------------------------------------------------------------
-# Environment and primitive construction helpers
-# --------------------------------------------------------------------------------------------------
-
-func _build_environment() -> void:
-	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(0.018, 0.025, 0.033)
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.39, 0.46, 0.53)
-	env.ambient_light_energy = 0.5
-	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	var world := WorldEnvironment.new()
-	world.environment = env
-	add_child(world)
-	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-52.0, 24.0, 0.0)
-	sun.light_color = Color(0.66, 0.75, 0.84)
-	sun.light_energy = 0.32
-	add_child(sun)
-	_add_room_light(Vector3(14.0, 3.4, 0.0), 1.0, 16.0, Color(0.74, 0.84, 0.94))
-	_add_room_light(Vector3(6.0, 5.0, -7.0), 1.0, 10.0, Color(0.7, 0.86, 1.0))
-	var pit_light := _add_room_light(Vector3(24.0, -0.7, 4.0), 0.12, 9.0, Color(0.7, 0.82, 0.9))
-	_service_lights.append(pit_light)
-	var switch_light := _add_room_light(Vector3(26.0, -1.0, 2.0), 0.12, 3.0, Color(0.3, 0.95, 0.9))
-	_service_lights.append(switch_light)
+## Safety net, not a mechanic: guard rails make falls impossible on the designed routes. If physics ever lets Elena
+## drop below the lowest floor, she is put back where she last stood safely, with nothing lost.
+func _track_safety(delta: float) -> void:
+	_safe_left -= delta
+	if player.is_on_floor() and _safe_left <= 0.0 and not bool(player.get("is_climbing")):
+		_safe_left = 0.5
+		_safe_point = player.global_position
+	if player.global_position.y < Building.Y_P1 - FALL_MARGIN:
+		_log("fall_recovered", "%s" % player.global_position)
+		player.global_position = _safe_point + Vector3(0.0, 0.1, 0.0)
+		player.velocity = Vector3.ZERO
 
 
-func _add_room_light(pos: Vector3, energy: float, radius: float, color: Color) -> OmniLight3D:
-	var light := OmniLight3D.new()
-	light.position = pos
-	light.light_color = color
-	light.light_energy = energy
-	light.omni_range = radius
-	add_child(light)
-	return light
-
-
-func _body_box(label: String, size: Vector3, center: Vector3, material: Material, collision: bool = true) -> StaticBody3D:
-	var body := StaticBody3D.new()
-	body.name = label
-	body.position = center
-	body.collision_layer = 1
-	body.collision_mask = 0
-	if collision:
-		var shape := CollisionShape3D.new()
-		var box := BoxShape3D.new()
-		box.size = size
-		shape.shape = box
-		body.add_child(shape)
-	var mesh := MeshInstance3D.new()
-	mesh.name = label + "Mesh"
-	var box_mesh := BoxMesh.new()
-	box_mesh.size = size
-	mesh.mesh = box_mesh
-	mesh.material_override = material
-	body.add_child(mesh)
-	add_child(body)
-	return body
-
-
-func _visual_box(label: String, size: Vector3, center: Vector3, material: Material) -> MeshInstance3D:
-	var mesh := MeshInstance3D.new()
-	mesh.name = label
-	var box := BoxMesh.new()
-	box.size = size
-	mesh.mesh = box
-	mesh.position = center
-	mesh.material_override = material
-	add_child(mesh)
-	return mesh
-
-
-func _label3d(label_name: String, text: String, pos: Vector3, color: Color = Color(0.86, 0.93, 0.96), size: int = 24, pixel_size: float = 0.004) -> Label3D:
-	var label := Label3D.new()
-	label.name = label_name
-	label.text = text
-	label.position = pos
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.font_size = size
-	label.pixel_size = pixel_size
-	label.outline_size = 7
-	label.modulate = color
-	add_child(label)
-	return label
-
-
-func _flat_material(color: Color, roughness: float = 0.72, metallic: float = 0.0, emission: float = 0.0) -> StandardMaterial3D:
-	var material := StandardMaterial3D.new()
-	material.albedo_color = color
-	material.roughness = roughness
-	material.metallic = metallic
-	if emission > 0.0:
-		material.emission_enabled = true
-		material.emission = color
-		material.emission_energy_multiplier = emission
-	return material
-
-
-func _add_floor_rect(rect: Rect2, y: float, label: String, material: Material = null) -> void:
-	if rect.size.x <= 0.01 or rect.size.y <= 0.01:
+func _footsteps(delta: float) -> void:
+	if not player.is_on_floor():
 		return
-	var chosen: Material = materials.get_material("floor") if material == null else material
-	_body_box(label, Vector3(rect.size.x, SLAB, rect.size.y), Vector3(rect.position.x + rect.size.x * 0.5, y - SLAB * 0.5, rect.position.y + rect.size.y * 0.5), chosen)
-
-
-func _subtract_rect(base: Rect2, hole: Rect2) -> Array:
-	var ix0: float = maxf(base.position.x, hole.position.x)
-	var iz0: float = maxf(base.position.y, hole.position.y)
-	var ix1: float = minf(base.end.x, hole.end.x)
-	var iz1: float = minf(base.end.y, hole.end.y)
-	if ix1 <= ix0 or iz1 <= iz0:
-		return [base]
-	var pieces: Array = []
-	if iz0 > base.position.y:
-		pieces.append(Rect2(base.position.x, base.position.y, base.size.x, iz0 - base.position.y))
-	if iz1 < base.end.y:
-		pieces.append(Rect2(base.position.x, iz1, base.size.x, base.end.y - iz1))
-	if ix0 > base.position.x:
-		pieces.append(Rect2(base.position.x, iz0, ix0 - base.position.x, iz1 - iz0))
-	if ix1 < base.end.x:
-		pieces.append(Rect2(ix1, iz0, base.end.x - ix1, iz1 - iz0))
-	return pieces
-
-
-func _wall_x(label: String, x: float, z0: float, z1: float, y0: float, y1: float, material: Material = null) -> void:
-	if z1 <= z0 or y1 <= y0:
+	var speed := Vector2(player.velocity.x, player.velocity.z).length()
+	if speed < 0.6:
+		_step_dist = 0.4
 		return
-	var chosen: Material = materials.get_material("bulkhead") if material == null else material
-	_body_box(label, Vector3(WALL_THICKNESS, y1 - y0, z1 - z0), Vector3(x, (y0 + y1) * 0.5, (z0 + z1) * 0.5), chosen)
+	_step_dist += speed * delta
+	var stride := 0.9 if bool(player.get("is_running")) else 0.62
+	if _step_dist >= stride:
+		_step_dist = 0.0
+		var s := _steps[_step_i % _steps.size()]
+		s.volume_db = -21.0 if bool(player.get("is_crouching")) else (-12.0 if bool(player.get("is_running")) else -15.0)
+		s.play()
+		_step_i += 1
 
 
-func _wall_z(label: String, z: float, x0: float, x1: float, y0: float, y1: float, material: Material = null) -> void:
-	if x1 <= x0 or y1 <= y0:
-		return
-	var chosen: Material = materials.get_material("bulkhead") if material == null else material
-	_body_box(label, Vector3(x1 - x0, y1 - y0, WALL_THICKNESS), Vector3((x0 + x1) * 0.5, (y0 + y1) * 0.5, z), chosen)
+## Optional, skippable reactions (docs/narrative_complete.md N1-01/N1-02/N2-01); never block movement.
+func _story_beats() -> void:
+	var p := player.global_position
+	if not _said.has("N1-01") and p.x > 8.5 and p.y > -0.5 and p.y < 1.0:
+		_say("N1-01", "Elena: «No deberían haber dejado el circuito en este estado.»", 4.5)
+	if phase != "investigation" and unit != null and not _said.has("N2-01"):
+		var d := unit.global_position.distance_to(p)
+		if d < 16.0 and unit.call("line_clear", unit.global_position + Vector3(0, 1.7, 0), p + Vector3(0, 1.2, 0)):
+			_say("N2-01", "Elena: «La auditoría ha activado el protocolo de contención.»", 4.0)
 
 
-func _build_ground_floor() -> void:
-	# The only intentional holes in the ground slab: the lift shaft, pit, and pit-stair mouth.
-	var regions: Array = [Rect2(Vector2(0.0, -10.0), Vector2(30.0, 22.0))]
-	var holes: Array = [
-		# One continuous maintenance void spans D1 and D2; S1 and the lift have their own openings.
-		Rect2(Vector2(24.5, -4.5), Vector2(3.0, 3.0)),
-		Rect2(Vector2(10.0, 1.0), Vector2(18.0, 7.0)),
-		Rect2(Vector2(24.0, 8.0), Vector2(2.0, 3.0)),
-	]
-	for hole in holes:
-		var next_regions: Array = []
-		for region in regions:
-			next_regions.append_array(_subtract_rect(region, hole))
-		regions = next_regions
-	for i in regions.size():
-		_add_floor_rect(regions[i], 0.0, "GroundFloor_%02d" % i)
+func _say(id: String, text: String, seconds: float) -> void:
+	_said[id] = true
+	subtitles.call("show_message", text, seconds)
+	_log("line", id)
 
 
-func _build_fixed_geometry() -> void:
-	# West shell has two deliberate openings: the upper G hatch and the ground-level entry tunnel.
-	# Keep wall segments explicit so both openings are framed and no unintended gap remains.
-	_wall_x("OuterWestLowerA", 0.0, -10.0, -8.25, 0.0, 5.4)
-	_wall_x("OuterWestHatchLower", 0.0, -8.25, -6.75, 0.0, 3.0)
-	_wall_x("OuterWestHatchLintel", 0.0, -8.25, -6.75, 5.2, 5.4)
-	_wall_x("OuterWestLowerB", 0.0, -6.75, 4.5, 0.0, 5.4)
-	_wall_x("OuterWestAccessLintel", 0.0, 4.5, 7.5, 2.2, 5.4)
-	_wall_x("OuterWestLowerC", 0.0, 7.5, 12.0, 0.0, 5.4)
+# --- interactions ------------------------------------------------------------------------------------------------
 
-	# Ground-level entrance tunnel: exterior X=-3..0, Z=4.5..7.5; clear height 2.2 m.
-	_add_floor_rect(Rect2(Vector2(-3.0, 4.5), Vector2(3.0, 3.0)), 0.0, "AccessTunnelFloor", materials.get_material("floor"))
-	_wall_z("AccessTunnelSouth", 4.5, -3.0, 0.0, 0.0, 2.2)
-	_wall_z("AccessTunnelNorth", 7.5, -3.0, 0.0, 0.0, 2.2)
-	_body_box("AccessTunnelCeiling", Vector3(3.0, 0.2, 3.0), Vector3(-1.5, 2.3, 6.0), materials.get_material("concrete"))
-	_label3d("AccessTunnelLabel", "ENTRADA · INSTALACIÓN", Vector3(-1.5, 1.9, 6.0), Color(0.9, 0.82, 0.62), 15, 0.003)
-
-	_wall_z("OuterNorth", -10.0, 0.0, 30.0, 0.0, 5.4)
-	_wall_x("OuterEast", 30.0, -10.0, 12.0, 0.0, 4.5)
-	_wall_z("OuterSouth", 12.0, 0.0, 30.0, 0.0, 4.5)
-
-	# Damaged direct stair remains visible but has no traversable collision ramp.
-	var damaged_stair := _visual_box("BrokenApproachStairVisual", Vector3(2.0, 0.18, 6.0), Vector3(3.0, 1.5, 0.0), materials.get_material("grate"))
-	damaged_stair.rotation.x = atan2(3.0, 6.0) # P2 at z=-3, P0 at z=+3; visual only.
-	_add_floor_rect(Rect2(Vector2(2.0, -4.0), Vector2(2.0, 1.0)), 3.0, "BrokenStairUpperLanding", materials.get_material("grate"))
-	_wall_z("BrokenStairBlockedGap", -3.55, 1.7, 4.3, 0.0, 3.6, materials.get_material("safety_paint"))
-	_visual_box("BrokenApproachWarning", Vector3(2.2, 0.16, 0.08), Vector3(3.0, 2.8, -3.48), _flat_material(Color(0.95, 0.54, 0.12), 0.45, 0.0, 1.1))
-	_label3d("BrokenStairSign", "ESCALERA COLAPSADA · NO PASAR", Vector3(3.0, 3.2, -3.45), Color(1.0, 0.66, 0.25), 16, 0.003)
-
-	# The full pit perimeter is guarded in _build_pit(); S1 remains deliberately open.
-
-	# Distinct functional areas and the Aster column make the industrial volume readable.
-	_body_box("AsterVerticalColumn", Vector3(0.58, 4.4, 0.58), Vector3(14.5, 2.2, -4.0), materials.get_material("steel_light"))
-	_visual_box("AsterColumnBeacon", Vector3(0.8, 0.12, 0.8), Vector3(14.5, 4.45, -4.0), _flat_material(Color(0.3, 0.8, 0.8), 0.45, 0.2, 1.2))
-	_label3d("AsterColumnLabel", "ASTER · COLUMNA DE CALIBRACIÓN", Vector3(14.5, 4.7, -4.0), Color(0.5, 0.92, 0.9), 19)
-	_body_box("WorkshopBench", Vector3(2.0, 0.16, 0.8), Vector3(21.4, 0.85, -8.2), materials.get_material("steel"))
-	_body_box("WorkshopCabinet", Vector3(0.75, 1.6, 0.65), Vector3(23.1, 0.8, -8.4), materials.get_material("steel_light"))
-	_body_box("WorkshopPipeRack", Vector3(2.4, 0.18, 0.18), Vector3(22.0, 2.1, -8.7), materials.get_material("steel"))
-	_label3d("WorkshopLabel", "C · TALLER TÉCNICO", Vector3(22.0, 1.4, -8.2), Color(0.7, 0.85, 0.9), 16, 0.003)
-	_label3d("AccessLabel", "A · ACCESO / EVACUACIÓN", Vector3(3.0, 0.08, 9.0), Color(0.9, 0.82, 0.62), 18, 0.003)
-	_label3d("SouthRouteMark", "PASILLO DE SERVICIO", Vector3(13.0, 0.06, 0.35), Color(0.7, 0.82, 0.86), 20, 0.003)
-	_label3d("PitApproachMark", "FOSO DE SERVICIO ↓", Vector3(21.8, 0.06, 9.7), Color(0.9, 0.74, 0.35), 20, 0.003)
-
-	# Room boundaries make the footprint read as an actual facility, while preserving every designed route.
-	# A/B threshold: short piers leave a broad view and passage into the main test nave.
-	_wall_x("AccessNavePierSouth", 7.0, 4.0, 5.6, 0.0, 3.2)
-	_wall_x("AccessNavePierNorth", 7.0, 8.4, 10.0, 0.0, 3.2)
-	_wall_x("AccessNaveLintel", 7.0, 5.6, 8.4, 2.8, 3.2)
-	# B/C workshop partition with a service doorway.
-	_wall_x("NaveWorkshopPierSouth", 20.0, -9.0, -7.2, 0.0, 3.2)
-	_wall_x("NaveWorkshopPierNorth", 20.0, -4.8, -2.0, 0.0, 3.2)
-	_wall_x("NaveWorkshopLintel", 20.0, -7.2, -4.8, 2.8, 3.2)
-	# Industrial details at scale: overhead cable trays, ducts and column footings.
-	_body_box("CableTrayMain", Vector3(15.0, 0.12, 0.22), Vector3(14.0, 3.05, -1.4), materials.get_material("steel"))
-	_body_box("CableTrayCross", Vector3(0.22, 0.12, 8.0), Vector3(18.5, 3.05, 1.0), materials.get_material("steel"))
-	_body_box("AsterColumnFooting", Vector3(1.0, 0.24, 1.0), Vector3(14.5, 0.12, -4.0), materials.get_material("steel"))
-	# A few repeated service cabinets give the long nave a measurable industrial rhythm.
-	for cabinet_index in range(3):
-		_body_box("NaveServiceCabinet_%02d" % cabinet_index, Vector3(0.75, 1.5, 0.65), Vector3(8.5 + cabinet_index * 2.0, 0.75, -2.2), materials.get_material("steel_light"))
-	_label3d("NaveLabel", "B · NAVE DE ENSAYO", Vector3(14.0, 0.12, -7.0), Color(0.75, 0.86, 0.9), 18, 0.003)
-	_label3d("ServiceDoorLabel", "ACCESO TÉCNICO", Vector3(20.3, 2.1, -6.0), Color(0.8, 0.86, 0.88), 14, 0.003)
-	# Roof framing establishes a building volume without hiding the Aster sightline.
-	for beam_index in range(5):
-		_body_box("RoofBeam_%02d" % beam_index, Vector3(0.18, 0.18, 22.0), Vector3(4.0 + beam_index * 5.0, 5.25, 1.0), materials.get_material("steel"))
-	_body_box("NorthDuct", Vector3(25.0, 0.35, 0.45), Vector3(15.0, 4.85, -9.2), materials.get_material("steel"))
-
-
-func _build_pit() -> void:
-	# D1 and D2 form one connected lower maintenance level, visually zoned by machinery and markings.
-	_add_floor_rect(Rect2(Vector2(10.0, 1.0), Vector2(18.0, 7.0)), -2.0, "PitFloor", materials.get_material("grate"))
-	_body_box("D1Sump", Vector3(1.3, 0.18, 1.0), Vector3(13.0, -1.91, 6.4), materials.get_material("steel"))
-	_body_box("D1PumpA", Vector3(0.8, 0.9, 0.8), Vector3(15.0, -1.55, 3.0), materials.get_material("steel_light"))
-	_body_box("D1PumpB", Vector3(0.8, 0.9, 0.8), Vector3(17.0, -1.55, 3.0), materials.get_material("steel_light"))
-	_body_box("D1Manifold", Vector3(4.0, 0.16, 0.16), Vector3(16.0, -0.9, 2.0), materials.get_material("steel"))
-	_label3d("D1RoomLabel", "D1 · ACHIQUE / BOMBAS", Vector3(14.5, -1.2, 7.5), Color(0.7, 0.85, 0.9), 16, 0.003)
-	_label3d("D2RoomLabel", "D2 · DISTRIBUCIÓN", Vector3(23.5, -1.2, 7.5), Color(0.7, 0.85, 0.9), 16, 0.003)
-	# Guardrails protect the entire pit perimeter, with deliberate openings at S1 and the maintenance route.
-	var pit_rail := _flat_material(Color(0.55, 0.58, 0.6), 0.5, 0.7)
-	_body_box("PitRailWest", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(9.94, RAIL_HEIGHT * 0.5, 4.5), pit_rail)
-	_body_box("PitRailEast", Vector3(0.12, RAIL_HEIGHT, 7.0), Vector3(28.06, RAIL_HEIGHT * 0.5, 4.5), pit_rail)
-	_body_box("PitRailNorth", Vector3(18.0, RAIL_HEIGHT, 0.12), Vector3(19.0, RAIL_HEIGHT * 0.5, 0.94), pit_rail)
-	_body_box("PitRailSouthWest", Vector3(14.0, RAIL_HEIGHT, 0.12), Vector3(17.0, RAIL_HEIGHT * 0.5, 8.06), pit_rail)
-	_body_box("PitRailSouthEast", Vector3(2.0, RAIL_HEIGHT, 0.12), Vector3(27.0, RAIL_HEIGHT * 0.5, 8.06), pit_rail)
-	# S1 stair has a continuous walkable slope; its visual treads do not replace collision geometry.
-	# A continuous sloped collision surface with visible individual treads.
-	_build_sloped_stairs("FixedPitStairs", 24.0, 26.0, 8.0, 11.0, -2.0, 0.0)
-	_visual_box("SchematicBoard", Vector3(1.6, 1.0, 0.12), Vector3(27.0, -1.5, 6.0), materials.get_material("screen_dark"))
-	_label3d("PitSchematicTitle", "ESQUEMA · DISTRIBUCIÓN PREVISTA", Vector3(27.0, -1.06, 6.08), Color(0.7, 0.9, 0.94), 15, 0.0028)
-	_label3d("SchematicDiagram", "AUXILIAR → DIAGNÓSTICO\nMANTENIMIENTO → LUCES / ASCENSOR\nPROTECCIÓN → SELECTOR\nENSAYO → T\nARCHIVO → A", Vector3(27.0, -1.57, 6.08), Color(0.86, 0.95, 0.96), 12, 0.0024)
-	_label3d("BridgeTitle", "PUENTE A → T", Vector3(22.2, -1.0, 4.0), Color(1.0, 0.63, 0.18), 22, 0.0035)
-	_visual_box("TamperedBridge", Vector3(1.5, 0.16, 0.3), Vector3(22.0, -1.92, 4.0), _flat_material(Color(0.95, 0.38, 0.08), 0.42, 0.3, 1.4))
-	_label3d("TamperedBridgeLabel", "CONEXIÓN MANIPULADA", Vector3(22.0, -1.45, 4.0), Color(1.0, 0.66, 0.3), 20, 0.0032)
-	_visual_box("MaintenanceHousing", Vector3(0.65, 0.55, 0.35), Vector3(26.0, -1.725, 2.0), materials.get_material("steel_light"))
-	_switch_lamp = _visual_box("MaintenanceStatusLamp", Vector3(0.22, 0.12, 0.08), Vector3(26.0, -1.22, 1.78), _flat_material(Color(0.9, 0.2, 0.1), 0.35, 0.0, 1.3))
-	_label3d("MaintenanceLabel", "MANTENIMIENTO", Vector3(26.0, -0.85, 2.0), Color(0.92, 0.88, 0.7), 20, 0.0032)
-
-
-func _build_scanner_fixtures() -> void:
-	# Three transient markers communicate continuity at A, the physical bridge and T without naming an action.
-	var marker_a := _label3d("ScanSchematicLabel", "TRAZA DE CONTINUIDAD · A", Vector3(27.0, -0.52, 6.12), Color(0.35, 0.98, 0.95), 18, 0.0035)
-	var marker_bridge := _label3d("ScanBridgeLabel", "CONTINUIDAD A → T", Vector3(22.0, -0.72, 4.0), Color(0.35, 0.98, 0.95), 20, 0.0037)
-	var marker_t := _label3d("ScanNodeTLabel", "TRAZA DETECTADA · T", Vector3(15.5, 3.9, -4.0), Color(0.35, 0.98, 0.95), 18, 0.0035)
-	var markers: Array[Label3D] = [marker_a, marker_bridge, marker_t]
-	for marker: Label3D in markers:
-		marker.visible = false
-		_scan_labels.append(marker)
-	var glow := _flat_material(Color(0.25, 0.98, 0.9), 0.35, 0.1, 2.0)
-	var schematic_glow := _visual_box("ScanSchematicHighlight", Vector3(1.7, 0.05, 0.18), Vector3(27.0, -0.82, 6.1), glow)
-	var bridge_glow := _visual_box("ScanBridgeHighlight", Vector3(1.65, 0.05, 0.36), Vector3(22.0, -1.65, 4.0), glow)
-	var node_t_glow := _visual_box("ScanNodeTHighlight", Vector3(0.8, 0.05, 0.8), Vector3(14.5, 2.14, -4.0), glow)
-	var highlights: Array[MeshInstance3D] = [schematic_glow, bridge_glow, node_t_glow]
-	for highlight: MeshInstance3D in highlights:
-		highlight.visible = false
-		_scan_highlights.append(highlight)
-
-
-func _set_scan_visibility(value: bool) -> void:
-	for marker in _scan_labels:
-		marker.visible = value
-	for highlight in _scan_highlights:
-		highlight.visible = value
-
-
-func _start_scan_reveal() -> void:
-	_scan_charge = 0.0
-	_scan_reveal_left = SCAN_REVEAL_TIME
-	_scan_cooldown_left = SCAN_COOLDOWN
-	_set_scan_visibility(true)
-	_banner("TRAZAS REVELADAS", "Continuidad detectada entre A y T. Contrasta la traza con el esquema previsto.", Color(0.35, 0.98, 0.95), SCAN_REVEAL_TIME)
-
-
-func _update_scanner(delta: float) -> void:
-	_scan_cooldown_left = maxf(0.0, _scan_cooldown_left - delta)
-	if _scan_reveal_left > 0.0:
-		_scan_reveal_left -= delta
-		if _scan_reveal_left <= 0.0:
-			_set_scan_visibility(false)
-		return
-	if Input.is_action_pressed("scan") and _scan_cooldown_left <= 0.0:
-		_scan_charge += delta
-		if _scan_charge >= SCAN_CHARGE_TIME:
-			_start_scan_reveal()
-	else:
-		_scan_charge = 0.0
-
-
-func _build_sloped_stairs(label: String, x0: float, x1: float, z0: float, z1: float, y0: float, y1: float) -> void:
-	# z0 < z1, coordinates increase north-to-south. y0/y1 are heights at those coordinates.
-	var run: float = z1 - z0
-	var rise: float = y1 - y0
-	if run <= 0.0 or absf(rise) < 0.01:
-		return
-	var width: float = x1 - x0
-	var angle: float = atan2(rise, run)
-	var ramp_length: float = sqrt(run * run + rise * rise)
-	var ramp := _body_box(label + "CollisionRamp", Vector3(width, 0.18, ramp_length), Vector3.ZERO, materials.get_material("grate"))
-	ramp.rotation.x = -angle
-	ramp.position = Vector3((x0 + x1) * 0.5, (y0 + y1) * 0.5, (z0 + z1) * 0.5) - ramp.basis.y * 0.09
-	# Keep the continuous collision ramp visible; thin crossbars make its tread rhythm legible without floating step blocks.
-	(ramp.get_child(1) as MeshInstance3D).visible = true
-	# Handrails follow the stair slope and meet the floor at both landings.
-	for side in ["West", "East"]:
-		var rail_x: float = x0 + 0.05 if side == "West" else x1 - 0.05
-		var handrail := _body_box(label + "Rail" + side, Vector3(0.1, RAIL_HEIGHT, ramp_length), Vector3(rail_x, (y0 + y1) * 0.5 + RAIL_HEIGHT * 0.5, (z0 + z1) * 0.5), materials.get_material("safety_paint"))
-		handrail.rotation.x = -angle
-	var count: int = maxi(1, int(ceil(absf(rise) / 0.2)))
-	for i in range(1, count):
-		var t: float = float(i) / float(count)
-		var z: float = z0 + t * run
-		var y: float = y0 + t * rise
-		var tread_mark := _visual_box(label + "TreadMark_%02d" % i, Vector3(width, 0.025, 0.06), Vector3((x0 + x1) * 0.5, y + 0.02, z), materials.get_material("steel_light"))
-		tread_mark.rotation.x = -angle
-
-
-func _build_upper_route() -> void:
-	# P2: archive F, control E, and the west airlock G. G exits horizontally only.
-	_add_floor_rect(Rect2(Vector2(3.0, -9.0), Vector2(6.0, 4.5)), 3.0, "ArchiveCabinFloor")
-	_add_floor_rect(Rect2(Vector2(0.0, -9.0), Vector2(3.0, 4.5)), 3.0, "ExteriorAirlockFloor", materials.get_material("grate"))
-	_add_floor_rect(Rect2(Vector2(9.0, -8.5), Vector2(15.0, 4.0)), 3.0, "ControlRoomFloor")
-	var walkway_regions: Array = [Rect2(Vector2(9.0, -4.5), Vector2(17.0, 3.0))]
-	for hole in [Rect2(Vector2(9.0, -4.5), Vector2(4.0, 3.0))]:
-		var next_walkway_regions: Array = []
-		for region in walkway_regions:
-			next_walkway_regions.append_array(_subtract_rect(region, hole))
-		walkway_regions = next_walkway_regions
-	for i in walkway_regions.size():
-		_add_floor_rect(walkway_regions[i], 3.0, "PublicControlWalkway_%02d" % i, materials.get_material("grate"))
-
-	# F cabin, with an opening into control E.
-	_wall_z("CabinNorthWall", -9.0, 3.0, 9.0, 3.0, 5.4)
-	_wall_z("CabinSouthWall", -4.5, 3.0, 9.0, 3.0, 5.4)
-	_wall_x("CabinEastNorthPier", 9.0, -9.0, -8.0, 3.0, 5.4)
-	_wall_x("CabinEastSouthPier", 9.0, -6.0, -4.5, 3.0, 5.4)
-	_wall_x("CabinEastLintel", 9.0, -8.0, -6.0, 5.2, 5.4)
-	# E panel is mounted on the north wall; its center remains at the functional-contract coordinate.
-	_wall_z("ControlRoomNorthWall", -8.35, 9.0, 24.0, 3.0, 5.4)
-
-	# G is a horizontal airlock, not a vertical shortcut.
-	_wall_z("VestibuleNorthWall", -9.0, 0.0, 3.0, 3.0, 5.4)
-	_wall_z("VestibuleSouthWall", -4.5, 0.0, 3.0, 3.0, 5.4)
-	_wall_x("VestibuleDoorPierNorth", 3.0, -9.0, -8.0, 3.0, 5.4)
-	_wall_x("VestibuleDoorPierSouth", 3.0, -6.0, -4.5, 3.0, 5.4)
-	_wall_x("VestibuleDoorLintel", 3.0, -8.0, -6.0, 5.2, 5.4)
-
-	# M is a real intermediate floor. Keep the lift shaft and S2 stairwell open.
-	var mezz_regions: Array = [Rect2(Vector2(9.0, -9.0), Vector2(19.0, 7.5))]
-	var mezz_holes: Array = [
-		Rect2(Vector2(24.5, -4.5), Vector2(3.0, 3.0)),
-		Rect2(Vector2(9.0, -4.5), Vector2(4.0, 3.0))
-	]
-	for hole in mezz_holes:
-		var next_regions: Array = []
-		for region in mezz_regions:
-			next_regions.append_array(_subtract_rect(region, hole))
-		mezz_regions = next_regions
-	for i in mezz_regions.size():
-		_add_floor_rect(mezz_regions[i], 1.5, "MezzanineFloor_%02d" % i, materials.get_material("grate"))
-
-	_body_box("PumpSkidA", Vector3(2.2, 0.85, 0.9), Vector3(17.0, 1.95, -7.3), materials.get_material("steel"))
-	_body_box("PumpSkidB", Vector3(2.2, 0.85, 0.9), Vector3(21.0, 1.95, -7.3), materials.get_material("steel"))
-	_body_box("PumpManifold", Vector3(0.22, 1.1, 5.0), Vector3(23.2, 2.25, -5.0), materials.get_material("steel_light"))
-	_body_box("PumpBench", Vector3(2.0, 0.15, 0.6), Vector3(19.0, 2.35, -2.8), materials.get_material("steel"))
-	_label3d("PumpRoomLabel", "M · SALA DE BOMBAS", Vector3(18.5, 2.5, -8.5), Color(0.72, 0.88, 0.95), 18, 0.003)
-	_label3d("ObservationGalleryLabel", "GALERÍA DE OBSERVACIÓN", Vector3(10.8, 2.0, -8.4), Color(0.72, 0.88, 0.95), 16, 0.003)
-
-	var rail := _flat_material(Color(0.55, 0.58, 0.6), 0.45, 0.7)
-	_body_box("MezzanineNorthRail", Vector3(18.8, RAIL_HEIGHT, 0.1), Vector3(18.4, 1.5 + RAIL_HEIGHT * 0.5, -9.02), rail)
-	_body_box("MezzanineEastRail", Vector3(0.1, RAIL_HEIGHT, 7.0), Vector3(28.02, 1.5 + RAIL_HEIGHT * 0.5, -5.0), rail)
-	_body_box("MezzanineSouthRailWest", Vector3(10.0, RAIL_HEIGHT, 0.1), Vector3(14.0, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
-	_body_box("MezzanineSouthRailEast", Vector3(9.0, RAIL_HEIGHT, 0.1), Vector3(23.5, 1.5 + RAIL_HEIGHT * 0.5, -1.52), rail)
-	_body_box("MezzanineWestRail", Vector3(0.1, RAIL_HEIGHT, 4.5), Vector3(8.98, 1.5 + RAIL_HEIGHT * 0.5, -6.75), rail)
-	# S2 is walkable in both directions and has handrails that follow the actual slope.
-	_build_sloped_stairs("ControlStairsS2", 9.0, 13.0, -4.5, -1.5, 3.0, 1.5)
-	# E's north/east edges and the east spur of the observation walkway overlook the atrium.
-
-	_body_box("P2ControlEastRail", Vector3(0.1, RAIL_HEIGHT, 4.0), Vector3(24.02, 3.0 + RAIL_HEIGHT * 0.5, -6.5), rail)
-	_body_box("P2WalkwayNorthRailEast", Vector3(2.0, RAIL_HEIGHT, 0.1), Vector3(25.0, 3.0 + RAIL_HEIGHT * 0.5, -4.49), rail)
-	_body_box("P2WalkwaySouthRail", Vector3(13.0, RAIL_HEIGHT, 0.1), Vector3(19.5, 3.0 + RAIL_HEIGHT * 0.5, -1.52), rail)
-	_body_box("P2WalkwayEastRail", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(26.02, 3.0 + RAIL_HEIGHT * 0.5, -3.0), rail)
-
-
-func _build_lift() -> void:
-	lift = ServiceLift.new()
-	lift.name = "ServiceLift"
-	lift.position = Vector3(26.0, 0.0, -3.0)
-	lift.lower_y = 0.0
-	lift.upper_y = 1.5
-	lift.powered = false
-	add_child(lift)
-	lift.state_changed.connect(_on_lift_state_changed)
-	# Fixed landing gates protect the shaft when the deck is elsewhere.
-	_lower_lift_gate = _body_box("LiftSafetyGateLower", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 0.55, -1.49), materials.get_material("safety_paint"))
-	_lower_lift_gate_shape = _lower_lift_gate.get_child(0) as CollisionShape3D
-	_lower_lift_gate_mesh = _lower_lift_gate.get_child(1) as MeshInstance3D
-	_upper_lift_gate = _body_box("LiftSafetyGateUpper", Vector3(3.0, 1.1, 0.12), Vector3(26.0, 2.05, -4.49), materials.get_material("safety_paint"))
-	_upper_lift_gate_shape = _upper_lift_gate.get_child(0) as CollisionShape3D
-	_upper_lift_gate_mesh = _upper_lift_gate.get_child(1) as MeshInstance3D
-	# Fixed side rails close the lateral gaps when the deck is away from either landing.
-	_body_box("LiftShaftSideRailLowerWest", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(24.45, RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
-	_body_box("LiftShaftSideRailLowerEast", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(27.55, RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
-	_body_box("LiftShaftSideRailUpperWest", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(24.45, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
-	_body_box("LiftShaftSideRailUpperEast", Vector3(0.1, RAIL_HEIGHT, 3.0), Vector3(27.55, 1.5 + RAIL_HEIGHT * 0.5, -3.0), materials.get_material("safety_paint"))
-	_refresh_stationary_lift_gates()
-	_lift_lower_button = _visual_box("LiftCallLower", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 0.28, -0.2), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
-	_label3d("LiftCallLowerLabel", "LLAMAR · P0", Vector3(26.7, 0.72, -0.2), Color(0.95, 0.8, 0.4), 16, 0.003)
-	_lift_upper_button = _visual_box("LiftCallUpper", Vector3(0.28, 0.12, 0.12), Vector3(27.1, 1.78, -6.1), _flat_material(Color(0.9, 0.6, 0.15), 0.45, 0.0, 1.2))
-	_label3d("LiftCallUpperLabel", "LLAMAR · MEZZANINE", Vector3(26.8, 2.22, -6.1), Color(0.95, 0.8, 0.4), 16, 0.003)
-	_lift_deck_button = _visual_box("LiftDeckButton", Vector3(0.25, 0.08, 0.2), Vector3(26.0, float(lift.platform_y) + 0.06, -3.0), _flat_material(Color(0.25, 0.9, 0.6), 0.4, 0.0, 1.2))
-	_lift_deck_label = _label3d("LiftDeckButtonLabel", "ENVIAR AL OTRO NIVEL", Vector3(26.0, float(lift.platform_y) + 0.32, -3.0), Color(0.6, 1.0, 0.75), 14, 0.0028)
-
-
-func _on_lift_state_changed(_description: String) -> void:
-	_refresh_stationary_lift_gates()
-
-
-func _refresh_stationary_lift_gates() -> void:
-	if lift == null or _lower_lift_gate_shape == null or _upper_lift_gate_shape == null:
-		return
-	var opened: Dictionary = lift.gates_open()
-	var lower_open: bool = bool(opened["south"])
-	var upper_open: bool = bool(opened["north"])
-	_lower_lift_gate_shape.set_deferred("disabled", lower_open)
-	_lower_lift_gate_mesh.visible = not lower_open
-	_upper_lift_gate_shape.set_deferred("disabled", upper_open)
-	_upper_lift_gate_mesh.visible = not upper_open
-
-
-func _build_controls_and_fixtures() -> void:
-	# E controls retain the contract coordinates. Their interaction colliders are positional, not physical blocks.
-	_visual_box("SelectorBody", Vector3(0.45, 0.7, 0.38), Vector3(12.0, 3.35, -7.0), materials.get_material("steel_light"))
-	_label3d("SelectorLabel", "SELECTOR\nENSAYO / ARCHIVO", Vector3(12.0, 4.0, -7.0), Color(0.95, 0.72, 0.28), 18, 0.003)
-	_visual_box("IsolatorBody", Vector3(0.45, 0.7, 0.38), Vector3(19.0, 3.35, -7.0), materials.get_material("steel_light"))
-	_label3d("IsolatorLabel", "AISLADOR\nRAMA ENSAYO", Vector3(19.0, 4.0, -7.0), Color(0.95, 0.72, 0.28), 18, 0.003)
-
-	_visual_box("EStatusPanelBoard", Vector3(2.5, 1.15, 0.16), Vector3(15.5, 4.55, -8.15), materials.get_material("screen_dark"))
-	_status_panel_label = _label3d("EStatusPanelText", "", Vector3(15.5, 4.55, -8.05), Color(0.78, 0.92, 0.95), 19, 0.0025)
-	_visual_box("RearmButtonBody", Vector3(0.32, 0.22, 0.18), Vector3(15.5, 3.5, -8.15), _flat_material(Color(0.2, 0.55, 0.3), 0.4, 0.0, 0.8))
-	_label3d("RearmButtonLabel", "REARME", Vector3(15.5, 3.8, -8.05), Color(0.8, 1.0, 0.8), 17, 0.003)
-
-	_visual_box("ArchiveStatusBoard", Vector3(0.12, 0.9, 0.8), Vector3(8.55, 3.8, -7.0), materials.get_material("screen_dark"))
-	_archive_status_label = _label3d("ArchiveStatusText", "", Vector3(8.68, 3.82, -7.0), Color(0.84, 0.95, 0.88), 16, 0.0028)
-
-	# Archive consultation console and the always-available diagnostic terminal are distinct fixtures.
-	_visual_box("ArchiveConsole", Vector3(0.9, 0.75, 0.5), Vector3(5.0, 3.38, -7.0), materials.get_material("steel"))
-	_label3d("ArchiveConsoleLabel", "CONSULTA DE ARCHIVO", Vector3(5.0, 4.0, -7.0), Color(0.45, 0.95, 0.9), 18, 0.003)
-	_visual_box("DiagnosticTerminal", Vector3(0.65, 0.9, 0.35), Vector3(7.25, 3.45, -6.0), materials.get_material("steel_light"))
-	_label3d("DiagnosticTerminalLabel", "DIAGNÓSTICO", Vector3(7.25, 4.0, -6.0), Color(0.65, 0.88, 0.96), 16, 0.003)
-
-	# Evidence and service event are visible in-world only; nothing here modifies a save file.
-	_visual_box("EvidenceRecordScreen", Vector3(0.12, 0.65, 0.5), Vector3(5.0, 3.65, -7.0), materials.get_material("aster_screen"))
-	_label3d("EvidenceRecordHint", "ACTA / TELEMETRÍA", Vector3(5.0, 4.35, -7.0), Color(0.65, 0.94, 0.9), 15, 0.003)
-
-
-func _build_doors() -> void:
-	_inner_door = _body_box("ShortcutInnerDoor", Vector3(0.2, 2.2, 2.0), Vector3(3.0, 4.1, -7.5), materials.get_material("safety_paint"))
-	_inner_door_mesh = _inner_door.get_child(1) as MeshInstance3D
-	_outer_door = _body_box("OuterHatch", Vector3(0.2, 2.2, 1.5), Vector3(0.0, 4.1, -7.5), materials.get_material("safety_paint"))
-	_outer_door_shape = _outer_door.get_child(0) as CollisionShape3D
-	_outer_door_mesh = _outer_door.get_child(1) as MeshInstance3D
-	# Keep hatch shut until the player opens it from inside the west vestibule.
-
-
-func _build_player_and_hud() -> void:
-	player = Player.new()
-	player.name = "Elena"
-	player.position = Vector3(-2.3, 0.2, 6.0)
-	add_child(player)
-	# Face east (+X), through the west-wall opening into access A.
-	player.visual.rotation.y = PI * 0.5
-	hud = HudScript.new()
-	hud.name = "PromptHUD"
-	add_child(hud)
-	hud.call("set_objective", "OBJETIVO  /  Investiga la anomalía y accede al archivo")
-	hud.call("set_hint", "La documentación describe una distribución que no parece coincidir con el estado físico.")
-	hud.call("set_status", "Fase 1 · The Ghost Protocol")
-
-
-# --------------------------------------------------------------------------------------------------
-# Positional interactions
-# --------------------------------------------------------------------------------------------------
-
-func _current_hotspots() -> Array:
-	var deck_at := Vector3(26.0, float(lift.platform_y) + 0.45, -3.0)
+func _hotspots() -> Array:
+	var deck := Vector3(26.0, float(lift.platform_y), -3.0)
 	return [
-		{"id":"maintenance", "at":Vector3(26.0, -1.35, 2.0), "verb":"Accionar", "name":"Interruptor de mantenimiento"},
-		{"id":"schematic", "at":Vector3(27.0, -1.0, 6.0), "verb":"Examinar", "name":"Esquema de distribución"},
-		{"id":"bridge", "at":Vector3(22.0, -1.0, 4.0), "verb":"Examinar", "name":"Conexión manipulada"},
-		{"id":"lift_lower", "at":Vector3(26.0, 0.25, -0.25), "verb":"Llamar", "name":"Elevador · nivel inferior"},
-		{"id":"lift_upper", "at":Vector3(26.0, 1.7, -6.2), "verb":"Llamar", "name":"Elevador · mezzanine"},
-		{"id":"lift_deck", "at":deck_at, "verb":"Enviar", "name":"Elevador · otro nivel"},
-		{"id":"selector", "at":Vector3(12.0, 3.0, -7.0), "verb":"Accionar", "name":"Selector de recuperación"},
-		{"id":"isolator", "at":Vector3(19.0, 3.0, -7.0), "verb":"Accionar", "name":"Aislador de ensayo"},
-		{"id":"indicators", "at":Vector3(15.0, 3.0, -7.0), "verb":"Consultar", "name":"Indicadores del circuito"},
-		{"id":"rearm", "at":Vector3(15.5, 3.5, -8.15), "verb":"Rearmar", "name":"Protección de recuperación"},
-		{"id":"diagnostic", "at":Vector3(7.25, 3.1, -6.0), "verb":"Inspeccionar", "name":"Terminal de diagnóstico"},
-		{"id":"archive", "at":Vector3(5.0, 3.1, -7.0), "verb":"Consultar", "name":"Archivo restringido"},
-		{"id":"shortcut", "at":Vector3(3.0, 3.0, -7.5), "verb":"Desbloquear", "name":"Puerta de la esclusa exterior"},
-		{"id":"outer_hatch", "at":Vector3(0.45, 3.1, -7.5), "verb":"Abrir", "name":"Compuerta exterior"},
+		{"id": "maintenance", "at": Building.MAINTENANCE_AT, "verb": "Accionar", "name": "Interruptor de mantenimiento"},
+		{"id": "schematic", "at": Building.SCHEMATIC_AT, "verb": "Examinar", "name": "Esquema de distribución"},
+		{"id": "bridge", "at": Building.BRIDGE_AT, "verb": "Examinar", "name": "Conexión entre A y T"},
+		{"id": "workshop_tag", "at": Vector3(21.0, 0.0, -6.0), "verb": "Examinar", "name": "Etiqueta de reparación"},
+		{"id": "lift_lower", "at": Building.LIFT_CALL_P0_AT, "verb": "Llamar", "name": "Elevador"},
+		{"id": "lift_upper", "at": Building.LIFT_CALL_M_AT, "verb": "Llamar", "name": "Elevador"},
+		{"id": "lift_deck", "at": deck, "verb": "Enviar", "name": "Elevador · otro nivel"},
+		{"id": "selector", "at": Building.SELECTOR_AT, "verb": "Accionar", "name": "Selector de recuperación"},
+		{"id": "isolator", "at": Building.ISOLATOR_AT, "verb": "Accionar", "name": "Aislador del ensayo"},
+		{"id": "rearm", "at": Building.REARM_AT, "verb": "Rearmar", "name": "Protección de recuperación"},
+		{"id": "diagnostic", "at": Building.DIAGNOSTIC_AT, "verb": "Consultar", "name": "Terminal de diagnóstico"},
+		{"id": "archive", "at": Building.ARCHIVE_AT, "verb": "Consultar", "name": "Archivo restringido"},
+		{"id": "g_inner", "at": Building.G_INNER_AT, "verb": "Cerrar" if _g_inner_open else "Abrir", "name": "Puerta interior de G"},
+		{"id": "g_outer", "at": Building.G_OUTER_AT + Vector3(0.75, 0.0, 0.0), "verb": "Abrir", "name": "Compuerta exterior de G"},
+		{"id": "r1_crank", "at": Building.R1_CRANK_AT, "verb": "Detener desbloqueo" if _r1_cranking else "Desbloqueo de emergencia", "name": "Compuerta de sector"},
 	]
 
 
 func _update_interaction_prompt() -> void:
 	var best: Dictionary = {}
-	var best_distance := INTERACTION_REACH
-	for hotspot in _current_hotspots():
-		var d: float = player.global_position.distance_to(hotspot["at"])
-		if d <= best_distance and _hotspot_available(str(hotspot["id"])):
-			best_distance = d
-			best = hotspot
+	var best_d := INTERACTION_REACH
+	var p := player.global_position
+	for h in _hotspots():
+		var at: Vector3 = h["at"]
+		if absf(at.y - p.y) > 1.0:
+			continue
+		var d := Vector2(at.x - p.x, at.z - p.z).length()
+		if d <= best_d and _available(str(h["id"])) and _reachable(at):
+			best_d = d
+			best = h
 	_hotspot_id = str(best.get("id", ""))
-	if best.is_empty():
-		hud.call("set_prompt", "")
-	else:
-		hud.call("set_prompt", "[E] %s - %s" % [str(best["verb"]), str(best["name"])])
+	hud.call("set_prompt", "" if best.is_empty() else "[E] %s - %s" % [best["verb"], best["name"]])
 
 
-func _hotspot_available(id: String) -> bool:
+## Line of sight from Elena's chest to the control: no operating anything through a wall.
+## The ray stops 0.4 m short of the control, so the control's own body (a door leaf, a housing) never hides itself.
+func _reachable(at: Vector3) -> bool:
+	var from := player.global_position + Vector3(0.0, 1.2, 0.0)
+	var to := at + Vector3(0.0, 1.0, 0.0)
+	var span := to - from
+	if span.length() > 0.5:
+		to -= span.normalized() * 0.4
+	var q := PhysicsRayQueryParameters3D.create(from, to, 1, [player.get_rid()])
+	return get_world_3d().direct_space_state.intersect_ray(q).is_empty()
+
+
+func _available(id: String) -> bool:
 	match id:
-		"shortcut":
-			return not _shortcut_unlocked and player.global_position.x > 3.15
-		"outer_hatch":
-			return _shortcut_unlocked and not _outer_hatch_open and player.global_position.x < 2.8
 		"lift_deck":
-			return absf(player.global_position.x - 26.0) < 1.7 and absf(player.global_position.z + 3.0) < 1.7 and absf(player.global_position.y - float(lift.platform_y)) < 1.0
-		_:
-			return true
+			var on_deck := absf(player.global_position.x - 26.0) < 1.4 and absf(player.global_position.z + 3.0) < 1.4
+			return on_deck and absf(player.global_position.y - float(lift.platform_y)) < 0.5 and not lift.moving
+		"g_outer":
+			return not _g_outer_open
+		"g_inner":
+			return phase == "investigation" or not _g_inner_open
+		"r1_crank":
+			return phase != "investigation" and r1_opening < R1_FULL
+	return true
 
 
 func _interact(id: String) -> void:
@@ -653,158 +355,435 @@ func _interact(id: String) -> void:
 		"maintenance":
 			_toggle_maintenance()
 		"schematic":
-			_banner("Esquema de distribución", "Una fuente auxiliar alimenta diagnóstico, mantenimiento y protección de recuperación por ramas independientes.", Color(0.55, 0.9, 0.95), 6.0)
+			clues_seen["schematic"] = true
+			_sound("tick")
+			_banner("Esquema de distribución prevista", "Una fuente auxiliar. Emergencia → diagnóstico. Mantenimiento → luces y elevador. Protección → selector: ENSAYO → T, ARCHIVO → A. Ramas independientes.", Color(0.55, 0.9, 0.95), 7.0)
 			_log("clue", "schematic")
 		"bridge":
-			_banner("Conexión manipulada", "El puente físico une A con T aunque no aparece en el esquema previsto.", Color(1.0, 0.67, 0.25), 6.0)
+			clues_seen["bridge"] = true
+			_sound("tick")
+			_banner("Conexión entre A y T", "Un puente de cable une los bornes A y T. Está apretado con abrazaderas nuevas y el suelo de debajo está quemado.", Color(1.0, 0.67, 0.25), 7.0)
 			_log("clue", "tampered_bridge_A_to_T")
+		"workshop_tag":
+			clues_seen["workshop_tag"] = true
+			_sound("tick")
+			_banner("Etiqueta de reparación", "«Puente temporal A→T. Retirar tras ensayo.» Nadie lo retiró.", Color(0.95, 0.8, 0.5), 5.5)
+			_log("clue", "workshop_tag")
 		"lift_lower":
 			_call_lift("lower")
 		"lift_upper":
 			_call_lift("upper")
 		"lift_deck":
-			var accepted: bool = lift.send()
-			_log("lift_deck_send", "accepted" if accepted else "refused")
-			if not accepted:
-				_banner("Elevador sin alimentación", "Activa mantenimiento desde el foso.", Color(1.0, 0.67, 0.25), 3.5)
+			_rider_send = true
+			var ok: bool = lift.send()
+			if not ok:
+				_rider_send = false
+			_log("lift_deck", "accepted" if ok else "refused")
+			_sound("clunk" if ok else "denied")
+			if not ok:
+				_banner("Elevador sin alimentación", "El panel del elevador está apagado.", Color(1.0, 0.67, 0.25), 3.0)
 		"selector":
-			_toggle_selector()
+			_circuit_action("selector")
 		"isolator":
-			_toggle_isolator()
-		"indicators":
-			_banner("Estado del circuito", _diagnostic_text(), Color(0.5, 0.9, 0.95), 6.0)
-			_log("inspect", "indicators")
+			_circuit_action("isolator")
 		"rearm":
 			_request_rearm()
 		"diagnostic":
+			_sound("beep")
 			_banner("Terminal de diagnóstico", _diagnostic_text(), Color(0.5, 0.9, 0.95), 7.0)
-			_log("inspect", "diagnostic_terminal")
+			_log("inspect", "diagnostic")
 		"archive":
 			_consult_archive()
-		"shortcut":
-			_unlock_shortcut()
-		"outer_hatch":
-			_open_outer_hatch()
+		"g_inner":
+			_toggle_g_inner()
+		"g_outer":
+			_open_g_outer()
+		"r1_crank":
+			_r1_cranking = not _r1_cranking
+			_sound("clunk")
+			_log("r1_shutter", "release started" if _r1_cranking else "release stopped")
+			if _r1_cranking and not _r1_reported and unit != null:
+				_r1_reported = true
+				unit.call("respond", Vector3(29.0, 0.0, 3.2))  # telemetry: sector R1 breached -> search the east return
 
 
 func _toggle_maintenance() -> void:
-	var was_on: bool = circuit.maintenance_on
-	circuit.set_maintenance(not was_on)
+	var was: bool = circuit.maintenance_on
+	circuit.set_maintenance(not was)
 	lift.set_powered(circuit.maintenance_on)
-	if circuit.maintenance_on and not _audit_events.has("SERVICE_OVERRIDE"):
-		_audit_events.append("SERVICE_OVERRIDE")
-		_log("audit_queued", "SERVICE_OVERRIDE")
-	for light in _service_lights:
-		light.light_energy = 0.75 if circuit.maintenance_on else 0.12
-	if _switch_lamp != null:
-		_switch_lamp.material_override = _flat_material(Color(0.2, 0.95, 0.6) if circuit.maintenance_on else Color(0.95, 0.18, 0.12), 0.4, 0.0, 1.5)
-	_banner("Mantenimiento " + ("activo" if circuit.maintenance_on else "apagado"), "Luces de servicio y elevador: " + ("con alimentación." if circuit.maintenance_on else "sin alimentación."), Color(0.45, 0.95, 0.65) if circuit.maintenance_on else Color(1.0, 0.67, 0.25), 4.0)
+	if mission.on_maintenance(was, circuit.maintenance_on):
+		_log("mission", "SERVICE_OVERRIDE queued")
+	_sound("power_up" if circuit.maintenance_on else "power_down")
+	for l in building.service_lights:
+		var tw := create_tween()
+		tw.tween_property(l, "light_energy", 1.0 if circuit.maintenance_on else 0.12, 1.2)
+	building.switch_lamp.material_override = building.b.flat(Color(0.2, 0.95, 0.5) if circuit.maintenance_on else Color(0.95, 0.2, 0.1), 0.4, 0.0, 1.5)
+	for lamp in building.pump_lamps:
+		lamp.material_override = building.b.flat(Color(0.3, 1.0, 0.5) if circuit.maintenance_on else Color(0.2, 0.2, 0.2), 0.4, 0.0, 1.4 if circuit.maintenance_on else 0.0)
+	_banner("Mantenimiento " + ("activo" if circuit.maintenance_on else "apagado"), "Luces de servicio, bombas y elevador " + ("con alimentación." if circuit.maintenance_on else "sin alimentación."), Color(0.45, 0.95, 0.65) if circuit.maintenance_on else Color(1.0, 0.67, 0.25), 4.0)
+	if circuit.maintenance_on and phase == "investigation":
+		_set_objective("Sube a control: el elevador ya tiene energía")
 	_refresh_state_fixtures()
 	_log("maintenance", "on" if circuit.maintenance_on else "off")
 
 
-func _toggle_selector() -> void:
+func _circuit_action(which: String) -> void:
 	var was_available: bool = circuit.protection_available
-	var target: String = CircuitModel.ARCHIVE if circuit.destination == CircuitModel.TRIAL else CircuitModel.TRIAL
-	circuit.select_destination(target)
-	_after_circuit_change(was_available, "Selector en " + target)
-	_log("selector", target)
-
-
-func _toggle_isolator() -> void:
-	var was_available: bool = circuit.protection_available
-	circuit.set_isolated(not circuit.trial_isolated)
-	_after_circuit_change(was_available, "Ensayo " + ("aislado" if circuit.trial_isolated else "conectado"))
-	_log("isolator", "isolated" if circuit.trial_isolated else "connected")
-
-
-func _after_circuit_change(was_available: bool, title: String) -> void:
-	if was_available and not circuit.protection_available:
-		_banner("Protección disparada", "Demanda simultánea registrada. No se ha perdido nada; el estado puede recuperarse.", Color(1.0, 0.25, 0.18), 5.0)
-		_log("trip", circuit.last_trip)
+	var title := ""
+	if which == "selector":
+		var target: String = CircuitModel.ARCHIVE if circuit.destination == CircuitModel.TRIAL else CircuitModel.TRIAL
+		circuit.select_destination(target)
+		title = "Selector en " + target
+		_log("selector", target)
 	else:
-		_banner(title, "Consulta el estado actual y el último disparo por separado.", Color(0.5, 0.9, 0.95), 3.5)
+		circuit.set_isolated(not circuit.trial_isolated)
+		title = "Ensayo " + ("aislado" if circuit.trial_isolated else "conectado")
+		_log("isolator", "isolated" if circuit.trial_isolated else "connected")
+	_sound("clunk")
+	if was_available and not circuit.protection_available:
+		_trip_feedback()
+	else:
+		_banner(title, "Comprueba el panel: estado actual y último disparo aparecen por separado.", Color(0.5, 0.9, 0.95), 3.0)
 	_refresh_state_fixtures()
 
 
+## The trip: alarm pip, every light dips, the column's protection ring goes red. Nothing is lost.
+func _trip_feedback() -> void:
+	_sound("denied")
+	_banner("Protección disparada", "Demanda simultánea registrada. No se ha perdido nada: el sistema puede recuperarse.", Color(1.0, 0.3, 0.2), 5.0)
+	_log("trip", str(circuit.last_trip))
+	for node in find_children("*", "OmniLight3D", true, false):
+		var l := node as OmniLight3D
+		if l.light_energy <= 0.0:
+			continue
+		var e := l.light_energy
+		var tw := create_tween()
+		tw.tween_property(l, "light_energy", e * 0.25, 0.08)
+		tw.tween_property(l, "light_energy", e, 0.6)
+
+
 func _request_rearm() -> void:
-	var accepted: bool = circuit.rearm()
-	if accepted:
-		_banner("Protección rearmada", "La protección vuelve a estar disponible; el último disparo queda registrado.", Color(0.45, 0.95, 0.65), 4.0)
+	var ok: bool = circuit.rearm()
+	_sound("power_up" if ok else "denied")
+	if ok:
+		_banner("Protección rearmada", "La protección vuelve a estar disponible. El último disparo sigue registrado.", Color(0.45, 0.95, 0.65), 4.0)
 	else:
-		_banner("Rearme rechazado", "Sigue presente la demanda simultánea.", Color(1.0, 0.67, 0.25), 4.0)
-	_log("rearm", "accepted" if accepted else "rejected")
+		_banner("Rearme rechazado", "La demanda simultánea sigue presente.", Color(1.0, 0.67, 0.25), 4.0)
+	_log("rearm", "accepted" if ok else "rejected")
 	_refresh_state_fixtures()
 
 
 func _consult_archive() -> void:
 	if not circuit.consult():
-		_banner("Archivo no disponible", "El archivo requiere suministro estable. El terminal de diagnóstico sigue funcionando.", Color(1.0, 0.67, 0.25), 5.0)
-		_log("archive_consult", "refused")
+		_sound("denied")
+		_banner("Archivo no disponible", "Sin suministro estable en ARCHIVO. El diagnóstico sigue funcionando con la emergencia.", Color(1.0, 0.67, 0.25), 5.0)
+		_log("archive", "refused")
 		return
-	_archive_consulted = true
-	if not _audit_events.has("RESTRICTED_RECORD_READ"):
-		_audit_events.append("RESTRICTED_RECORD_READ")
-		_log("audit_queued", "RESTRICTED_RECORD_READ")
-	_banner("Registro consultado", ARCHIVE_RECORD, Color(0.45, 0.95, 0.65), 10.0)
-	_log("archive_consult", "success_session_only")
-	_refresh_state_fixtures()
+	_sound("beep")
+	if mission.on_record_read():
+		_log("mission", "RESTRICTED_RECORD_READ")
+	subtitles.call("show_message", ARCHIVE_RECORD, 11.0)
+	building.archive_text.text = "REGISTRO ASTER\nRESULTADO RETENIDO\nDESPLIEGUE: SUPRIMIDO"
+	_set_objective("Has visto lo que ocultaban. Sal por la esclusa G")
+	_log("archive", "read")
 
 
-func _unlock_shortcut() -> void:
-	if _shortcut_unlocked or player.global_position.x <= 3.15:
+func _call_lift(level: String) -> void:
+	var ok: bool = lift.call_to(level)
+	_sound("clunk" if ok else "denied")
+	_log("lift_call", "%s:%s" % [level, "accepted" if ok else "refused"])
+	if not ok:
+		_banner("Elevador sin alimentación", "El panel de llamada no responde. Algo en el circuito de mantenimiento está apagado.", Color(1.0, 0.67, 0.25), 3.5)
+
+
+func _toggle_g_inner() -> void:
+	_g_inner_open = not _g_inner_open
+	_sound("door")
+	var door: StaticBody3D = building.g_inner_door
+	var tw := create_tween()
+	tw.tween_property(door, "position:z", -8.9 if _g_inner_open else -7.25, 0.7)
+	_log("g_inner", "open" if _g_inner_open else "closed")
+
+
+func _open_g_outer() -> void:
+	match mission.on_open_g():
+		"locked":
+			_sound("denied")
+			_banner("Compuerta exterior bloqueada", "La esclusa no tiene ninguna orden de servicio pendiente.", Color(1.0, 0.67, 0.25), 4.0)
+			_log("g_outer", "locked")
+		"containment":
+			_begin_containment()
+		_:
+			pass
+
+
+# --- Containment, escape and handoff --------------------------------------------------------------------------------
+
+func _begin_containment() -> void:
+	_g_outer_open = true
+	phase = "containment"
+	_log("mission", "AUDIT_SENT · CONTAINMENT")
+	_sound("door")
+	var tw := create_tween()
+	tw.tween_property(building.g_outer_door, "position:z", -9.0, 1.1)
+	building.g_status_lamp.material_override = building.b.flat(Color(1.0, 0.1, 0.05), 0.4, 0.0, 3.0)
+	for a in building.alarm_lights:
+		a.visible = true
+	_alarm_loop.play()
+	building.exit_reader.text = "PROTOCOLO DE CONTENCIÓN: ACTIVO\nSECTOR EXTERIOR"
+	building.exit_reader.modulate = Color(1.0, 0.45, 0.35)
+	staff.call("set_containment", true)
+	_topple_o1()
+	_close_r1()
+	lift.departed.connect(_on_lift_departed)
+	_set_checkpoint(0)
+	_set_objective("Retrocede y aléjate de G sin que te vean")
+	_banner("PROTOCOLO DE CONTENCIÓN", "La esclusa ha enviado la auditoría. Algo se mueve en la pasarela exterior.", Color(1.0, 0.35, 0.25), 4.0)
+	if not handoff_override.is_valid():
+		ResourceLoader.load_threaded_request(CHASE_SCENE)
+		_parking_request = true
+	if spawn_unit_enabled:
+		get_tree().create_timer(UNIT_DELAY).timeout.connect(_spawn_unit)
+
+
+func _spawn_unit() -> void:
+	unit = UnitScript.new()
+	unit.name = "RecoveryUnit"
+	add_child(unit)
+	unit.lift = lift
+	unit.player = player
+	unit.call("activate", "gantry_far")
+	unit.caught_player.connect(_on_caught)
+	unit.reacquired.connect(_on_reacquired)
+	unit.state_changed.connect(func(s): _log("unit", "%s at %s · Elena at %s" % [s, _fmt(unit.global_position), _fmt(player.global_position)]))
+	_log("unit", "enters from the service tower (gantry)")
+
+
+func _on_reacquired() -> void:
+	phase = "run"
+	_set_objective("¡Corre! Baja por S1 a la galería de descarga")
+	_sound("land")
+	_log("mission", "reacquired at %s -> run" % player.global_position)
+
+
+func _on_staff_alerted(seen_at: Vector3) -> void:
+	_log("staff", "alerted at %s" % seen_at)
+	subtitles.call("show_message", "Operario: «¡Hay alguien en bombas!»", 3.0)
+	if unit != null:
+		unit.call("report", seen_at)
+
+
+func _on_caught() -> void:
+	if _caught_left > 0.0:
 		return
-	_shortcut_unlocked = true
-	if _inner_door != null:
-		var shape := _inner_door.get_child(0) as CollisionShape3D
-		shape.set_deferred("disabled", true)
-		if _inner_door_mesh != null:
-			_inner_door_mesh.visible = false
-	_banner("Vestíbulo oeste desbloqueado", "La puerta queda abierta en ambos sentidos. La compuerta exterior lleva a Containment.", Color(0.45, 0.95, 0.65), 5.0)
-	_log("shortcut", "unlocked_from_archive_side")
-
-
-func _open_outer_hatch() -> void:
-	if not _shortcut_unlocked or player.global_position.x >= 2.8:
-		return
-	_outer_hatch_open = true
-	if _outer_door_shape != null:
-		_outer_door_shape.set_deferred("disabled", true)
-	if _outer_door_mesh != null:
-		_outer_door_mesh.visible = false
-	_banner("Compuerta abierta", "La salida al exterior está habilitada.", Color(0.95, 0.67, 0.25), 4.0)
-	_log("outer_hatch", "opened")
-
-
-func _begin_handoff() -> void:
-	if _handoff_started:
-		return
-	_handoff_started = true
-	# Latch Elena at the hatch during the short synchronization beat; the outside is a scene transition, not a fall.
+	catches += 1
+	_caught_left = 1.2
+	player.set("input_enabled", false)
 	player.velocity = Vector3.ZERO
-	player.set_physics_process(false)
-	player.set_process_input(false)
-	var transmitted := ", ".join(PackedStringArray(_audit_events))
-	# The queued events and the narrative cause of the next scene remain provisional; do not present them as canon.
-	_log("candidate_audit_events_at_exit", transmitted)
-	hud.call("set_objective", "OBJETIVO  /  Continúa hacia el aparcamiento")
-	hud.call("show_banner", "SALIDA EXTERIOR", "La transición continúa hacia el aparcamiento.", Color(0.95, 0.67, 0.25), HANDOFF_DELAY)
-	await get_tree().create_timer(HANDOFF_DELAY).timeout
-	var error: Error = get_tree().change_scene_to_file(CHASE_SCENE)
-	if error != OK:
-		push_error("No se pudo abrir la escena de Containment: %s" % error)
+	_sound("denied")
+	_banner("Te ha atrapado", "Vuelves al último punto seguro. Lo que has descubierto sigue contigo.", Color(1.0, 0.35, 0.25), 2.5)
+	_log("caught", "#%d at %s" % [catches, player.global_position])
 
 
-func _call_lift(destination: String) -> void:
-	var accepted: bool = lift.call_to(destination)
-	_log("lift_call", "%s:%s" % [destination, "accepted" if accepted else "refused"])
-	if not accepted:
-		_banner("Elevador sin alimentación", "El interruptor de mantenimiento del foso controla la plataforma.", Color(1.0, 0.67, 0.25), 3.5)
+func _restore_checkpoint() -> void:
+	var cp: Dictionary = CHECKPOINTS[maxi(0, checkpoint_index)]
+	player.global_position = cp["pos"]
+	player.velocity = Vector3.ZERO
+	player.set("input_enabled", true)
+	if unit != null:
+		unit.call("reset_to", cp["unit"])
+	if phase == "run":
+		phase = "containment"
+	_log("checkpoint_restored", str(cp["id"]))
 
+
+func _set_checkpoint(i: int) -> void:
+	if i <= checkpoint_index:
+		return
+	checkpoint_index = i
+	_log("checkpoint", str(CHECKPOINTS[i]["id"]))
+
+
+func _update_escape(delta: float) -> void:
+	var p := player.global_position
+	if p.y > 2.4 and p.y < 4.0 and checkpoint_index < 1:
+		_set_checkpoint(1)
+	elif p.y > -0.5 and p.y < 1.0 and p.x > 23.0 and p.z > -2.0 and p.z < 1.0 and checkpoint_index < 2:
+		_set_checkpoint(2)
+	elif p.y < -1.5 and checkpoint_index < 3:
+		_set_checkpoint(3)
+	_maybe_drop_o3(p)
+	_update_r1(delta)
+	_alarm_t += delta
+	for a in building.alarm_lights:
+		a.light_energy = 0.4 + 0.6 * absf(sin(_alarm_t * PI / 1.6)) if not AccessibilityManager.is_reduced_motion() else 0.7
+	if not _handoff_started and p.x > EXIT_X and p.y < -1.0:
+		_begin_handoff()
+
+
+## Containment seals the sector at R1: the shutter comes down between the service gallery and the east return.
+func _close_r1() -> void:
+	var tw := create_tween()
+	tw.tween_interval(1.0)
+	tw.tween_method(_set_r1_opening, R1_FULL, 0.0, 2.8)
+	building.r1_beacon.material_override = building.b.flat(Color(1.0, 0.25, 0.1), 0.4, 0.0, 2.6)
+
+
+func _set_r1_opening(v: float) -> void:
+	r1_opening = clampf(v, 0.0, R1_FULL)
+	var shutter: StaticBody3D = building.r1_shutter
+	shutter.position.y = Building.R1_CLOSED_Y + r1_opening
+
+
+func _player_on_deck() -> bool:
+	var p := player.global_position
+	return absf(p.x - 26.0) < 1.5 and absf(p.z + 3.0) < 1.5 and absf(p.y - float(lift.platform_y)) < 0.6
+
+
+## Containment telemetry: when Elena rides the service lift, the protocol learns which landing it went to.
+func _on_lift_departed(_origin: String, destination: String) -> void:
+	if unit == null or phase == "investigation":
+		return
+	if _player_on_deck():
+		var landing := Vector3(26.0, Building.Y_P0, -0.9) if destination == "lower" else Vector3(26.0, Building.Y_M, -5.6)
+		unit.call("respond", landing)
+		_log("telemetry", "lift used -> unit sent to the %s landing" % destination)
+
+
+func _update_r1(delta: float) -> void:
+	if r1_opening >= R1_FULL:
+		_r1_cranking = false
+		return
+	if _r1_cranking:
+		if player.global_position.distance_to(Building.R1_CRANK_AT) > 2.3:
+			_r1_cranking = false
+			hud.call("set_status", "")
+		else:
+			_set_r1_opening(r1_opening + R1_CRANK_RATE * delta)
+			var pct := int(round(100.0 * r1_opening / R1_FULL))
+			var note := "  ·  ya cabes agachada" if r1_opening >= R1_CROUCH_CLEAR and r1_opening < 1.8 else ""
+			hud.call("set_status", "Compuerta de sector: %d %%%s" % [pct, note])
+			if r1_opening >= R1_FULL:
+				hud.call("set_status", "")
+	if unit != null and unit.global_position.distance_to(Vector3(29.0, unit.global_position.y, 1.05)) < 1.9 and absf(unit.global_position.y) < 0.8:
+		_set_r1_opening(r1_opening + R1_FORCE_RATE * delta)  # the unit has override authority and forces it
+
+
+func _topple_o1() -> void:
+	var shelf: StaticBody3D = building.o1_shelf
+	var tw := create_tween()
+	tw.tween_interval(0.35)
+	tw.tween_property(shelf, "rotation:x", PI * 0.5, 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.parallel().tween_property(shelf, "position", Vector3(8.0, Building.Y_P2 + 0.225, -8.35), 0.55).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_callback(func(): _sound("clunk"); _log("obstacle", "O1 shelf down"))
+
+
+## O3: a cable tray tears loose in the service gallery once Elena has stepped off the lift, never on top of her.
+func _maybe_drop_o3(p: Vector3) -> void:
+	if _o3_dropped or p.y > 1.0 or p.y < -0.5 or p.x < 24.0 or p.z < -1.3:
+		return
+	var footprint := Rect2(26.9, -0.3, 1.6, 0.8)
+	if footprint.grow(0.9).has_point(Vector2(p.x, p.z)):
+		return
+	_o3_dropped = true
+	var tray: StaticBody3D = building.b.body("O3FallenTray", Vector3(1.4, 0.55, 0.6), Vector3(27.7, 2.8, 0.1), materials.get_material("steel"))
+	tray.rotation.y = 0.1
+	var tw := create_tween()
+	tw.tween_property(tray, "position:y", 0.275, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_callback(func(): _sound("clunk"))
+	_log("obstacle", "O3 tray down")
+
+
+## Phase 1 ends at the east service mouth: Phase 2 starts at once in the parking area with the same pursuit,
+## the same mission flags and Elena's momentum (no closing scene, no teleport back, no restart of the corridor).
+func _begin_handoff() -> void:
+	_handoff_started = true
+	mission.exit_reached = true
+	var unit_gap := 12.0
+	if unit != null:
+		unit_gap = clampf(unit.global_position.distance_to(player.global_position), 4.0, 30.0)
+	Handoff.store({
+		"from": "phase1",
+		"mission": mission.to_dict(),
+		"circuit": {"last_trip": str(circuit.last_trip), "archive_read": mission.restricted_record_read},
+		"stamina": float(player.get("condition").stamina),
+		"velocity": player.velocity,
+		"facing": float(player.visual.rotation.y),
+		"unit_state": str(unit.get("state")) if unit != null else "sweep",
+		"unit_gap": unit_gap,
+		"catches": catches,
+	})
+	_log("handoff", "phase2 · unit %s at %.1f m" % [str(unit.get("state")) if unit != null else "none", unit_gap])
+	if handoff_override.is_valid():
+		handoff_override.call(Handoff.peek())
+		return
+	var packed: PackedScene = null
+	if _parking_request:
+		packed = ResourceLoader.load_threaded_get(CHASE_SCENE) as PackedScene
+	if packed == null:
+		packed = load(CHASE_SCENE) as PackedScene
+	get_tree().change_scene_to_packed.call_deferred(packed)
+
+
+# --- scanner ----------------------------------------------------------------------------------------------------
+
+func _build_scan_parts() -> void:
+	var glow: Material = building.b.flat(Color(0.3, 1.0, 0.92), 0.3, 0.0, 2.4)
+	# Continuity A -> T: the bridge, both terminals and the cable that climbs from T to the column's trial node.
+	_scan_parts.append(building.b.visual("ScanBridge", Vector3(2.7, 0.06, 0.16), Vector3(21.5, Building.Y_P1 + 0.62, 4.2), glow, false))
+	_scan_parts.append(building.b.visual("ScanTerminalA", Vector3(0.55, 0.06, 0.45), Vector3(20.2, Building.Y_P1 + 0.72, 4.2), glow, false))
+	_scan_parts.append(building.b.visual("ScanTerminalT", Vector3(0.55, 0.06, 0.45), Vector3(22.8, Building.Y_P1 + 0.72, 4.2), glow, false))
+	_scan_parts.append(building.b.visual("ScanSchematicA", Vector3(0.05, 0.08, 1.9), Vector3(27.88, Building.Y_P1 + 0.62, 6.0), glow, false))
+	_scan_parts.append(building.b.visual("ScanTRiser", Vector3(0.08, 2.2, 0.08), Vector3(22.8, Building.Y_P1 + 1.8, 1.05), glow, false))
+	_scan_parts.append(building.b.screen_text("ScanBridgeLabel", "CONTINUIDAD A → T\n(no figura en el esquema)", Vector3(21.5, Building.Y_P1 + 1.35, 4.45), "+z", 22, Color(0.35, 1.0, 0.95)))
+	for part in _scan_parts:
+		part.visible = false
+		if part is Label3D:
+			(part as Label3D).no_depth_test = true
+
+
+func _update_scanner(delta: float) -> void:
+	_scan_cooldown_left = maxf(0.0, _scan_cooldown_left - delta)
+	if _scan_reveal_left > 0.0:
+		_scan_reveal_left -= delta
+		if _scan_reveal_left <= 0.0:
+			_set_scan(false)
+		return
+	if Input.is_action_pressed("scan") and _scan_cooldown_left <= 0.0:
+		_scan_charge += delta
+		if _scan_charge >= SCAN_CHARGE_TIME:
+			_scan_charge = 0.0
+			_scan_reveal_left = SCAN_REVEAL_TIME
+			_scan_cooldown_left = SCAN_COOLDOWN
+			_set_scan(true)
+			_sound("scan")
+			_log("scan", "%s" % player.global_position)
+			if clues_seen.has("schematic") and player.global_position.y < -1.0 and not _said.has("N1-02"):
+				_say("N1-02", "Elena: «Este puente no figura en el esquema.»", 3.5)
+	else:
+		_scan_charge = 0.0
+
+
+## Reveals continuity and, during Containment, where the unit is and what it and the operator can see.
+## It never marks a control or a correct action.
+func _set_scan(on: bool) -> void:
+	for part in _scan_parts:
+		part.visible = on and phase == "investigation"
+	if unit != null:
+		unit.call("set_revealed", on)
+	if staff != null:
+		staff.call("set_revealed", on)
+	if on and phase == "investigation":
+		hud.call("show_banner", "TRAZAS", "Continuidad detectada entre A y T. Compárala con el esquema.", Color(0.35, 1.0, 0.95), SCAN_REVEAL_TIME)
+	elif on:
+		hud.call("show_banner", "ESCÁNER", "Unidad y campos de visión revelados.", Color(0.35, 1.0, 0.95), SCAN_REVEAL_TIME)
+
+
+# --- state fixtures and text ----------------------------------------------------------------------------------------
 
 func _diagnostic_text() -> String:
 	var info: Dictionary = circuit.inspect()
-	var current: String
+	var current := "ARCHIVO SIN SUMINISTRO"
 	match str(info["current"]):
 		"ARCHIVE_STABLE":
 			current = "ARCHIVO ESTABLE"
@@ -812,71 +791,57 @@ func _diagnostic_text() -> String:
 			current = "PROTECCIÓN DISPARADA · FALLO PRESENTE"
 		"RECOVERY_TRIPPED_REARM_PENDING":
 			current = "PROTECCIÓN DISPARADA · REARME PENDIENTE"
-		_:
-			current = "ARCHIVO SIN SUMINISTRO"
-	return "%s\nDestino: %s\nEnsayo: %s\nProtección: %s\nÚltimo disparo: %s" % [
-		current,
-		str(info["destination"]),
-		"aislado" if circuit.trial_isolated else "conectado",
-		"disponible" if circuit.protection_available else "disparada",
-		"DEMANDA_SIMULTANEA" if str(info["last_trip"]) != "" else "ninguno"
-	]
+	return "Estado actual: %s\nDestino: %s · Ensayo: %s\nÚltimo disparo: %s" % [current, str(info["destination"]),
+		"aislado" if circuit.trial_isolated else "conectado", "DEMANDA SIMULTÁNEA" if str(info["last_trip"]) != "" else "ninguno"]
 
 
 func _refresh_state_fixtures() -> void:
-	if _status_panel_label == null:
-		return
 	var info: Dictionary = circuit.inspect()
-	var output: Dictionary = circuit.outputs()
-	_status_panel_label.text = "DESTINO  %s\nARCHIVO %s · ENSAYO %s\nPROTECCIÓN  %s\nÚLTIMO DISPARO  %s" % [
-		str(info["destination"]),
-		"ESTABLE" if bool(output["archive"]) else "NO DISPONIBLE",
-		"AISLADO" if circuit.trial_isolated else "CONECTADO",
-		"DISPONIBLE" if circuit.protection_available else "DISPARADA",
-		"DEMANDA_SIMULTANEA" if str(info["last_trip"]) != "" else "NINGUNO"
-	]
-	if _archive_status_label != null:
-		_archive_status_label.text = "SUMINISTRO\nESTABLE" if bool(output["archive"]) else "NO\nDISPONIBLE"
-		_archive_status_label.modulate = Color(0.45, 1.0, 0.65) if bool(output["archive"]) else Color(1.0, 0.63, 0.35)
+	var out: Dictionary = circuit.outputs()
+	building.panel_text.text = "ESTADO ACTUAL\n%s\n\nDESTINO  %s     ENSAYO  %s\nPROTECCIÓN  %s\nÚLTIMO DISPARO  %s" % [
+		_diagnostic_text().get_slice("\n", 0).trim_prefix("Estado actual: "), str(info["destination"]),
+		"AISLADO" if circuit.trial_isolated else "CONECTADO", "DISPONIBLE" if circuit.protection_available else "DISPARADA",
+		"DEMANDA SIMULTÁNEA" if str(info["last_trip"]) != "" else "NINGUNO"]
+	building.indicator_text.text = "ARCHIVO %s  ·  ENSAYO %s" % ["■ ESTABLE" if bool(out["archive"]) else "□ SIN SUMINISTRO", "■ DEMANDA" if bool(out["trial"]) else "□ SIN DEMANDA"]
+	if not mission.restricted_record_read:
+		building.archive_text.text = "ARCHIVO\n" + ("SUMINISTRO ESTABLE" if bool(out["archive"]) else "SIN SUMINISTRO")
+	# Column rings (shape-independent cue + text on the panel): maintenance, archive supply, protection.
+	var rings: Array = building.column_rings
+	(rings[0] as MeshInstance3D).material_override = building.b.flat(Color(0.75, 0.9, 1.0) if circuit.maintenance_on else Color(0.15, 0.17, 0.18), 0.4, 0.2, 1.8 if circuit.maintenance_on else 0.0)
+	(rings[1] as MeshInstance3D).material_override = building.b.flat(Color(0.3, 1.0, 0.4) if bool(out["archive"]) else Color(0.15, 0.17, 0.18), 0.4, 0.2, 1.8 if bool(out["archive"]) else 0.0)
+	(rings[2] as MeshInstance3D).material_override = building.b.flat(Color(1.0, 0.18, 0.1) if not circuit.protection_available else Color(0.15, 0.17, 0.18), 0.4, 0.2, 2.2 if not circuit.protection_available else 0.0)
 
 
-func _refresh_dynamic_lift_button() -> void:
-	if _lift_deck_button == null or lift == null:
+func _refresh_lift_gates() -> void:
+	if building == null or lift == null:
 		return
-	_lift_deck_button.position = Vector3(26.0, float(lift.platform_y) + 0.06, -3.0)
-	if _lift_deck_label != null:
-		_lift_deck_label.position = Vector3(26.0, float(lift.platform_y) + 0.32, -3.0)
+	var open: Dictionary = lift.gates_open()
+	for pair in [[building.lift_gate_lower, bool(open["south"])], [building.lift_gate_upper, bool(open["north"])]]:
+		var gate: StaticBody3D = pair[0]
+		(gate.get_child(0) as CollisionShape3D).set_deferred("disabled", pair[1])
+		(gate.get_child(1) as MeshInstance3D).visible = not pair[1]
 
 
-func _update_safe_point() -> void:
-	if not player.is_on_floor():
-		return
-	var p: Vector3 = player.global_position
-	if p.y > 2.7:
-		_safe_point = Vector3(6.0, 3.2, -7.0)
-	elif p.y > 1.2 and p.y < 2.7:
-		_safe_point = Vector3(18.0, 1.7, -7.0)
-	elif p.y < -1.55 and p.y > -3.0:
-		_safe_point = Vector3(25.0, -1.8, 7.0)
-	elif absf(p.y) < 0.45:
-		if p.x >= 23.5 and p.x <= 26.5 and p.z >= 8.0 and p.z <= 12.0:
-			_safe_point = Vector3(25.0, 0.2, 11.0)
-		elif p.x < 8.0 and p.z > 12.0 and p.z <= 15.0:
-			_safe_point = Vector3(3.0, 0.2, 14.3)
-		elif p.x < 18.0 and p.z > 4.5 and p.z <= 12.0:
-			_safe_point = Vector3(3.0, 0.2, 7.0)
-		else:
-			_safe_point = Vector3(25.0, 0.2, 9.0)
+func _show_hint() -> void:
+	var i := mini(hints_used, HINTS.size() - 1)
+	hints_used += 1
+	subtitles.call("show_message", "Pista %d/%d: %s" % [i + 1, HINTS.size(), HINTS[i]], 8.0)
+	_log("hint", str(i + 1))
 
 
-func _current_audit_events() -> Array[String]:
-	return _audit_events.duplicate()
-
-
-func _log(id: String, detail: String = "") -> void:
-	print("[phase1 %.1fs] %s %s" % [Time.get_ticks_msec() / 1000.0, id, detail])
+func _set_objective(text: String) -> void:
+	if hud != null:
+		hud.call("set_objective", "OBJETIVO  /  " + text)
 
 
 func _banner(title: String, body: String, accent: Color, seconds: float) -> void:
 	if hud != null:
 		hud.call("show_banner", title, body, accent, seconds)
+
+
+func _fmt(p: Vector3) -> String:
+	return "(%.1f, %.1f, %.1f)" % [p.x, p.y, p.z]
+
+
+func _log(id: String, detail: String = "") -> void:
+	print("[phase1 %.1fs] %s %s" % [Time.get_ticks_msec() / 1000.0, id, detail])

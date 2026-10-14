@@ -1,16 +1,20 @@
 extends Node
-## Smoke/integration tests for the canonical Phase 1 scene. Not a substitute for spatial/camera playtest.
+## Structural and contract checks for the canonical Phase 1 scene (geometry v3.0, FASE1_GREYBOX_SPEC.md).
+## Walkability is proven by test_phase1_playthrough / test_phase1_edges; this test checks what must be true of the
+## built level and of the mission contracts before anyone walks it.
 ## Run: godot --headless --path . res://tests/test_phase1_canonical_greybox.tscn
 
 const CanonicalScene = preload("res://scenes/prototypes/phase1_canonical_greybox.tscn")
-const ParkingChaseScene = preload("res://scenes/prototypes/phase2_parking_chase.tscn")
+const Building = preload("res://scripts/phase1/phase1_building.gd")
+const CLEARANCE_MIN := 2.2
+
 var passed: int = 0
 var failed: int = 0
 var completed: bool = false
 
 
 func _ready() -> void:
-	get_tree().create_timer(30.0).timeout.connect(_watchdog)
+	get_tree().create_timer(60.0).timeout.connect(_watchdog)
 	call_deferred("_run")
 
 
@@ -20,173 +24,96 @@ func _watchdog() -> void:
 		get_tree().quit(1)
 
 
+func _top(scene: Node, name: String) -> float:
+	var b := scene.get_node(name) as StaticBody3D
+	var box := (b.get_child(0) as CollisionShape3D).shape as BoxShape3D
+	return b.position.y + box.size.y * 0.5
+
+
+func _bottom(scene: Node, name: String) -> float:
+	var b := scene.get_node(name) as StaticBody3D
+	var box := (b.get_child(0) as CollisionShape3D).shape as BoxShape3D
+	return b.position.y - box.size.y * 0.5
+
+
+## True when a downward ray at (x, z) from `from_y` hits something within `depth`.
+func _solid_below(scene: Node3D, x: float, z: float, from_y: float, depth: float) -> bool:
+	var q := PhysicsRayQueryParameters3D.create(Vector3(x, from_y, z), Vector3(x, from_y - depth, z), 1 | 16)
+	return not scene.get_world_3d().direct_space_state.intersect_ray(q).is_empty()
+
+
 func _run() -> void:
 	print("Godot: ", Engine.get_version_info()["string"])
-	var parking_chase = ParkingChaseScene.instantiate()
-	_expect(parking_chase.initial_checkpoint_index == 2, "G→H handoff enters the parking checkpoint, not the start of the standalone corridor prototype")
-	parking_chase.free()
 	var scene = CanonicalScene.instantiate()
+	scene.set("handoff_override", func(_s): pass)
 	add_child(scene)
 	await get_tree().physics_frame
 	await get_tree().physics_frame
 
-	_expect(scene.circuit != null, "canonical scene owns a circuit model")
-	_expect(scene.lift != null and scene.player != null, "scene creates player and service lift")
-	_expect(scene.get_node_or_null("AccessTunnelFloor") != null and scene.get_node_or_null("AccessTunnelCeiling") != null, "P0 has a real exterior approach tunnel into access A")
-	_expect(scene.get_node_or_null("OuterWestAccessLintel") != null and scene.get_node_or_null("OuterWestLowerB") != null and scene.get_node_or_null("OuterWestLowerC") != null, "the exterior wall opening is framed without leaving an unplanned gap")
-	var tunnel_floor := scene.get_node("AccessTunnelFloor") as StaticBody3D
-	var tunnel_floor_shape := tunnel_floor.get_child(0) as CollisionShape3D
-	var tunnel_floor_box := tunnel_floor_shape.shape as BoxShape3D
-	_expect(is_equal_approx(tunnel_floor.position.y + tunnel_floor_box.size.y * 0.5, 0.0), "entrance tunnel floor is flush with P0")
-	_expect(is_equal_approx(tunnel_floor.position.x, -1.5) and is_equal_approx(tunnel_floor.position.z, 6.0) and is_equal_approx(tunnel_floor_box.size.x, 3.0) and is_equal_approx(tunnel_floor_box.size.z, 3.0), "entry tunnel matches the canonical footprint X=-3..0, Z=4.5..7.5")
-	_expect(scene.get_node_or_null("AccessTunnelSouth") != null and scene.get_node_or_null("AccessTunnelNorth") != null, "entry tunnel has both side walls")
-	_expect(scene.get_node_or_null("OuterSouthAccessLintel") == null, "the ground-level entry is not accidentally placed in the south wall")
-	_expect(is_equal_approx(scene.player.global_position.x, -2.3) and is_equal_approx(scene.player.global_position.z, 6.0), "Elena spawns at the documented point inside the west entry tunnel")
-	_expect(scene.player.global_position.x < 0.0, "the canonical slice starts in the entrance tunnel before entering A")
-	_expect(is_equal_approx(scene.player.visual.rotation.y, PI * 0.5), "Elena faces the opening into A at the initial spawn")
-	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 1.5), "mission lift connects P0 to mezzanine M at +1.5 m")
-	_expect(scene.get_node_or_null("MezzanineFloor_00") != null, "intermediate mezzanine floor is present")
-	_expect(scene.get_node_or_null("D1RoomLabel") != null and scene.get_node_or_null("D2RoomLabel") != null and scene.get_node_or_null("D1PumpA") != null, "both D1 and D2 are built on the continuous maintenance level")
-	var pit_floor := scene.get_node("PitFloor") as StaticBody3D
-	var pit_floor_shape := pit_floor.get_child(0) as CollisionShape3D
-	var pit_floor_box := pit_floor_shape.shape as BoxShape3D
-	_expect(is_equal_approx(pit_floor.position.y + pit_floor_box.size.y * 0.5, -2.0), "pit collision floor has its top surface at the specified Y=-2 m datum")
-	var sump := scene.get_node("D1Sump") as StaticBody3D
-	var sump_shape := sump.get_child(0) as CollisionShape3D
-	var sump_box := sump_shape.shape as BoxShape3D
-	_expect(is_equal_approx(sump.position.y - sump_box.size.y * 0.5, -2.0), "D1 sump base rests on the maintenance floor")
-	var bridge := scene.get_node("TamperedBridge") as MeshInstance3D
-	var bridge_box := bridge.mesh as BoxMesh
-	_expect(is_equal_approx(bridge.position.y - bridge_box.size.y * 0.5, -2.0), "the tampered A→T bridge rests on the maintenance floor")
-	var maintenance_housing := scene.get_node("MaintenanceHousing") as StaticBody3D
-	var housing_shape := maintenance_housing.get_child(0) as CollisionShape3D
-	var housing_box := housing_shape.shape as BoxShape3D
-	_expect(is_equal_approx(maintenance_housing.position.y - housing_box.size.y * 0.5, -2.0), "maintenance switch housing rests on the maintenance floor")
-	_expect(not _has_ground_slab_at(scene, Vector2(15.0, 4.0)) and not _has_ground_slab_at(scene, Vector2(22.0, 4.0)), "P0 has real collision voids above both D1 and D2")
-	_expect(not _has_ground_slab_at(scene, Vector2(25.0, 9.5)), "S1 stair mouth remains open through the P0 slab")
-	_expect(scene.get_node_or_null("PitRailWest") != null and scene.get_node_or_null("PitRailEast") != null, "maintenance pit perimeter is protected")
-	_expect(scene.get_node_or_null("FixedPitStairsRailWest") != null and scene.get_node_or_null("FixedPitStairsRailEast") != null, "S1 has side protection following the stair slope")
-	var s1_ramp := scene.get_node("FixedPitStairsCollisionRamp") as StaticBody3D
-	_expect((s1_ramp.get_child(1) as MeshInstance3D).visible and scene.get_node_or_null("FixedPitStairsTreadMark_01") != null, "S1 shows tread markings on its continuous walkable surface")
-	var pit_rail := scene.get_node("PitRailWest") as StaticBody3D
-	_expect(is_equal_approx(pit_rail.position.y, 0.55), "pit guardrail rises above P0 floor instead of being buried below it")
-	_expect(scene.get_node_or_null("NaveWorkshopPierSouth") != null and scene.get_node_or_null("RoofBeam_00") != null, "P0 has room boundaries and industrial roof structure")
-	var broken_stair := scene.get_node("BrokenApproachStairVisual") as MeshInstance3D
-	_expect(broken_stair.rotation.x > 0.0 and scene.get_node_or_null("BrokenStairBlockedGap") != null, "the collapsed stair slopes toward P2 but remains physically blocked")
-	var aster_column := scene.get_node("AsterVerticalColumn") as StaticBody3D
-	_expect(is_equal_approx(aster_column.position.z, -4.0) and _has_ground_slab_at(scene, Vector2(aster_column.position.x, aster_column.position.z)), "Aster column stands on the nave floor, clear of the maintenance void")
-	var workshop_bench := scene.get_node("WorkshopBench") as StaticBody3D
-	_expect(workshop_bench.position.z < -7.5, "workshop bench stays clear of the doorway to the service nave")
-	var workshop_cabinet := scene.get_node("WorkshopCabinet") as StaticBody3D
-	_expect(workshop_bench.position.x + 1.0 < workshop_cabinet.position.x - 0.375, "workshop bench does not intersect the adjacent cabinet")
-	var aster_mesh := aster_column.get_node("AsterVerticalColumnMesh") as MeshInstance3D
-	var aster_box := aster_mesh.mesh as BoxMesh
-	_expect(is_equal_approx(aster_column.position.y - aster_box.size.y * 0.5, 0.0), "Aster calibration column is grounded at P0")
-	var service_route_mark := scene.get_node("SouthRouteMark") as Label3D
-	_expect(service_route_mark.position.z < 1.0, "service route marking sits on the walkway, not over the open pit")
-	_expect(scene.get_node_or_null("PumpSkidA") != null and scene.get_node_or_null("ControlStairsS2CollisionRamp") != null, "pump room and S2 stairs connect mezzanine to control")
-	_expect(scene.get_node_or_null("ControlStairsS2RailWest") != null and scene.get_node_or_null("ControlStairsS2RailEast") != null, "S2 has slope-aligned side protection")
-	_expect(scene.get_node_or_null("MezzanineWestRail") != null and scene.get_node_or_null("P2WalkwaySouthRail") != null and scene.get_node_or_null("P2WalkwayEastRail") != null, "M and P2 exposed edges are protected")
-	_expect(scene.get_node_or_null("ControlRoomNorthWall") != null and scene.get_node_or_null("P2ControlEastRail") != null and scene.get_node_or_null("P2WalkwayNorthRailEast") != null, "control has its panel wall and the east observation spur is guarded")
-	var panel_wall := scene.get_node("ControlRoomNorthWall") as StaticBody3D
-	var panel_wall_shape := panel_wall.get_child(0) as CollisionShape3D
-	var panel_wall_box := panel_wall_shape.shape as BoxShape3D
-	var panel_board := scene.get_node("EStatusPanelBoard") as MeshInstance3D
-	var panel_board_box := panel_board.mesh as BoxMesh
-	_expect(absf((panel_wall.position.z + panel_wall_box.size.z * 0.5) - (panel_board.position.z - panel_board_box.size.z * 0.5)) < 0.05, "E status panel is physically mounted on its north wall")
-	_expect(scene.get_node_or_null("LiftShaftSideRailLowerWest") != null and scene.get_node_or_null("LiftShaftSideRailLowerEast") != null and scene.get_node_or_null("LiftShaftSideRailUpperWest") != null and scene.get_node_or_null("LiftShaftSideRailUpperEast") != null, "both sides of the lift shaft are protected at both landings")
-	_expect(scene.get_node_or_null("WestShortcutStairsCollisionRamp") == null, "exterior airlock has no stair return to P0")
-	_expect(not scene.circuit.maintenance_on and not scene.lift.powered, "maintenance and lift start unpowered")
-	_expect(scene._service_lights.size() == 2 and scene._service_lights[0].light_energy < 0.2 and scene._service_lights[1].light_energy < 0.2, "service lights start at safe ambient minimum while maintenance is off")
-	var lower_gate_body := scene.get_node("LiftSafetyGateLower") as StaticBody3D
-	_expect(is_equal_approx(lower_gate_body.position.z, -1.49), "lower fixed gate aligns with the P0 shaft edge")
-	var lower_gate_shape := lower_gate_body.get_child(0) as CollisionShape3D
-	var lower_gate_mesh := lower_gate_body.get_child(1) as MeshInstance3D
-	var upper_gate_body := scene.get_node("LiftSafetyGateUpper") as StaticBody3D
-	_expect(is_equal_approx(upper_gate_body.position.z, -4.49), "upper lift gate aligns with the mezzanine shaft edge")
-	var upper_gate_shape := upper_gate_body.get_child(0) as CollisionShape3D
-	var upper_gate_mesh := upper_gate_body.get_child(1) as MeshInstance3D
-	_expect(lower_gate_shape.disabled and not lower_gate_mesh.visible, "lower landing gate is open only because the lift is docked there")
-	_expect(not upper_gate_shape.disabled and upper_gate_mesh.visible, "upper landing gate protects the empty shaft")
-	_expect(scene.circuit.destination == "ENSAYO" and not scene.circuit.trial_isolated and scene.circuit.protection_available, "circuit starts in the contract initial state")
-	_expect(scene.get_node_or_null("SelectorBody") != null and scene.get_node_or_null("IsolatorBody") != null, "selector and isolator fixtures exist")
-	_expect(scene.get_node_or_null("EStatusPanelBoard") != null and scene.get_node_or_null("ArchiveStatusBoard") != null, "E panel and local F indicator fixtures exist")
-	_expect(scene.get_node_or_null("SchematicDiagram") != null, "pit schematic states the intended distribution")
-	_expect(scene._status_panel_label.text.contains("ARCHIVO NO DISPONIBLE"), "E panel exposes live archive state before the circuit is solved")
-	_expect(scene._archive_status_label.text.contains("NO"), "local F indicator shows unavailable supply initially")
-	var scan_bridge_label := scene.get_node_or_null("ScanBridgeLabel") as Label3D
-	var scan_node_t_label := scene.get_node_or_null("ScanNodeTLabel") as Label3D
-	_expect(scan_bridge_label != null and not scan_bridge_label.visible, "scanner trace markers start hidden")
-	_expect(scan_node_t_label != null and is_equal_approx(scan_node_t_label.position.z, aster_column.position.z), "scanner node T marker is colocated with the Aster landmark")
-	scene._start_scan_reveal()
-	_expect(scan_bridge_label != null and scan_bridge_label.visible, "scanner reveals the bridge continuity marker")
-	scene._update_scanner(3.1)
-	_expect(scan_bridge_label != null and not scan_bridge_label.visible, "scanner hides trace markers when the reveal window expires")
-	_expect(is_equal_approx(scene._scan_cooldown_left, 0.9), "scanner cooldown lasts four seconds from activation")
-	scene._consult_archive()
-	_expect(not scene._archive_consulted, "archive cannot be consulted before stable supply")
-	_expect(not scene._archive_consulted, "a denied consultation does not grant knowledge")
+	# Datums and headroom (the v3.0 decision).
+	_expect(is_equal_approx(_top(scene, "PitFloor"), -2.0), "P-1 floor top at -2 m")
+	_expect(is_equal_approx(_top(scene, "AccessTunnelFloor"), 0.0), "P0 / entry tunnel floor at 0 m")
+	_expect(is_equal_approx(_top(scene, "MezzanineFloor"), 3.0), "M floor at +3 m")
+	_expect(is_equal_approx(_top(scene, "ControlRoomFloor"), 6.0) and is_equal_approx(_top(scene, "ObservationWalkway"), 6.0), "P2 floors at +6 m")
+	_expect(_bottom(scene, "MezzanineFloor") - 0.0 >= CLEARANCE_MIN, "nave/workshop under M keep >= 2.2 m clear (%.2f)" % _bottom(scene, "MezzanineFloor"))
+	_expect(_bottom(scene, "ControlRoomFloor") - 3.0 >= CLEARANCE_MIN, "the pump room under E keeps >= 2.2 m clear")
+	_expect(_bottom(scene, "EvacGalleryRoof") - (-2.0) >= CLEARANCE_MIN, "the evacuation gallery keeps >= 2.2 m clear")
+	_expect(_bottom(scene, "EastReturnBridgeDeck") - (-2.0) >= CLEARANCE_MIN, "the gallery under the east-return bridge keeps >= 2.2 m clear")
+	_expect(_top(scene, "AccessTunnelCeiling") - 0.25 >= CLEARANCE_MIN, "the entry tunnel keeps >= 2.2 m clear")
 
-	# Unsafe order trips protection and rejected rearm is non-destructive.
-	scene._toggle_selector()
-	_expect(not scene.circuit.protection_available and scene.circuit.last_trip == "DEMANDA_SIMULTANEA", "ARCHIVO with connected trial trips protection")
-	var before_rejected_rearm: Dictionary = scene.circuit.snapshot()
-	scene._request_rearm()
-	_expect(not scene.circuit.protection_available, "rearm is rejected while the fault remains")
-	_expect(scene.circuit.snapshot() == before_rejected_rearm, "rejected rearm preserves state and last_trip")
+	# Real voids and real floors.
+	_expect(not _solid_below(scene, 15.0, 4.0, 0.5, 1.0) and not _solid_below(scene, 22.0, 4.0, 0.5, 1.0), "P0 has real voids above D1 and D2")
+	_expect(_solid_below(scene, 15.0, 4.0, -1.5, 1.0), "D1/D2 have a continuous floor at -2")
+	_expect(_solid_below(scene, 25.0, 12.6, 0.5, 0.7), "the S1 top landing is solid floor")
+	_expect(_solid_below(scene, 31.0, 6.0, -1.5, 1.0) and _solid_below(scene, 38.0, 6.0, -1.5, 1.0), "the evacuation gallery and the exterior apron have floors at -2")
+	_expect(scene.get_node_or_null("S1Stair") != null and scene.get_node_or_null("S2Stair") != null, "S1 and S2 are solid stairs")
+	_expect(scene.get_node_or_null("EastReturnBridgeDeck") != null, "the east return bridges the gallery (no jump, no hole)")
 
-	# Correct the fault, then rearm. The trip history remains.
-	scene._toggle_isolator()
-	scene._request_rearm()
-	_expect(scene.circuit.protection_available and bool(scene.circuit.outputs()["archive"]), "isolation and rearm restore stable archive supply")
-	_expect(scene._status_panel_label.text.contains("ARCHIVO ESTABLE"), "E panel updates to stable archive state")
-	_expect(scene._archive_status_label.text.contains("ESTABLE"), "local F indicator updates after supply is restored")
-	_expect(scene.circuit.last_trip == "DEMANDA_SIMULTANEA", "successful rearm preserves last_trip")
-	scene._consult_archive()
-	_expect(scene._archive_consulted, "archive consultation is recorded in the current session")
-	_expect(scene.circuit.known_clues().size() == 1, "consultation grants session knowledge without save migration")
+	# Protections.
+	var rails := get_tree().get_nodes_in_group("guard_rails")
+	_expect(rails.size() >= 20, "exposed edges carry guard rails (%d; each edge is walked into by test_phase1_edges)" % rails.size())
+	var rails_ok := true
+	for r in rails:
+		if (r as CollisionObject3D).collision_layer != 16:
+			rails_ok = false
+	_expect(rails_ok, "rails are on layer 5 only: they stop bodies but not sight lines or the camera")
+	_expect(scene.get_node_or_null("LiftSafetyGateLower") != null and scene.get_node_or_null("LiftSafetyGateUpper") != null and scene.get_node_or_null("LiftPitFloor") != null, "the lift shaft has landing gates and a shallow pit")
+	_expect(scene.get_node_or_null("BrokenStairRubble") != null and scene.get_node_or_null("BrokenApproachStairVisual") != null, "the direct P0-P2 stair is visibly collapsed and blocked")
 
-	# Maintenance and platform power are wired independently of the recovery circuit.
-	scene._toggle_maintenance()
-	_expect(scene.circuit.maintenance_on and scene.lift.powered, "maintenance enables the service lift")
-	_expect(scene._service_lights[0].light_energy > 0.7 and scene._service_lights[1].light_energy > 0.7, "maintenance turns on the service lights")
-	_expect(scene.circuit.outputs()["diagnostic"], "diagnostics remain available with maintenance on")
-	scene._call_lift("upper")
-	await get_tree().physics_frame
-	_expect(not lower_gate_shape.disabled and not upper_gate_shape.disabled and lower_gate_mesh.visible and upper_gate_mesh.visible, "both fixed shaft gates close during travel")
-	scene.lift.step(3.0)
-	await get_tree().physics_frame
-	_expect(not lower_gate_shape.disabled and upper_gate_shape.disabled and lower_gate_mesh.visible and not upper_gate_mesh.visible, "upper landing gate opens only when the deck docks upper")
+	# Vertical circulation contracts.
+	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 3.0), "the lift links P0 and M only")
+	_expect(not scene.lift.powered, "the lift starts unpowered (maintenance OFF)")
 
-	# Mission-specific safety gate: power loss mid-travel must crawl to the nearest landing.
-	# Clear the docking dwell deterministically and step the lift manually to avoid a physics/test race.
-	scene.lift.set_physics_process(false)
-	for i in range(31):
-		scene.lift.step(0.1)
-	_expect(scene.lift.call_to("lower"), "lift accepts a return call from M")
-	scene.lift.step(0.5)
-	_expect(scene.lift.moving and scene.lift.platform_y > 0.75, "power-loss scenario starts above the halfway point")
-	scene._toggle_maintenance()
-	_expect(not scene.circuit.maintenance_on and not scene.lift.powered and scene.lift.crawling and scene.lift.target == "upper", "maintenance loss retargets the moving lift to the nearer M landing")
-	var emergency_steps := 0
-	while scene.lift.moving and emergency_steps < 100:
-		scene.lift.step(0.1)
-		emergency_steps += 1
-	_expect(not scene.lift.moving and scene.lift.landing == "upper" and is_equal_approx(scene.lift.platform_y, 1.5), "emergency return docks safely at M instead of stopping between levels")
-	_expect(not scene.lift.call_to("lower"), "lift refuses a new call after power loss")
-	scene.lift.set_physics_process(true)
+	# Spawn and actors.
+	_expect(scene.player.global_position.x < 0.0 and absf(scene.player.global_position.z - 6.0) < 0.01, "Elena starts inside the west entry tunnel")
+	_expect(scene.unit == null, "no recovery unit exists before Containment")
+	_expect(scene.staff != null and scene.staff.global_position.y > 2.5, "STAFF-M1 works in the pump room M")
 
-	# The F→G door and exterior hatch are controllable from their intended sides.
-	scene.player.global_position = Vector3(4.0, 3.2, -7.5)
-	scene._unlock_shortcut()
-	_expect(scene._shortcut_unlocked, "inner shortcut unlocks from the cabin side")
-	scene.player.global_position = Vector3(2.0, 3.2, -7.5)
-	scene._open_outer_hatch()
-	_expect(scene._outer_hatch_open, "outer hatch opens from the west vestibule")
+	# Mission and circuit contracts.
+	_expect(not scene.mission.service_override_queued and not scene.mission.containment_active, "mission flags start clear")
+	var info: Dictionary = scene.circuit.inspect()
+	_expect(str(info["current"]) == "ARCHIVE_UNPOWERED" and str(info["destination"]) == "ENSAYO" and not scene.circuit.trial_isolated, "circuit initial state follows the logic contract")
+	scene.call("_open_g_outer")
+	_expect(not scene.mission.containment_active and scene.phase == "investigation", "G without a queued audit answers 'locked' and starts nothing")
+	scene.call("_toggle_maintenance")
+	_expect(scene.mission.service_override_queued and scene.lift.powered, "maintenance ON powers the lift and queues SERVICE_OVERRIDE")
+	scene.call("_toggle_maintenance")
+	_expect(scene.mission.service_override_queued and not scene.lift.powered, "maintenance OFF keeps the queued audit (no duplicate, no loss)")
+	_expect(scene.circuit.outputs()["archive"] == false, "maintenance never powers the archive (independent branch)")
 
-	completed = true
-	print("Canonical Phase 1 integration: %d passed, %d failed; COMPLETED" % [passed, failed])
+	# Texts never give the answer.
+	var forbidden := ["aísla", "aisla", "selecciona", "rearma la", "pulsa el"]
+	var clean := true
+	for hint in scene.HINTS:
+		for word in forbidden:
+			if str(hint).to_lower().contains(word):
+				clean = false
+	_expect(clean, "requested hints explain relationships and never name the control to operate")
+	_expect(str(scene.ARCHIVE_RECORD).begins_with("ENSAYO ASTER — RESULTADO RETENIDO."), "the archive record uses the N1-03 working copy")
+
 	scene.queue_free()
+	completed = true
+	print("Canonical Phase 1: %d passed, %d failed; COMPLETED" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
 
 
@@ -197,19 +124,3 @@ func _expect(condition: bool, label: String) -> void:
 	else:
 		failed += 1
 		push_error("FAIL: " + label)
-
-
-func _has_ground_slab_at(scene: Node3D, point: Vector2) -> bool:
-	for child in scene.get_children():
-		if not (child is StaticBody3D) or not String(child.name).begins_with("GroundFloor_"):
-			continue
-		if child.get_child_count() == 0 or not (child.get_child(0) is CollisionShape3D):
-			continue
-		var collision := child.get_child(0) as CollisionShape3D
-		if not (collision.shape is BoxShape3D):
-			continue
-		var box := collision.shape as BoxShape3D
-		var half := box.size * 0.5
-		if point.x >= child.position.x - half.x and point.x <= child.position.x + half.x and point.y >= child.position.z - half.z and point.y <= child.position.z + half.z:
-			return true
-	return false

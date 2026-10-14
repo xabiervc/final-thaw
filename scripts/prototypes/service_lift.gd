@@ -37,6 +37,9 @@ var platform_y: float = 0.0
 var dwell_left: float = 0.0
 var platform: AnimatableBody3D = null
 var _gate_parts: Dictionary = {}
+## Optional occupancy sensor: while it returns true (a rider is on the deck and did not ask to move), calls from the
+## landings wait instead of carrying the rider away. Unset by default: the component behaves as before.
+var hold_departure: Callable = Callable()
 
 
 func _ready() -> void:
@@ -96,11 +99,15 @@ func call_to(destination: String) -> bool:
 		return true
 	if destination == landing:
 		return true
-	if dwell_left > 0.0:
+	if dwell_left > 0.0 or _held():
 		pending = destination
 		return true
 	_depart(destination)
 	return true
+
+
+func _held() -> bool:
+	return hold_departure.is_valid() and bool(hold_departure.call())
 
 
 ## Sends the lift to the other landing (the deck button).
@@ -136,7 +143,7 @@ func step(delta: float) -> void:
 	else:
 		dwell_left = maxf(0.0, dwell_left - delta)
 		if dwell_left <= 0.0:
-			if pending != "" and pending != landing and powered:
+			if pending != "" and pending != landing and powered and not _held():
 				var destination: String = pending
 				pending = ""
 				_depart(destination)
