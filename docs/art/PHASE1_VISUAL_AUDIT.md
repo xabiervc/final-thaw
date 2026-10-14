@@ -1,12 +1,12 @@
 # Phase 1 Visual Audit — First Pass
 
-**Status:** draft implementation for owner review. Not run in Godot; no visual or performance claim is made.
+**Status:** first HUD hierarchy pass committed for review. Not run in Godot; no visual or performance claim is made.
 
 ## Scope
 
 Target branch: `feat/godot-vertical-slice`  
-Work branch: `art/phase1-visual-audit`  
-First target: the visual wrapper used by the Elena 3D test room, `scripts/levels/lab_art_dressing.gd`.
+Work branch: `feat/godot-vertical-slice`  
+Targets: the art wrapper used by the Elena 3D test room (`scripts/levels/lab_art_dressing.gd`) and the gameplay HUD (`scripts/ui/prompt_hud.gd`).
 
 This is a visual/performance pass only. It must not be merged into `main` as part of Phase 0 foundation work. It does not alter gameplay scripts, colliders, interaction nodes, input actions, autoloads, save state, `project.godot`, or renderer selection.
 
@@ -18,11 +18,19 @@ Expected effect: preserve industrial lighting rhythm while reducing the number a
 
 This is a hypothesis until measured. A sparse light pattern may create visibly uneven pools; the owner must compare screenshots and restore/tune the constants if the light rhythm becomes distracting.
 
+### HUD hierarchy pass
+
+- The objective font was reduced from 22 to 18 px (still scaled by the existing accessibility setting), and long objective text now wraps within a 510 px content width.
+- Hint and instruction text now wrap within the same width; the hint font is 15 px and instructions 13 px before accessibility scaling. This removes the former 820 px hint minimum that could dominate a 1280x720 view.
+- Status, condition, and interaction prompt typography were reduced modestly; the right-side HUD width was narrowed from 360 to 320 px. Existing accessibility scaling, high-contrast colours, prompt animation, and gameplay setters remain in place.
+- These are layout hypotheses, not verified visual outcomes. Check clipping, overlap, readability, and minimum supported resolution in the running game before accepting the pass.
+
 ## Known technical risks to inspect
 
 - The original room and art dressing each add lighting/environment settings; inspect their combined result rather than tuning either in isolation.
 - Check the alignment and height of the art floor/wall overlays against their greybox meshes.
 - Check all mirrored emissive states (scan, generator lever, door, terminal) with the visual component dressing enabled.
+- Check HUD layout at 1280x720 and a narrower window; ensure the objective, hint, status, stamina condition, and interaction prompt never overlap or clip.
 - Test both `phase1` and `lab` profiles; fixture counts/layout differ.
 - Do not enable expensive effects or shadow casting on every fixture merely to compensate for the sparse light setup.
 - `MultiMeshInstance3D` batches reduce instance overhead, but do not make shader complexity or texture sampling free.
@@ -46,6 +54,7 @@ This is a hypothesis until measured. A sparse light pattern may create visibly u
 - No script parse errors, missing resources, or broken scene references.
 - Gameplay colliders and interaction origins unchanged.
 - All prompts and scan highlights remain legible from the gameplay camera.
+- Long objective and hint strings wrap cleanly; HUD text stays within the viewport at target and narrow resolutions, with accessibility scaling and high contrast enabled.
 - No visible floor/wall z-fighting, holes, overlay drift, or distracting light bands.
 - Lighting remains readable in grayscale and respects the style palette: cool desaturated architecture, amber interactive screens, cyan scan/Elena accents.
 - Frame-time comparison is recorded on the same machine; the change is accepted only if visual quality is maintained and performance is neutral or improved.
