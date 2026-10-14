@@ -9,8 +9,7 @@ FASE1_ARCHITECTURAL_LAYOUT.md v1.1; planos SVG bajo docs/design/assets/phase1_ar
 ## Cambios de esta reconstrucción
 
 - P0 conserva su perímetro, acceso, nave, taller y rutas contractuales; B queda en X=7..20, Z=−9..1 y el pasillo A→B discurre por X=7..10, Z=1..8. Se añaden particiones con pasos anchos, bandejas, armarios y estructura de cubierta.
-- El arranque incluye un túnel exterior físico de 3 m (X=−3..0, Z=4,5..7,5), con suelo, paredes, techo de 2,2 m y umbral a A; Elena aparece orientada hacia la entrada.
-- El arranque incluye un túnel físico exterior de 3 m con suelo, paredes, techo y abertura alineada con A; Elena aparece en el túnel orientada hacia la entrada.
+- El arranque incluye un túnel exterior físico de 3 m (X=−3..0, Z=4,5..7,5), con suelo, paredes, techo de 2,2 m y umbral a A; Elena aparece en el túnel orientada hacia la abertura a A.
 - P−1 tiene suelo continuo D1/D2 (X=10..28, Z=1..8) a Y=−2. El hueco P0 coincide con esa huella y S1 conserva su abertura; B termina en Z=1, por lo que nave y vacío no se solapan.
 - M/P2 mantienen sus cotas, huecos de elevador y S2, pasarela, archivo, control y esclusa G. El panel E conserva su coordenada contractual y tiene pared de soporte real; se protegen los laterales del elevador, el borde oeste de M y los bordes expuestos de E/pasarela.
 - La instancia de misión usa el elevador Y=0→1,5; el componente genérico y sus tests de 3 m no cambian. Las compuertas fijas se alinean con los bordes del hueco y las barandillas laterales protegen ambas cotas.
@@ -27,7 +26,7 @@ Las pruebas de integración ahora comprueban el túnel y la orientación inicial
 
 ## Límites
 
-La ampliación geométrica no prueba que las paredes, barandillas, cubierta o huecos sean transitables/correctos. Godot no está disponible en el entorno de edición; la ejecución y el recorrido manual siguen pendientes. El aparcamiento de Fase 2 está definido como continuidad de diseño, no como escena integrada y validada.
+La ampliación geométrica no prueba que las paredes, barandillas, cubierta o huecos sean transitables/correctos. Godot no está disponible en el entorno de edición; la ejecución y el recorrido manual siguen pendientes. El handoff G→H apunta a la variante de aparcamiento y tiene un smoke test dedicado; su comportamiento en ejecución sigue sin estar validado.
 
 ## Quality gates — no aceptar solo por apariencia o compilación
 
