@@ -415,21 +415,20 @@ func _build_sloped_stairs(label: String, x0: float, x1: float, z0: float, z1: fl
 	var ramp := _body_box(label + "CollisionRamp", Vector3(width, 0.18, ramp_length), Vector3.ZERO, materials.get_material("grate"))
 	ramp.rotation.x = -angle
 	ramp.position = Vector3((x0 + x1) * 0.5, (y0 + y1) * 0.5, (z0 + z1) * 0.5) - ramp.basis.y * 0.09
-	(ramp.get_child(1) as MeshInstance3D).visible = false
+	# Keep the continuous collision ramp visible; thin crossbars make its tread rhythm legible without floating step blocks.
+	(ramp.get_child(1) as MeshInstance3D).visible = true
 	# Handrails follow the stair slope and meet the floor at both landings.
 	for side in ["West", "East"]:
 		var rail_x: float = x0 + 0.05 if side == "West" else x1 - 0.05
 		var handrail := _body_box(label + "Rail" + side, Vector3(0.1, RAIL_HEIGHT, ramp_length), Vector3(rail_x, (y0 + y1) * 0.5 + RAIL_HEIGHT * 0.5, (z0 + z1) * 0.5), materials.get_material("safety_paint"))
 		handrail.rotation.x = -angle
 	var count: int = maxi(1, int(ceil(absf(rise) / 0.2)))
-	var base_y: float = minf(y0, y1) - 0.3
-	for i in count:
-		var t: float = (float(i) + 0.5) / float(count)
+	for i in range(1, count):
+		var t: float = float(i) / float(count)
 		var z: float = z0 + t * run
-		var top_y: float = y0 + (float(i) + 1.0) / float(count) * rise
-		var tread: float = run / float(count)
-		var block_height: float = maxf(0.08, top_y - base_y)
-		_body_box(label + "Tread_%02d" % i, Vector3(width, block_height, tread), Vector3((x0 + x1) * 0.5, base_y + block_height * 0.5, z), materials.get_material("grate"), false)
+		var y: float = y0 + t * rise
+		var tread_mark := _visual_box(label + "TreadMark_%02d" % i, Vector3(width, 0.025, 0.06), Vector3((x0 + x1) * 0.5, y + 0.02, z), materials.get_material("steel_light"))
+		tread_mark.rotation.x = -angle
 
 
 func _build_upper_route() -> void:
