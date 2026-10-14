@@ -18,7 +18,7 @@
 
 ## Architectural decision
 
-P−1 maintenance void D1/D2 at Y=−2 m; P0 access/test hall/workshop Y=0 m; M pumps/observation mezzanine Y=+1.5 m; P2 control/archive/exterior vestibule Y=+3 m. G opens horizontally to H and transitions to the parking-entry variant of the chase prototype. The standalone corridor prototype retains its own start checkpoint.
+P−1 maintenance void D1/D2 at Y=−2 m; P0 exterior approach tunnel, access/test hall and workshop at Y=0 m; M pumps/observation mezzanine Y=+1.5 m; P2 control/archive/exterior vestibule Y=+3 m. G opens horizontally to H and transitions to the parking-entry variant of the chase prototype. The standalone corridor prototype retains its own start checkpoint.
 
 Unique vertical routes: S1 P0↔P−1; elevator P0↔M; S2 M↔P2; direct P0↔P2 stair blocked. No return stair from G.
 
