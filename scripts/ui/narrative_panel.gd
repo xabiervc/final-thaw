@@ -43,15 +43,15 @@ func _ready() -> void:
 	_apply_accessibility()
 
 func _apply_accessibility() -> void:
-	var scale := clampf(GameManager.font_scale, 0.75, 2.0)
-	_label.add_theme_font_size_override("font_size", int(22.0 * scale))
+	_label.add_theme_font_size_override("font_size", int(22.0 * AccessibilityManager.ui_scale()))
 
-	var high_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
+	var high_contrast := AccessibilityManager.is_high_contrast()
 	var style: StyleBoxFlat = _panel.get_theme_stylebox("panel") as StyleBoxFlat
 	if style != null:
 		style.bg_color = Color(0.0, 0.0, 0.0, 0.98) if high_contrast else Color(0.03, 0.05, 0.07, 0.9)
 		style.border_color = Color(1.0, 1.0, 1.0, 1.0) if high_contrast else Color(0.25, 0.7, 0.8, 0.9)
 	_label.add_theme_color_override("font_color", Color.WHITE if high_contrast else Color(0.94, 0.96, 0.95))
+	AccessibilityManager.apply_subtitle_background(_panel)
 
 func show_message(text: String, duration: float = 8.0) -> void:
 	_label.text = text

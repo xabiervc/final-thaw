@@ -13,6 +13,7 @@ func _ready() -> void:
 	_check_hud_text_contract()
 	_check_prompt_text_contract()
 	_check_accessibility_text_contract()
+	_check_accessibility_manager()
 	_check_rescue_persistence()
 	print("Vertical slice rules: %s" % ("PASS" if failed == 0 else "FAIL (%d)" % failed))
 	get_tree().quit(1 if failed > 0 else 0)
@@ -129,6 +130,26 @@ func _check_accessibility_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_options_subtitle_none().is_empty(), "Subtitle none fallback exists")
 	_expect(not NarrativeTextManager.get_options_subtitle_dim().is_empty(), "Subtitle dim fallback exists")
 	_expect(not NarrativeTextManager.get_options_subtitle_solid().is_empty(), "Subtitle solid fallback exists")
+
+func _check_accessibility_manager() -> void:
+	var previous_contrast: bool = GameManager.get_flag("accessibility_high_contrast")
+	var previous_motion: bool = GameManager.get_flag("accessibility_reduced_motion")
+	var previous_subtitle: int = GameManager.subtitle_size
+
+	GameManager.set_flag("accessibility_high_contrast", true)
+	GameManager.set_flag("accessibility_reduced_motion", true)
+	GameManager.subtitle_size = 0
+	_expect(AccessibilityManager.is_high_contrast(), "High contrast preference is readable")
+	_expect(AccessibilityManager.is_reduced_motion(), "Reduced motion preference is readable")
+	_expect(AccessibilityManager.animation_duration(0.2) == 0.0, "Reduced motion removes animation duration")
+	_expect(AccessibilityManager.subtitle_panel_alpha() == 0.0, "None subtitle background has no panel alpha")
+
+	GameManager.subtitle_size = 2
+	_expect(AccessibilityManager.subtitle_panel_alpha() == 0.95, "Solid subtitle background has high panel alpha")
+
+	GameManager.set_flag("accessibility_high_contrast", previous_contrast)
+	GameManager.set_flag("accessibility_reduced_motion", previous_motion)
+	GameManager.subtitle_size = previous_subtitle
 
 func _check_rescue_persistence() -> void:
 	var previous: int = GameManager.civilian_aid
