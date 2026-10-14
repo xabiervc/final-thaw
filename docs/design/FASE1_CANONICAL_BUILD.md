@@ -27,7 +27,7 @@ La ampliación geométrica no prueba que las paredes, barandillas, cubierta o hu
 
 ## Regresión automatizada
 
-Se añadió `.github/workflows/godot-headless-tests.yml` para importar recursos y ejecutar Fase 0, el vertical slice existente, contrato de circuito, elevador genérico, transporte y la integración canónica en Godot 4.7.1. El workflow aún no se ha observado en ejecución; hasta que GitHub Actions publique un resultado, la CI también está pendiente.
+Se añadió `.github/workflows/godot-headless-tests.yml` para importar recursos y ejecutar Fase 0, el vertical slice existente, contrato de circuito, elevador genérico, transporte y la integración canónica en Godot 4.7.1. El resultado de GitHub Actions no se ha verificado durante esta revisión; no se declara CI verde sin consultar el run real.
 
 ## Orden de verificación
 
