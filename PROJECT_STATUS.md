@@ -2,13 +2,13 @@
 
 ## Current phase
 
-**Phase 1 — architectural redesign and canonical greybox reconciliation. Runtime verification pending.** The design now defines a complete clandestine/semi-abandoned industrial research facility, a building-wide investigation puzzle, an interior chase triggered by opening G, and a physically distinct service exit to the parking area. Documentation and SVG plans have been updated to this direction; the canonical Godot scene has not yet been reconciled to the full new route.
+**Phase 1 — architectural redesign and canonical greybox reconciliation. Runtime verification pending.** The design now defines a complete clandestine/semi-abandoned industrial research facility, a building-wide investigation puzzle, and a two-tempo escape: quiet evasion through potentially occupied work areas, followed by a running chase after a spatially legible reacquisition, ending at a physically connected alternative exit to the parking area. Documentation and SVG plans have been updated to this direction; the canonical Godot scene has not yet been reconciled to the full new route.
 
 ## Design direction and ownership
 
 **Design ownership:** architecture, level design, progression, narrative/script, visual/audio direction, documentation consistency and acceptance criteria are specified in the design sources. Programming is implemented by the programming owner. Design documents define intended behavior; they do not claim code completion or runtime validation.
 
-The Phase 2 design package now contains a provisional 48 × 30 m plan, transverse section, spatial graph, route-clearance contract, obstacle register, separate threat/sightline and lighting/landmark overlays, and a provisional opening script/trigger table. The plan's candidate transform now aligns the **3 m threshold plane** with the Phase 1 mouth at approximately (X=34, Z=6); the safe interior spawn pocket is near (35.5, 6), and the far egress near (71.5, −14). The current prototype starts near (34.5, 0) and has only a 14 m corridor width; this mismatch is explicitly documented for the programming owner. The drawings are design proposals, not approved production geometry. `docs/narrative_complete.md` separates the opening script proposal and unresolved decisions from the legacy campaign archive; full-game canon is not locked.
+The Phase 2 design package now contains a provisional 48 × 30 m plan, transverse section, spatial graph, route-clearance contract, obstacle register, separate threat/sightline and lighting/landmark overlays, and a provisional opening script/trigger table. The parking drawings use local coordinates only. The former candidate transform (X+28.7, Z−15.8) is withdrawn as a constraint because it aligned to a provisional Phase 1 mouth before the room route was closed. The final parking transform must be derived from the selected exterior exit after the stealth-to-chase route is approved. The current prototype's entry checkpoint and 14 m corridor width remain implementation facts to reconcile, not reasons to force the architecture. The drawings are design proposals, not approved production geometry. `docs/narrative_complete.md` separates the opening script proposal and unresolved decisions from the legacy campaign archive; full-game canon is not locked.
 
 ## Sources of truth
 
@@ -44,16 +44,16 @@ The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S
 
 ## Mandatory design work
 
-1. Confirm the candidate Phase 2 world transform against the exact Phase 1 mouth width/orientation/elevation; then lock dimensions across plan, section and graph. The plan and section now depict a 3 m clear service opening, and the entry threshold is distinct from the interior spawn pocket.
-2. Reconcile `threat_sightline_overlay.svg` and `lighting_landmark_overlay.svg` against measured cover and the actual route graph; confirm each sightline endpoint and landmark visibility, then review the three provisional obstacle envelopes.
-3. Complete a cross-document consistency pass across Phase 1 plans, section, spatial graph, greybox, progression and the new parking handoff.
+1. Lock the two-tempo Phase 1 escape route first: occupied-room stealth, NPC perception/states, the exposed reacquisition trigger, running chase and the selected alternative exit. Then derive the Phase 2 local-to-world transform from that real exit; do not let a provisional parking coordinate dictate the route.
+2. Update the Phase 1 plans/section/spatial graph to show staffed stealth zones, cover and the chase trigger. Reconcile Phase 2 threat/sightline and lighting/landmark overlays to its local geometry; after the exit is selected, align the actual parking handoff.
+3. Complete a cross-document consistency pass across Phase 1 plans, section, spatial graph, greybox, NPC/stealth behavior, progression and the eventual parking handoff.
 4. Review and approve/revise the proposed opening script, particularly the suppression reveal and the end-of-parking beat; retain unresolved full-campaign decisions explicitly.
 
 ## Mandatory implementation work (programming owner)
 
 1. Inspect and freeze exact footprints, clear widths, door swings/states, obstacles and the P−1 exit in every SVG and section.
 2. Reconcile `scripts/prototypes/phase1_canonical_greybox.gd` and its scene to the plans; keep all coordinates traceable.
-3. Implement G → interior chase → S2/M → lift/P0 → S1/P−1 → evacuation gallery → exterior parking.
+3. Implement G → quiet evasion through occupied work areas → visible reacquisition/transition to running chase → existing vertical/service circulation → approved alternative exit → physically connected parking.
 4. Add integration tests for navigation, doors, chase state, lift state, exit mouth and parking checkpoint.
 5. Run circuit, lift, transport, canonical integration, parking-entry, vertical-slice and Phase 0 tests under Godot 4.7.x/Compatibility.
 6. Manually play the full route, inspect camera/collisions/clearances and verify the puzzle is inferable without mandatory text collection.
