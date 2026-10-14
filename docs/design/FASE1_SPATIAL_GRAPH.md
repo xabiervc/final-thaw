@@ -4,7 +4,7 @@
 
 | Nodo | Cota | Huella/posición | Función |
 |---|---:|---|---|
-| Túnel exterior | 0 m | X −3..0, Z 4,5..7,5 | Aproximación cubierta y entrada física a A. |
+| Túnel exterior | 0 m | X −3..0, Z 4,5..7,5; umbral X 0..1 | Aproximación cubierta y entrada física a A. |
 | A · Acceso | 0 m | X 1..7, Z 4..10 | Esclusa y orientación. |
 | B · Nave | 0 m | X 7..20, Z −9..1 | Columna Aster, rig central y circulación. |
 | C · Taller | 0 m | X 20..24, Z −9..−2 | Cuadros, banco y colectores. |
