@@ -24,30 +24,37 @@ The `feat/godot-vertical-slice` branch contains the functional skeleton of the *
 - `NarrativeTextManager` centralizes narrative text and supports ES/EN localization.
 - The main menu includes narrative context and an ES/EN language selector.
 
-### Recent repair work
+### Canonical shelter repairs
 
-The canonical 2.5D shelter received functional repairs:
+The canonical 2.5D shelter has received a substantial repair pass:
 
-- Elena now detects `Interactable` areas through `area_entered` / `area_exited`.
-- Elena calls `Interactable.try_interact()`, which executes prop behavior and emits `interacted`.
-- `FloodedShelterController` joins the `flooded_shelter` group, allowing `WinZone` to locate it.
-- The controller restores persisted shelter state during `_ready()`.
-- The controller emits initial oxygen, valve, power and civilian state.
-- `DemoHUD` connects to Elena oxygen changes and initializes civilian status.
-- `NarrativeTextManager` now provides localized demo completion and failure HUD strings.
+- `FloodedShelterController` has explicit scene references to Elena, civilian, console, both valves, flood gate and shelter light.
+- The controller joins the `flooded_shelter` group; `WinZone` and `DemoEnd` locate it safely.
+- The controller restores persisted power, valve, civilian and light state during `_ready()`.
+- Elena detects `Interactable` areas through `area_entered` / `area_exited` and calls `Interactable.try_interact()`.
+- `Interactable.interact()` delegates to `try_interact()`, so prop behavior and signals execute correctly.
+- The civilian is interactable and can be rescued.
+- The scene includes floor, walls, player collision, interaction collision and win-zone collision.
+- The death flow connects through the controller and completes the level as a failure.
+- Generator and valve prompts use localized text and refresh on language change.
+- The shelter light responds to generator activation and persisted power state.
+- `DemoHUD` has wired oxygen, objective and civilian labels; it updates oxygen continuously and initializes civilian state.
+- `DemoEnd` has wired title, summary and buttons; it locates the controller and refreshes on language change.
+- `NarrativeTextManager` emits `language_changed`, enabling prompts, HUD and end-screen text to update dynamically.
 
 ### Verification boundary
 
 These repairs are implemented but **not yet verified by a recorded Godot playtest**. The following must be checked before TD-011 can close:
 
 - The project compiles without script errors.
-- Elena's `InteractionArea` has a valid collision shape and detects `Interactable` areas.
-- Generator activation works through Elena interaction.
-- Both valves open and the flood gate opens.
-- Civilian rescue updates HUD and controller state.
-- Reaching the win zone completes the level.
+- The canonical scene loads without missing-node or missing-resource errors.
+- Elena's `InteractionArea` detects `Interactable` areas.
+- Generator activation, valve opening, flood-gate opening, civilian rescue and win-zone completion all work.
 - Oxygen HUD updates continuously.
-- ES/EN localization works for the new HUD strings.
+- `DemoHUD` labels display localized text.
+- `DemoEnd` displays title, summary and functional buttons.
+- ES/EN localization updates prompts, HUD and end screen.
+- Persistence restores controller and prop state.
 
 ### Early 3D prototype
 
@@ -69,7 +76,7 @@ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it aft
 
 ## In progress
 
-- Repairing and validating the canonical Flooded Shelter interaction loop.
+- Validating the repaired canonical Flooded Shelter interaction loop in Godot.
 - Keeping design traceability aligned with implementation.
 - Validating the Flooded Shelter gameplay loop, narrative flow, localization and decision summary.
 - Evaluating the early 3D test room for movement, interaction, scanning and visual direction.
@@ -86,8 +93,8 @@ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it aft
 
 ## Next three tasks
 
-1. Run Godot and verify that the canonical shelter compiles and plays without script errors.
-2. Playtest the Flooded Shelter slice and record pass/fail evidence for movement, oxygen, interaction, generator activation, valve drainage, civilian rescue, exit progression and ES/EN localization.
+1. Run Godot and execute `docs/PLAYTEST_CHECKLIST.md` against `scenes/levels/flooded_shelter_2_5d.tscn`.
+2. Record PASS/FAIL evidence for scene load, movement, interaction, generator, valves, gate, rescue, win zone, oxygen, persistence and ES/EN localization.
 3. Playtest the 3D test room and record evidence for movement, interaction, scanning, collision, camera readability and performance.
 
 ## Next slices
@@ -115,7 +122,7 @@ Stabilize and playtest the `feat/godot-vertical-slice` branch, then merge it aft
 
 ## Summary
 
-The Flooded Shelter 2.5D slice is functionally complete at prototype level. Recent commits repaired the interaction chain, win-zone lookup, HUD initialization and missing localization methods. The next required step is recorded Godot validation of the repaired loop.
+The Flooded Shelter 2.5D slice is functionally complete at prototype level. Recent commits repaired the interaction chain, scene references, collision geometry, civilian rescue, death flow, prop persistence, shelter light, HUD wiring, end-screen wiring and dynamic localization. The next required step is recorded Godot validation of the repaired loop.
 
 ## Reporting rule
 

@@ -25,11 +25,12 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
   - Civilian has a rescue interaction.
   - Level geometry, player collision, interaction collision and win-zone collision exist.
   - Death flow is connected safely.
-  - Demo HUD connects oxygen and initializes civilian state.
+  - Demo HUD and DemoEnd node exports are wired.
+  - Generator and valve prompts are localized and refresh on language change.
+  - Shelter light responds to generator activation and persistence.
   - Missing HUD localization methods were added.
 - **Remaining work:**
-  - Localize `PowerConsole` and `ValveStation` interaction text.
-  - Restore prop state from persistence.
+  - Validate the full loop in Godot.
   - Add visual/audio feedback for generator, valves, gate and rescue.
   - Port `AccessibilityManager` and `SoundCueHUD`.
   - Add narrative dismissal grace period.
@@ -95,11 +96,13 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
   - Controller joins the expected group.
   - Civilian is interactable.
   - Win zone can locate the controller.
+  - `DemoHUD` and `DemoEnd` node exports are wired.
 - **Verification required:**
   - Godot loads the scene without errors.
   - Elena interacts with console, valves and civilian.
   - Generator, valves, gate, rescue and exit all work.
   - HUD oxygen and civilian state update.
+  - DemoEnd title, summary and buttons work.
 - **Owner:** Perplexity + Claude/local Godot validation.
 - **Priority:** P0.
 
@@ -112,23 +115,40 @@ The dynamically built `flooded_shelter.tscn` remains a systems/accessibility lab
 - **Owner:** Design decision.
 - **Priority:** P1.
 
-### TD-013 — Prop state is not restored from persistence
+### TD-013 — Prop state restoration
 
-- **Files:** `scripts/levels/props/power_console.gd`, `scripts/levels/props/valve_station.gd`, `scripts/levels/props/flood_gate.gd`
-- **Problem:** The controller restores its own state, but props do not restore `is_on`, `is_open` or visual state from `GameStateManager`.
-- **Risk:** A restored save can show an active generator or open valves as inactive.
-- **Action required:** Add restoration hooks or have the controller initialize prop state after restoring persistence.
-- **Owner:** Perplexity.
+- **Status:** Implemented for console, valves and shelter light; pending Godot verification.
+- **Completed:**
+  - `PowerConsole.restore_state()` restores generator state and prompt.
+  - `ValveStation.restore_state()` restores valve state and prompt.
+  - Controller restores light state from persisted power.
+  - Controller opens the gate when both valves are restored as open.
+- **Remaining work:**
+  - Verify restoration in Godot.
+  - Add visual state restoration for the flood gate beyond collision.
+- **Owner:** Perplexity + Claude/local Godot validation.
 - **Priority:** P1.
 
-### TD-014 — Prop interaction text is hardcoded
+### TD-014 — Prop interaction text localization
 
-- **Files:** `scripts/levels/props/power_console.gd`, `scripts/levels/props/valve_station.gd`
-- **Problem:** Console and valve prompts use hardcoded Spanish strings.
-- **Risk:** English players see Spanish UI; language changes do not update prompts.
-- **Action required:** Use `NarrativeTextManager.get_interact_power_console()` and `get_interact_valve()`.
-- **Owner:** Perplexity.
+- **Status:** Implemented; pending Godot verification.
+- **Completed:**
+  - Console uses `get_interact_power_console()`.
+  - Valves use `get_interact_valve()`.
+  - Civilian uses `get_interact_civilian()`.
+  - Prompts refresh through `Interactable.update_label()`.
+  - Props listen to `NarrativeTextManager.language_changed`.
+- **Remaining work:**
+  - Verify ES/EN prompt updates in Godot.
+  - Add localization keys to narrative resources if absent.
+- **Owner:** Perplexity + Claude/local Godot validation.
 - **Priority:** P1.
+
+### TD-015 — UI node exports were unwired
+
+- **Status:** Resolved in commit `d978169`.
+- **Resolution:** `DemoHUD` oxygen/objective/civilian labels and `DemoEnd` title/summary/buttons are now connected to their scripts.
+- **Remaining work:** Verify in Godot that all node paths resolve and the UI displays correctly.
 
 ## Resolution rule
 
@@ -142,11 +162,12 @@ A debt item is closed only when:
 ## Current priority order
 
 1. TD-011: run Godot and verify the repaired interaction chain.
-2. TD-014: localize console and valve prompts.
-3. TD-013: restore prop state from persistence.
-4. TD-001: complete canonical parity.
-5. TD-012: choose the canonical oxygen rule.
-6. TD-005: define and consolidate the production player-controller contract.
-7. TD-007: port accessibility to the canonical implementation.
-8. TD-004: apply narrative grace period to the canonical implementation.
-9. TD-006 and TD-008: harden condition systems and validation.
+2. TD-014: verify localized prompts and language refresh.
+3. TD-013: verify persisted prop restoration.
+4. TD-015: verify UI node paths and display.
+5. TD-001: complete canonical parity.
+6. TD-012: choose the canonical oxygen rule.
+7. TD-005: define and consolidate the production player-controller contract.
+8. TD-007: port accessibility to the canonical implementation.
+9. TD-004: apply narrative grace period to the canonical implementation.
+10. TD-006 and TD-008: harden condition systems and validation.
