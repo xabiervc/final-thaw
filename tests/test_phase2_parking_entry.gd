@@ -32,6 +32,7 @@ func _run() -> void:
 	if actors_ready:
 		_expect(is_equal_approx(scene.player.global_position.x, 34.5), "canonical handoff starts at the parking-entry checkpoint, not the standalone corridor start")
 		_expect(scene.player.global_position.x < 38.0, "player starts before the first parked vehicle and can read the space")
+		_expect(scene.parking_entry_mode and is_equal_approx(scene.enemy.global_position.x, 43.0), "parking-specific patrol staging is enabled without changing the standalone prototype")
 		_expect(scene.enemy_state == "patrol" and scene.enemy_target == 1, "recovery unit begins in its ordinary patrol state")
 		_expect(scene.enemy.global_position.distance_to(scene.player.global_position) > NEAR_SENSE, "spawn does not trigger the proximity detector immediately")
 		_expect(scene.enemy.global_position.x > scene.player.global_position.x, "the patrol begins ahead of Elena rather than behind the exit")
