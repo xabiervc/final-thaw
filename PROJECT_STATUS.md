@@ -8,7 +8,7 @@
 
 **Design ownership:** architecture, level design, progression, narrative/script, visual/audio direction, documentation consistency and acceptance criteria are specified in the design sources. Programming is implemented by the programming owner. Design documents define intended behavior; they do not claim code completion or runtime validation.
 
-The Phase 2 design package now contains a provisional 48 × 30 m plan, transverse section, spatial graph, route-clearance contract, obstacle register, conceptual sightline/light overlays, and a provisional opening script/trigger table. The plan's candidate transform aligns its entry with the Phase 1 mouth at approximately (X=34, Z=6), but the current prototype starts near (34.5, 0) and has only a 14 m corridor width; this mismatch is explicitly documented for the programming owner. The drawings are design proposals, not approved production geometry. `docs/narrative_complete.md` separates the opening script proposal and unresolved decisions from the legacy campaign archive; full-game canon is not locked.
+The Phase 2 design package now contains a provisional 48 × 30 m plan, transverse section, spatial graph, route-clearance contract, obstacle register, separate threat/sightline and lighting/landmark overlays, and a provisional opening script/trigger table. The plan's candidate transform aligns its entry with the Phase 1 mouth at approximately (X=34, Z=6), but the current prototype starts near (34.5, 0) and has only a 14 m corridor width; this mismatch is explicitly documented for the programming owner. The drawings are design proposals, not approved production geometry. `docs/narrative_complete.md` separates the opening script proposal and unresolved decisions from the legacy campaign archive; full-game canon is not locked.
 
 ## Sources of truth
 
@@ -21,7 +21,7 @@ Keep existing documents coordinated; do not create duplicates.
 - Functional experience: `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.0.
 - Phase 1/2 progression: `docs/design/fase1_fase2_mapa_progresion.md` v1.0.
 - Opening gameplay/narrative contract: `docs/CORE_LOOP.md`.
-- Phase 2 parking architecture, routes, beats and acceptance: `docs/LEVEL_STRUCTURE.md` and its provisional SVG concept plan.
+- Phase 2 parking architecture, routes, beats and acceptance: `docs/LEVEL_STRUCTURE.md` and `docs/design/assets/phase2_parking/` (plan, section, threat/sightline and lighting/landmark overlays; all provisional).
 - Opening script and unresolved story decisions: top section of `docs/narrative_complete.md`; legacy campaign retained below.
 - Requirement-to-evidence traceability: `docs/TRACEABILITY_MATRIX.md`.
 - Circuit logic: `docs/design/FASE1_LOGIC_CONTRACT.md` (unchanged).
@@ -45,7 +45,7 @@ The existing vertical connections remain: S1 P0↔P−1; lift P0↔M (+1.5 m); S
 ## Mandatory design work
 
 1. Confirm the candidate Phase 2 world transform against the exact Phase 1 mouth width/orientation/elevation; then lock dimensions across plan, section and graph.
-2. Add a final threat/patrol and landmark/lighting overlay with sightline endpoints tied to measured cover, then review the three provisional obstacle envelopes.
+2. Reconcile `threat_sightline_overlay.svg` and `lighting_landmark_overlay.svg` against measured cover and the actual route graph; confirm each sightline endpoint and landmark visibility, then review the three provisional obstacle envelopes.
 3. Complete a cross-document consistency pass across Phase 1 plans, section, spatial graph, greybox, progression and the new parking handoff.
 4. Review and approve/revise the proposed opening script, particularly the suppression reveal and the end-of-parking beat; retain unresolved full-campaign decisions explicitly.
 
