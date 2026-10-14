@@ -29,7 +29,7 @@ Elena enters the Aster facility, reconstructs the intended electrical/system con
 
 The puzzle must be solved through at least two complementary clues. The scanner reveals continuity and state, never the answer. Wrong or premature actions have immediate, recoverable feedback. The restricted record supplies context and does not act as a key.
 
-**Required outcome:** the player understands that the test result was withheld or manipulated and that restoring the system creates the causal trigger for Containment. The exact mechanism by which Helix receives the event is still a narrative decision; do not treat any proposed telemetry/audit implementation as canon until approved.
+**Required outcome:** the player understands that the test result was withheld or manipulated and that restoring the system creates the causal trigger for Containment. The current brief defines the event contract at design level: maintenance queues `SERVICE_OVERRIDE`; crossing the exterior leaf of G sends the queued audit and starts Containment. Runtime implementation and the specific recipient/command chain remain to be verified/decided.
 
 ## 4. Mission 2 — Containment
 
