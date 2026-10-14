@@ -423,8 +423,8 @@ func _build_upper_route() -> void:
 	_add_floor_rect(Rect2(Vector2(3.0, -9.0), Vector2(6.0, 4.5)), 3.0, "ArchiveCabinFloor")
 	_add_floor_rect(Rect2(Vector2(0.0, -9.0), Vector2(3.0, 4.5)), 3.0, "ExteriorAirlockFloor", materials.get_material("grate"))
 	_add_floor_rect(Rect2(Vector2(9.0, -9.0), Vector2(15.0, 4.5)), 3.0, "ControlRoomFloor")
-	var walkway_regions: Array = [Rect2(Vector2(9.0, -4.5), Vector2(17.0, 2.5))]
-	for hole in [Rect2(Vector2(9.0, -4.5), Vector2(4.0, 2.5))]:
+	var walkway_regions: Array = [Rect2(Vector2(9.0, -4.5), Vector2(17.0, 3.0))]
+	for hole in [Rect2(Vector2(9.0, -4.5), Vector2(4.0, 3.0))]:
 		var next_walkway_regions: Array = []
 		for region in walkway_regions:
 			next_walkway_regions.append_array(_subtract_rect(region, hole))
