@@ -59,6 +59,8 @@ These are design targets, not verified measurements. Any deviation must be recor
 
 ### 2.3 Required plan and section views
 
+A first spatial concept is now recorded in [parking_plan_concept.svg](design/assets/phase2_parking/parking_plan_concept.svg). It is deliberately marked **concept v0.1**: its 48 × 30 m envelope, routes and prop placements are design proposals, not approved coordinates and not a representation of the current Godot scene. Its purpose is to expose route topology and reviewable spatial questions. The programming owner must not copy these coordinates into code until the service-exit handoff, world-coordinate transform, clearances and elevation are reconciled.
+
 The parking layout is not accepted from a prose description alone. Its design package must contain:
 1. **Dimensioned plan:** boundaries, building facade, entry, exit, bays, vehicles, columns, obstacles, cover, lighting and patrol/sightline overlays.
 2. **Longitudinal section:** elevation changes, ramps, barriers, low clearances, roof/awning edges and camera-relevant occlusion.
@@ -103,7 +105,7 @@ The parking area must be a compact, legible route network with meaningful risk d
 **Design purpose:** deliver release without implying that the larger conflict is resolved.  
 **Narrative result:** the immediate recovery unit is evaded; Helix's ability to identify and track Elena remains a threat. End with a short, authored beat that changes the player's understanding or stakes, not a generic “level complete” message.
 
-The number and placement of physical obstacles remain subject to plan and playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
+The concept currently marks O1 and O2 as illustrative only. They are not final obstacle IDs or locked placements. The number and placement of physical obstacles remain subject to plan and playtest. Each final obstacle must have a stable ID (P2-O1, P2-O2, …), measured footprint, approach, intended solution, alternate/recovery solution, collision envelope, camera risks, narrative function and acceptance test.
 
 ## 4. Route alternatives and threat fairness
 
