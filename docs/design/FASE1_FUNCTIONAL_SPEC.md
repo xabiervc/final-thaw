@@ -126,3 +126,17 @@ La identidad del laboratorio, el recorrido de huida y el contrato de evento del 
 - Registrar commit, versión de Godot, renderer, comandos, exit codes, errores, warnings, resultados y evidencia visual.
 
 No aceptar Fase 1 solo porque el circuito funcione o la escena importe. El edificio completo y la secuencia de salida deben poder jugarse de principio a fin.
+
+## Owner-approved functional redesign target (2026-10-15)
+
+This addendum records the latest target and does not claim that the current functional implementation satisfies it. The existing Aster circuit/field-notes contracts remain valid unless a separately justified change is approved.
+
+- Phase 1 is an interconnected investigation space centered on a large pumping hall. Room progression must use meaningful observation, traversal, interaction and causal puzzle consequences. Avoid an overly open single room and avoid a maze.
+- Entry is through a damaged service breach/culvert that collapses behind Elena. Enforce the blocked return with actual geometry/collision and test alternate approaches for unintended bypasses.
+- After the required gate opens, Elena enters a previously unseen human operational area and observes meaningful Helix/Aster activity before a human security threat detects her.
+- The target escape is hybrid first-person play: free movement/route choices plus short contextual actions and brief looks back that show player-caused consequences. It must not be a QTE-only sequence.
+- The route proceeds to a separately designed parking garage and then a public street where Elena loses the pursuers among pedestrians. Maintain continuity through geometry or a deliberate transition.
+- The current robot-led containment behavior remains an as-built prototype until replaced. Do not treat existing robot tests as proof of human-pursuit behavior.
+- Full Marcus-led beat-'em-up and Elena companion progression are future scope; this specification should not pull that system into the current Phase 1/2 work.
+
+Acceptance requires updated behavior tests, a full test run on the final integrated commit, and in-engine/manual verification of spatial clarity, pursuit fairness, camera comfort and the complete route.
