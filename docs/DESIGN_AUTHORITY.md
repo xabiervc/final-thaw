@@ -93,3 +93,37 @@ After the combined opening is reviewed and playtested, explicitly decide whether
 ## Change policy
 
 Keep design changes traceable and reversible. Update existing sources of truth instead of creating competing documents. Never claim a feature is specified, implemented, tested, playable or production-ready beyond the evidence actually available.
+
+## Owner-approved creative direction (2026-10-15)
+
+The following decisions supersede earlier provisional assumptions where they conflict. They define the intended future direction; they do not claim that implementation has already changed or been runtime-verified.
+
+### Visual identity
+- Target style: **illustrated 3D adventure**, using the owner-provided Marcus concept as the primary character-art reference and the owner-provided illustrated industrial laboratory as a major environment-art reference.
+- Do not target photorealism, generic cartoon styling, or deliberately low-resolution 1990s-console aesthetics. Use designed silhouettes, painterly/illustrated material treatment, controlled edge definition, disciplined palettes, cinematic composition and readable lighting.
+- Apply one coherent visual language across characters, environments, props, effects and UI. Validate it in the actual Godot gameplay camera before scaling asset production.
+- Preserve Elena's recognizable concept identity. Redesign the Aster/scanner device so it is physically integrated into a wrist mount or credible holster, or provide proper draw/use/stow animations; it must not appear inexplicably attached to her hand.
+
+### Phase 1 — investigation and spatial exploration
+- Phase 1 remains Elena-led and investigation-first. Retain the functioning Aster puzzle and field-notes loop where sound; improve the spaces and interactions around them rather than replacing working systems without cause.
+- The building should feel substantially larger and more interconnected than a single open room, while remaining legible rather than labyrinthine. Retain a memorable central pumping hall as the spatial anchor, surrounded by purposeful rooms, vertical routes, landmarks, optional discoveries and meaningful shortcuts.
+- Each major room must have a distinct gameplay or narrative purpose. Backtracking is justified only by a new deduction, changed system, newly opened route or optional discovery.
+- Elena enters through a breach, collapsed culvert or damaged service access, not a normal door. The entry collapses physically after entry. The return route must be genuinely impassable through geometry/collision, not only dialogue or an invisible blocker.
+- Elena is a scientist. Phase 1 should emphasize observation, hypothesis, testing, environmental interaction, traversal and deduction, not mandatory combat.
+
+### Phase 2 — human discovery and hybrid first-person escape
+- The current robotic recovery-unit escape is not the target final direction for Phase 2's principal threat. The new target is a human-operated restricted zone with a small number of purposeful personnel engaged in work related to Helix/Aster.
+- Elena first moves cautiously through this previously unseen operational area and has an opportunity to observe its activity and discover meaningful evidence. Detection then initiates the escape.
+- The escape is a **hybrid first-person sequence**: genuine free movement and route choices, combined with short, context-sensitive actions (vault, duck/slide, push an object, operate a door or choose a route). Prompts complement movement and must not turn the sequence into a long chain of arbitrary button presses.
+- Brief motivated looks back and cinematic beats should show consequences of the player's actions, such as a pursuer being delayed by an object. Preserve player agency, readable hazards, accessibility and fair recovery from minor errors.
+- The route reaches a separately designed parking garage through a credible service connection or controlled scene transition, then exits to a public street where Elena loses the pursuers in the crowd. The garage need not be adjacent to the central hall.
+
+### Future Marcus-led beat-'em-up progression
+- Future beat-'em-up phases are controlled by Marcus, with Elena accompanying him.
+- Initially Elena cannot defend herself reliably: she seeks valid cover, stays near Marcus and requires intervention when threatened. She can still contribute through observation, warnings and environmental mechanisms.
+- Across the story, Elena learns from Marcus. Her later abilities should include limited escapes from grabs, defensive dodges/blocks and opportunistic counters against basic threats. She must not abruptly become an expert fighter.
+- Once Elena can defend herself, Marcus can focus on more demanding enemies. Increase challenge through enemy variety, coordination and attack patterns rather than only inflating health.
+- This progression is an approved future design direction, not authorization to implement the full combat campaign in the current Phase 1/2 vertical-slice task. Document its contracts now; defer full implementation until the current opening is coherent.
+
+### Product-level principle
+Final Thaw may combine exploration, investigation, stealth, escape and beat-'em-up action, but each mode must serve a clear emotional and narrative purpose. Variety must not make the game feel like unrelated mini-games. The current production priority is to consolidate the illustrated visual identity and the Phase 1/2 experience.
