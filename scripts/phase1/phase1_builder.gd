@@ -9,7 +9,12 @@ extends RefCounted
 ##   Elena's mantle never lands on layer 5.
 ## - Sloped rails are sheared prisms: they follow the stair exactly and never stick out over a landing.
 
+const FacilityMaterials := preload("res://scripts/levels/test_room_art/facility_materials.gd")
 const SLAB := 0.25
+## Illustrated style (ASSET_PRODUCTION_BIBLE.md): practical lights are painted as generous warm pools over mid-tone,
+## cool shadows; every builder light's authored energy is scaled by this gain (scene code that tweens energies scales
+## its targets with the same constant).
+const LIGHT_GAIN := 1.6
 const WALL := 0.3
 const RAIL_HEIGHT := 1.1
 const LAYER_WORLD := 1
@@ -18,9 +23,11 @@ const LAYER_NO_MANTLE := 16  # physics layer 5
 var root: Node3D
 var mats = null  # FacilityMaterials
 var _flat_cache: Dictionary = {}
-## Static batching: geometry that never moves is merged per material, per 8 m cell and per storey band, so the
+## Static batching: geometry that never moves is merged per material, per 12 m cell and per storey band, so the
 ## building draws in tens of calls instead of hundreds and each merged mesh stays within the Compatibility
 ## renderer's per-object light limit. Collision is never merged. Call flush() once after building.
+## 12 m measured best on the reference GPU (2026-10-15): 8 m cells add draws, 24 m cells add lights per object; both
+## were slower.
 const CELL := 12.0
 ## Storey bands for lighting: geometry of each storey lives on its own render layer (2..5) and each light only lights
 ## its storey (+ layer 1, where Elena, the unit and the staff live). Lights no longer leak through slabs, and each
@@ -48,6 +55,11 @@ func _band(y: float) -> int:
 static func band_layer(band: int) -> int:
 	return 1 << (band + 1)
 var _batches: Dictionary = {}  # key -> {"st": SurfaceTool, "mat": Material, "shadow": bool}
+## Flat-colour materials (opaque, untextured, not emissive) share one vertex-colour material and are merged per cell,
+## band and shadow flag instead of per colour: about 200 fewer draw calls. ANGLE, the default Compatibility driver on
+## the reference GPU (Intel HD 630), pays a high fixed cost per draw (measured 2026-10-15).
+var _palette: Dictionary = {}  # key -> {"verts", "normals", "colors", "indices", "shadow", "band"}
+var _palette_material: StandardMaterial3D
 
 
 func _init(parent: Node3D, materials) -> void:
@@ -64,6 +76,7 @@ func flat(color: Color, roughness: float = 0.7, metallic: float = 0.0, emission:
 	if _flat_cache.has(key):
 		return _flat_cache[key]
 	var m := StandardMaterial3D.new()
+	FacilityMaterials.illustrate(m)
 	m.albedo_color = color
 	m.roughness = roughness
 	m.metallic = metallic
@@ -140,13 +153,16 @@ func add_box_to_batch(size: Vector3, xf: Transform3D, material: Material, shadow
 			add_box_to_batch(Vector3(size.x, size.y, z1 - gz), Transform3D(Basis.IDENTITY, Vector3(c.x, c.y, (gz + z1) * 0.5)), material, shadow)
 			return
 	var band := _band(c.y)
+	var bm := BoxMesh.new()
+	bm.size = size
+	if is_palette(material):
+		_append_palette(bm, 0, xf, material as StandardMaterial3D, band, shadow)
+		return
 	var key := "%d|%d|%d|%d|%s" % [material.get_instance_id(), int(floor(c.x / CELL)), int(floor(c.z / CELL)), band, shadow]
 	if not _batches.has(key):
 		var st := SurfaceTool.new()
 		st.begin(Mesh.PRIMITIVE_TRIANGLES)
 		_batches[key] = {"st": st, "mat": material, "shadow": shadow, "band": band}
-	var bm := BoxMesh.new()
-	bm.size = size
 	(_batches[key]["st"] as SurfaceTool).append_from(bm, 0, xf)
 
 
@@ -161,12 +177,70 @@ func add_mesh_to_batch(mesh: Mesh, xf: Transform3D, materials: Array = [], shado
 		var material: Material = materials[s] if s < materials.size() and materials[s] != null else mesh.surface_get_material(s)
 		if material == null:
 			continue
+		if is_palette(material):
+			_append_palette(mesh, s, xf, material as StandardMaterial3D, band, shadow)
+			continue
 		var key := "%d|%d|%d|%d|%s" % [material.get_instance_id(), int(floor(c.x / CELL)), int(floor(c.z / CELL)), band, shadow]
 		if not _batches.has(key):
 			var st := SurfaceTool.new()
 			st.begin(Mesh.PRIMITIVE_TRIANGLES)
 			_batches[key] = {"st": st, "mat": material, "shadow": shadow, "band": band}
 		(_batches[key]["st"] as SurfaceTool).append_from(mesh, s, xf)
+
+
+## True for materials that can be drawn as a vertex colour of the shared palette material without a visible change.
+static func is_palette(material: Material) -> bool:
+	if not (material is StandardMaterial3D):
+		return false
+	var m := material as StandardMaterial3D
+	return m.albedo_texture == null and not m.emission_enabled and m.transparency == BaseMaterial3D.TRANSPARENCY_DISABLED 		and m.normal_texture == null and not m.vertex_color_use_as_albedo and m.cull_mode == BaseMaterial3D.CULL_BACK 		and m.shading_mode == BaseMaterial3D.SHADING_MODE_PER_PIXEL and m.specular_mode == BaseMaterial3D.SPECULAR_DISABLED
+
+
+func _append_palette(mesh: Mesh, surface: int, xf: Transform3D, material: StandardMaterial3D, band: int, shadow: bool) -> void:
+	var c := xf.origin
+	var key := "%d|%d|%d|%s" % [int(floor(c.x / CELL)), int(floor(c.z / CELL)), band, shadow]
+	if not _palette.has(key):
+		_palette[key] = {"verts": PackedVector3Array(), "normals": PackedVector3Array(), "colors": PackedColorArray(),
+			"indices": PackedInt32Array(), "shadow": shadow, "band": band}
+	var entry: Dictionary = _palette[key]
+	var arrays := mesh.surface_get_arrays(surface)
+	var verts: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+	var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+	var indices = arrays[Mesh.ARRAY_INDEX]
+	# Without specular, a metallic surface only darkens its diffuse (diffuse * (1 - metallic)): bake that into the colour.
+	var color := material.albedo_color * (1.0 - material.metallic)
+	color.a = 1.0
+	var normal_basis := xf.basis.inverse().transposed()
+	var base := (entry["verts"] as PackedVector3Array).size()
+	var out_v: PackedVector3Array = entry["verts"]
+	var out_n: PackedVector3Array = entry["normals"]
+	var out_c: PackedColorArray = entry["colors"]
+	var out_i: PackedInt32Array = entry["indices"]
+	for i in verts.size():
+		out_v.append(xf * verts[i])
+		out_n.append((normal_basis * normals[i]).normalized())
+		out_c.append(color)
+	if indices == null or (indices as PackedInt32Array).is_empty():
+		for i in verts.size():
+			out_i.append(base + i)
+	else:
+		for idx in indices as PackedInt32Array:
+			out_i.append(base + idx)
+	entry["verts"] = out_v
+	entry["normals"] = out_n
+	entry["colors"] = out_c
+	entry["indices"] = out_i
+
+
+func _palette_mat() -> StandardMaterial3D:
+	if _palette_material == null:
+		_palette_material = StandardMaterial3D.new()
+		_palette_material.resource_name = "palette"
+		FacilityMaterials.illustrate(_palette_material)
+		_palette_material.vertex_color_use_as_albedo = true
+		_palette_material.vertex_color_is_srgb = true
+		_palette_material.roughness = 0.7
+	return _palette_material
 
 
 ## Collision only (the art layer draws what is there): a box body on the world layer.
@@ -200,6 +274,26 @@ func flush() -> int:
 		root.add_child(mi)
 		n += 1
 	_batches.clear()
+	for key in _palette:
+		var entry: Dictionary = _palette[key]
+		var arrays := []
+		arrays.resize(Mesh.ARRAY_MAX)
+		arrays[Mesh.ARRAY_VERTEX] = entry["verts"]
+		arrays[Mesh.ARRAY_NORMAL] = entry["normals"]
+		arrays[Mesh.ARRAY_COLOR] = entry["colors"]
+		arrays[Mesh.ARRAY_INDEX] = entry["indices"]
+		var am := ArrayMesh.new()
+		am.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arrays)
+		var mi := MeshInstance3D.new()
+		mi.name = "StaticBatch_%02d" % n
+		mi.mesh = am
+		mi.material_override = _palette_mat()
+		mi.layers = band_layer(int(entry["band"]))
+		if not bool(entry["shadow"]):
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(mi)
+		n += 1
+	_palette.clear()
 	return n
 
 
@@ -496,7 +590,7 @@ func light(label: String, pos: Vector3, color: Color, energy: float, light_range
 	l.name = label
 	l.position = pos
 	l.light_color = color
-	l.light_energy = energy
+	l.light_energy = energy * LIGHT_GAIN
 	l.omni_range = light_range
 	l.omni_attenuation = 1.3
 	l.shadow_enabled = false

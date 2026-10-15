@@ -78,7 +78,7 @@ const STATION_SHADER := preload("res://assets/shaders/station_surface.gdshader")
 func _station(set_a: String, tint: Color, tile_m: float, options: Dictionary = {}) -> ShaderMaterial:
 	var m := ShaderMaterial.new()
 	m.shader = STATION_SHADER
-	m.set_shader_parameter("albedo_a", load(STATION_DIR + set_a + "_diff.jpg"))
+	m.set_shader_parameter("albedo_a", _painted(set_a))
 	m.set_shader_parameter("normal_a", load(STATION_DIR + set_a + "_nor.png"))
 	m.set_shader_parameter("arm_a", load(STATION_DIR + set_a + "_arm.jpg"))
 	m.set_shader_parameter("tint_a", tint)
@@ -86,7 +86,7 @@ func _station(set_a: String, tint: Color, tile_m: float, options: Dictionary = {
 	m.set_shader_parameter("noise_tex", noise())
 	if options.has("dado"):
 		var b: String = options["dado"]
-		m.set_shader_parameter("albedo_b", load(STATION_DIR + b + "_diff.jpg"))
+		m.set_shader_parameter("albedo_b", _painted(b))
 		m.set_shader_parameter("normal_b", load(STATION_DIR + b + "_nor.png"))
 		m.set_shader_parameter("arm_b", load(STATION_DIR + b + "_arm.jpg"))
 	for key in options:
@@ -95,8 +95,24 @@ func _station(set_a: String, tint: Color, tile_m: float, options: Dictionary = {
 	return m
 
 
+## The illustrated (painted) albedo of a station set if tools/art/stylize_textures.py made one, else the photo one.
+func _painted(set_name: String) -> Texture2D:
+	var painted := STATION_DIR + set_name + "_paint.jpg"
+	return load(painted) if ResourceLoader.exists(painted) else load(STATION_DIR + set_name + "_diff.jpg")
+
+
+## Illustrated shading for standard environment materials: Godot's toon diffuse (soft terminator), no specular.
+static func illustrate(m: BaseMaterial3D) -> BaseMaterial3D:
+	m.diffuse_mode = BaseMaterial3D.DIFFUSE_TOON
+	# Environment materials are diffuse-only, like the shaders (illustrated_light.gdshaderinc: painted highlights,
+	# and 2-3 ms saved at 720p on the reference GPU).
+	m.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+	return m
+
+
 func _flat(color: Color, roughness: float, metallic: float = 0.0) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
+	illustrate(m)
 	m.albedo_color = color
 	m.roughness = roughness
 	m.metallic = metallic
@@ -105,6 +121,7 @@ func _flat(color: Color, roughness: float, metallic: float = 0.0) -> StandardMat
 
 func _emissive(color: Color, energy: float, base: Color = Color(0.05, 0.05, 0.05)) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
+	illustrate(m)
 	m.albedo_color = base
 	m.roughness = 0.4
 	m.emission_enabled = true
@@ -225,7 +242,8 @@ func _build(key: String) -> Material:
 		"locker":
 			return _flat(Color(0.2, 0.26, 0.3), 0.6, 0.35)
 		"safety_paint":
-			return _flat(Color(0.62, 0.45, 0.09), 0.8)
+			# Red-oxide handrail paint (the illustrated reference's red-brown steelwork; reads against brick and teal).
+			return _flat(Color(0.5, 0.17, 0.11), 0.7)
 		"blanket":
 			# Foil thermal blanket: crumpled metallic gold, dull from dirt.
 			return _flat(Color(0.42, 0.36, 0.2), 0.45, 0.7)
@@ -276,7 +294,8 @@ func _build(key: String) -> Material:
 		"st_concrete_outside":
 			return _station("concrete_raw", Color(0.7, 0.71, 0.7), 4.0, {"saturation_a": 0.5, "tide_strength": 0.0, "streak_strength": 0.4})
 		"st_floor_painted":
-			return _station("floor_painted", Color(0.6, 0.64, 0.62), 4.5, {"saturation_a": 0.3, "is_floor": true, "normal_strength": 0.7})
+			# Hall floor: old green deck paint worn to grey-green; low contrast so it never reads as water.
+			return _station("floor_painted", Color(0.5, 0.56, 0.54), 5.0, {"saturation_a": 0.14, "is_floor": true, "normal_strength": 0.5})
 		"st_floor_damaged":
 			return _station("floor_damaged", Color(0.8, 0.8, 0.8), 3.0, {"saturation_a": 0.45, "is_floor": true})
 		"st_tread":

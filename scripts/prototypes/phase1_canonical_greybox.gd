@@ -20,6 +20,7 @@ const FacilityMaterials = preload("res://scripts/levels/test_room_art/facility_m
 const HudScript = preload("res://scripts/ui/prompt_hud.gd")
 const PanelScript = preload("res://scripts/ui/narrative_panel.gd")
 const Building = preload("res://scripts/phase1/phase1_building.gd")
+const Builder = preload("res://scripts/phase1/phase1_builder.gd")
 const Parking = preload("res://scripts/phase2/phase2_parking.gd")
 const MissionState = preload("res://scripts/phase1/phase1_mission_state.gd")
 const UnitScript = preload("res://scripts/phase1/phase1_recovery_unit.gd")
@@ -29,6 +30,7 @@ const Music = preload("res://scripts/game/music_director.gd")
 const Synth = preload("res://scripts/audio/sfx_synth.gd")
 const GSynth = preload("res://scripts/audio/game_synth.gd")
 const T = preload("res://scripts/game/game_text.gd")
+const INK_SHADER := preload("res://assets/shaders/ink_outline.gdshader")
 
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 ## Without the entry sequence (tests, retries) play starts in the inspection tunnel, already through the collapsed culvert.
@@ -139,6 +141,7 @@ var _shutter_audio: AudioStreamPlayer3D
 var _pump_hum: AudioStreamPlayer3D
 var _steps: Array[AudioStreamPlayer] = []
 var _env: Environment
+var _ink: MeshInstance3D
 var _sun: DirectionalLight3D
 var _step_dist := 0.0
 var _step_i := 0
@@ -182,16 +185,16 @@ func _environment() -> void:
 	# Night on emergency power (docs/art/ASSET_PRODUCTION_BIBLE.md, "Lighting"): low, neutral ambient so the practical
 	# lights and the moonlight through the clerestory carry the shapes; thin depth fog for distance.
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.3, 0.33, 0.38)
-	env.ambient_light_energy = 0.42
+	env.ambient_light_color = Color(0.4, 0.48, 0.53)
+	env.ambient_light_energy = 0.72
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.tonemap_exposure = 1.08
+	env.tonemap_exposure = 1.15
 	env.fog_enabled = true
 	env.fog_light_color = Color(0.08, 0.1, 0.13)
 	env.fog_density = 0.008
 	env.adjustment_enabled = true
-	env.adjustment_contrast = 1.08
-	env.adjustment_saturation = 0.95
+	env.adjustment_contrast = 1.06
+	env.adjustment_saturation = 1.12
 	env.glow_enabled = true
 	env.glow_intensity = 0.4
 	env.glow_hdr_threshold = 1.2
@@ -199,13 +202,25 @@ func _environment() -> void:
 	world.environment = env
 	add_child(world)
 	_env = env
+	# Illustrated ink lines (assets/shaders/ink_outline.gdshader): one full-screen pass, any camera; off on "performance".
+	_ink = MeshInstance3D.new()
+	_ink.name = "InkOutline"
+	var quad := QuadMesh.new()
+	quad.size = Vector2(2.0, 2.0)
+	_ink.mesh = quad
+	var ink_mat := ShaderMaterial.new()
+	ink_mat.shader = INK_SHADER
+	_ink.material_override = ink_mat
+	_ink.extra_cull_margin = 16384.0
+	_ink.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	add_child(_ink)
 	var sun := DirectionalLight3D.new()
 	_sun = sun
 	sun.name = "Moon"
 	# Moonlight from the south-south-west, low enough to fall through the hall's south clerestory windows.
 	sun.rotation_degrees = Vector3(-38.0, 20.0, 0.0)
 	sun.light_color = Color(0.62, 0.71, 0.86)
-	sun.light_energy = 0.6
+	sun.light_energy = 0.85
 	sun.shadow_enabled = true
 	sun.shadow_bias = 0.06
 	sun.shadow_normal_bias = 1.5
@@ -337,6 +352,8 @@ func _apply_options() -> void:
 	if player != null:
 		player.set("run_drain", GameSettings.tuning("run_drain"))
 	GameSettings.apply_graphics(_env, _sun)
+	if _ink != null:
+		_ink.visible = GameSettings.graphics() != "performance"
 	_refresh_state_fixtures()
 
 
@@ -706,7 +723,7 @@ func _toggle_maintenance() -> void:
 	for l in building.service_lights:
 		l.visible = true
 		var tw := create_tween()
-		tw.tween_property(l, "light_energy", 1.0 if circuit.maintenance_on else 0.0, 1.2)
+		tw.tween_property(l, "light_energy", Builder.LIGHT_GAIN if circuit.maintenance_on else 0.0, 1.2)
 		if not circuit.maintenance_on:
 			tw.tween_callback(func(): l.visible = false)  # a dark light still costs a pass on Compatibility
 	if circuit.maintenance_on:

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c521gduhspwi4"
-path="res://.godot/imported/metal_tool_chest_metal_tool_chest_diff_1k.jpg-379ed8809014753ce671760330fbb501.ctex"
+path.s3tc="res://.godot/imported/metal_tool_chest_metal_tool_chest_diff_1k.jpg-379ed8809014753ce671760330fbb501.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "2a56d4d74a94ba33e6475948bf1d1c27"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/metal_tool_chest_metal_tool_chest_diff_1k.jpg"
-dest_files=["res://.godot/imported/metal_tool_chest_metal_tool_chest_diff_1k.jpg-379ed8809014753ce671760330fbb501.ctex"]
+dest_files=["res://.godot/imported/metal_tool_chest_metal_tool_chest_diff_1k.jpg-379ed8809014753ce671760330fbb501.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

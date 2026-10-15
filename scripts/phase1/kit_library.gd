@@ -5,6 +5,7 @@ extends RefCounted
 ## - Prepared CC0 props from assets/models/props/ph (tools/blender/prepare_ph_props.py): they keep their own textured materials.
 ## Entries are {"mesh": Mesh, "materials": Array[Material], "aabb": AABB}; meshes are shared, never duplicated.
 
+const FacilityMaterials := preload("res://scripts/levels/test_room_art/facility_materials.gd")
 const KIT_PATH := "res://assets/models/env/station_kit.glb"
 const PROP_DIR := "res://assets/models/props/ph/"
 
@@ -57,7 +58,11 @@ func _load_prop(asset: String) -> Dictionary:
 		var mi := found[0] as MeshInstance3D
 		var materials: Array = []
 		for s in mi.mesh.get_surface_count():
-			materials.append(mi.mesh.surface_get_material(s))
+			var m := mi.mesh.surface_get_material(s)
+			if m is BaseMaterial3D:
+				m = (m as BaseMaterial3D).duplicate()
+				FacilityMaterials.illustrate(m)
+			materials.append(m)
 		out = {"mesh": mi.mesh, "materials": materials, "aabb": mi.mesh.get_aabb()}
 	scene.free()
 	return out

@@ -16,6 +16,9 @@ uniform vec4 room_bounds = vec4(-12.0, -8.0, 12.0, 8.0); // x0, z0, x1, z1: grim
 // Local wet spots (x, z, radius_x, radius_z) where water gathers more, e.g. under a leaking shutter.
 uniform vec4 wet_spot_a = vec4(0.0, 0.0, 0.0, 0.0);
 uniform vec4 wet_spot_b = vec4(0.0, 0.0, 0.0, 0.0);
+uniform vec3 puddle_sheen : source_color = vec3(0.05, 0.07, 0.09);
+
+#include "res://assets/shaders/illustrated_light.gdshaderinc"
 
 varying vec3 wpos;
 
@@ -62,7 +65,10 @@ void fragment() {
 	ALBEDO = col;
 	ROUGHNESS = rough;
 	METALLIC = 0.0;
-	SPECULAR = mix(0.4, 0.55, puddle);
+	// The environment has no specular (illustrated_light.gdshaderinc): standing water reads as a cool painted sheen
+	// that grows at grazing angles instead of a reflection.
+	float grazing = 1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0);
+	EMISSION = puddle_sheen * puddle * (0.35 + 0.65 * grazing * grazing);
 	NORMAL_MAP = mix(texture(normal_tex, uv).rgb, vec3(0.5, 0.5, 1.0), damp);
 	NORMAL_MAP_DEPTH = 0.6;
 }

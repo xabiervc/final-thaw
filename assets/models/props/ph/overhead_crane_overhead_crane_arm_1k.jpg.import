@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b83d1pmxj3t0n"
-path="res://.godot/imported/overhead_crane_overhead_crane_arm_1k.jpg-8b2cc7f72dcb5cc52f7da0d8a6ae891c.ctex"
+path.s3tc="res://.godot/imported/overhead_crane_overhead_crane_arm_1k.jpg-8b2cc7f72dcb5cc52f7da0d8a6ae891c.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "f6d8457443e87c843a152666c9d93f02"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/overhead_crane_overhead_crane_arm_1k.jpg"
-dest_files=["res://.godot/imported/overhead_crane_overhead_crane_arm_1k.jpg-8b2cc7f72dcb5cc52f7da0d8a6ae891c.ctex"]
+dest_files=["res://.godot/imported/overhead_crane_overhead_crane_arm_1k.jpg-8b2cc7f72dcb5cc52f7da0d8a6ae891c.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dduufk741d1ck"
-path="res://.godot/imported/hand_truck_hand_truck_diff_1k.jpg-23093c8f581997cd5e8dc2368fbec699.ctex"
+path.s3tc="res://.godot/imported/hand_truck_hand_truck_diff_1k.jpg-23093c8f581997cd5e8dc2368fbec699.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "6c7904e9d42b26f92cf3c96ab5a5c5d2"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/hand_truck_hand_truck_diff_1k.jpg"
-dest_files=["res://.godot/imported/hand_truck_hand_truck_diff_1k.jpg-23093c8f581997cd5e8dc2368fbec699.ctex"]
+dest_files=["res://.godot/imported/hand_truck_hand_truck_diff_1k.jpg-23093c8f581997cd5e8dc2368fbec699.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

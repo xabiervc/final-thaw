@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cym4xk8kgbwi6"
-path="res://.godot/imported/industrial_storage_cart_industrial_storage_cart_nor_gl_1k.jpg-4c9acce2427a8f5b23915a11fd4fc570.ctex"
+path.s3tc="res://.godot/imported/industrial_storage_cart_industrial_storage_cart_nor_gl_1k.jpg-4c9acce2427a8f5b23915a11fd4fc570.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "25a3f6173e669fe4f16c4138edc75941"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/industrial_storage_cart_industrial_storage_cart_nor_gl_1k.jpg"
-dest_files=["res://.godot/imported/industrial_storage_cart_industrial_storage_cart_nor_gl_1k.jpg-4c9acce2427a8f5b23915a11fd4fc570.ctex"]
+dest_files=["res://.godot/imported/industrial_storage_cart_industrial_storage_cart_nor_gl_1k.jpg-4c9acce2427a8f5b23915a11fd4fc570.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=1
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

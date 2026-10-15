@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://h7144btn434s"
-path="res://.godot/imported/exterior_aircon_unit_exterior_aircon_unit_01_diff_1k.jpg-64ace645cd5a64b5af375a244f48de3f.ctex"
+path.s3tc="res://.godot/imported/exterior_aircon_unit_exterior_aircon_unit_01_diff_1k.jpg-64ace645cd5a64b5af375a244f48de3f.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3d6f59abbb8f3c4cd62f1e84e50ffa2f"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/exterior_aircon_unit_exterior_aircon_unit_01_diff_1k.jpg"
-dest_files=["res://.godot/imported/exterior_aircon_unit_exterior_aircon_unit_01_diff_1k.jpg-64ace645cd5a64b5af375a244f48de3f.ctex"]
+dest_files=["res://.godot/imported/exterior_aircon_unit_exterior_aircon_unit_01_diff_1k.jpg-64ace645cd5a64b5af375a244f48de3f.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

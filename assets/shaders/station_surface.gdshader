@@ -38,6 +38,8 @@ uniform float tide_strength = 0.5;
 uniform bool triplanar = false;
 uniform bool is_floor = false;
 
+#include "res://assets/shaders/illustrated_light.gdshaderinc"
+
 varying vec3 wpos;
 varying vec3 wnrm;
 
@@ -73,6 +75,13 @@ void plane_uv(int axis, vec3 p, vec3 n, out vec2 uv, out vec3 t, out vec3 b) {
 	}
 }
 
+// Normal maps are imported RGTC (two channels, VRAM compressed), so Z is rebuilt from XY.
+vec3 decode_normal(vec2 rg) {
+	vec2 xy = rg * 2.0 - 1.0;
+	float z = sqrt(max(0.0, 1.0 - dot(xy, xy)));
+	return vec3(xy * normal_strength, max(z, 0.05));
+}
+
 void sample_set(sampler2D al, sampler2D nm, sampler2D ar, vec3 p, vec3 n, float tile, bool rot, out vec3 col, out vec3 arm, out vec3 nw) {
 	vec3 w = abs(n);
 	if (!triplanar) {
@@ -90,9 +99,8 @@ void sample_set(sampler2D al, sampler2D nm, sampler2D ar, vec3 p, vec3 n, float 
 		uv /= tile;
 		col = texture(al, uv).rgb;
 		arm = texture(ar, uv).rgb;
-		vec3 tn = texture(nm, uv).rgb * 2.0 - 1.0;
-		tn.xy *= normal_strength;
-		nw = normalize(t * tn.x + b * tn.y + n * max(tn.z, 0.05));
+		vec3 tn = decode_normal(texture(nm, uv).rg);
+		nw = normalize(t * tn.x + b * tn.y + n * tn.z);
 	} else {
 		vec3 bw = pow(w, vec3(4.0));
 		bw /= (bw.x + bw.y + bw.z);
@@ -111,9 +119,8 @@ void sample_set(sampler2D al, sampler2D nm, sampler2D ar, vec3 p, vec3 n, float 
 			uv /= tile;
 			col += texture(al, uv).rgb * k;
 			arm += texture(ar, uv).rgb * k;
-			vec3 tn = texture(nm, uv).rgb * 2.0 - 1.0;
-			tn.xy *= normal_strength;
-			nw += (t * tn.x + b * tn.y + n * max(tn.z, 0.05)) * k;
+			vec3 tn = decode_normal(texture(nm, uv).rg);
+			nw += (t * tn.x + b * tn.y + n * tn.z) * k;
 		}
 		nw = normalize(nw);
 	}

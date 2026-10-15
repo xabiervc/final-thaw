@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ncgom67k0m8k"
-path="res://.godot/imported/plastic_crate_02_plastic_crate_02_diff_1k.png-81bde28a36e79b12f9363a71a9bfa048.ctex"
+path.s3tc="res://.godot/imported/plastic_crate_02_plastic_crate_02_diff_1k.png-81bde28a36e79b12f9363a71a9bfa048.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "4d3c4924c11c23f753697f72ddae666e"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/plastic_crate_02_plastic_crate_02_diff_1k.png"
-dest_files=["res://.godot/imported/plastic_crate_02_plastic_crate_02_diff_1k.png-81bde28a36e79b12f9363a71a9bfa048.ctex"]
+dest_files=["res://.godot/imported/plastic_crate_02_plastic_crate_02_diff_1k.png-81bde28a36e79b12f9363a71a9bfa048.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

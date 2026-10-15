@@ -110,5 +110,4 @@ void fragment() {
 	ALBEDO = col;
 	ROUGHNESS = rough;
 	METALLIC = metallic_amount * arm.b;
-	SPECULAR = 0.45;
 }

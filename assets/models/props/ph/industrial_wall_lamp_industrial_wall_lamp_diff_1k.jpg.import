@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dtlrmmuj7ieax"
-path="res://.godot/imported/industrial_wall_lamp_industrial_wall_lamp_diff_1k.jpg-00a4c4ec8b0aefbb44a8d62de71e5d28.ctex"
+path.s3tc="res://.godot/imported/industrial_wall_lamp_industrial_wall_lamp_diff_1k.jpg-00a4c4ec8b0aefbb44a8d62de71e5d28.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "88ce7acb8fe1edc6c7c45c56282ad487"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/industrial_wall_lamp_industrial_wall_lamp_diff_1k.jpg"
-dest_files=["res://.godot/imported/industrial_wall_lamp_industrial_wall_lamp_diff_1k.jpg-00a4c4ec8b0aefbb44a8d62de71e5d28.ctex"]
+dest_files=["res://.godot/imported/industrial_wall_lamp_industrial_wall_lamp_diff_1k.jpg-00a4c4ec8b0aefbb44a8d62de71e5d28.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1

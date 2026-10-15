@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cufh7fervichh"
-path="res://.godot/imported/retro_multimeter_retro_multimeter_arm_1k.jpg-43aab707ee804467ea496c197305ec58.ctex"
+path.s3tc="res://.godot/imported/retro_multimeter_retro_multimeter_arm_1k.jpg-43aab707ee804467ea496c197305ec58.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "3bc45b61dfafba7ec069b54683d81630"
@@ -14,17 +15,17 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/models/props/ph/retro_multimeter_retro_multimeter_arm_1k.jpg"
-dest_files=["res://.godot/imported/retro_multimeter_retro_multimeter_arm_1k.jpg-43aab707ee804467ea496c197305ec58.ctex"]
+dest_files=["res://.godot/imported/retro_multimeter_retro_multimeter_arm_1k.jpg-43aab707ee804467ea496c197305ec58.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
 compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
-compress/normal_map=0
+compress/normal_map=2
 compress/channel_pack=0
 mipmaps/generate=true
 mipmaps/limit=-1
