@@ -112,3 +112,17 @@ La arquitectura solo se acepta cuando:
 7. Se ejecutan las pruebas automáticas y el playtest manual; se registra versión de Godot, renderer, commit, comandos, resultados, incidencias y evidencia visual.
 
 No se afirma aceptación geométrica o jugable hasta ejecutar Godot y completar las pruebas.
+
+## Owner-approved architecture reconciliation target (2026-10-15)
+
+This section supplements the existing architectural plan with the latest owner-approved target. It does not certify the current plan or scene as aligned with that target.
+
+- Retain the central pumping hall as the principal spatial anchor; surround it with purposeful, interconnected rooms and readable vertical routes.
+- Use room-to-room relationships, visible landmarks, machinery sightlines, light and signage to support orientation. The facility should feel large and explorable without becoming a maze.
+- Every major room must support a meaningful interaction, clue, traversal challenge, narrative discovery, route choice or optional reward. Avoid room count inflation and unmotivated backtracking.
+- Elena's entry is a damaged service breach/culvert that physically collapses behind her. Geometry and collision must prevent return through that entrance.
+- The exit path leads through a different operational area; Phase 2 begins with human personnel working on Helix/Aster before detection triggers the hybrid first-person escape.
+- The parking garage is a distinct chase environment and need not be adjacent to the central hall. A credible service connection or controlled scene transition is acceptable if continuity is preserved.
+- The illustrated 3D art direction must be validated in Godot before the full architectural art pass. Update plans, elevations, spatial graph, greybox dimensions and functional route together when the final layout changes; do not let drawings and scene drift apart.
+
+All dimensions, wall openings, collisions, navigation, sightlines and traversal clearances require reconciliation against the actual Godot scene. Conceptual agreement is not geometry verification.
