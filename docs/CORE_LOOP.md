@@ -109,3 +109,27 @@ Collect real playtest evidence rather than invented targets:
 - comprehension of the Aster reveal and the Phase 1 → Phase 2 causal link.
 
 A design criterion is not accepted merely because a function or node exists. Distinguish: **specified**, **implemented**, **covered by a test**, **test executed**, **hands-on validated**. The programming owner records engine version, renderer, commit, exact commands/results, warnings/errors and manual QA evidence.
+
+## 10. Owner-approved experience contract — 2026-10-15
+
+This section records the latest approved direction for the next production pass. It is a target contract, not evidence that the current build implements it.
+
+### Phase 1 — understand a connected place
+The player explores a substantial industrial research facility anchored by a large central pumping hall. Surrounding rooms and vertical routes must have distinct functions and visible relationships to the hall. Use environmental landmarks, purposeful backtracking, optional discoveries and causal mechanisms. Avoid a single open room, a maze, and repeated traversal without new information or access. The existing Aster puzzle and field-notes loop should be retained where correct.
+
+Elena enters through a damaged service breach/culvert that collapses physically behind her. The original entrance must be blocked by geometry and collision. Phase 1 remains investigation-led; Elena is a scientist, not a mandatory combat protagonist.
+
+### Phase 2 — observe, be detected, escape
+The target Phase 2 begins with Elena cautiously entering a new operational zone where human personnel are doing meaningful work related to Helix/Aster. She observes and discovers information before a human threat detects her. This supersedes the robot as the intended principal antagonist for the redesigned sequence; the existing robot implementation remains part of the as-built record until the replacement is implemented and tested.
+
+The escape is hybrid first-person gameplay: free movement and meaningful route choice, plus short contextual actions such as vaulting, ducking/sliding, pushing an object or operating a mechanism. Brief looks back may show player-caused consequences. Prompts must be accessible and contextual, and the sequence must remain playable rather than becoming a QTE-only video.
+
+The route ends through a separately designed parking garage and then a public street, where Elena loses the pursuers among pedestrians. A credible service connection or deliberate scene transition is acceptable; maintain continuity of movement, sound and narrative.
+
+### Future Marcus-led beat-'em-up contract
+The future beat-'em-up phases are played as Marcus with Elena accompanying him. Initially Elena cannot reliably defend herself and seeks cover; Marcus must intervene when she is threatened. As the story progresses, Elena learns limited defensive abilities from Marcus and can later escape grabs, avoid/block basic attacks and opportunistically counter minor threats. She remains less combat-specialized than Marcus. Once she becomes more autonomous, encounters should challenge Marcus through enemy variety, coordination and attack patterns rather than inflated health alone.
+
+This is a future design contract. Full Marcus combat and Elena's companion progression are outside the current Phase 1/2 implementation scope. Keep the systems separable and record their future acceptance criteria without adding unapproved combat features to the current demo.
+
+### Visual identity contract
+The target is illustrated 3D adventure art based on the owner-provided Marcus concept and illustrated industrial laboratory reference. Do not target photorealism, generic cartoon aesthetics or deliberately low-resolution retro styling. Validate character and environment treatment in Godot at gameplay distance. Elena's scanner must be credibly wrist-mounted/holstered or animated through draw/use/stow; it must not appear stuck to her hand.
