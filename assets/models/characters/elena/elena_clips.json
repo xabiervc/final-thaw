@@ -71,8 +71,10 @@
   "speed": 3.731
  },
  "scan": {
+  "frames": 43,
   "loop": false,
-  "source": "procedural (animate_elena.py v1)",
+  "note": "subject 77 standing + wrist-scanner arm and head layer (IK)",
+  "source": "CMU 77_02 frames 452-620",
   "speed": 0.0
  },
  "sprint": {

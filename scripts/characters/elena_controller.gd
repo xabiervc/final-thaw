@@ -215,10 +215,10 @@ func _material_for(material_name: String) -> Material:
 	_material_cache[material_name] = material
 	return material
 
-## The Aster scanner's screen: a faint cyan spill that follows the right hand. Kept weak and short on purpose: at
-## 0.7 energy from below the hand it lit her face and coat neon cyan (2026-10-15 baseline captures).
-const ASTER_GLOW_ENERGY := 0.22
-const ASTER_GLOW_RANGE := 1.1
+## The Aster scanner's screen (a wrist unit on the left forearm since 2026-10-15): a faint cyan spill that follows the
+## screen. Kept weak and short: at 0.7 energy from the hand it lit her face and coat neon cyan (2026-10-15 baseline).
+const ASTER_GLOW_ENERGY := 0.18
+const ASTER_GLOW_RANGE := 0.9
 
 func _add_aster_glow(model: Node) -> void:
 	var glow := OmniLight3D.new()
@@ -227,15 +227,12 @@ func _add_aster_glow(model: Node) -> void:
 	glow.light_energy = ASTER_GLOW_ENERGY
 	glow.omni_range = ASTER_GLOW_RANGE
 	glow.shadow_enabled = false
-	var skeleton := model.find_children("*", "Skeleton3D", true, false)
-	if not skeleton.is_empty() and (skeleton[0] as Skeleton3D).find_bone("hand_r") >= 0:
-		var attach := BoneAttachment3D.new()
-		attach.bone_name = "hand_r"
-		skeleton[0].add_child(attach)
-		glow.position = Vector3(0.0, 0.08, 0.06)
-		attach.add_child(glow)
+	var screen := model.find_child("emit_aster", true, false)
+	if screen != null:
+		screen.add_child(glow)
+		glow.position = Vector3.ZERO
 	else:
-		glow.position = Vector3(-0.16, 1.1, 0.4)
+		glow.position = Vector3(0.16, 1.05, 0.2)
 		visual.add_child(glow)
 
 func _process(delta: float) -> void:

@@ -326,7 +326,8 @@ def heading_of_hips(samples):
 	return math.degrees(math.atan2(acc.x, -acc.y))
 
 
-def retarget(clip, target, samples, mode="grounded", yaw=None, speed_scale=None, keep_travel=False, crouch=None, pin=False, cancel_yaw=False):
+def retarget(clip, target, samples, mode="grounded", yaw=None, speed_scale=None, keep_travel=False, crouch=None, pin=False, cancel_yaw=False,
+		layer=None):
 	"""Solve every sample onto the target rig. Returns (frames, natural_speed). frames: list of (basis quats, pelvis loc).
 	mode: "grounded" pins the lowest foot to the floor every frame; "air" keeps the scaled source height (only prevents sinking)."""
 	if yaw is None:
@@ -365,6 +366,8 @@ def retarget(clip, target, samples, mode="grounded", yaw=None, speed_scale=None,
 		if crouch:
 			world, offset = crouch_layer(target, world, offset, crouch["drop"], crouch["lean"], crouch.get("head"), crouch.get("elbow", 0.0))
 		raw_offsets.append((world, offset))
+	if layer is not None:  # authored pose layer on top of the capture (gestures), per frame
+		raw_offsets = [layer(target, w, o, i, len(raw_offsets)) for i, (w, o) in enumerate(raw_offsets)]
 	if pin:
 		raw_offsets = pin_feet(target, raw_offsets)
 	# grounding pass
@@ -460,6 +463,57 @@ def crouch_layer(target, world, offset, drop, lean_deg, head_deg=None, elbow_deg
 	for side in ("l", "r"):
 		solve_leg(target, W, Wfull, pos1["thigh_" + side], pos0["foot_" + side], side)
 	return W, new_offset
+
+
+def _frame(primary, secondary):
+	"""Orthonormal 3x3 whose columns are primary, the part of secondary perpendicular to it, and their cross product."""
+	a = primary.normalized()
+	b = (secondary - a * secondary.dot(a)).normalized()
+	return Matrix((a, b, a.cross(b))).transposed()
+
+
+def arm_to(target, W, Wfull, offset, side, wrist, pole, dorsal_up=None, weight=1.0):
+	"""Two-bone IK for one arm: the wrist reaches `wrist` with the elbow toward `pole`. If `dorsal_up` is given, the
+	forearm is rolled so its rest lateral (dorsal) side faces that world direction (e.g. a wrist display facing the eyes);
+	the hand follows the forearm. `weight` blends from the captured pose (0) to the solved pose (1). Writes into W."""
+	up_b, low_b, hand_b = "upperarm_" + side, "lowerarm_" + side, "hand_" + side
+	pos = target.positions(Wfull, offset)
+	shoulder = pos[up_b]
+	l1 = (target.head[low_b] - target.head[up_b]).length
+	l2 = (target.head[hand_b] - target.head[low_b]).length
+	to = wrist - shoulder
+	d = max(1e-4, min(to.length, (l1 + l2) * 0.999))
+	axis = to.normalized()
+	a = (l1 * l1 - l2 * l2 + d * d) / (2.0 * d)
+	h = math.sqrt(max(0.0, l1 * l1 - a * a))
+	hint = (pole - shoulder)
+	hint = (hint - axis * hint.dot(axis)).normalized()
+	elbow = shoulder + axis * a + hint * h
+	d_up = (target.head[low_b] - target.head[up_b]).normalized()
+	d_low = (target.head[hand_b] - target.head[low_b]).normalized()
+	solved_up = _swing(Wfull[up_b], target.rest[up_b], d_up, elbow - shoulder)
+	f = (wrist - elbow).normalized()
+	if dorsal_up is not None:
+		lateral = Vector((1.0, 0.0, 0.0)) if side == "l" else Vector((-1.0, 0.0, 0.0))
+		rest_frame = _frame(d_low, lateral)
+		goal_frame = _frame(f, dorsal_up)
+		delta = goal_frame @ rest_frame.transposed()
+		solved_low = delta @ target.rest[low_b]
+		solved_hand = delta @ target.rest[hand_b]
+	else:
+		solved_low = _swing(Wfull[low_b], target.rest[low_b], d_low, wrist - elbow)
+		solved_hand = solved_low @ (target.rest[low_b].inverted() @ target.rest[hand_b])
+	for bone, solved in ((up_b, solved_up), (low_b, solved_low), (hand_b, solved_hand)):
+		base = Wfull[bone].to_quaternion()
+		W[bone] = base.slerp(solved.to_quaternion(), weight).to_matrix()
+
+
+def look_layer(W, Wfull, pitch_deg, yaw_deg, weight=1.0):
+	"""Head and neck turn (pitch forward/down, yaw to Elena's left): the neck takes 35 % and the head, whose world rotation
+	must include the neck's, the whole turn."""
+	for bone, share in (("neck_01", 0.35), ("head", 1.0)):
+		r = Matrix.Rotation(math.radians(yaw_deg * share * weight), 3, "Z") @ Matrix.Rotation(math.radians(pitch_deg * share * weight), 3, "X")
+		W[bone] = r @ W[bone]
 
 
 def find_cycle(clip, start, end, min_len, max_len, bones=("lfemur", "rfemur", "ltibia", "rtibia", "lhumerus", "rhumerus")):

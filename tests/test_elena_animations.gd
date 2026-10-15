@@ -12,7 +12,8 @@ const MIN_LENGTH := 0.3
 const MAX_LENGTH := 4.0
 const MAX_HORIZONTAL_TRAVEL := 0.03  # metres of pelvis drift allowed (it is only the grounding correction)
 ## Standing clips keep the captured weight shifts: the hips may sway this much, but the feet are pinned (checked below).
-const IDLE_CLIPS := ["idle", "crouch_idle"]
+## `scan` is standing capture too (77_02 with the wrist-reading arm layer, feet pinned).
+const IDLE_CLIPS := ["idle", "crouch_idle", "scan"]
 const MAX_IDLE_SWAY := 0.06
 const MAX_PLANTED_FOOT_SLIDE := 0.02
 

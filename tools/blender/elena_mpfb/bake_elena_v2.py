@@ -182,6 +182,92 @@ def build_backpack(rig):
 	return pack, materials
 
 
+def build_wrist_unit(coat, rig):
+	"""The Aster field scanner as a wrist unit on the back of Elena's LEFT forearm (owner direction 2026-10-15: never stuck
+	to her hand). A rugged housing strapped over the coat sleeve, the screen on the dorsal side (it faces her when she
+	raises the forearm palm-down, see animate_elena_v2.py "scan"), a short emitter at the wrist end. Placement follows the
+	rest pose: along the forearm bone at 72 %, on the sleeve surface found by a ray cast from the lateral side.
+	Returns (housing+straps object "Aster", screen object "emit_aster"), both parented to lowerarm_l."""
+	bone = rig.data.bones["lowerarm_l"]
+	head, tail = rig.matrix_world @ bone.head_local, rig.matrix_world @ bone.tail_local
+	axis = (tail - head).normalized()
+	lateral = Vector((1.0, 0.0, 0.2))
+	n = (lateral - axis * lateral.dot(axis)).normalized()  # dorsal (back of the forearm in the A-pose)
+	bvec = axis.cross(n).normalized()
+	depsgraph = bpy.context.evaluated_depsgraph_get()
+	to_local = coat.matrix_world.inverted()
+
+	def sleeve_radius(t):
+		c = head.lerp(tail, t)
+		best = 0.045
+		hit, loc, _, _ = coat.ray_cast(to_local @ (c + n * 0.3), to_local.to_3x3() @ (-n), depsgraph=depsgraph)
+		if hit:
+			best = ((coat.matrix_world @ loc) - c).length
+		return c, best
+
+	centre, radius = sleeve_radius(0.72)
+	frame = Matrix((n, axis, bvec)).transposed().to_4x4()  # local X = dorsal normal, Y = along the forearm, Z = across
+	housing_centre = centre + n * (radius + 0.013)
+	parts = []
+	housing = rounded_box("wrist_housing", (0.026, 0.105, 0.068), (0.0, 0.0, 0.0), 0.007, 2, 0)
+	housing.matrix_world = Matrix.Translation(housing_centre) @ frame
+	parts.append(housing)
+	bezel = rounded_box("wrist_bezel", (0.006, 0.092, 0.058), (0.0, 0.0, 0.0), 0.002, 1, 1)
+	bezel.matrix_world = Matrix.Translation(housing_centre + n * 0.0135) @ frame
+	parts.append(bezel)
+	emitter = cylinder("wrist_emitter", 0.009, 0.022, (0.0, 0.0, 0.0), 2, segments=10)
+	emitter.matrix_world = Matrix.Translation(housing_centre + axis * 0.06 + n * 0.004) @ frame @ Matrix.Rotation(1.5708, 4, "X")
+	parts.append(emitter)
+	for t in (0.6, 0.86):  # straps around the sleeve
+		c, r = sleeve_radius(t)
+		ring = bpy.data.meshes.new("wrist_strap")
+		bm = bmesh.new()
+		ring_r = r + 0.004
+		segs = 16
+		inner = []
+		outer = []
+		for k in range(segs):
+			a = 6.2832 * k / segs
+			d = n * math.cos(a) + bvec * math.sin(a)
+			for side, lst in ((-0.009, inner), (0.009, outer)):
+				lst.append(bm.verts.new(c + axis * side + d * ring_r))
+		for k in range(segs):
+			j = (k + 1) % segs
+			bm.faces.new((inner[k], inner[j], outer[j], outer[k]))
+		for f in bm.faces:
+			f.material_index = 3
+			f.smooth = True
+		bm.to_mesh(ring)
+		bm.free()
+		obj = bpy.data.objects.new("wrist_strap", ring)
+		bpy.context.scene.collection.objects.link(obj)
+		parts.append(obj)
+	unit = join(parts, "Aster")
+	# the screen: a quad on the bezel, own emissive material (ref_elena_aster), UVs 0..1 for its interface texture
+	mesh = bpy.data.meshes.new("emit_aster")
+	bm = bmesh.new()
+	sc = housing_centre + n * 0.0168
+	corners = [sc - axis * 0.042 - bvec * 0.026, sc + axis * 0.042 - bvec * 0.026, sc + axis * 0.042 + bvec * 0.026, sc - axis * 0.042 + bvec * 0.026]
+	vs = [bm.verts.new(c) for c in corners]
+	face = bm.faces.new(vs)
+	if face.normal.dot(n) < 0.0:
+		face.normal_flip()
+	uv = bm.loops.layers.uv.new("UVMap")
+	for loop, co in zip(face.loops, ((0, 0), (1, 0), (1, 1), (0, 1))):
+		loop[uv].uv = co
+	bm.to_mesh(mesh)
+	bm.free()
+	screen = bpy.data.objects.new("emit_aster", mesh)
+	bpy.context.scene.collection.objects.link(screen)
+	for obj in (unit, screen):
+		world = obj.matrix_world.copy()
+		obj.parent = rig
+		obj.parent_type = "BONE"
+		obj.parent_bone = "lowerarm_l"
+		obj.matrix_world = world
+	return unit, screen
+
+
 def build_pockets(coat, rig):
 	"""Flapped hip pockets conformed to the coat front (ray casts), skinned from the coat."""
 	depsgraph = bpy.context.evaluated_depsgraph_get()
@@ -397,13 +483,22 @@ def write_text(path, text):
 		handle.write(text)
 
 
+def illustrate_tres(path, albedo, painted):
+	"""Illustrated style (ASSET_PRODUCTION_BIBLE.md): toon diffuse/specular and the painted albedo from
+	tools/art/stylize_textures.py (run it after this bake)."""
+	text = open(path, encoding="utf-8").read().replace(albedo, painted)
+	if "diffuse_mode" not in text:
+		text = text.replace("[resource]\n", "[resource]\ndiffuse_mode = 3\nspecular_mode = 1\n", 1)
+	write_text(path, text)
+
+
 def write_head_materials(mat_dir, tex_res):
 	"""Godot StandardMaterial3D resources for the MakeHuman head parts (textures from tools/art/prepare_elena_textures.py)."""
 	write_text(os.path.join(mat_dir, "elena_skin.tres"), (
 		'[gd_resource type="StandardMaterial3D" load_steps=3 format=3]\n\n'
-		'[ext_resource type="Texture2D" path="%(r)s/elena_skin_albedo.jpg" id="1"]\n'
+		'[ext_resource type="Texture2D" path="%(r)s/elena_skin_albedo_paint.jpg" id="1"]\n'
 		'[ext_resource type="Texture2D" path="%(r)s/elena_skin_normal.png" id="2"]\n\n'
-		'[resource]\nresource_name = "elena_skin"\nalbedo_color = Color(0.93, 0.9, 0.88, 1)\nalbedo_texture = ExtResource("1")\n'
+		'[resource]\nresource_name = "elena_skin"\ndiffuse_mode = 3\nspecular_mode = 1\nalbedo_color = Color(0.93, 0.9, 0.88, 1)\nalbedo_texture = ExtResource("1")\n'
 		'roughness = 0.6\nmetallic_specular = 0.4\nnormal_enabled = true\nnormal_scale = 0.45\nnormal_texture = ExtResource("2")\n'
 		'rim_enabled = true\nrim = 0.05\nrim_tint = 0.3\n') % {"r": tex_res})
 	write_text(os.path.join(mat_dir, "elena_eyes.tres"), (
@@ -452,6 +547,10 @@ def main():
 	pack.matrix_world = world
 	pockets = build_pockets(coat, rig)
 	tape = build_tape(coat, rig)
+	for name in ("Aster", "emit_aster"):  # v1 hand-held scanner, replaced by the wrist unit
+		if name in bpy.data.objects:
+			bpy.data.objects.remove(bpy.data.objects[name])
+	wrist, wrist_screen = build_wrist_unit(coat, rig)
 
 	mats = outfit_materials()
 	beacon = proc_material("elena_beacon", base="D9771A", rough=0.25, mottle=0.05)  # baked too (harmless), kept by name
@@ -462,8 +561,9 @@ def main():
 	set_materials(tape, [mats["piping"]])
 	set_materials(pack, [mats[m] if m in mats else beacon for m in pack_mats])
 	for name, key in (("Elena_Knit", "knit"), ("Elena_Trousers", "trousers"), ("Elena_Boots", "boot"), ("Elena_Strap_L", "strap"),
-			("Elena_Strap_R", "strap"), ("Aster", "plastic")):
+			("Elena_Strap_R", "strap")):
 		set_materials(bpy.data.objects[name], [mats[key]])
+	set_materials(wrist, [mats["plastic"], mats["metal"], mats["plastic"], mats["strap"]])
 	baked = [bpy.data.objects[name] for name in RECTS]
 	for obj in baked:
 		unwrap(obj, RECTS[obj.name])
@@ -472,16 +572,14 @@ def main():
 	bake_atlas(baked, ASSET, ATLAS, tex_dir, samples=int(options["samples"]), margin=8)
 	finalize_materials(baked, ASSET, keep=("elena_beacon",))
 	write_pbr_tres(os.path.join(mat_dir, ASSET + ".tres"), ASSET, tex_res)
+	illustrate_tres(os.path.join(mat_dir, ASSET + ".tres"), "elena_outfit_albedo.png", "elena_outfit_albedo_paint.png")
 
 	for obj_name, mat_name in HEAD_MATERIALS.items():
 		obj = bpy.data.objects[obj_name]
 		obj.data.materials.clear()
 		obj.data.materials.append(bpy.data.materials.new(mat_name))
-	screen = bpy.data.objects["emit_aster"]
-	screen.parent = bpy.data.objects["Aster"]
-	screen.matrix_parent_inverse = Matrix.Identity(4)
-	screen.location = (0.0, 0.0, 0.0)
-	screen.rotation_euler = (0.0, 0.0, 0.0)
+	wrist_screen.data.materials.clear()
+	wrist_screen.data.materials.append(bpy.data.materials.new("ref_elena_aster"))
 	write_head_materials(mat_dir, tex_res)
 
 	if options["anim"]:

@@ -44,10 +44,39 @@ CLIPS = {
 	# pivots: subject 69 'turn in place', 90 degrees, the hips' yaw removed (the game turns the body)
 	"turn_left": ("69_16", (450, 600), None, "grounded", "subject 69 turn in place, 90 degrees left", {"cancel_yaw": True}),
 	"turn_right": ("69_18", (330, 460), None, "grounded", "subject 69 turn in place, 90 degrees right", {"cancel_yaw": True}),
+	# reading the wrist scanner: idle capture + an IK layer raising the left forearm (scan_layer below)
+	"scan": ("77_02", (452, 620), None, "grounded", "subject 77 standing + wrist-scanner arm and head layer (IK)", {"pin": True, "hips": True, "layer": "scan"}),
 	# startled duck (a sudden threat): subject 77 'duck to avoid flying object', from standing to the duck
 	"alert": ("77_09", (214, 268), None, "grounded", "subject 77 duck to avoid a flying object (startle)", {"pin": True, "hips": True}),
 }
-PROCEDURAL = ("climb", "scan", "interact", "caught")
+PROCEDURAL = ("climb", "interact", "caught")
+
+
+def _smooth(a, b, x):
+	t = max(0.0, min(1.0, (x - a) / (b - a)))
+	return t * t * (3.0 - 2.0 * t)
+
+
+def scan_layer(target, world, offset, i, n):
+	"""Raise the left forearm palm-down in front of the chest so the wrist unit's display faces Elena, and look at it.
+	The wrist target and the elbow pole are expressed in the chest's frame, so they follow the captured breathing."""
+	t = i / max(1, n - 1)
+	w = _smooth(0.0, 0.22, t) * (1.0 - _smooth(0.8, 1.0, t))
+	_, _, Wfull = target.solve(world, offset)
+	pos = target.positions(Wfull, offset)
+	chest = pos["spine_03"]
+	R = Wfull["spine_03"] @ target.rest["spine_03"].inverted()
+	from mathutils import Vector
+	wrist = chest + R @ Vector((0.03, -0.3, 0.23))  # chest height, ~30 cm in front: like checking a watch
+	pole = chest + R @ Vector((0.42, 0.0, -0.2))
+	up = (R @ Vector((0.0, 0.85, 1.0))).normalized()  # the display tilted back toward the eyes
+	W = dict(world)
+	M.arm_to(target, W, Wfull, offset, "l", wrist, pole, up, w)
+	M.look_layer(W, Wfull, 20.0, 12.0, w)
+	return W, offset
+
+
+LAYERS = {"scan": scan_layer}
 
 
 def set_import_loops(import_path, table):
@@ -109,7 +138,7 @@ def main():
 			samples = clip.sample(first, last)
 			facing = M.heading_of_hips(samples) if extra.get("hips") else None  # clips that barely travel face where the hips face
 			frames, speed, yaw = M.retarget(clip, target, samples, mode=mode, yaw=facing, crouch=extra.get("crouch"), pin=extra.get("pin", False),
-				cancel_yaw=extra.get("cancel_yaw", False))
+				cancel_yaw=extra.get("cancel_yaw", False), layer=LAYERS.get(extra.get("layer", "")))
 			if extra.get("pingpong"):
 				frames = frames + frames[-2::-1]
 			a, length = first, last - first
