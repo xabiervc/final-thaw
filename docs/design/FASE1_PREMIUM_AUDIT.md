@@ -169,3 +169,17 @@ Ver `PROJECT_STATUS.md` (comando, commit y recuento por suite).
 - Faltan animaciones de giro en el sitio, arranque y parada, y reacción a golpes.
 - Arte provisional: edificio en greybox con texturas foto, ciudad de cajas, unidad generada.
 - Exportación web y licencia de MPFB sin verificar.
+
+## Owner-approved redesign target (2026-10-15) — not part of this as-built record
+
+This document remains the historical as-built record for the implementation and evidence described above. The owner has since approved a new target direction. Do not interpret this addendum as a claim that the existing scene already implements it.
+
+- Replace the intended final visual direction of realistic/textured greybox presentation with illustrated 3D adventure art based on the owner-provided Marcus character concept and illustrated industrial laboratory reference.
+- Redesign Phase 1 as a larger but legible interconnected facility anchored by the central pumping hall, with purposeful rooms, verticality, environmental storytelling, meaningful traversal and optional discoveries.
+- Use a damaged service breach/culvert that physically collapses behind Elena; the entrance must be blocked by actual geometry/collision.
+- Redesign Phase 2 around a human operational area that Elena observes before being discovered. The target escape is hybrid first-person gameplay with free movement and route choices plus brief contextual actions and consequence-revealing looks back.
+- Use a separately designed parking garage and public-street exit where Elena loses the pursuers in a crowd.
+- Correct Elena's scanner/device integration so it is credibly wrist-mounted/holstered or has proper draw/use/stow animation.
+- Document future Marcus-led beat-'em-up phases in which Elena learns limited defense from Marcus, progressing from dependence to basic self-defense. Full combat is deferred beyond this vertical-slice redesign.
+
+The existing test and performance evidence in this document applies only to the commits and behavior recorded above. It does not verify the new target. Reconcile the actual repository, update the relevant existing specifications and rerun the complete suite after implementation. Record visual and human-playtest evidence separately from automated results.
