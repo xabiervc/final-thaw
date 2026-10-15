@@ -158,3 +158,26 @@ The tables below belong to the earlier Flooded Shelter slice and are kept for re
 ## Definition of done
 
 An asset is done only when it is present in the repository, imported into Godot, visually reviewed in its intended scene, technically validated, provenance-recorded and covered by a test or manual playtest evidence entry.
+
+## Owner-approved art direction update — 2026-10-15
+
+The next art pass targets **illustrated 3D adventure** rather than photorealism, generic cartoon styling or deliberately low-resolution retro-console art. Use the owner-supplied Marcus character concept at assets/concept/characters/marcus_reyes_concept.png as the primary character-art reference and assets/concept/characters/elena_vast_concept.png for Elena's identity. The owner also supplied an illustrated industrial laboratory image as an environment reference; use it if available in the authorized working environment, but do not assume it is already stored in the repository.
+
+### Art acceptance direction
+- Preserve believable proportions but use designed silhouettes and painterly/illustrated material treatment.
+- Use controlled outlines/edge definition, a disciplined palette and cinematic, readable lighting; do not apply indiscriminate black outlines or expensive effects without visual and performance validation.
+- Extend the same visual grammar across characters, environments, props, VFX and UI.
+- Prove the result in a playable Godot section from the real gameplay camera before producing a large batch of assets. Blender renders alone do not satisfy integration acceptance.
+- Elena's scanner/device must be credibly wrist-mounted or holstered, or have proper draw/use/stow animations. Remove the appearance of an object stuck to her hand.
+
+### Asset register changes required by the approved redesign
+| Asset / area | Current register status | Next target | Acceptance evidence |
+|---|---|---|---|
+| Elena v2 model and materials | Existing model; prior production-intent assessment | Retain as a technical base where useful, but adapt its shading/materials and, if needed, silhouette/face treatment to the illustrated concept | Godot gameplay-camera capture, animation review and owner visual review |
+| Elena scanner/device | Existing device integration requires visual review | Credible wrist mount/holster or animated draw/use/stow; no unnatural hand attachment | In-engine captures during idle, movement and scan interaction |
+| Central pumping hall | Existing environment described above as greybox+ | Illustrated industrial focal space with layered machinery, catwalks, readable verticality and controlled palette | In-engine gameplay views and traversal test |
+| Surrounding rooms and routes | Existing layout must be reconciled against new target | Purposeful interconnected maintenance, control, archive/research and service spaces; no maze or empty room inflation | Route walkthrough, landmark/room-purpose review and layout/collision checks |
+| Phase 2 principal pursuer | Current recovery unit is a generated robot | Human security threat with purposeful design, readable detection/pursuit behavior and appropriate animation | In-engine detection/chase capture, behavior tests and manual route review |
+| Parking garage and street exit | Existing service yard/parking assets may be reusable | Distinct chase composition with vehicles, columns, route choices and public-street escape; preserve performance budget | In-engine route captures and frame-time measurements |
+
+These rows specify target work; they do not change the current as-built status of the assets listed earlier in this register. Update each existing asset row when the corresponding change is actually integrated, and record provenance/licences in PROVENANCE.md. Do not mark an asset final based on a render alone.
