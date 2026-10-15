@@ -130,6 +130,8 @@ var _alarm_loop: AudioStreamPlayer
 var _compressor_audio: AudioStreamPlayer3D
 var _shutter_audio: AudioStreamPlayer3D
 var _steps: Array[AudioStreamPlayer] = []
+var _env: Environment
+var _sun: DirectionalLight3D
 var _step_dist := 0.0
 var _step_i := 0
 
@@ -176,7 +178,9 @@ func _environment() -> void:
 	var world := WorldEnvironment.new()
 	world.environment = env
 	add_child(world)
+	_env = env
 	var sun := DirectionalLight3D.new()
+	_sun = sun
 	sun.rotation_degrees = Vector3(-55.0, 205.0, 0.0)
 	sun.light_color = Color(0.62, 0.72, 0.86)
 	sun.light_energy = 0.35
@@ -285,6 +289,7 @@ func _sound(key: String) -> void:
 func _apply_options() -> void:
 	if player != null:
 		player.set("run_drain", GameSettings.tuning("run_drain"))
+	GameSettings.apply_graphics(_env, _sun)
 	_refresh_state_fixtures()
 
 

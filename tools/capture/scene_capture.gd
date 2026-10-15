@@ -142,14 +142,17 @@ func _bench(frames: int, load_ms: float) -> void:
 		total += t
 	var avg := total / times.size()
 	var p95 := times[int(times.size() * 0.95)]
+	var median := times[times.size() / 2]
+	var worst := times[times.size() - 1]
+	var spikes := times.filter(func(t): return t > 50.0).size()
 	var draws := Performance.get_monitor(Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME)
 	var objects := Performance.get_monitor(Performance.RENDER_TOTAL_OBJECTS_IN_FRAME)
 	var prims := Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME)
 	var vram := Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576.0
 	var mem := Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
 	var nodes := Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	print("BENCH process_ms=%.2f physics_ms=%.2f frames=%d avg_ms=%.2f fps=%.1f p95_ms=%.2f draws=%d objects=%d prims=%d vram_mb=%.1f static_mb=%.1f nodes=%d load_ms=%.0f" % [
-		proc_total / frames, phys_total / frames, frames, avg, 1000.0 / avg, p95, draws, objects, prims, vram, mem, nodes, load_ms])
+	print("BENCH process_ms=%.2f physics_ms=%.2f frames=%d avg_ms=%.2f fps=%.1f median_ms=%.2f p95_ms=%.2f max_ms=%.1f spikes_over_50ms=%d draws=%d objects=%d prims=%d vram_mb=%.1f static_mb=%.1f nodes=%d load_ms=%.0f" % [
+		proc_total / frames, phys_total / frames, frames, avg, 1000.0 / avg, median, p95, worst, spikes, draws, objects, prims, vram, mem, nodes, load_ms])
 
 
 func _apply_tweaks(level: Node) -> void:

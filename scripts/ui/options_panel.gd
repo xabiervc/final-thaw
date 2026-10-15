@@ -158,6 +158,12 @@ func _gameplay_tab() -> Control:
 	srow.add_child(sens_value)
 	_row(v, T.t("opt_camera_sens"), srow)
 	_row(v, T.t("opt_invert_y"), _check(GameSettings.invert_y(), func(on: bool): GameSettings.set_value("invert_y", on)))
+	var gfx: Array = GameSettings.GRAPHICS
+	_row(v, T.t("opt_graphics"), _choice(gfx.map(func(g): return T.t("opt_gfx_" + str(g))), gfx.find(GameSettings.graphics()), func(i: int):
+		GameSettings.set_value("graphics", gfx[i])))
+	var gnote := UiKit.label(T.t("opt_graphics_note"), 13, UiKit.TEXT_DIM)
+	gnote.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	v.add_child(gnote)
 	return p[0]
 
 

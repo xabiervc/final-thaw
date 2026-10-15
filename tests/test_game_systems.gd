@@ -231,6 +231,14 @@ func _scene_systems() -> void:
 	scene.pause_menu.close()
 	await get_tree().process_frame
 	_expect(not get_tree().paused and not scene.pause_menu.is_open, "resuming unpauses the game")
+	# Graphics quality changes the real rendering features of the scene.
+	GameSettings.set_value("graphics", "performance")
+	var perf_ok: bool = not scene._env.glow_enabled and not scene._sun.shadow_enabled
+	GameSettings.set_value("graphics", "high")
+	var high_ok: bool = scene._env.glow_enabled and scene._sun.shadow_enabled
+	GameSettings.set_value("graphics", "balanced")
+	var bal_ok: bool = not scene._env.glow_enabled and scene._sun.shadow_enabled
+	_expect(perf_ok and high_ok and bal_ok, "graphics quality toggles glow and sun shadows in the running scene")
 	# Subtitles option: dialogue lines respect it.
 	GameSettings.set_value("subtitles", false)
 	scene.call("_say", "test_line", "x", 2.0)

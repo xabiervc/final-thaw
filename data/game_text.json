@@ -1114,5 +1114,25 @@
 	"note_parking_devices_body": {
 		"es": "El compresor de la jaula arranca con retardo y la persiana del muelle 2 está al fondo del patio: puedo hacer ruido lejos de mí.",
 		"en": "The cage compressor starts with a delay and the dock 2 shutter is at the far end of the yard: I can make noise away from me."
+	},
+	"opt_graphics": {
+		"es": "Calidad gráfica",
+		"en": "Graphics quality"
+	},
+	"opt_gfx_high": {
+		"es": "Alta (resplandor y sombras)",
+		"en": "High (glow and shadows)"
+	},
+	"opt_gfx_balanced": {
+		"es": "Equilibrada (sin resplandor)",
+		"en": "Balanced (no glow)"
+	},
+	"opt_gfx_performance": {
+		"es": "Rendimiento (sin resplandor ni sombras del cielo)",
+		"en": "Performance (no glow, no sky shadows)"
+	},
+	"opt_graphics_note": {
+		"es": "En gráficos integrados (p. ej. Intel HD 630 a 720p), «Rendimiento» se acerca a 60 FPS; «Alta» ronda los 50.",
+		"en": "On integrated graphics (e.g. Intel HD 630 at 720p), \"Performance\" approaches 60 FPS; \"High\" is around 50."
 	}
 }

@@ -9,6 +9,8 @@ extends RefCounted
 ##  subtitles           show dialogue / announcement subtitles (cinematic text cards are always shown)
 ##  game_speed          0.5 | 0.75 | 1.0 global time scale for players who need more time (no penalty)
 ##  master/music/sfx_volume  0..1 linear, applied to the Master / Music / SFX buses
+##  graphics            high (glow + sun shadows) | balanced (no glow) | performance (no glow, no sun shadows);
+##                      measured on an Intel HD 630 at 720p (docs: PROJECT_STATUS.md performance section)
 
 const DEFAULTS := {
 	"difficulty": "standard",
@@ -19,7 +21,9 @@ const DEFAULTS := {
 	"master_volume": 0.9,
 	"music_volume": 0.7,
 	"sfx_volume": 0.9,
+	"graphics": "balanced",
 }
+const GRAPHICS := ["high", "balanced", "performance"]
 const DIFFICULTIES := ["explorer", "standard", "demanding"]
 const GAME_SPEEDS := [0.5, 0.75, 1.0]
 ## Every difficulty changes what the recovery unit can do, never what the player can know: the unit's state is
@@ -60,6 +64,8 @@ static func _validate(key: String, value: Variant) -> Variant:
 				if is_equal_approx(v, s):
 					return s
 			return 1.0
+		"graphics":
+			return str(value) if GRAPHICS.has(str(value)) else DEFAULTS["graphics"]
 		"master_volume", "music_volume", "sfx_volume":
 			return clampf(float(value), 0.0, 1.0) if typeof(value) in [TYPE_FLOAT, TYPE_INT] else DEFAULTS[key]
 	return value
@@ -72,6 +78,19 @@ static func difficulty() -> String:
 ## A numeric parameter of the current difficulty (DIFFICULTY table).
 static func tuning(param: String) -> float:
 	return float((DIFFICULTY[difficulty()] as Dictionary).get(param, 0.0))
+
+
+static func graphics() -> String:
+	return str(get_value("graphics"))
+
+
+## Applies the graphics preset to a scene's environment and sun (each 3D scene calls this with its own nodes).
+static func apply_graphics(env: Environment, sun: DirectionalLight3D) -> void:
+	var g := graphics()
+	if env != null:
+		env.glow_enabled = g == "high"
+	if sun != null:
+		sun.shadow_enabled = g != "performance"
 
 
 static func subtitles_enabled() -> bool:
