@@ -3,18 +3,9 @@ class_name NarrativeText
 
 ## Menú principal
 @export_group("Main Menu")
-@export_multiline var menu_title: String = "Final Thaw\nVertical Slice"
-@export_multiline var menu_context: String = """
-Año 2047. El colapso climático ha sumido a las ciudades en caos.
-Las tormentas no se detienen. Los refugios se inundan. La gente espera
-que alguien tome decisiones imposibles.
-
-Elena Vast, científica del proyecto Aster, y Marcus Reyes, oficial de
-seguridad, deben cooperar para salvar lo que queda de la humanidad.
-
-En esta demo, controlarás a Elena en un refugio de emergencia inundado.
-Cada decisión afecta a quienes dependen de ti.
-"""
+@export_multiline var menu_title: String = "Final Thaw"
+@export_multiline var menu_context: String = "El protocolo fantasma · demo jugable (Fases 1 y 2, unos 30 minutos)
+Helix asegura que el último ensayo de Aster, el protocolo para estabilizar el clima regional, fracasó. Elena Vast, la científica que lo codiseñó, no se lo cree. Esta noche entra sola en la instalación hidrológica de Helix para comprobarlo: medir, deducir y salir sin dejar rastro."
 @export var menu_start_button: String = "Iniciar Demo"
 @export var menu_options_button: String = "Opciones"
 @export var menu_credits_button: String = "Créditos"

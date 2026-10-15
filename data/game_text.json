@@ -1162,5 +1162,13 @@
 	"opt_ctrl_stick_right": {
 		"es": "Stick izq. →",
 		"en": "Left stick →"
+	},
+	"credits_title": {
+		"es": "FINAL THAW\nEl protocolo fantasma · demo",
+		"en": "FINAL THAW\nThe Ghost Protocol · demo"
+	},
+	"credits_body": {
+		"es": "Diseño, código, niveles, animación procedural, música y efectos sintetizados: equipo de FINAL THAW (desarrollo asistido por Claude Code).\n\nRecursos de terceros (CC0 1.0, dominio público):\nPoly Haven: «Covered Car» y «Roller Shutter Door» (MP), «Security Light» (Maximilian Schuster), «Utility Box 01» (James Ray Cock), texturas de hormigón, yeso y metal.\nambientCG: «Asphalt 033».\n\nHerramientas: Godot Engine 4.7 (MIT), Blender 5.2 (GPL) con MPFB 2 para el cuerpo base de Elena.\n\nArte, música y animación de esta demo son provisionales.",
+		"en": "Design, code, levels, procedural animation, synthesised music and effects: the FINAL THAW team (development assisted by Claude Code).\n\nThird-party assets (CC0 1.0, public domain):\nPoly Haven: \"Covered Car\" and \"Roller Shutter Door\" (MP), \"Security Light\" (Maximilian Schuster), \"Utility Box 01\" (James Ray Cock), concrete, plaster and metal textures.\nambientCG: \"Asphalt 033\".\n\nTools: Godot Engine 4.7 (MIT), Blender 5.2 (GPL) with MPFB 2 for Elena's base body.\n\nArt, music and animation in this demo are provisional."
 	}
 }

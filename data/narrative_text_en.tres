@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_nt")
-menu_title = "Final Thaw\nVertical Slice"
-menu_context = "Year 2047. Climate collapse has plunged cities into chaos.\nThe storms do not stop. Shelters flood. People wait for someone\nto make impossible decisions.\n\nElena Vast, scientist of the Aster project, and Marcus Reyes,\nsecurity officer, must cooperate to save what remains of humanity.\n\nIn this demo, you will control Elena in a flooded emergency shelter.\nEvery decision affects those who depend on you."
+menu_title = "Final Thaw"
+menu_context = "The Ghost Protocol · playable demo (Phases 1 and 2, about 30 minutes)
+Helix claims the last trial of Aster, the protocol meant to stabilise the regional climate, failed. Elena Vast, the scientist who co-designed it, does not believe it. Tonight she slips alone into Helix's hydrological facility to check: measure, deduce and leave without a trace."
 menu_start_button = "Start Demo"
 sound_cue_generator = "[Sound] Generator running"
 sound_cue_valves = "[Sound] Valves opening"

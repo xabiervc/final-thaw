@@ -4,8 +4,9 @@
 
 [resource]
 script = ExtResource("1_nt")
-menu_title = "Final Thaw\nDemo jugable"
-menu_context = "Año 2047. El colapso climático ha sumido las ciudades en el caos.\nLas tormentas no cesan. Los refugios se inundan. La gente espera a que alguien\ntome decisiones imposibles.\n\nElena Vast, científica del proyecto Aster, y Marcus Reyes, oficial de seguridad,\ndeben cooperar para salvar lo que queda de la humanidad.\n\nEn esta demo controlarás a Elena en un refugio de emergencia inundado.\nCada decisión afecta a quienes dependen de ti."
+menu_title = "Final Thaw"
+menu_context = "El protocolo fantasma · demo jugable (Fases 1 y 2, unos 30 minutos)
+Helix asegura que el último ensayo de Aster, el protocolo para estabilizar el clima regional, fracasó. Elena Vast, la científica que lo codiseñó, no se lo cree. Esta noche entra sola en la instalación hidrológica de Helix para comprobarlo: medir, deducir y salir sin dejar rastro."
 menu_start_button = "Iniciar demo"
 hud_oxygen_label = "Oxígeno: %d%%"
 hud_civilian_trapped = "Civil: Atrapada"
