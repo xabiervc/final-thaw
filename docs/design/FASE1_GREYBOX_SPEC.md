@@ -111,3 +111,16 @@ Estos son contratos de diseño para el greybox; no afirman que los colliders o l
 8. Ejecutar regresión Fase 0 y tests existentes; registrar versión, renderer, commit, resultados, errores/warnings y QA manual.
 
 Un plano no se considera excelente por estética aislada: debe ser acotado, consistente entre cotas, legible, verificable y capaz de dirigir la implementación sin contradicciones.
+
+## Owner-approved spatial target and reconciliation gate (2026-10-15)
+
+The measurements and room schedule above document the previous spatial specification. The latest owner-approved direction requires a larger but legible interconnected facility anchored by the central pumping hall. Before treating this greybox specification as the active implementation target, reconcile its room topology, entrance, circulation and escape route with the new direction.
+
+- Use purposeful connected rooms and vertical routes, not an oversized single room or a maze.
+- Elena enters through a damaged service breach/culvert; a physical collapse blocks return.
+- The route out must lead through a different operational area where human personnel are working on Helix/Aster.
+- The escape target is hybrid first-person gameplay that continues through a distinct parking garage and ends at a public street.
+- Do not assume existing robot-chase dimensions or the service-yard route automatically satisfy the new target.
+- Update plans, sections, graph, dimension schedules and scene geometry together. Confirm all traversals, collision, camera clearance and route continuity in Godot.
+
+These are design requirements, not proof of geometry. Keep the prior measurements as historical references until a reconciled plan is approved and implemented; do not silently change coordinate contracts or protected technical APIs.
