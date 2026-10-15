@@ -68,15 +68,15 @@ None known that block progression. Polish issues: dim corners in the pit and pum
 
 ## Performance status
 
-Median frame time, HD 630, 1280×720:
+Median frame time, HD 630, 1280×720; the yard figures are measured with the Containment floodlights on:
 
-| Preset | Range | Approx. FPS | Target (16.7 ms) |
+| Preset | Interiors | Lit yard | Target (16.7 ms) |
 |---|---|---|---|
-| High | 18.9–21.7 ms | ~46–53 | not met |
-| Balanced (default) | 18.1–19.6 ms | ~51–55 | not met |
-| Performance | 15.6–17.6 ms | ~57–64 | met indoors; the yard is 0.9 ms over |
+| Balanced (default) | 17.2–19.0 ms | 20.1–21.2 ms | not met |
+| Performance | 15.8–16.2 ms (60 FPS) | 17.8–19.1 ms | met indoors; yard 1–2.4 ms over |
+| High | adds glow, about 2 ms | — | not met |
 
-Remaining costs: glow, the directional shadow pass, omni lights and the surface shader. Details are in the as-built record, §9.
+The bottleneck is mostly fill rate at 720p on this GPU. 3D render scaling makes it worse on this renderer. Details and the next steps are in the as-built record, §9.
 
 ## Next highest-value work
 

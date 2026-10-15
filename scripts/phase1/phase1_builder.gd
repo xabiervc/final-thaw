@@ -121,6 +121,24 @@ func add_box_to_batch(size: Vector3, xf: Transform3D, material: Material, shadow
 			add_box_to_batch(Vector3(size.x, t - y0, size.z), Transform3D(Basis.IDENTITY, Vector3(c.x, (y0 + t) * 0.5, c.z)), material, shadow)
 			add_box_to_batch(Vector3(size.x, y1 - t, size.z), Transform3D(Basis.IDENTITY, Vector3(c.x, (t + y1) * 0.5, c.z)), material, shadow)
 			return
+	# Large boxes (slabs, long walls) are split on the CELL grid, so every batched mesh stays inside one cell and is
+	# only lit by the lights near it. The Compatibility renderer lights per object: a 40 m floor would pay for every
+	# light in the yard on every pixel (measured, HD 630). Shaders project in world space, so splits are invisible.
+	if xf.basis.is_equal_approx(Basis.IDENTITY):
+		var x0 := c.x - size.x * 0.5
+		var x1 := c.x + size.x * 0.5
+		var z0 := c.z - size.z * 0.5
+		var z1 := c.z + size.z * 0.5
+		var gx := (floorf(x0 / CELL) + 1.0) * CELL
+		if gx < x1 - 0.05 and gx > x0 + 0.05:
+			add_box_to_batch(Vector3(gx - x0, size.y, size.z), Transform3D(Basis.IDENTITY, Vector3((x0 + gx) * 0.5, c.y, c.z)), material, shadow)
+			add_box_to_batch(Vector3(x1 - gx, size.y, size.z), Transform3D(Basis.IDENTITY, Vector3((gx + x1) * 0.5, c.y, c.z)), material, shadow)
+			return
+		var gz := (floorf(z0 / CELL) + 1.0) * CELL
+		if gz < z1 - 0.05 and gz > z0 + 0.05:
+			add_box_to_batch(Vector3(size.x, size.y, gz - z0), Transform3D(Basis.IDENTITY, Vector3(c.x, c.y, (z0 + gz) * 0.5)), material, shadow)
+			add_box_to_batch(Vector3(size.x, size.y, z1 - gz), Transform3D(Basis.IDENTITY, Vector3(c.x, c.y, (gz + z1) * 0.5)), material, shadow)
+			return
 	var band := _band(c.y)
 	var key := "%d|%d|%d|%d|%s" % [material.get_instance_id(), int(floor(c.x / CELL)), int(floor(c.z / CELL)), band, shadow]
 	if not _batches.has(key):

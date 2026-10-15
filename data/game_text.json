@@ -1132,8 +1132,8 @@
 		"en": "Performance (no glow, no sky shadows)"
 	},
 	"opt_graphics_note": {
-		"es": "En gráficos integrados (p. ej. Intel HD 630 a 720p), «Rendimiento» se acerca a 60 FPS; «Alta» ronda los 50.",
-		"en": "On integrated graphics (e.g. Intel HD 630 at 720p), \"Performance\" approaches 60 FPS; \"High\" is around 50."
+		"es": "En gráficos integrados (Intel HD 630, 720p), «Rendimiento» da unos 60 FPS en interiores y algo menos en el patio exterior; «Equilibrada», unos 50.",
+		"en": "On integrated graphics (Intel HD 630, 720p), \"Performance\" gives about 60 FPS indoors and a little less in the outdoor yard; \"Balanced\", about 50."
 	},
 	"ban_inference_hypothesis_body": {
 		"es": "A y T recibieron energía a la vez durante el ensayo. Se puede comprobar en control. (Cuaderno de campo)",

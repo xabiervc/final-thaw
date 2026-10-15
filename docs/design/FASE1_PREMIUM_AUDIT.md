@@ -127,27 +127,34 @@ Todo el audio es sintético y provisional.
 
 ## 9. Rendimiento medido
 
-Intel HD 630, 1280×720, Compatibility (ANGLE/D3D11). Mediana de 300–400 fotogramas, `tools/capture/scene_capture.tscn --bench`.
+Intel HD 630, 1280×720, Compatibility (ANGLE/D3D11). Medianas en ms de 300 fotogramas tras 300 de calentamiento, con `tools/capture/scene_capture.tscn --bench`. **Patio = con la respuesta de contención activa (focos encendidos), el caso real de juego.**
 
-| Lugar | Antes de corregir texturas | Alta | Equilibrada (por defecto) | Rendimiento |
-|---|---|---|---|---|
-| Nave | 21,8 | 20,3 | 18,4 | 16,2 |
-| Foso | 22,2 | 20,5 | — | — |
-| Bombas (M) | 24,7 | 20,2 | 18,1 | 15,6 |
-| Control | 18,6 | 18,9 | — | — |
-| R1 | 20,2 | 19,0 | — | — |
-| Patio, entrada | 23,2 | 20,7 | — | — |
-| Patio, centro | 23,8 | 21,7 | 19,6 | 17,6 |
-| Patio, salida | 22,0 | 20,7 | — | — |
+| Lugar | Inicial (hoy) | Equilibrada (por defecto) | Rendimiento |
+|---|---|---|---|
+| Nave | 21,8 | 19,0 | 16,1 |
+| Bombas (M) | 24,7 | 18,9 | 16,2 |
+| Control (E) | 18,6 | 17,2 | 15,8 |
+| Patio centro, focos | 23,8* | 21,2 | 19,1 |
+| Patio salida, focos | 22,0* | 20,1 | 17,8 |
 
-Valores en ms.
+\* La medición inicial del patio se hizo con los focos apagados.
 
-- **Picos:** sin picos por encima de 50 ms en mediciones limpias. Los primeros picos de 78 ms coincidieron con otros procesos en ejecución.
-- **Corrección principal:** las texturas 3D se importaban sin compresión ni mipmaps; ahora usan S3TC con mipmaps.
-- **Cuellos de botella restantes** (medidos con interruptores): glow ~2 ms, sombra direccional ~2 ms, luces omni 1,5–2 ms, sombreador de superficies ~3 ms.
-- **Objetivo de 16,7 ms:**
-  - En «Rendimiento» se cumple en interiores. En el patio queda a 0,9 ms.
-  - En «Alta» y «Equilibrada» no se cumple en este equipo.
+**Correcciones aplicadas:**
+1. Las texturas 3D se importaban sin compresión ni mipmaps; ahora usan S3TC con mipmaps (de −1 a −4,5 ms).
+2. Las cajas estáticas grandes (losas, muros largos) se dividen en la rejilla de 12 m. Cada malla solo recibe las luces cercanas (de −1 a −1,5 ms en el patio).
+3. Opción de calidad gráfica: el glow cuesta ~2 ms y la sombra direccional ~2–3 ms.
+
+**Diagnóstico de lo que queda:** el equipo está limitado sobre todo por la tasa de relleno a 720p.
+- Una ventana de 640×360 ahorra ~5 ms.
+- Sin geometría estática queda una base de ~11 ms (Elena, HUD, coches, pantalla completa).
+- Las luces omni del patio cuestan ~1,3 ms.
+- El escalado de resolución 3D *empeora* este renderer: de 19,2 pasa a 25–27 ms. Se descartó.
+
+**Estado frente a 16,7 ms:**
+- «Rendimiento» lo cumple en interiores (15,8–16,2). En el patio con focos se queda en 17,8–19,1, es decir, 1–2,4 ms por encima.
+- «Equilibrada» y «Alta» no lo cumplen en este equipo.
+
+**Siguiente paso de valor:** medir en el PC nuevo previsto. En la HD 630, reducir el número y el alcance de los focos del patio en «Rendimiento», y probar la valla con geometría en lugar de recorte alfa.
 
 ## 10. Evidencia de tests
 
