@@ -13,7 +13,12 @@ extends Node
 ##   --yaw=r --pitch=r       orbit camera angles (radians) for scenes with an orbit player (Phase 1)
 ##   --call=m1,m2            call these methods on the level root, in order (state setup, e.g. _toggle_maintenance)
 ##   --scale3d=f             3D resolution scale (HUD stays native)
-##   --tweak=a,b             profiling switches: glow_off, shadows_off, omni_off, floor_off, pose_off, dressing_off, labels_off, hud_off, elena_off, batches_off, flatmat
+##   --graphics=performance  graphics preset for this run only (not saved)
+##   --tweak=a,b             profiling switches: glow_off, fog_off, adjust_off, ink_off, shadows_off, omni_off, floor_off, pose_off, dressing_off, labels_off, hud_off, elena_off, batches_off, flatmat,
+##                           batch_noshadow, flat_std, flat_<shader basename> (e.g. flat_station_surface), hide_<shader basename>,
+##                           hrange_<shader>_<lo>_<hi> (batches by number), batch_half, unbatched_off, hn_<node name prefix>
+##                           (geometry), lo_<light name prefix>
+##   --report                print static batches by material, every light and the unbatched geometry
 ##   --props=play_intro:false set level properties before it enters the tree
 ##   --wait=90               frames to wait before the capture
 ##   --bench=240             frames to measure after the capture (0 = skip)
@@ -36,6 +41,8 @@ func _ready() -> void:
 			_args[arg.substr(0, eq)] = arg.substr(eq + 1)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps = 0
+	if _args.has("graphics"):  # graphics preset for this run only (high | balanced | performance), never saved
+		GameManager.settings["graphics"] = _args["graphics"]
 	if _args.has("shots"):
 		_run_shots.call_deferred()
 	else:
@@ -236,6 +243,8 @@ func _run() -> void:
 		var img := get_viewport().get_texture().get_image()
 		img.save_png(out)
 		print("CAPTURE saved %s (%dx%d)" % [out, img.get_width(), img.get_height()])
+	if _args.has("report"):
+		_batch_report(level)
 	var bench := int(_args.get("bench", "0"))
 	if bench > 0:
 		await _bench(bench, load_ms)  # held actions stay pressed, so a held move benchmarks walking
@@ -244,14 +253,100 @@ func _run() -> void:
 	get_tree().quit()
 
 
+## Static batches by material and shadow casting (draw-call budget work): count, triangles.
+func _batch_report(level: Node) -> void:
+	var rows: Dictionary = {}
+	for node in level.find_children("StaticBatch_*", "MeshInstance3D", true, false):
+		var mi := node as MeshInstance3D
+		var m := mi.material_override
+		var key := "%s|%s|shadow=%s" % [m.resource_name if m.resource_name != "" else m.get_class(), (m as ShaderMaterial).shader.resource_path.get_file() if m is ShaderMaterial else "", mi.cast_shadow != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF]
+		if m is BaseMaterial3D:
+			key = "%s|%s|shadow=%s" % [(m as BaseMaterial3D).albedo_color, "std" if (m as BaseMaterial3D).albedo_texture == null else (m as BaseMaterial3D).albedo_texture.resource_path.get_file(), mi.cast_shadow != GeometryInstance3D.SHADOW_CASTING_SETTING_OFF]
+		var tris := 0
+		for sidx in mi.mesh.get_surface_count():
+			tris += mi.mesh.surface_get_array_len(sidx) / 3 if mi.mesh.surface_get_array_index_len(sidx) <= 0 else mi.mesh.surface_get_array_index_len(sidx) / 3
+		if m is ShaderMaterial and "station" in (m as ShaderMaterial).shader.resource_path:
+			var verts := 0
+			for sidx in mi.mesh.get_surface_count():
+				verts += mi.mesh.surface_get_array_len(sidx)
+			print("STATION %s surfaces=%d verts=%d tris=%d aabb=%s layers=%d" % [mi.name, mi.mesh.get_surface_count(), verts, tris, mi.get_aabb().size, mi.layers])
+		var row: Array = rows.get(key, [0, 0])
+		rows[key] = [row[0] + 1, row[1] + tris]
+	var keys := rows.keys()
+	keys.sort_custom(func(a, b): return rows[a][0] > rows[b][0])
+	var total := 0
+	for k in keys:
+		total += rows[k][0]
+		print("BATCH %4d x  %7d tris  %s" % [rows[k][0], rows[k][1], k])
+	print("BATCH TOTAL %d" % total)
+	for node in level.find_children("*", "Light3D", true, false):
+		var l := node as Light3D
+		var rng: float = l.get("omni_range") if l is OmniLight3D else (l.get("spot_range") if l is SpotLight3D else -1.0)
+		print("LIGHT %s %s vis=%s shadow=%s energy=%.2f range=%.1f pos=%s mask=%d" % [l.get_class(), l.get_path(), l.is_visible_in_tree(), l.shadow_enabled, l.light_energy, rng, l.global_position.snapped(Vector3.ONE * 0.1), l.light_cull_mask])
+	var geo := 0
+	for node in level.find_children("*", "GeometryInstance3D", true, false):
+		if (node as GeometryInstance3D).is_visible_in_tree() and not str(node.name).begins_with("StaticBatch"):
+			geo += 1
+			var gi := node as GeometryInstance3D
+			var mat: Material = gi.material_override
+			if mat == null and gi is MeshInstance3D and (gi as MeshInstance3D).mesh != null and (gi as MeshInstance3D).mesh.get_surface_count() > 0:
+				mat = (gi as MeshInstance3D).get_active_material(0)
+			var mdesc := "none"
+			if mat is ShaderMaterial:
+				mdesc = (mat as ShaderMaterial).shader.resource_path.get_file()
+			elif mat is BaseMaterial3D:
+				mdesc = "std(transp=%d,shading=%d,tex=%s)" % [(mat as BaseMaterial3D).transparency, (mat as BaseMaterial3D).shading_mode, (mat as BaseMaterial3D).albedo_texture != null]
+			var size := gi.get_aabb().size * gi.global_transform.basis.get_scale()
+			print("GEO %.1f %s %s %s" % [size.length(), gi.get_class(), str(gi.get_path()).replace("/root/Phase1CanonicalGreybox/", ""), mdesc])
+	print("UNBATCHED_GEOMETRY %d" % geo)
+	# omni lights per geometry instance (Compatibility renderer: every light in range is shaded per pixel, up to the
+	# per-object limit), weighted by triangle count is not needed here: the histogram is what matters
+	var omnis: Array[OmniLight3D] = []
+	for node in level.find_children("*", "OmniLight3D", true, false):
+		if (node as OmniLight3D).is_visible_in_tree():
+			omnis.append(node)
+	var hist: Dictionary = {}
+	var worst: Array = []
+	for node in level.find_children("*", "GeometryInstance3D", true, false):
+		var gi := node as GeometryInstance3D
+		if not gi.is_visible_in_tree():
+			continue
+		var box := gi.global_transform * gi.get_aabb()
+		var n := 0
+		var names: Array[String] = []
+		for l in omnis:
+			if (l.light_cull_mask & gi.layers) == 0:
+				continue
+			var c := l.global_position
+			var closest := c.clamp(box.position, box.end)
+			if closest.distance_to(c) <= l.omni_range:
+				n += 1
+				names.append(str(l.name))
+		hist[n] = int(hist.get(n, 0)) + 1
+		if n >= 6:
+			worst.append("%s(%d): %s" % [gi.name, n, ",".join(names)])
+	var counts := hist.keys()
+	counts.sort()
+	for k in counts:
+		print("LIGHTS_PER_OBJECT %d -> %d objects" % [k, hist[k]])
+	for w in worst.slice(0, 12):
+		print("MANY_LIGHTS ", w)
+
+
 func _bench(frames: int, load_ms: float) -> void:
 	var times: Array[float] = []
 	var cpu_total := 0.0
 	var proc_total := 0.0
 	var phys_total := 0.0
+	var rcpu_total := 0.0
+	var rgpu_total := 0.0
+	var vp_rid := get_viewport().get_viewport_rid()
+	RenderingServer.viewport_set_measure_render_time(vp_rid, true)
 	var last := Time.get_ticks_usec()
 	for i in frames:
 		await get_tree().process_frame
+		rcpu_total += RenderingServer.viewport_get_measured_render_time_cpu(vp_rid) + RenderingServer.get_frame_setup_time_cpu()
+		rgpu_total += RenderingServer.viewport_get_measured_render_time_gpu(vp_rid)
 		var now := Time.get_ticks_usec()
 		times.append(float(now - last) / 1000.0)
 		proc_total += Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0
@@ -273,20 +368,30 @@ func _bench(frames: int, load_ms: float) -> void:
 	var vram := Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576.0
 	var mem := Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
 	var nodes := Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
+	print("BENCH render_cpu_ms=%.2f render_gpu_ms=%.2f" % [rcpu_total / frames, rgpu_total / frames])
 	print("BENCH process_ms=%.2f physics_ms=%.2f frames=%d avg_ms=%.2f fps=%.1f median_ms=%.2f p95_ms=%.2f max_ms=%.1f spikes_over_50ms=%d draws=%d objects=%d prims=%d vram_mb=%.1f static_mb=%.1f nodes=%d load_ms=%.0f" % [
 		proc_total / frames, phys_total / frames, frames, avg, 1000.0 / avg, median, p95, worst, spikes, draws, objects, prims, vram, mem, nodes, load_ms])
 
 
 func _apply_tweaks(level: Node) -> void:
 	var tweaks := String(_args.get("tweak", "")).split(",", false)
+	if "prepass_off" in tweaks or "prepass_on" in tweaks:
+		ProjectSettings.set_setting("rendering/driver/depth_prepass/enable", "prepass_on" in tweaks)
+	print("DEPTH_PREPASS ", ProjectSettings.get_setting("rendering/driver/depth_prepass/enable"), " vendors_off=", ProjectSettings.get_setting("rendering/driver/depth_prepass/disable_for_vendors"))
 	if _args.has("scale3d"):
 		get_viewport().scaling_3d_scale = float(_args["scale3d"])
 	for node in level.find_children("*", "", true, false):
 		if "glow_off" in tweaks and node is WorldEnvironment and node.environment != null:
 			node.environment.glow_enabled = false
+		if "fog_off" in tweaks and node is WorldEnvironment and node.environment != null:
+			node.environment.fog_enabled = false
+		if "adjust_off" in tweaks and node is WorldEnvironment and node.environment != null:
+			node.environment.adjustment_enabled = false
+		if "ink_off" in tweaks and node.name == "InkOutline":
+			node.visible = false
 		if "shadows_off" in tweaks and node is DirectionalLight3D:
 			node.shadow_enabled = false
-		if "omni_off" in tweaks and node is OmniLight3D:
+		if "omni_off" in tweaks and (node is OmniLight3D or node is SpotLight3D):
 			node.visible = false
 		if "floor_off" in tweaks and node.name == "FacilityFloor":
 			node.visible = false
@@ -294,6 +399,55 @@ func _apply_tweaks(level: Node) -> void:
 			var flat := StandardMaterial3D.new()
 			flat.albedo_color = Color(0.5, 0.5, 0.5)
 			(node as GeometryInstance3D).material_override = flat
+		if node is MeshInstance3D and str(node.name).begins_with("StaticBatch"):
+			var mi := node as MeshInstance3D
+			var shader_file := ""
+			if mi.material_override is ShaderMaterial:
+				shader_file = (mi.material_override as ShaderMaterial).shader.resource_path.get_file().get_basename()
+			if ("flat_" + shader_file) in tweaks or ("flat_std" in tweaks and mi.material_override is BaseMaterial3D):
+				mi.material_override = _flat_material()
+			if ("hide_" + shader_file) in tweaks or ("hide_std" in tweaks and mi.material_override is BaseMaterial3D):
+				mi.visible = false
+			for t in tweaks:
+				if t.begins_with("hrange_"):  # hrange_<shader>_<lo>_<hi>: hide that shader's batches numbered lo..hi-1
+					var parts := t.split("_")
+					var num := int(str(node.name).get_slice("_", 1))
+					if t.trim_prefix("hrange_").begins_with(shader_file) and num >= int(parts[parts.size() - 2]) and num < int(parts[parts.size() - 1]):
+						mi.visible = false
+			if "batch_half" in tweaks and node.get_index() % 2 == 0:
+				mi.visible = false
+			if "batch_unshaded" in tweaks:
+				var u := StandardMaterial3D.new()
+				u.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+				u.albedo_color = Color(0.4, 0.4, 0.4)
+				mi.material_override = u
+			if "batch_vertexlit" in tweaks:
+				var v := StandardMaterial3D.new()
+				v.shading_mode = BaseMaterial3D.SHADING_MODE_PER_VERTEX
+				v.albedo_color = Color(0.4, 0.4, 0.4)
+				mi.material_override = v
+			if "batch_nospec" in tweaks:
+				var ns := StandardMaterial3D.new()
+				ns.specular_mode = BaseMaterial3D.SPECULAR_DISABLED
+				ns.diffuse_mode = BaseMaterial3D.DIFFUSE_LAMBERT
+				ns.albedo_color = Color(0.4, 0.4, 0.4)
+				mi.material_override = ns
+			if "batch_noshadow" in tweaks:
+				mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		if node is GeometryInstance3D and not str(node.name).begins_with("StaticBatch") and node.name != "InkOutline":
+			if "unbatched_off" in tweaks and not (node.get_parent() is CharacterBody3D or node.find_parent("Elena") != null):
+				node.visible = false
+			for t in tweaks:
+				if t.begins_with("hn_") and str(node.name).begins_with(t.trim_prefix("hn_")):
+					node.visible = false
+		if node is Light3D:
+			for t in tweaks:
+				if t.begins_with("lo_") and str(node.name).begins_with(t.trim_prefix("lo_")):
+					node.visible = false
+				if t.begins_with("orange_") and node is OmniLight3D:  # scale every omni range (lights per object)
+					(node as OmniLight3D).omni_range *= float(t.trim_prefix("orange_"))
+		if "camera_blank" in tweaks and node is Camera3D:  # 2D, scripts and present only
+			(node as Camera3D).cull_mask = 0
 		if "labels_off" in tweaks and node is Label3D:
 			node.visible = false
 		if "hud_off" in tweaks and node is CanvasLayer:
@@ -311,6 +465,16 @@ func _apply_tweaks(level: Node) -> void:
 			node.visible = false
 	if not tweaks.is_empty():
 		print("TWEAKS ", tweaks)
+
+
+var _flat: StandardMaterial3D
+
+
+func _flat_material() -> StandardMaterial3D:
+	if _flat == null:
+		_flat = StandardMaterial3D.new()
+		_flat.albedo_color = Color(0.5, 0.5, 0.5)
+	return _flat
 
 
 func _find_room(level: Node) -> Node:

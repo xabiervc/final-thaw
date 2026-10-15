@@ -20,6 +20,15 @@ func _ready() -> void:
 	var world := WorldEnvironment.new()
 	world.environment = env
 	add_child(world)
+	var ink := MeshInstance3D.new()
+	var quad := QuadMesh.new()
+	quad.size = Vector2(2.0, 2.0)
+	ink.mesh = quad
+	var ink_mat := ShaderMaterial.new()
+	ink_mat.shader = preload("res://assets/shaders/ink_outline.gdshader")
+	ink.material_override = ink_mat
+	ink.extra_cull_margin = 16384.0
+	add_child(ink)
 	var floor_mesh := MeshInstance3D.new()
 	var plane := PlaneMesh.new()
 	plane.size = Vector2(12.0, 12.0)
