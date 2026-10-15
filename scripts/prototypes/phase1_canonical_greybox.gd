@@ -168,6 +168,8 @@ func _build_actors() -> void:
 	hud = HudScript.new()
 	hud.name = "PromptHUD"
 	add_child(hud)
+	# Phase 1 has no quick save (mission state is session-only by contract): the legend lists what really works.
+	hud.call("set_legend_actions", ["move", "run", "crouch", "jump", "interact", "scan", "hint", "pause"])
 	subtitles = PanelScript.new()
 	subtitles.name = "Subtitles"
 	add_child(subtitles)

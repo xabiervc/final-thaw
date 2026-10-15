@@ -1,7 +1,9 @@
 extends Control
 class_name MainMenu
 
-const LEVEL_PATH := "res://scenes/levels/elena_test_room_art.tscn"
+## "Start" opens the canonical Phase 1 (docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md). The earlier test-room chain
+## (scenes/levels/elena_test_room_art.tscn -> abandoned lab) is kept and can be restored here.
+const LEVEL_PATH := "res://scenes/prototypes/phase1_canonical_greybox.tscn"
 const OPTIONS_PATH := "res://scenes/ui/options_menu.tscn"
 const CREDITS_PATH := "res://scenes/ui/credits.tscn"
 const BOX := "CenterContainer/Panel/MarginContainer/VBoxContainer"

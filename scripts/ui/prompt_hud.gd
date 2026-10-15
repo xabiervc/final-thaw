@@ -255,9 +255,33 @@ static func _key_label(code: Key) -> String:
 
 
 ## Control legend from the live input map ("WASD mover · E interactuar · ...").
-static func control_legend() -> String:
+## Every action the legend knows how to label. A scene lists only the ones it really supports (set_legend_actions).
+const LEGEND_LABELS := {
+	"move": ["hud_ctrl_move", "mover"], "run": ["hud_ctrl_run", "correr"], "crouch": ["hud_ctrl_crouch", "agacharse"],
+	"jump": ["hud_ctrl_jump", "saltar"], "interact": ["hud_ctrl_interact", "interactuar"], "scan": ["hud_ctrl_scan", "escanear (mantener)"],
+	"hint": ["hud_ctrl_hint", "pista"], "quick_save": ["hud_ctrl_save", "guardar"], "quick_load": ["hud_ctrl_load", "cargar"],
+	"pause": ["hud_ctrl_menu", "menú"],
+}
+
+## Actions shown by this HUD; empty = the historical default (LEGEND).
+var legend_actions: Array = []
+
+
+## A scene declares the controls it really supports, so the legend never promises an action that does nothing.
+func set_legend_actions(actions: Array) -> void:
+	legend_actions = actions
+	_instructions.text = control_legend(actions)
+
+
+static func control_legend(actions: Array = []) -> String:
+	var entries: Array = LEGEND
+	if not actions.is_empty():
+		entries = []
+		for a in actions:
+			if LEGEND_LABELS.has(a):
+				entries.append([a, LEGEND_LABELS[a][0], LEGEND_LABELS[a][1]])
 	var parts: Array[String] = []
-	for entry in LEGEND:
+	for entry in entries:
 		var keys := ""
 		if entry[0] == "move":
 			for a in ["move_up", "move_left", "move_down", "move_right"]:
@@ -273,7 +297,7 @@ static func control_legend() -> String:
 func _refresh_texts() -> void:
 	if not _completed:
 		_section_label.text = _directive_header()
-	_instructions.text = control_legend()
+	_instructions.text = control_legend(legend_actions)
 
 
 # --- accessibility --------------------------------------------------------------------------------------------------
