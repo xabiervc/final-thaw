@@ -561,3 +561,21 @@ Before adding any exposition, ask:
 | **Exposition criteria** | ✅ | Show don't tell, budget per chapter, redundancy checks |
 
 **This narrative is SPECIFIC, MEASURABLE, and VALIDATED. No ambiguity.**
+
+## Owner-approved opening direction — 2026-10-15
+
+The following decisions refine the opening narrative proposal above. They are approved direction, not claims of implemented scenes or final full-campaign canon. Legacy campaign material below remains historical wherever it conflicts with the current prototype direction.
+
+### Phase 1 — investigation and discovery
+Elena enters the Helix facility through a damaged service breach or culvert. The access collapses behind her, removing the possibility of returning the way she came. Her investigation of Aster remains the primary gameplay and narrative engine: she observes, compares evidence, forms hypotheses, tests a system and uncovers a contradiction in the official account. The facility should feel like a large interconnected industrial research site, with a central pumping hall and meaningful surrounding rooms, rather than a sequence of unrelated puzzle chambers.
+
+### Phase 2 — the human operation
+Opening the required gate leads Elena into a previously unseen operational area. She initially proceeds cautiously and observes a small number of people performing work related to Helix/Aster. Their activity reveals meaningful information about the project. Elena is discovered by a human security threat; this human threat is the target direction for the redesigned Phase 2, superseding the current robot-led prototype as the intended principal antagonist.
+
+The discovery triggers an urgent escape. The gameplay shifts to first-person, combining free movement and route choice with brief contextual actions. Occasional motivated glances back show the consequences of Elena's choices, such as an object delaying a pursuer. She escapes through a separately designed parking garage and reaches a public street, where she loses the pursuers in the crowd. This ending closes the immediate escape but leaves a meaningful question about Helix/Aster unresolved.
+
+### Future Marcus-led action arc
+In future beat-'em-up phases, Marcus is the player-controlled protagonist and Elena accompanies him. Initially Elena cannot defend herself reliably and relies on Marcus to intervene. As he teaches her through experience, she gains limited defensive autonomy: escaping grabs, evading or blocking basic attacks and countering minor threats opportunistically. The change must be visible in playable behavior, not only dialogue. Later encounters can challenge Marcus with more capable, varied and coordinated enemies while Elena handles basic threats herself. Do not implement the full arc in the current Phase 1/2 vertical slice.
+
+### Tone and art alignment
+The game uses illustrated 3D art informed by the owner-provided Marcus concept and illustrated industrial laboratory reference. Keep the visual world coherent rather than photorealistic, generic cartoon-like or deliberately low-resolution retro. Storytelling should emerge from people, machinery, evidence, room layout, light and player-caused consequences, not exposition alone.
