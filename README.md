@@ -4,9 +4,35 @@
 
 The current working direction is an Elena-led opening: investigate a Helix/Aster system, uncover evidence, then escape a containment response through traversal and stealth. This is a prototype hypothesis, not yet the locked full-game scope.
 
-## Current prototype
+## Current playable: Phase 1
 
-The branch `feat/godot-vertical-slice` contains the **motion/chase prototype v2**:
+"Iniciar demo" in the main menu opens **Phase 1** (`scenes/prototypes/phase1_canonical_greybox.tscn`).
+
+The route runs from the west tunnel to the electrical investigation, then the archive. Opening G starts Containment. From there:
+- quiet evasion past a staff technician;
+- a running chase with the recovery unit through the lift, S1 and the evacuation gallery;
+- continuous entry into the Phase 2 parking scene (no cut, no teleport).
+
+The as-built record, decisions and known limits are in [Phase 1 premium audit](docs/design/FASE1_PREMIUM_AUDIT.md). Verified by automated tests and a route bot; **no human playtest yet**, and performance on an Intel HD 630 is below 60 FPS.
+
+### Controls (all remappable input actions)
+
+| Action | Default keys | Input action |
+|---|---|---|
+| Move | WASD / arrows | `move_up` `move_down` `move_left` `move_right` |
+| Run (uses stamina) | Shift | `run` |
+| Crouch (lower and quieter; stays down under low ceilings) | Ctrl / C | `crouch` |
+| Jump; jump while moving at a ledge to climb onto it (0.45–1.85 m) | Space | `jump` |
+| Interact | E / F | `interact` |
+| Scan (hold) | Tab / Q | `scan` |
+| Hint (graded, never the full solution) | H | `hint` |
+| Pause / menu | Esc / P | `pause` |
+
+Reserved but **not yet handled** in Phase 1: `toggle_captions` (V), `increase_font` / `decrease_font` (= / −), `toggle_colorblind_mode` (B), `quick_save` / `quick_load` (F2 / F3). The legend does not show them.
+
+## Motion/chase prototype
+
+The branch also contains the **motion/chase prototype v2**:
 - third-person camera and movement;
 - walk/run/crouch/jump;
 - gaps, low passage, authored climb and elevated route;
@@ -45,9 +71,12 @@ The older 16-phase, dual-protagonist campaign documents are retained as historic
 Run from the repository root:
 
 ```sh
-godot --headless --path . res://tests/test_motion_chase_prototype.tscn
-godot --headless --path . res://tests/test_phase_0.tscn
+godot --headless --fixed-fps 60 --path . res://tests/test_phase1_playthrough.tscn
+godot --headless --fixed-fps 60 --path . res://tests/test_phase1_edges.tscn
+godot --headless --fixed-fps 60 --path . res://tests/test_phase_0.tscn
 ```
+
+Every suite is a scene in `tests/`. Run each one the same way (32 suites; see `PROJECT_STATUS.md` for the last recorded results).
 
 Then run the prototype manually. Automated tests do not verify camera comfort, movement feel, enemy fairness, audio quality or whether the chase is fun.
 

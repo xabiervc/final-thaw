@@ -1,5 +1,7 @@
 # Phase 1 — Logic contract
 
+> **Nota v3.0 (2026-10-15, as-built):** Sin cambios lógicos. El panel físico de E está a Y 7,55 (P2 = +6); ver C7. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
+
 Status: agreed logic with review corrections; specification only. Reference model not executed; no Godot or manual validation. Supersedes the electrical rules in MISSION1_GHOST_PROTOCOL.md for the new prototype; the earlier prototype does not implement this contract. Paths remain unchanged.
 
 ## Scope

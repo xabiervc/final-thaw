@@ -1,5 +1,7 @@
 # FINAL THAW — Fase 1: grafo espacial (v1.1)
 
+> **Nota v3.0 (2026-10-15, as-built):** Las cotas de M y P2 son +3 y +6. El ascensor va de 0 a +3. El grafo usado en runtime es `scripts/phase1/phase1_route_graph.gd`. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
+
 **Estado:** grafo revisado para la dirección arquitectónica de edificio completo + huida interior + salida alternativa. La topología es el objetivo de diseño; footprints/colliders y navegación aún requieren verificación en Godot. Autoridad: `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`. Los contratos funcionales y lógicos gobiernan el puzle, no las aristas del grafo.
 
 ## Nodos y huellas de referencia

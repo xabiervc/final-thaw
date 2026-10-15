@@ -1,5 +1,7 @@
 # Phase 1 — Lift gate (mission integration decision closed, v1.1)
 
+> **Nota v3.0 (2026-10-15, as-built):** Paradas en P0 (Y 0) y M (Y +3). La instancia de misión usa lower_y = Y_P0 y upper_y = Y_M (3 m, igual que el componente genérico). Se añade una retención por ocupación (`hold_departure`): el ascensor no sale mientras va alguien dentro. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
+
 **Estado:** se conserva el componente genérico y se decide una parada de misión distinta al prototipo actual. Sin ejecución ni validación física claimada.
 
 ## Decisión

@@ -1,5 +1,7 @@
 # FINAL THAW — Arquitectura espacial de Fase 1 (v2.1)
 
+> **Nota v3.0 (2026-10-15, as-built):** Datums M +3 y P2 +6 (C1). El programa y la topología no cambian. La boca este (X=34, Z 4,5..7,5, Y −2) está construida y conectada con el aparcamiento. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
+
 **Estado:** dirección de diseño confirmada por el usuario; revisión de topología y planos en curso. Esta versión cierra la evasión silenciosa y el objetivo R1 de reacquisición en P0 respecto a v2.0; la boca este de P−1 queda seleccionada como baseline (X=34, Z=4,5..7,5, Y=−2); continuidad en Godot pendiente. Los SVG describen el objetivo arquitectónico; geometría, colisiones, cámara, navegación y transición a Fase 2 siguen pendientes de validación en Godot. No declarar la fase aceptada por documentación o revisión estática.
 
 ## 1. Intención arquitectónica

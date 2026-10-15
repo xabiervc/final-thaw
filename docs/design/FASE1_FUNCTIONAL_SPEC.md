@@ -1,5 +1,7 @@
 # FASE1 — Especificación funcional de implementación (v2.1)
 
+> **Nota v3.0 (2026-10-15, as-built):** Por el cambio de datums, el panel de E y los controles de P2 quedan 3 m más altos. Nuevas decisiones de persecución: telemetría de contención, persiana R1 y barrido urgente (C10). El contrato eléctrico no cambia. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
+
 **Estado:** contrato funcional revisado para el diseño de edificio completo, puzle distribuido y huida interior. Las nuevas fases de persecución y salida alternativa aún no están implementadas ni validadas en Godot. No se afirma aceptación de runtime.  
 **Autoridad:** arquitectura espacial en `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`; grafo en `FASE1_SPATIAL_GRAPH.md v1.1`; huellas y colisiones en `FASE1_GREYBOX_SPEC.md v2.1`; progresión en `fase1_fase2_mapa_progresion.md v1.1`; contrato eléctrico en `FASE1_LOGIC_CONTRACT.md`.
 

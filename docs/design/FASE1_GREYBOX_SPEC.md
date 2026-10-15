@@ -1,5 +1,7 @@
 # FINAL THAW — Fase 1: especificación de greybox (v2.1)
 
+> **Nota v3.0 (2026-10-15, as-built):** Datums pasan a P−1 −2 · P0 0 · M +3 · P2 +6 (con +1,5 m quedaban 1,25 m libres). S2 sube hacia el este con rellano en M (X 7,5..9). El puente de retorno cruza sobre la galería a Y 0,35. Se añaden la persiana R1 con manivela y las barandillas en la capa física 5. O3 pasa a (27,7, 0, 0,1). Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
+
 **Estado:** objetivo espacial ampliado. Las huellas base de las plantas existentes se conservan donde son compatibles; la galería de evacuación y la huida interior son nuevas y deben incorporarse a SVG, constructor y tests antes de considerarse construidas. Medidas sujetas a prueba de volumen de jugador/cámara; no reducir anchos para encajar el guion.
 
 ## Convenciones
