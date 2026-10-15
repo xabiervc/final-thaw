@@ -15,7 +15,12 @@ The as-built record, its design decisions and the measured performance are in [`
 
 ## Verified by automated tests
 
-Commit `1ad45d8`, Godot 4.7.2-stable, Windows 10, Intel HD 630 (Compatibility/ANGLE). All 32 suites exit 0: 932 PASS checks plus two suites that print a single PASS, 0 FAIL, 0 script errors.
+**Latest full run (2026-10-15):** after the illustrated art proof, on the tree now committed as `bf67912`, `b85b8ab` and `851dfe1`. Only documentation was committed on top.
+- Setup: Godot 4.7.2-stable, Windows 10, Intel HD 630 (Compatibility/ANGLE), `tools/run_tests.sh`.
+- Result: all 33 suites exit 0, with 1051 PASS checks, 0 FAIL and 0 script errors.
+- The first run of `test_elena_animations` failed one check: the new `scan` clip is standing capture (hips sway 4.6 cm, feet pinned), so it moved to the standing-clip limits. The suite then passed 84/84.
+
+Earlier baseline: commit `1ad45d8`, all 32 suites exit 0, with 932 PASS checks (plus two suites that print a single PASS), 0 FAIL and 0 script errors.
 
 - **Full route on real inputs** (`test_phase1_playthrough`, 64 checks), tunnel to street:
   - investigation, puzzle, record, G, Containment;
@@ -55,8 +60,15 @@ Visual review captures, kept outside the repository in `D:/Projects/evidence/fin
 
 ## Known limitations
 
-- **Art:** the building is a textured greybox; the city is boxes; the recovery unit is a generated model with no concept art; Elena uses an MPFB base whose asset licence is **not yet verified**. Register: `docs/art/MASTER_ASSET_LIST.md`.
-- **Animation:** procedural clips. No turn-in-place, start/stop, dedicated sprint, crawl or hit-reaction. Low passages are taken crouched (R1 shutter, boom barrier).
+- **Art:**
+  - The illustrated style (`docs/art/ASSET_PRODUCTION_BIBLE.md`, "Illustrated style") is applied to the building, its hall and Elena: painted textures, half-tone light, ink line.
+  - The rest of the city is still boxes. The recovery unit is a generated model with no concept art.
+  - Elena v2 uses MakeHuman CC0 assets, licence verified on 2026-10-15. Her Aster scanner is a wrist unit on the left forearm.
+  - Register: `docs/art/MASTER_ASSET_LIST.md`.
+- **Animation:**
+  - Elena's locomotion is CMU motion capture retargeted to her rig: idle, walk, run, sprint, crouch, jump/fall/land, start/stop, turns, alert and the wrist scan.
+  - `climb`, `interact` and `caught` are still procedural.
+  - No crawl or hit reaction. Low passages are taken crouched (R1 shutter, boom barrier).
 - **Voice:** none. Lines and public-address announcements are subtitles, plus a chime for the PA.
 - **Saves:** Phase 1/2 progress is session-only by contract; options are saved.
 - **Legacy actions:** the Phase 0 combat and legacy actions remain defined (contract) but unused. Captions, font and colour-blind hotkeys have no handler; the same options exist in the menu.
@@ -68,23 +80,43 @@ None known that block progression. Polish issues: dim corners in the pit and pum
 
 ## Performance status
 
-Median frame time, HD 630, 1280×720; the yard figures are measured with the Containment floodlights on:
+**Measured 2026-10-15, after the illustrated art pass.** Intel HD 630 at 1280×720. Median of 300 frames after 300 warm-up frames (`tools/capture/scene_capture.tscn --bench`, `--graphics=<preset>`). Six views: hall, pump gallery M, control P2, pit, entry channel, and the yard with the Containment floodlights on.
 
-| Preset | Interiors | Lit yard | Target (16.7 ms) |
+| Driver | Preset | Six views (ms) | 60 FPS (16.7 ms) |
 |---|---|---|---|
-| Balanced (default) | 17.2–19.0 ms | 20.1–21.2 ms | not met |
-| Performance | 15.8–16.2 ms (60 FPS) | 17.8–19.1 ms | met indoors; yard 1–2.4 ms over |
-| High | adds glow, about 2 ms | — | not met |
+| ANGLE on Direct3D 11 (Godot's choice for this GPU) | Balanced (default) | 23.3–29.9 | not met (33–43 FPS) |
+| ANGLE | Performance | 19.8–24.6 | not met (41–50 FPS) |
+| Native OpenGL 3.3, Intel driver 31.0.101.2112 | Balanced | 7.7–9.5 | met (105–130 FPS) |
+| Native OpenGL | High (glow) | 8.7–10.4 | met |
 
-The bottleneck is mostly fill rate at 720p on this GPU. 3D render scaling makes it worse on this renderer. Details and the next steps are in the as-built record, §9.
+**What changed.** Before this pass, Balanced measured 17.2–21.2 ms and Performance reached 60 FPS indoors. The illustrated pass added the hall art, painted materials, the ink line, Elena v2 and more lights. On ANGLE that raised the hall from 19.0 to 29.2 ms at Balanced.
+
+**Root cause.**
+- Godot replaces native OpenGL with ANGLE on this GPU because the driver is on its `rendering/gl_compatibility/force_angle_on_devices` list. Here ANGLE costs about 3×: the same hall frame takes 9.4 ms native, 29.2 ms on ANGLE.
+- Profiling (`--tweak`, `--report` in `scene_capture.gd`) shows that the ANGLE cost tracks draw calls, per-object lights and material setup, not pixel shading. Rendering 3D at a quarter of the resolution is slower than at full resolution.
+
+**Fixes applied in this pass:**
+1. Diffuse-only environment, which is also the illustrated-style rule: −2 to −3 ms on ANGLE.
+2. Flat-colour materials merged into vertex-colour palette batches: 41–53 fewer draws per view, about −0.5 ms.
+3. VRAM compression and mipmaps for 167 textures that had been imported raw: VRAM 301 → 131 MB.
+4. The 12 m batch cell confirmed as the best size: 8 m and 24 m cells were both slower.
+
+Tried and rejected: per-vertex lighting (it loses the light pools and saves only 2 ms) and 3D render scaling.
+
+**Owner decision needed: native OpenGL on Intel Gen9.** It needs a change to `project.godot` (AGENTS.md: owner approval required).
+- **Change:** remove the HD 630 family from `rendering/gl_compatibility/force_angle_on_devices`. Keep `fallback_to_angle` on, so a driver that fails to create a context still gets ANGLE.
+- **Impact:** about 3× faster on this machine (every preset ≥ 100 FPS). No change on other GPUs. The rendered output in the review views is the same.
+- **Risk:** Godot lists these drivers for known OpenGL quality problems. Only one driver version was tried (31.0.101.2112), and it showed a 45 ms shader-compilation hitch at start-up.
+- **Alternative:** ship ANGLE and treat the HD 630 as below minimum spec, measuring the minimum spec on the planned new PC.
+
+The earlier figures and the full diagnosis are in the as-built record, §9 and §9.1.
 
 ## Next highest-value work
 
 1. Human playtest of the whole demo with first-time players. Record time, catches, hints, where they got lost, and whether they can answer the narrative acceptance questions in `docs/narrative_complete.md`.
 2. Real gamepad pass and audio listening pass; fix what they reveal.
-3. Close the remaining 1–2 ms in the yard (light count, shadow distance) and profile on the planned new PC.
-4. Animation gaps (turn, start/stop, sprint) and enemy concept art leading to a final model.
-5. Verify the MPFB licence or replace Elena's base mesh.
+3. Owner decision on native OpenGL for Intel Gen9 (see "Performance status"), then profile on the planned new PC.
+4. Replace Elena's remaining procedural clips (`climb`, `interact`, `caught`) with captured or keyed motion.
 
 Preserve the autoloads, the Phase 0 InputMap action names, resource paths, JSON/CRC32 save compatibility and the Compatibility renderer.
 

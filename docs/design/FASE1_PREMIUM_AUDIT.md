@@ -156,6 +156,33 @@ Intel HD 630, 1280×720, Compatibility (ANGLE/D3D11). Medianas en ms de 300 foto
 
 **Siguiente paso de valor:** medir en el PC nuevo previsto. En la HD 630, reducir el número y el alcance de los focos del patio en «Rendimiento», y probar la valla con geometría en lugar de recorte alfa.
 
+### 9.1 Medición tras el pase ilustrado (2026-10-15, posterior a v4.0)
+
+El pase ilustrado añadió materiales pintados, luz en dos tonos, trazo de tinta, el arte de la nave, Elena v2 y más luces.
+
+Medición: mismo equipo y mismo método, seis vistas (nave, galería de bombas M, control P2, foso, canal de entrada, patio con focos). Se compara el controlador por defecto (ANGLE sobre Direct3D 11) con OpenGL nativo (driver Intel 31.0.101.2112).
+
+| Controlador | Calidad | Rango (ms) | 60 FPS |
+|---|---|---|---|
+| ANGLE (por defecto en esta GPU) | Equilibrada | 23,3–29,9 | no |
+| ANGLE | Rendimiento | 19,8–24,6 | no |
+| OpenGL nativo | Equilibrada | 7,7–9,5 | sí |
+| OpenGL nativo | Alta | 8,7–10,4 | sí |
+
+**Diagnóstico.**
+- Godot sustituye OpenGL por ANGLE en esta GPU: su lista `rendering/gl_compatibility/force_angle_on_devices` la incluye. Aquí ANGLE cuesta unas tres veces más; la misma vista de la nave tarda 29,2 ms con ANGLE y 9,4 ms en nativo.
+- Con ANGLE, el coste sigue a las llamadas de dibujo, a las luces por objeto y a la preparación de materiales, no al sombreado de píxeles. Prueba de ello: renderizar el 3D a un cuarto de resolución es *más lento* que a resolución completa.
+
+**Correcciones aplicadas:**
+1. Entorno solo difuso, sin especular, que además es la norma del estilo ilustrado: −2 a −3 ms con ANGLE.
+2. Lote de paleta: los colores planos comparten un material de color por vértice. Hay de 41 a 53 llamadas menos por vista, unos −0,5 ms.
+3. 167 texturas nuevas se importaban sin compresión ni mipmaps; ahora usan S3TC/BPTC con mipmaps y los mapas normales RGTC. La VRAM baja de 301 a 131 MB.
+4. Celdas de 12 m confirmadas como óptimas: con 8 m y con 24 m va más lento.
+
+Probado y descartado: iluminación por vértice (pierde los charcos de luz y solo ahorra 2 ms) y escalado 3D.
+
+**Decisión pendiente del propietario.** Usar OpenGL nativo en Intel Gen9 exige quitarla de `force_angle_on_devices` en `project.godot`, y ese archivo requiere aprobación (AGENTS.md). Impacto y riesgo en `PROJECT_STATUS.md`, «Performance status».
+
 ## 10. Evidencia de tests
 
 Ver `PROJECT_STATUS.md` (comando, commit y recuento por suite).

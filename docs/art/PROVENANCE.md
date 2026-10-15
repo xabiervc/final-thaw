@@ -22,6 +22,14 @@ Blender MCP was not available in the environment where these assets were produce
 | Krita | 5.3.4.1 | winget (`KDE.Krita`, download.kde.org) | GPL-3.0 | painting and texture touch-up |
 | Audacity | 4.0.1 | winget (`Audacity.Audacity`, upstream GitHub release) | GPL-3.0-or-later | audio editing |
 | Pillow | 12.3.0 | PyPI | HPND | image inspection in scripts |
+| OpenCV (`opencv-contrib-python-headless`) with NumPy | 5.0.0.93 with NumPy 2.5.4 | PyPI, installed in the isolated venv `D:/Projects/tools/venv_art` (Python 3.12.10), outside the repository | Apache-2.0 (OpenCV); BSD-3-Clause (NumPy) | `tools/art/stylize_textures.py`: the painted (`_paint`) albedos of the illustrated style. Its output is a filtered derivative of the CC0 source textures listed below, so it stays CC0-compatible; no model weights, no network access. |
+
+**Evaluated, not used: Tripo AI and TripoSR (2026-10-15).**
+- **Tripo AI** (tripo3d.ai, image or text to 3D) is a hosted service. Its free tier needs an account, and project images would be uploaded to a third party. Outputs on the free tier carry licence restrictions: verify them on the vendor's current terms before any use. Creating accounts and uploading private project art were not authorised, so it was not tried.
+- **TripoSR** is the open model by Stability AI and Tripo, MIT-licensed code and weights, run locally. Two things rule it out today:
+  - It needs a CUDA GPU for practical speed; the reference machine has an Intel HD 630.
+  - Its single-image reconstructions are blobby, vertex-coloured meshes. They lack clean topology, UVs and rigs, and fall far below the bar set for Elena (MakeHuman base plus a scripted bake) and for the station kit (scripted Blender).
+- **Decision:** neither is in the pipeline. TripoSR may be re-evaluated on the planned new PC, for distant background props only, with outputs recorded here like any other external resource.
 
 ## Assets created from scratch (no external source)
 
@@ -109,6 +117,10 @@ Downloaded through the official Poly Haven API (`https://api.polyhaven.com/info/
 | `assets/textures/facility/rust_{diff,nor,arm}.*` | Poly Haven `rust_coarse_01` (https://polyhaven.com/a/rust_coarse_01) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
 | `assets/textures/facility/dirty_concrete_{diff,nor,arm}.*` | Poly Haven `dirty_concrete` (https://polyhaven.com/a/dirty_concrete) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
 | `assets/textures/facility/plaster_peeling_{diff,nor,arm}.*` | Poly Haven `peeling_painted_wall` (https://polyhaven.com/a/peeling_painted_wall) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/*_paint.jpg` | the `_diff` texture of the same name above | CC0 1.0 (derivative) | painted treatment of the illustrated style (`tools/art/stylize_textures.py`, OpenCV): oil-paint fills and tinted ink |
+| `assets/textures/characters/elena/elena_skin_albedo_paint.jpg`, `elena_outfit_albedo_paint.png` | `elena_skin_albedo.jpg` (MakeHuman CC0, see Elena v2) and `elena_outfit_albedo.png` (baked by `bake_elena_v2.py`) | CC0 / project-owned | same treatment; no ink on the skin |
+
+**Imports (2026-10-15, second pass):** the textures were added uncompressed and without mipmaps. They are now VRAM-compressed (S3TC/BPTC) with mipmaps, normal maps as RGTC. This covers the 48 facility textures, the two painted Elena albedos and the 117 prop textures in `assets/models/props/ph/`. `station_surface.gdshader` rebuilds the normal's Z from its two channels.
 
 | Files | Source asset | Authors | Licence | Change |
 |---|---|---|---|---|

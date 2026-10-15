@@ -131,5 +131,41 @@ The future beat-'em-up phases are played as Marcus with Elena accompanying him. 
 
 This is a future design contract. Full Marcus combat and Elena's companion progression are outside the current Phase 1/2 implementation scope. Keep the systems separable and record their future acceptance criteria without adding unapproved combat features to the current demo.
 
+**Status:** specified 2026-10-15. Not implemented, not prototyped, not tested.
+
+**Roles.** The player controls Marcus. Elena is an AI companion with her own goals: survive, observe, help. She is never an escort cargo bar. Marcus fights. Elena reads the space: she tags threats, spots mechanisms and finds routes. The Aster wrist unit stays a scientific instrument and never becomes a weapon.
+
+**Elena's progression.** Each stage is unlocked by a story beat in which Marcus teaches her, never by experience points. She never fights as well as Marcus.
+
+| Stage | When | What Elena can do | What Marcus must do |
+|---|---|---|---|
+| E0 Dependent | first beat-'em-up phase | moves between valid cover points; calls out threats; flees grabs only with Marcus's help | intercept anyone who targets her; free her from grabs within a visible, generous window |
+| E1 Aware | after the first lesson | can also break a basic grab once; she telegraphs the attempt | intervene against armed or heavy enemies; basic ones she can stall |
+| E2 Defensive | mid-story | can also dodge or block basic attacks with a clear readable timing; she still takes damage from heavy attacks | focus on elites and coordinated groups |
+| E3 Opportunist | late story | can also counter a staggered basic enemy, and briefly trigger an environmental mechanism (shutter, valve, light) | handle the encounter's main threat; Elena manages minor pressure |
+
+**Companion rules (all stages):**
+- Elena's state is always readable, from her pose and a non-colour-only marker: safe, threatened, grabbed or hurt.
+- Threats against Elena are telegraphed long enough for Marcus to react from anywhere on screen. Default 1.5 s; assist options lengthen it.
+- She never blocks Marcus's path or his attacks. She never runs into an active attack. She never chooses cover in a hazard.
+- **Failure is fair.** If Elena is overwhelmed, she enters a *downed* state with a rescue window; failure restarts at the encounter's checkpoint and never ends the run. A difficulty option can make her invulnerable.
+- **Encounter difficulty grows** through enemy variety, coordination (flankers, a caller who radios, a grabber who targets Elena) and attack patterns. Inflating health is not a lever.
+
+**Separable interfaces (to build later).** Defined now so the Phase 1/2 systems do not grow combat code:
+- **Cover points:** `Marker3D` nodes in group `companion_cover`, with metadata `quality` (0–1) and `faces` (direction).
+- **Threat contract:** the human AI of Phase 2 already exposes `perception`, `suspicion` and `state` per agent. A future enemy adds `attack_intent(target)` and `telegraph_time`. Elena's companion AI reads only these signals.
+- **Instructions:** the companion receives at most two instructions, `stay_close` and `hold_cover`. No squad commands.
+
+**Acceptance criteria (future):**
+1. A first-time player understands why Elena cannot fight yet, without a tutorial text wall.
+2. In E0, no Elena failure happens without a telegraph Marcus could have answered.
+3. In playtests, Elena's E1–E3 actions read as learned from Marcus. They do not feel like a sudden power-up.
+4. Every encounter can be completed with assist options on, which slow telegraphs and lengthen rescue windows.
+5. Combat systems live in their own scenes and scripts; the Phase 1/2 demo loads none of them.
+
+**Out of scope now:**
+- any combat input, hit detection or health for Elena or Marcus in the current demo;
+- any Marcus character production beyond the existing spec (`docs/art/MARCUS_MPFB_SPEC.md`).
+
 ### Visual identity contract
 The target is illustrated 3D adventure art based on the owner-provided Marcus concept and illustrated industrial laboratory reference. Do not target photorealism, generic cartoon aesthetics or deliberately low-resolution retro styling. Validate character and environment treatment in Godot at gameplay distance. Elena's scanner must be credibly wrist-mounted/holstered or animated through draw/use/stow; it must not appear stuck to her hand.

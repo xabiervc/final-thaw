@@ -155,10 +155,41 @@ Light colours: moon `#9DB4D9`, fluorescent `#D8E6F0`, sodium `#FFB766`, bulkhead
 
 ### Budgets (Intel HD 630 at 720p, "Performance" preset 16.7 ms)
 
-- Visible triangles ≤ 350k; draw calls ≤ 350 per view (static geometry is batched per material per 12 m cell per storey).
+- Visible triangles ≤ 350k; draw calls ≤ 350 per view (static geometry is batched per material per 12 m cell per storey; flat-colour materials share one vertex-colour palette batch per cell).
 - Real lights: ≤ 6 affecting any one batch; no dynamic shadows except the moon and the yard floodlight key.
-- Textures: tiling materials 1K (VRAM-compressed, mipmapped), hero props 1K, small props 512, Elena 2K atlas + 2K skin.
+- Textures: every 3D texture is VRAM-compressed (S3TC/BPTC) with mipmaps. Normal maps use RGTC (two channels; shaders rebuild Z). Uncompressed textures are a defect. Sizes: tiling materials 1K, hero props 1K, small props 512, Elena 2K atlas and 2K skin.
 - CC0 props are decimated to the standard-prop budget (≤ 2k tris) unless they are hero props (≤ 10k).
+- The budget is measured on the driver the player gets. On the reference GPU, Godot forces ANGLE (Direct3D 11), which costs about 3× native OpenGL for this scene. See `PROJECT_STATUS.md`, "Performance".
+
+### Illustrated style (v3, 2026-10-15)
+
+The owner locked the look on 2026-10-15: an **illustrated 3D adventure**. Painted surfaces, controlled ink lines, a disciplined palette and cinematic light pools; never photographic. It refines the Helix Station B direction above (same place, palette and lighting plan) and governs every new asset.
+
+**References.** There are two:
+- the approved Marcus concept, for rendering: painted planes, strong silhouettes, ink only where form turns;
+- an illustrated laboratory interior the owner showed in conversation, for mood: warm practical pools, cool shadow, readable clutter along walls.
+
+The owner's lab illustration is a **mood reference only**. It is not in the repository; never copy it, trace it or reproduce its composition.
+
+| Pillar | Rule | Implementation |
+|---|---|---|
+| **Painted albedo** | Surfaces read as brushwork: flat patches of colour, no photographic noise, value kept in the mid range. Photo-sourced CC0 textures are allowed only after the painted treatment. | `tools/art/stylize_textures.py` writes `<name>_paint.<ext>` next to each source: an oil-paint filter, plus tinted ink taken from OpenCV stylization. Materials pick the `_paint` file when it exists (`FacilityMaterials._painted`). |
+| **Half-tone light** | Two soft steps (core shadow, lit plane) instead of a smooth Lambert falloff. Shadows keep the cool ambient colour; lights keep their warm colour. | `assets/shaders/illustrated_light.gdshaderinc` (station, wall and floor shaders); `FacilityMaterials.illustrate()` (toon diffuse) for standard materials. |
+| **Diffuse-only environment** | Highlights are painted, not computed. Specular stays only on characters (skin, eyes, hair, Elena's wrist unit) and glass. Standing water reads as a cool sheen that grows at grazing angles. | `render_mode specular_disabled` in the include; `SPECULAR_DISABLED` in `illustrate()`; `puddle_sheen` in `facility_floor.gdshader`. Saves 2–3 ms at 720p on the reference GPU. |
+| **Ink line** | One full-screen line from depth discontinuities: dark warm ink, never pure black. Lines fade between 32 and 70 m, so distance stays soft. | `assets/shaders/ink_outline.gdshader` (strength 0.8, 1 px). The scene's `InkOutline` quad is hidden on the "Performance" preset. |
+| **Disciplined palette** | Mid-tone, slightly saturated base. The reserved accents are unchanged (amber, cyan, red, green, Aster copper/violet). Large areas stay in the brick, green and concrete families. | Environment adjustments (contrast 1.06, saturation 1.12); safety paint is red oxide, not signal red. |
+| **Cinematic light** | Generous warm pools on cool ambient. Every pool has a visible fixture. The moon is the key outdoors and through clerestories. | `Phase1Builder.LIGHT_GAIN` (1.6) scales authored energies; Moon directional light energy 0.85 with shadows (off on "Performance"). |
+
+**Characters.** They use the same painted treatment: Elena's skin and outfit `_paint` albedos, plus her MakeHuman-based model (`docs/art/PROVENANCE.md`). Her silhouette must read at the gameplay camera's 5 m arm. Her Aster scanner is a **wrist unit on the left forearm**, never a hand-held object; its screen faces her when she raises the forearm to scan.
+
+**Not allowed:**
+- unpainted photo textures on new environment assets;
+- specular highlights on environment materials;
+- black outlines baked into geometry;
+- emissive colours outside the reserved accents;
+- copying, tracing or committing the reference images.
+
+**Review:** every illustrated asset is judged in Godot from the gameplay camera and one cinematic angle, under the "Balanced" and "Performance" presets. Review captures live outside the repository (`D:/Projects/evidence/`).
 
 ### Camera and composition
 
