@@ -59,3 +59,29 @@ Preserve Phase 0 input/autoload/resource/save/CRC32 contracts, Compatibility ren
 For every acceptance claim, distinguish static review, code present, automated test coverage, test executed, hands-on validation and production readiness. Run and report Godot version, exact commands/output, defects, camera/collision observations, player comprehension and performance notes.
 
 The MPFB/MakeHuman asset licence remains a shipping blocker until verified from authoritative terms.
+
+## Owner-approved direction update — 2026-10-15
+
+The following decisions refine the active prototype brief. They are approved design targets, not claims of implementation. Where older prototype descriptions conflict with this target, retain them as an as-built record and use this section for the next redesign; do not silently rewrite history.
+
+### Art direction
+The target is illustrated 3D adventure art inspired by the owner's Marcus character concept and illustrated industrial laboratory reference. Avoid photorealism, generic cartoon styling and deliberate low-resolution retro-console aesthetics. Use painterly material treatment, strong silhouettes, disciplined palettes, controlled edge definition and cinematic but readable lighting. Prove the style with Elena and one representative playable room inside Godot before scaling asset production. Correct the scanner/device attachment on Elena so it is wrist-mounted/holstered credibly or has proper draw/use/stow animation.
+
+### Phase 1 spatial experience
+Keep the central pumping hall as the memorable spatial anchor, with purposeful interconnected rooms and vertical routes around it. The building must feel substantially larger and more explorable than a single open room, without becoming a maze. Rooms must reward observation, traversal, interaction, inference or optional discovery. Avoid repetitive backtracking. The entry is a damaged service breach/culvert that physically collapses behind Elena; actual geometry/collision must prevent return.
+
+### Phase 2 target experience
+The current robot-led containment route is the as-built prototype, not the target final Phase 2. The target introduces a human operational area related to Helix/Aster. Elena observes personnel and discovers information before detection triggers escape. The principal escape is a hybrid first-person sequence combining free movement/route choices with short contextual actions and brief, consequence-revealing looks back. It leads through a credible service connection to a separately designed parking garage, then a public street where Elena loses the pursuers in a crowd. Avoid a QTE-only sequence, arbitrary fail states and decorative NPCs.
+
+### Future Marcus beat-'em-up direction
+Future action phases are played as Marcus while Elena accompanies him. Initially she seeks cover and needs his protection. Across the story she learns limited defensive skills from Marcus and becomes capable of handling basic threats, allowing later encounters to challenge Marcus with more varied/coordinated enemies. This progression is approved at design level only; do not expand the current Phase 1/2 implementation into a full combat campaign.
+
+### Scope and priority
+1. Reconcile actual branch state and tests.
+2. Prove the illustrated art direction in-engine.
+3. Improve Phase 1's interconnected layout and irreversible entry.
+4. Build the human stealth discovery and hybrid first-person escape.
+5. Update documentation and evidence.
+6. Keep Marcus's full beat-'em-up system deferred, with its future design contract recorded.
+
+Preserve Phase 0 contracts, save compatibility, input actions, autoloads, public signals and resource paths unless a justified change is explicitly assessed and documented.
