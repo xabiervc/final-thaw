@@ -8,6 +8,8 @@ extends RefCounted
 
 const PHOTO_DIR := "res://assets/textures/lab_photo/"
 const WALL_SHADER := preload("res://assets/shaders/facility_wall.gdshader")
+## Variant with the dither cutaway (uses discard): only for walls that fade out of the camera's way.
+const WALL_CUTAWAY_SHADER := preload("res://assets/shaders/facility_wall_cutaway.gdshader")
 const FLOOR_SHADER := preload("res://assets/shaders/facility_floor.gdshader")
 const HAZARD_SHADER := preload("res://assets/shaders/hazard_paint.gdshader")
 const PhotoMaterial := preload("res://scripts/levels/lab_photo_material.gd")
@@ -82,8 +84,9 @@ func _build(key: String) -> Material:
 			m.set_shader_parameter("seam_spacing", 2.0)
 			return m
 		"wall_alcove":
-			# Own instance of the wall material so the alcove wall can be cut away without touching other walls.
+			# Own instance of the wall material, with the cutaway variant, so only this wall pays for discard.
 			var m := _wall("painted_plaster_wall", Color(0.36, 0.42, 0.47), 2.5)
+			m.shader = WALL_CUTAWAY_SHADER
 			m.set_shader_parameter("seam_spacing", 2.0)
 			return m
 		"wall_frost":

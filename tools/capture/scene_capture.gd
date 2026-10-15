@@ -12,7 +12,8 @@ extends Node
 ##   --hold=a,b              hold these input actions (e.g. move_right,jump) during the wait
 ##   --yaw=r --pitch=r       orbit camera angles (radians) for scenes with an orbit player (Phase 1)
 ##   --call=m1,m2            call these methods on the level root, in order (state setup, e.g. _toggle_maintenance)
-##   --tweak=a,b             profiling switches: glow_off, shadows_off, omni_off, floor_off, pose_off, dressing_off
+##   --scale3d=f             3D resolution scale (HUD stays native)
+##   --tweak=a,b             profiling switches: glow_off, shadows_off, omni_off, floor_off, pose_off, dressing_off, labels_off, hud_off, elena_off, batches_off, flatmat
 ##   --wait=90               frames to wait before the capture
 ##   --bench=240             frames to measure after the capture (0 = skip)
 ##   --out=D:/path/shot.png  screenshot output (outside the repository)
@@ -113,12 +114,16 @@ func _run() -> void:
 func _bench(frames: int, load_ms: float) -> void:
 	var times: Array[float] = []
 	var cpu_total := 0.0
+	var proc_total := 0.0
+	var phys_total := 0.0
 	var last := Time.get_ticks_usec()
 	for i in frames:
 		await get_tree().process_frame
 		var now := Time.get_ticks_usec()
 		times.append(float(now - last) / 1000.0)
-		cpu_total += Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0 + Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0
+		proc_total += Performance.get_monitor(Performance.TIME_PROCESS) * 1000.0
+		phys_total += Performance.get_monitor(Performance.TIME_PHYSICS_PROCESS) * 1000.0
+		cpu_total = proc_total + phys_total
 		last = now
 	times.sort()
 	var total := 0.0
@@ -132,12 +137,14 @@ func _bench(frames: int, load_ms: float) -> void:
 	var vram := Performance.get_monitor(Performance.RENDER_VIDEO_MEM_USED) / 1048576.0
 	var mem := Performance.get_monitor(Performance.MEMORY_STATIC) / 1048576.0
 	var nodes := Performance.get_monitor(Performance.OBJECT_NODE_COUNT)
-	print("BENCH cpu_ms=%.2f frames=%d avg_ms=%.2f fps=%.1f p95_ms=%.2f draws=%d objects=%d prims=%d vram_mb=%.1f static_mb=%.1f nodes=%d load_ms=%.0f" % [
-		cpu_total / frames, frames, avg, 1000.0 / avg, p95, draws, objects, prims, vram, mem, nodes, load_ms])
+	print("BENCH process_ms=%.2f physics_ms=%.2f frames=%d avg_ms=%.2f fps=%.1f p95_ms=%.2f draws=%d objects=%d prims=%d vram_mb=%.1f static_mb=%.1f nodes=%d load_ms=%.0f" % [
+		proc_total / frames, phys_total / frames, frames, avg, 1000.0 / avg, p95, draws, objects, prims, vram, mem, nodes, load_ms])
 
 
 func _apply_tweaks(level: Node) -> void:
 	var tweaks := String(_args.get("tweak", "")).split(",", false)
+	if _args.has("scale3d"):
+		get_viewport().scaling_3d_scale = float(_args["scale3d"])
 	for node in level.find_children("*", "", true, false):
 		if "glow_off" in tweaks and node is WorldEnvironment and node.environment != null:
 			node.environment.glow_enabled = false
@@ -147,6 +154,21 @@ func _apply_tweaks(level: Node) -> void:
 			node.visible = false
 		if "floor_off" in tweaks and node.name == "FacilityFloor":
 			node.visible = false
+		if "flatmat" in tweaks and node is GeometryInstance3D and not (node is Label3D):
+			var flat := StandardMaterial3D.new()
+			flat.albedo_color = Color(0.5, 0.5, 0.5)
+			(node as GeometryInstance3D).material_override = flat
+		if "labels_off" in tweaks and node is Label3D:
+			node.visible = false
+		if "hud_off" in tweaks and node is CanvasLayer:
+			node.visible = false
+		if "elena_off" in tweaks and node is CharacterBody3D and node.name == "Elena":
+			(node.get("visual") as Node3D).visible = false
+		if "batches_off" in tweaks and node is MeshInstance3D and str(node.name).begins_with("StaticBatch"):
+			node.visible = false
+		for b in 4:
+			if ("band%d_off" % b) in tweaks and node is VisualInstance3D and (node as VisualInstance3D).layers == (1 << (b + 1)):
+				node.visible = false
 		if "pose_off" in tweaks and node.name == "ProceduralPose":
 			node.process_mode = Node.PROCESS_MODE_DISABLED
 		if "dressing_off" in tweaks and node is GeometryInstance3D and node.get_parent() != null and node.get_parent().name == "TestRoomDressing":

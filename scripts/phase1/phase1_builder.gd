@@ -18,6 +18,26 @@ const LAYER_NO_MANTLE := 16  # physics layer 5
 var root: Node3D
 var mats = null  # FacilityMaterials
 var _flat_cache: Dictionary = {}
+## Static batching: geometry that never moves is merged per material, per 8 m cell and per storey band, so the
+## building draws in tens of calls instead of hundreds and each merged mesh stays within the Compatibility
+## renderer's per-object light limit. Collision is never merged. Call flush() once after building.
+const CELL := 12.0
+## Storey bands for lighting: geometry of each storey lives on its own render layer (2..5) and each light only lights
+## its storey (+ layer 1, where Elena, the unit and the staff live). Lights no longer leak through slabs, and each
+## surface pays for 2-4 lights instead of up to 8 (measured cost on the Compatibility renderer, HD 630).
+const BAND_TOPS := [-0.8, 2.75, 5.75]  # P-1 | P0 | M | P2
+
+
+static func band_of(y: float) -> int:
+	for i in BAND_TOPS.size():
+		if y < float(BAND_TOPS[i]):
+			return i
+	return BAND_TOPS.size()
+
+
+static func band_layer(band: int) -> int:
+	return 1 << (band + 1)
+var _batches: Dictionary = {}  # key -> {"st": SurfaceTool, "mat": Material, "shadow": bool}
 
 
 func _init(parent: Node3D, materials) -> void:
@@ -47,7 +67,7 @@ func flat(color: Color, roughness: float = 0.7, metallic: float = 0.0, emission:
 
 # --- bodies -----------------------------------------------------------------------------------------------------
 
-func body(label: String, size: Vector3, center: Vector3, material: Material, layer: int = LAYER_WORLD, shadow: bool = true) -> StaticBody3D:
+func body(label: String, size: Vector3, center: Vector3, material: Material, layer: int = LAYER_WORLD, shadow: bool = true, batch: bool = true) -> StaticBody3D:
 	var b := StaticBody3D.new()
 	b.name = label
 	b.position = center
@@ -58,17 +78,66 @@ func body(label: String, size: Vector3, center: Vector3, material: Material, lay
 	box.size = size
 	shape.shape = box
 	b.add_child(shape)
-	var mesh := MeshInstance3D.new()
-	mesh.name = label + "Mesh"
-	var bm := BoxMesh.new()
-	bm.size = size
-	mesh.mesh = bm
-	mesh.material_override = material
-	if not shadow:
-		mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	b.add_child(mesh)
+	if batch:
+		add_box_to_batch(size, Transform3D(Basis.IDENTITY, center), material, shadow)
+	else:
+		var mesh := MeshInstance3D.new()
+		mesh.name = label + "Mesh"
+		var bm := BoxMesh.new()
+		bm.size = size
+		mesh.mesh = bm
+		mesh.material_override = material
+		if not shadow:
+			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		mesh.layers = band_layer(band_of(center.y))
+		b.add_child(mesh)
 	root.add_child(b)
 	return b
+
+
+## Unmoving decoration without collision, merged into the static batches.
+func static_visual(size: Vector3, center: Vector3, material: Material, shadow: bool = false) -> void:
+	add_box_to_batch(size, Transform3D(Basis.IDENTITY, center), material, shadow)
+
+
+func add_box_to_batch(size: Vector3, xf: Transform3D, material: Material, shadow: bool) -> void:
+	var c := xf.origin
+	var y0 := c.y - size.y * 0.5
+	var y1 := c.y + size.y * 0.5
+	# Tall walls are sliced at storey boundaries so each slice is lit by its own storey (visual only).
+	for top in BAND_TOPS:
+		var t := float(top)
+		if y0 < t - 0.05 and y1 > t + 0.05 and xf.basis.is_equal_approx(Basis.IDENTITY):
+			add_box_to_batch(Vector3(size.x, t - y0, size.z), Transform3D(Basis.IDENTITY, Vector3(c.x, (y0 + t) * 0.5, c.z)), material, shadow)
+			add_box_to_batch(Vector3(size.x, y1 - t, size.z), Transform3D(Basis.IDENTITY, Vector3(c.x, (t + y1) * 0.5, c.z)), material, shadow)
+			return
+	var band := band_of(c.y)
+	var key := "%d|%d|%d|%d|%s" % [material.get_instance_id(), int(floor(c.x / CELL)), int(floor(c.z / CELL)), band, shadow]
+	if not _batches.has(key):
+		var st := SurfaceTool.new()
+		st.begin(Mesh.PRIMITIVE_TRIANGLES)
+		_batches[key] = {"st": st, "mat": material, "shadow": shadow, "band": band}
+	var bm := BoxMesh.new()
+	bm.size = size
+	(_batches[key]["st"] as SurfaceTool).append_from(bm, 0, xf)
+
+
+## Builds one MeshInstance3D per batch. Returns how many were created.
+func flush() -> int:
+	var n := 0
+	for key in _batches:
+		var entry: Dictionary = _batches[key]
+		var mi := MeshInstance3D.new()
+		mi.name = "StaticBatch_%02d" % n
+		mi.mesh = (entry["st"] as SurfaceTool).commit()
+		mi.material_override = entry["mat"]
+		mi.layers = band_layer(int(entry["band"]))
+		if not bool(entry["shadow"]):
+			mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		root.add_child(mi)
+		n += 1
+	_batches.clear()
+	return n
 
 
 func visual(label: String, size: Vector3, center: Vector3, material: Material, shadow: bool = false) -> MeshInstance3D:
@@ -79,6 +148,7 @@ func visual(label: String, size: Vector3, center: Vector3, material: Material, s
 	m.mesh = bm
 	m.position = center
 	m.material_override = material
+	m.layers = band_layer(band_of(center.y))
 	if not shadow:
 		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	root.add_child(m)
@@ -156,6 +226,7 @@ func _rail(label: String, size: Vector3, base: Vector3, along_x: bool) -> Static
 	var b := StaticBody3D.new()
 	b.name = label
 	b.position = base + Vector3(0.0, size.y * 0.5, 0.0)
+	_rail_origin = b.position
 	b.collision_layer = LAYER_NO_MANTLE
 	b.collision_mask = 0
 	b.add_to_group("guard_rails")
@@ -178,15 +249,11 @@ func _rail(label: String, size: Vector3, base: Vector3, along_x: bool) -> Static
 	return b
 
 
-func _rail_piece(parent: Node3D, size: Vector3, offset: Vector3, material: Material) -> void:
-	var m := MeshInstance3D.new()
-	var bm := BoxMesh.new()
-	bm.size = size
-	m.mesh = bm
-	m.position = offset
-	m.material_override = material
-	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-	parent.add_child(m)
+var _rail_origin: Vector3 = Vector3.ZERO
+
+
+func _rail_piece(_parent: Node3D, size: Vector3, offset: Vector3, material: Material) -> void:
+	add_box_to_batch(size, Transform3D(Basis.IDENTITY, _rail_origin + offset), material, false)
 
 
 ## Rail that follows a stair slope from `a` to `b` (both on the walking surface at the rail's line).
@@ -265,6 +332,7 @@ func wedge(label: String, low: Vector3, high: Vector3, width: float, base_y: flo
 	mi.name = label + "Mesh"
 	mi.mesh = st.commit()
 	mi.material_override = mat("grate") if material == null else material
+	mi.layers = band_layer(band_of((low.y + high.y) * 0.5))
 	b.add_child(mi)
 	if treads:
 		var rise := high.y - low.y
@@ -309,6 +377,7 @@ func paint_sign(label: String, text: String, pos: Vector3, facing: String, size:
 	l.shaded = true
 	l.double_sided = false
 	l.no_depth_test = false
+	l.layers = band_layer(band_of(pos.y))
 	match facing:
 		"+x":
 			l.rotation.y = PI * 0.5
@@ -331,8 +400,10 @@ func screen_text(label: String, text: String, pos: Vector3, facing: String, size
 	return l
 
 
-func light(label: String, pos: Vector3, color: Color, energy: float, light_range: float) -> OmniLight3D:
+## A light lights its own storey (by its mounting height, ~1.8 m above the floor, or `band` if given) and layer 1.
+func light(label: String, pos: Vector3, color: Color, energy: float, light_range: float, band: int = -1) -> OmniLight3D:
 	var l := OmniLight3D.new()
+	l.light_cull_mask = 1 | band_layer(band if band >= 0 else band_of(pos.y - 1.8))
 	l.name = label
 	l.position = pos
 	l.light_color = color

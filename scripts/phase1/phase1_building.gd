@@ -92,6 +92,7 @@ func build() -> void:
 	_lift_landings()
 	_column()
 	_lighting()
+	b.flush()
 
 
 # --- shell ------------------------------------------------------------------------------------------------------
@@ -188,23 +189,23 @@ func _pit() -> void:
 	# D1: drainage pumps, sump and tide marks.
 	b.body("D1PumpA", Vector3(0.9, 1.1, 0.9), Vector3(14.0, Y_P1 + 0.55, 2.0), mats.get_material("machine"))
 	b.body("D1PumpB", Vector3(0.9, 1.1, 0.9), Vector3(16.5, Y_P1 + 0.55, 2.0), mats.get_material("machine"))
-	b.visual("D1Manifold", Vector3(5.0, 0.18, 0.18), Vector3(15.0, Y_P1 + 1.4, 1.5), mats.get_material("pipe"), true)
+	b.static_visual(Vector3(5.0, 0.18, 0.18), Vector3(15.0, Y_P1 + 1.4, 1.5), mats.get_material("pipe"), true)  # D1Manifold
 	b.body("D1Sump", Vector3(1.4, 0.2, 1.1), Vector3(12.2, Y_P1 + 0.1, 6.4), mats.get_material("steel"))
 	b.paint_sign("D1Label", "D1  ·  ACHIQUE", Vector3(14.5, Y_P1 + 0.02, 5.0), "floor", 54)
 	b.paint_sign("D1TideMark", "NIVEL MÁX. 14/03", Vector3(10.05, Y_P1 + 0.6, 4.0), "+x", 26, Color(0.85, 0.3, 0.25))
 	b.paint_sign("D2Label", "D2  ·  DISTRIBUCIÓN", Vector3(23.0, Y_P1 + 0.02, 7.2), "floor", 48)
 	# D2: intended-distribution schematic (east pit wall), tampered A->T bridge, maintenance switch.
 	# On the east pit wall north of the gallery opening (Z 4.5..7.5 stays clear).
-	b.visual("SchematicBoard", Vector3(0.1, 1.5, 2.3), Vector3(27.95, Y_P1 + 1.35, 2.9), mats.get_material("screen_dark"), false)
+	b.static_visual(Vector3(0.1, 1.5, 2.3), Vector3(27.95, Y_P1 + 1.35, 2.9), mats.get_material("screen_dark"), false)  # SchematicBoard
 	b.screen_text("SchematicDiagram", "ESQUEMA DE DISTRIBUCIÓN PREVISTA\n\nFUENTE AUXILIAR\n├ EMERGENCIA → DIAGNÓSTICO\n├ MANTENIMIENTO → LUCES / ELEVADOR\n└ PROTECCIÓN → SELECTOR\n      ├ ENSAYO → T\n      └ ARCHIVO → A", Vector3(27.88, Y_P1 + 1.37, 2.9), "-x", 26, Color(0.75, 0.92, 0.95))
-	b.visual("BridgeTerminalA", Vector3(0.5, 0.7, 0.4), Vector3(20.2, Y_P1 + 0.35, 4.2), mats.get_material("steel_light"), true)
-	b.visual("BridgeTerminalT", Vector3(0.5, 0.7, 0.4), Vector3(22.8, Y_P1 + 0.35, 4.2), mats.get_material("steel_light"), true)
+	b.static_visual(Vector3(0.5, 0.7, 0.4), Vector3(20.2, Y_P1 + 0.35, 4.2), mats.get_material("steel_light"), true)  # BridgeTerminalA
+	b.static_visual(Vector3(0.5, 0.7, 0.4), Vector3(22.8, Y_P1 + 0.35, 4.2), mats.get_material("steel_light"), true)  # BridgeTerminalT
 	b.paint_sign("BridgeLabelA", "A", Vector3(20.2, Y_P1 + 0.8, 4.41), "+z", 64)
 	b.paint_sign("BridgeLabelT", "T", Vector3(22.8, Y_P1 + 0.8, 4.41), "+z", 64)
-	b.visual("TamperedBridge", Vector3(2.6, 0.09, 0.09), Vector3(21.5, Y_P1 + 0.62, 4.2), b.flat(Color(0.9, 0.42, 0.1), 0.45, 0.3, 0.6), false)
-	b.visual("TamperedBridgeClampA", Vector3(0.16, 0.16, 0.16), Vector3(20.45, Y_P1 + 0.62, 4.2), mats.get_material("steel"), false)
-	b.visual("TamperedBridgeClampT", Vector3(0.16, 0.16, 0.16), Vector3(22.55, Y_P1 + 0.62, 4.2), mats.get_material("steel"), false)
-	b.visual("BridgeScorch", Vector3(1.2, 0.01, 0.8), Vector3(21.5, Y_P1 + 0.01, 4.2), b.flat(Color(0.05, 0.04, 0.035), 0.95), false)
+	b.static_visual(Vector3(2.6, 0.09, 0.09), Vector3(21.5, Y_P1 + 0.62, 4.2), b.flat(Color(0.9, 0.42, 0.1), 0.45, 0.3, 0.6), false)  # TamperedBridge
+	b.static_visual(Vector3(0.16, 0.16, 0.16), Vector3(20.45, Y_P1 + 0.62, 4.2), mats.get_material("steel"), false)  # TamperedBridgeClampA
+	b.static_visual(Vector3(0.16, 0.16, 0.16), Vector3(22.55, Y_P1 + 0.62, 4.2), mats.get_material("steel"), false)  # TamperedBridgeClampT
+	b.static_visual(Vector3(1.2, 0.01, 0.8), Vector3(21.5, Y_P1 + 0.01, 4.2), b.flat(Color(0.05, 0.04, 0.035), 0.95), false)  # BridgeScorch
 	b.body("MaintenanceHousing", Vector3(0.7, 1.2, 0.4), Vector3(26.4, Y_P1 + 0.6, 1.4), mats.get_material("steel_light"))
 	switch_lamp = b.visual("MaintenanceStatusLamp", Vector3(0.22, 0.12, 0.06), Vector3(26.4, Y_P1 + 1.05, 1.62), b.flat(Color(0.9, 0.2, 0.1), 0.35, 0.0, 1.3), false)
 	b.paint_sign("MaintenanceLabel", "MANTENIMIENTO", Vector3(26.4, Y_P1 + 1.35, 1.61), "+z", 30)
@@ -222,9 +223,9 @@ func _east_bridge_and_gallery() -> void:
 	# R1: sector shutter between the service gallery and the east return. Raised (open) until Containment.
 	b.wall_x("R1FrameWest", 28.0, 0.9, 1.2, 0.0, 2.6, mats.get_material("steel"))
 	b.body("R1Lintel", Vector3(2.1, 0.3, 0.3), Vector3(29.0, 2.6, 1.05), mats.get_material("steel"))
-	r1_shutter = b.body("R1Shutter", Vector3(1.9, 2.3, 0.1), Vector3(29.0, R1_OPEN_Y, 1.05), mats.get_material("steel_light"))
+	r1_shutter = b.body("R1Shutter", Vector3(1.9, 2.3, 0.1), Vector3(29.0, R1_OPEN_Y, 1.05), mats.get_material("steel_light"), 1, true, false)
 	r1_beacon = b.visual("R1Beacon", Vector3(0.2, 0.12, 0.12), Vector3(29.0, 2.82, 0.88), b.flat(Color(0.2, 0.2, 0.2), 0.4), false)
-	b.visual("R1CrankWheel", Vector3(0.08, 0.45, 0.45), Vector3(29.85, 1.1, 0.35), mats.get_material("pipe_red"), false)
+	b.static_visual(Vector3(0.08, 0.45, 0.45), Vector3(29.85, 1.1, 0.35), mats.get_material("pipe_red"), false)  # R1CrankWheel
 	b.paint_sign("R1CrankSign", "DESBLOQUEO\nDE EMERGENCIA", Vector3(29.84, 1.7, 0.35), "-x", 32, Color(1.0, 0.8, 0.4))
 	# P-1 evacuation gallery X 28..34, Z 4.5..7.5, floor Y -2, 2.23 m clear, roofed, walled.
 	b.slab("EvacGalleryFloor", GALLERY, Y_P1, mats.get_material("floor"))
@@ -232,9 +233,9 @@ func _east_bridge_and_gallery() -> void:
 	b.wall_z("EvacGallerySouth", 7.65, 28.0, MOUTH_X, Y_P1, 0.23)
 	b.slab("EvacGalleryRoof", Rect2(30.0, 4.2, MOUTH_X - 30.0, 3.6), 0.48, mats.get_material("bulkhead"))
 	b.paint_sign("EvacGallerySign", "GALERÍA DE DESCARGA  →  SALIDA DE SERVICIO", Vector3(28.4, Y_P1 + 1.7, 4.52), "+z", 26, Color(0.4, 1.0, 0.55))
-	b.visual("EvacGalleryStripN", Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 4.53), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)
-	b.visual("EvacGalleryStripS", Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 7.47), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)
-	b.light("EvacGalleryLight", Vector3(31.0, Y_P1 + 1.9, 6.0), Color(0.9, 0.45, 0.3), 0.9, 5.0)
+	b.static_visual(Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 4.53), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)  # EvacGalleryStripN
+	b.static_visual(Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 7.47), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)  # EvacGalleryStripS
+	b.light("EvacGalleryLight", Vector3(31.0, Y_P1 + 1.9, 6.0), Color(0.9, 0.45, 0.3), 0.9, 5.0, 0)
 
 
 # --- exterior apron at the east mouth (start of the parking area) -------------------------------------------------
@@ -250,8 +251,8 @@ func _apron() -> void:
 		b.visual("ApronBayLine_%02d" % i, Vector3(0.1, 0.02, 3.2), Vector3(37.0 + i * 2.6, Y_P1 + 0.012, 2.4), b.flat(Color(0.75, 0.7, 0.45), 0.9), false)
 	b.body("ApronColumn", Vector3(0.8, 4.0, 0.8), Vector3(40.0, Y_P1 + 2.0, 8.6), mats.get_material("bulkhead"))
 	b.body("ApronVan", Vector3(4.2, 1.9, 1.9), Vector3(40.5, Y_P1 + 0.95, 2.4), b.flat(Color(0.2, 0.24, 0.27), 0.6, 0.2))
-	b.visual("ApronLampMast", Vector3(0.15, 4.5, 0.15), Vector3(36.0, Y_P1 + 2.25, 10.8), mats.get_material("steel"), true)
-	b.light("ApronSodiumLight", Vector3(36.5, Y_P1 + 4.2, 9.5), Color(1.0, 0.72, 0.42), 1.6, 12.0)
+	b.static_visual(Vector3(0.15, 4.5, 0.15), Vector3(36.0, Y_P1 + 2.25, 10.8), mats.get_material("steel"), true)  # ApronLampMast
+	b.light("ApronSodiumLight", Vector3(36.5, Y_P1 + 4.2, 9.5), Color(1.0, 0.72, 0.42), 1.6, 12.0, 0)
 	exit_reader = b.screen_text("ApronContainmentReader", "PROTOCOLO DE CONTENCIÓN: INACTIVO", Vector3(MOUTH_X + 0.32, Y_P1 + 2.0, 9.0), "+x", 24, Color(0.6, 0.9, 0.7))
 	b.paint_sign("ApronParkingSign", "APARCAMIENTO DE SERVICIO", Vector3(MOUTH_X + 0.32, Y_P1 + 2.6, 2.5), "+x", 40, Color(0.9, 0.85, 0.6))
 	b.wall_x("ApronEastFence", APRON.end.x + 0.15, APRON.position.y, APRON.end.y, Y_P1, Y_P1 + 2.4, mats.get_material("steel"))
@@ -276,13 +277,13 @@ func _mezzanine() -> void:
 		pump_lamps.append(b.visual("PumpLamp_%02d" % i, Vector3(0.14, 0.08, 0.04), Vector3(15.8 + i * 1.8, Y_M + 1.2, -6.38), b.flat(Color(0.2, 0.2, 0.2), 0.4), false))
 	# O2: displaced pipe rack near S2 (low, 1.2 m): obstacle and partial cover.
 	b.body("O2PipeRack", Vector3(2.0, 1.2, 0.8), Vector3(13.2, Y_M + 0.6, -6.8), mats.get_material("steel"))
-	b.visual("O2PipeA", Vector3(2.1, 0.12, 0.12), Vector3(13.2, Y_M + 1.25, -6.65), mats.get_material("pipe"), true)
+	b.static_visual(Vector3(2.1, 0.12, 0.12), Vector3(13.2, Y_M + 1.25, -6.65), mats.get_material("pipe"), true)  # O2PipeA
 	# Staff work panels on the north wall and the staff refuge (office door, north-east).
-	b.visual("PumpPanelA", Vector3(1.2, 1.4, 0.15), Vector3(16.5, Y_M + 1.1, -9.9), mats.get_material("screen_dark"), true)
-	b.visual("PumpPanelB", Vector3(1.2, 1.4, 0.15), Vector3(21.5, Y_M + 1.1, -9.9), mats.get_material("screen_dark"), true)
+	b.static_visual(Vector3(1.2, 1.4, 0.15), Vector3(16.5, Y_M + 1.1, -9.9), mats.get_material("screen_dark"), true)  # PumpPanelA
+	b.static_visual(Vector3(1.2, 1.4, 0.15), Vector3(21.5, Y_M + 1.1, -9.9), mats.get_material("screen_dark"), true)  # PumpPanelB
 	b.screen_text("PumpPanelAText", "BOMBEO B-1\nPRESIÓN 2,4 bar", Vector3(16.5, Y_M + 1.3, -9.8), "+z", 30)
 	b.screen_text("PumpPanelBText", "BOMBEO B-2\nPRESIÓN 2,1 bar", Vector3(21.5, Y_M + 1.3, -9.8), "+z", 30)
-	b.visual("StaffRefugeDoor", Vector3(1.4, 2.3, 0.1), Vector3(28.6, Y_M + 1.15, -9.95), mats.get_material("locker"), true)
+	b.static_visual(Vector3(1.4, 2.3, 0.1), Vector3(28.6, Y_M + 1.15, -9.95), mats.get_material("locker"), true)  # StaffRefugeDoor
 	b.paint_sign("StaffRefugeSign", "OFICINA DE TURNO", Vector3(28.6, Y_M + 2.5, -9.88), "+z", 26)
 
 
@@ -318,25 +319,25 @@ func _p2() -> void:
 	b.paint_sign("ArchiveLabel", "F  ·  ARCHIVO RESTRINGIDO", Vector3(6.0, Y_P2 + 0.02, -5.4), "floor", 40)
 	b.paint_sign("AirlockLabel", "G  ·  ESCLUSA", Vector3(1.5, Y_P2 + 0.02, -5.4), "floor", 44)
 	# E controls (contract centres shifted by the +3 m datum change): selector, isolator, panel, rearm.
-	b.visual("SelectorBody", Vector3(0.6, 1.1, 0.4), SELECTOR_AT + Vector3(0.0, 0.55, -0.45), mats.get_material("steel_light"), true)
+	b.static_visual(Vector3(0.6, 1.1, 0.4), SELECTOR_AT + Vector3(0.0, 0.55, -0.45), mats.get_material("steel_light"), true)  # SelectorBody
 	b.paint_sign("SelectorLabel", "SELECTOR\nENSAYO · ARCHIVO", SELECTOR_AT + Vector3(0.0, 1.4, -0.24), "+z", 40, Color(0.95, 0.75, 0.35))
-	b.visual("IsolatorBody", Vector3(0.6, 1.1, 0.4), ISOLATOR_AT + Vector3(0.0, 0.55, -0.45), mats.get_material("steel_light"), true)
+	b.static_visual(Vector3(0.6, 1.1, 0.4), ISOLATOR_AT + Vector3(0.0, 0.55, -0.45), mats.get_material("steel_light"), true)  # IsolatorBody
 	b.paint_sign("IsolatorLabel", "AISLADOR\nRAMA ENSAYO", ISOLATOR_AT + Vector3(0.0, 1.4, -0.24), "+z", 40, Color(0.95, 0.75, 0.35))
-	b.visual("EStatusPanelBoard", Vector3(2.8, 1.3, 0.12), PANEL_AT, mats.get_material("screen_dark"), false)
+	b.static_visual(Vector3(2.8, 1.3, 0.12), PANEL_AT, mats.get_material("screen_dark"), false)  # EStatusPanelBoard
 	panel_text = b.screen_text("EStatusPanelText", "", PANEL_AT + Vector3(0.0, 0.0, 0.08), "+z", 34)
-	b.visual("RearmButtonBody", Vector3(0.5, 0.9, 0.3), REARM_AT + Vector3(0.0, 0.45, -0.5), b.flat(Color(0.2, 0.42, 0.28), 0.5), true)
+	b.static_visual(Vector3(0.5, 0.9, 0.3), REARM_AT + Vector3(0.0, 0.45, -0.5), b.flat(Color(0.2, 0.42, 0.28), 0.5), true)  # RearmButtonBody
 	b.paint_sign("RearmLabel", "REARME\nPROTECCIÓN", REARM_AT + Vector3(0.0, 1.15, -0.34), "+z", 36)
 	indicator_text = b.screen_text("IndicatorText", "", Vector3(15.5, Y_P2 + 0.75, -8.3), "+z", 30, Color(0.9, 0.8, 0.5))
 	# F: archive console and diagnostic terminal (always on emergency supply).
-	b.visual("ArchiveConsole", Vector3(1.0, 1.0, 0.5), ARCHIVE_AT + Vector3(0.0, 0.5, -0.55), mats.get_material("steel"), true)
+	b.static_visual(Vector3(1.0, 1.0, 0.5), ARCHIVE_AT + Vector3(0.0, 0.5, -0.55), mats.get_material("steel"), true)  # ArchiveConsole
 	archive_text = b.screen_text("ArchiveStatusText", "", ARCHIVE_AT + Vector3(0.0, 1.25, -0.28), "+z", 32)
-	b.visual("DiagnosticTerminal", Vector3(0.4, 1.1, 0.7), DIAGNOSTIC_AT + Vector3(-0.55, 0.55, 0.0), mats.get_material("steel_light"), true)
+	b.static_visual(Vector3(0.4, 1.1, 0.7), DIAGNOSTIC_AT + Vector3(-0.55, 0.55, 0.0), mats.get_material("steel_light"), true)  # DiagnosticTerminal
 	b.paint_sign("DiagnosticLabel", "DIAGNÓSTICO\n(EMERGENCIA)", DIAGNOSTIC_AT + Vector3(-0.33, 1.3, 0.0), "+x", 34)
 	# O1: archive shelving, upright against the north wall until Containment knocks it over.
-	o1_shelf = b.body("O1ArchiveShelf", Vector3(1.0, 2.2, 0.45), Vector3(8.0, Y_P2 + 1.1, -9.6), mats.get_material("locker"))
+	o1_shelf = b.body("O1ArchiveShelf", Vector3(1.0, 2.2, 0.45), Vector3(8.0, Y_P2 + 1.1, -9.6), mats.get_material("locker"), 1, true, false)
 	# G airlock: inner leaf (to F) and outer leaf (to the exterior gantry).
-	g_inner_door = b.body("GInnerDoor", Vector3(0.12, 2.2, 1.5), Vector3(3.0, Y_P2 + 1.1, -7.25), mats.get_material("safety_paint"))
-	g_outer_door = b.body("GOuterDoor", Vector3(0.12, 2.2, 1.5), Vector3(-0.15, Y_P2 + 1.1, -7.5), mats.get_material("steel_light"))
+	g_inner_door = b.body("GInnerDoor", Vector3(0.12, 2.2, 1.5), Vector3(3.0, Y_P2 + 1.1, -7.25), mats.get_material("safety_paint"), 1, true, false)
+	g_outer_door = b.body("GOuterDoor", Vector3(0.12, 2.2, 1.5), Vector3(-0.15, Y_P2 + 1.1, -7.5), mats.get_material("steel_light"), 1, true, false)
 	g_status_lamp = b.visual("GStatusLamp", Vector3(0.08, 0.12, 0.6), Vector3(0.05, Y_P2 + 2.45, -7.5), b.flat(Color(0.95, 0.2, 0.1), 0.4, 0.0, 1.6), false)
 	b.paint_sign("GOuterSign", "COMPUERTA EXTERIOR\nSOLO PERSONAL AUTORIZADO", Vector3(0.05, Y_P2 + 2.6, -7.5), "+x", 30, Color(1.0, 0.8, 0.4))
 
@@ -361,13 +362,13 @@ func _lift_landings() -> void:
 	b.wall_z("LiftPitWallSouth", -1.35, 24.2, 27.8, -0.85, -0.25)
 	b.wall_x("LiftPitWallWest", 24.35, -4.5, -1.5, -0.85, -0.25)
 	b.wall_x("LiftPitWallEast", 27.65, -4.5, -1.5, -0.85, -0.25)
-	lift_gate_lower = b.body("LiftSafetyGateLower", Vector3(3.0, RAIL, 0.12), Vector3(26.0, Y_P0 + RAIL * 0.5, -1.44), mats.get_material("safety_paint"), Builder.LAYER_NO_MANTLE)
-	lift_gate_upper = b.body("LiftSafetyGateUpper", Vector3(3.0, RAIL, 0.12), Vector3(26.0, Y_M + RAIL * 0.5, -4.56), mats.get_material("safety_paint"), Builder.LAYER_NO_MANTLE)
+	lift_gate_lower = b.body("LiftSafetyGateLower", Vector3(3.0, RAIL, 0.12), Vector3(26.0, Y_P0 + RAIL * 0.5, -1.44), mats.get_material("safety_paint"), Builder.LAYER_NO_MANTLE, true, false)
+	lift_gate_upper = b.body("LiftSafetyGateUpper", Vector3(3.0, RAIL, 0.12), Vector3(26.0, Y_M + RAIL * 0.5, -4.56), mats.get_material("safety_paint"), Builder.LAYER_NO_MANTLE, true, false)
 	for side in [24.45, 27.55]:
 		b.rail_z("LiftShaftRailP0_%d" % int(side * 10), -4.5, -1.5, side, Y_P0)
 		b.rail_z("LiftShaftRailM_%d" % int(side * 10), -4.5, -1.5, side, Y_M)
-	b.visual("LiftCallP0Box", Vector3(0.3, 0.45, 0.12), LIFT_CALL_P0_AT + Vector3(0.0, 1.2, 0.0), mats.get_material("steel_light"), false)
-	b.visual("LiftCallMBox", Vector3(0.3, 0.45, 0.12), LIFT_CALL_M_AT + Vector3(0.0, 1.2, 0.0), mats.get_material("steel_light"), false)
+	b.static_visual(Vector3(0.3, 0.45, 0.12), LIFT_CALL_P0_AT + Vector3(0.0, 1.2, 0.0), mats.get_material("steel_light"), false)  # LiftCallP0Box
+	b.static_visual(Vector3(0.3, 0.45, 0.12), LIFT_CALL_M_AT + Vector3(0.0, 1.2, 0.0), mats.get_material("steel_light"), false)  # LiftCallMBox
 	b.paint_sign("LiftSignP0", "ELEVADOR  P0 ↔ M", Vector3(26.0, Y_P0 + 2.3, -1.38), "+z", 36)
 	b.paint_sign("LiftSignM", "ELEVADOR  M ↔ P0", Vector3(26.0, Y_M + 2.3, -4.62), "-z", 36)
 
@@ -385,16 +386,17 @@ func _column() -> void:
 # --- lighting: dim emergency base, maintenance circuit, alarm lights (off until Containment) ------------------------
 
 func _lighting() -> void:
-	b.light("NaveLight", Vector3(12.0, 4.2, -2.0), Color(0.72, 0.84, 0.95), 0.9, 12.0)
+	b.light("NaveLight", Vector3(12.0, 4.2, -2.0), Color(0.72, 0.84, 0.95), 0.9, 10.0)
 	b.light("AccessLight", Vector3(3.5, 2.4, 7.0), Color(1.0, 0.82, 0.62), 0.8, 7.0)
 	b.light("WorkshopLight", Vector3(22.0, 2.3, -6.0), Color(0.9, 0.85, 0.7), 0.7, 6.0)
-	b.light("SouthBandLight", Vector3(20.0, 2.6, 11.0), Color(0.72, 0.84, 0.95), 0.6, 9.0)
+	b.light("SouthBandLight", Vector3(20.0, 2.6, 11.0), Color(0.72, 0.84, 0.95), 0.7, 8.0)
 	b.light("ControlLight", Vector3(16.0, Y_P2 + 2.4, -6.5), Color(0.75, 0.88, 1.0), 0.9, 10.0)
 	b.light("ArchiveLight", Vector3(5.0, Y_P2 + 2.3, -7.0), Color(0.75, 0.95, 0.9), 0.7, 6.0)
 	b.light("PumpRoomEmergency", Vector3(18.0, Y_M + 2.3, -5.5), Color(0.75, 0.85, 1.0), 0.7, 10.0)
-	b.light("PitEmergency", Vector3(20.0, -0.6, 6.5), Color(0.95, 0.5, 0.35), 0.55, 11.0)
+	b.light("PitEmergency", Vector3(20.0, -0.6, 4.5), Color(0.95, 0.5, 0.35), 0.6, 9.0)
 	for spec in [["PitServiceLight", Vector3(15.0, -0.4, 4.5), 10.0], ["D2ServiceLight", Vector3(24.0, -0.4, 4.0), 7.0], ["PumpServiceLight", Vector3(22.0, Y_M + 2.3, -6.5), 9.0], ["LiftServiceLight", Vector3(26.0, 2.4, 0.0), 6.0]]:
-		var l: OmniLight3D = b.light(spec[0], spec[1], Color(0.8, 0.9, 1.0), 0.12, spec[2])
+		var l: OmniLight3D = b.light(spec[0], spec[1], Color(0.8, 0.9, 1.0), 0.0, spec[2])
+		l.visible = false  # maintenance circuit: off until the switch is thrown
 		service_lights.append(l)
 	for spec in [["AlarmG", Vector3(1.5, Y_P2 + 2.5, -7.0)], ["AlarmM", Vector3(20.0, Y_M + 2.4, -8.5)], ["AlarmP0", Vector3(27.0, 2.4, 0.5)], ["AlarmPit", Vector3(20.0, -0.5, 7.0)]]:
 		var a: OmniLight3D = b.light(spec[0], spec[1], Color(1.0, 0.15, 0.1), 0.0, 9.0)

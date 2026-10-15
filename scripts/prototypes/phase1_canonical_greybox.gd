@@ -118,6 +118,8 @@ func _exit_tree() -> void:
 
 
 func _environment() -> void:
+	# A 2048 directional shadow atlas is enough for this compact interior (4096 cost ~3 ms on the HD 630).
+	RenderingServer.directional_shadow_atlas_set_size(2048, true)
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color(0.015, 0.02, 0.028)
@@ -136,7 +138,9 @@ func _environment() -> void:
 	sun.light_color = Color(0.62, 0.72, 0.86)
 	sun.light_energy = 0.35
 	sun.shadow_enabled = true
-	sun.directional_shadow_max_distance = 40.0
+	# One orthogonal shadow pass instead of four PSSM splits: the interior is compact (measured on the HD 630).
+	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
+	sun.directional_shadow_max_distance = 30.0
 	add_child(sun)
 
 
@@ -416,8 +420,11 @@ func _toggle_maintenance() -> void:
 		_log("mission", "SERVICE_OVERRIDE queued")
 	_sound("power_up" if circuit.maintenance_on else "power_down")
 	for l in building.service_lights:
+		l.visible = true
 		var tw := create_tween()
-		tw.tween_property(l, "light_energy", 1.0 if circuit.maintenance_on else 0.12, 1.2)
+		tw.tween_property(l, "light_energy", 1.0 if circuit.maintenance_on else 0.0, 1.2)
+		if not circuit.maintenance_on:
+			tw.tween_callback(func(): l.visible = false)  # a dark light still costs a pass on Compatibility
 	building.switch_lamp.material_override = building.b.flat(Color(0.2, 0.95, 0.5) if circuit.maintenance_on else Color(0.95, 0.2, 0.1), 0.4, 0.0, 1.5)
 	for lamp in building.pump_lamps:
 		lamp.material_override = building.b.flat(Color(0.3, 1.0, 0.5) if circuit.maintenance_on else Color(0.2, 0.2, 0.2), 0.4, 0.0, 1.4 if circuit.maintenance_on else 0.0)
@@ -688,7 +695,7 @@ func _maybe_drop_o3(p: Vector3) -> void:
 	if footprint.grow(0.9).has_point(Vector2(p.x, p.z)):
 		return
 	_o3_dropped = true
-	var tray: StaticBody3D = building.b.body("O3FallenTray", Vector3(1.4, 0.55, 0.6), Vector3(27.7, 2.8, 0.1), materials.get_material("steel"))
+	var tray: StaticBody3D = building.b.body("O3FallenTray", Vector3(1.4, 0.55, 0.6), Vector3(27.7, 2.8, 0.1), materials.get_material("steel"), 1, true, false)
 	tray.rotation.y = 0.1
 	var tw := create_tween()
 	tw.tween_property(tray, "position:y", 0.275, 0.35).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
