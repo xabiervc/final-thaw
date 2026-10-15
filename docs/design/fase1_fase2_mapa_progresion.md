@@ -98,3 +98,21 @@ El handoff se acepta solo cuando:
 7. Registrar commit, versión de Godot, renderer, comandos, exit codes, errores, warnings y evidencia visual.
 
 La Fase 1 no se declara terminada hasta que la secuencia completa sea recorrible en runtime y la ruta de huida se comprenda sin conocimiento previo del diseño.
+
+## Owner-approved progression direction (2026-10-15)
+
+This English-language addendum records the owner's current target and supersedes conflicting provisional route assumptions for future implementation. The Spanish plan and its prior measurements remain useful historical design material; this section is not evidence of implementation.
+
+### Phase 1 — investigation
+Keep the central pumping hall as a memorable spatial anchor and connect it to purposeful rooms, vertical routes and landmarks. The building should feel substantially larger than one open room but should not become a maze. Avoid repetitive backtracking unless new evidence, a changed mechanism, an opened shortcut or an optional discovery rewards it. Elena enters through a damaged service breach/culvert that physically collapses behind her.
+
+### Phase 2 — human discovery and escape
+After opening the required gate, Elena cautiously enters a new operational zone, observes people doing meaningful work related to Helix/Aster and discovers information before a human threat detects her. The target is not the current robot-led escape as presently implemented.
+
+Use a hybrid first-person escape: free movement and route decisions combined with short contextual actions and brief looks back that show consequences. Lead through a credible service connection or deliberate continuity-preserving transition into a distinct parking garage, then to a public street where Elena loses the pursuers among pedestrians.
+
+### Future Marcus phases
+Marcus is player-controlled during future beat-'em-up phases. Elena initially needs his protection, seeks cover and cannot reliably defend herself. Over the story she learns limited defensive skills from Marcus and becomes capable of handling basic threats. Later encounters challenge Marcus with more varied and coordinated enemies. This future system is specified conceptually only and remains outside the current Phase 1/2 implementation scope.
+
+### Verification
+Do not mark any of these target decisions implemented until scene/code inspection, automated behavior tests and the required Godot/manual review provide evidence. Preserve Phase 0 contracts and save/input compatibility.
