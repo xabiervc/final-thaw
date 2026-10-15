@@ -87,3 +87,24 @@ The bottleneck is mostly fill rate at 720p on this GPU. 3D render scaling makes 
 5. Verify the MPFB licence or replace Elena's base mesh.
 
 Preserve the autoloads, the Phase 0 InputMap action names, resource paths, JSON/CRC32 save compatibility and the Compatibility renderer.
+
+## Owner-approved redesign target and evidence boundary — 2026-10-15
+
+The owner has approved a substantial refinement of the current vertical-slice direction. The current as-built descriptions and test results above remain historical evidence for the recorded commits; they must not be mistaken for proof that the redesign below is already implemented.
+
+### Approved target
+- **Art:** illustrated 3D adventure, using the owner-provided Marcus character concept and illustrated industrial laboratory reference. Not photorealistic, not generic cartoon and not deliberately low-resolution retro-console styling. Validate character and environment treatment in Godot before scaling production.
+- **Phase 1:** a substantially interconnected industrial research facility anchored by the large central pumping hall, with purposeful rooms, verticality, landmarks, secrets and causal environmental interactions. Avoid a maze and repetitive backtracking. Elena enters through a damaged service breach/culvert that physically collapses behind her.
+- **Phase 2:** a human operational zone connected to Helix/Aster; Elena observes personnel and discovers meaningful information before detection. The target escape is hybrid first-person gameplay combining free movement/route choice with short contextual actions and brief consequence-revealing glances back. It leads through a separately designed parking garage to a public street where Elena loses the pursuers among pedestrians.
+- **Elena's scanner:** redesign its mounting/use so it is credibly wrist-mounted or holstered, or provide proper draw/use/stow animation; it must not look stuck to her hand.
+- **Future Marcus phases:** Marcus is player-controlled in beat-'em-up phases. Elena begins unable to defend herself and relies on him, then learns limited defensive skills from him and becomes more autonomous. Later encounters can challenge Marcus with stronger/more coordinated enemies. This is a future design contract, not current vertical-slice implementation scope.
+
+### Required next work, in order
+1. Reconcile the real branch state, current commits, local changes and test results; do not rely on prior-agent claims alone.
+2. Prove the illustrated style in one playable Godot section with Elena and the central-hall art language.
+3. Refine Phase 1's interconnected layout, traversal, puzzle context and physically blocked entry.
+4. Design and implement the human operational discovery and hybrid first-person escape, including the distinct parking garage and public exit.
+5. Update existing art, narrative, level, traceability and status documents to match the actual implementation.
+6. Keep the full Marcus beat-'em-up system deferred; preserve its future progression contract in design documents.
+
+The current code and test evidence above describe the previous robot-led, one-scene escape prototype. They must remain clearly distinguished from this approved target until the replacement is committed, the full test suite is rerun and the relevant route is reviewed in Godot. No new runtime, visual or performance verification is claimed by this documentation update.
