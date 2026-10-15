@@ -64,7 +64,7 @@ func _run() -> void:
 	await bot.walk("walk", [Vector3(0, 0, 0)], {})
 	var walk_speed := await _speed_towards(Vector3(0, 0, 20), false)
 	var run_speed := await _speed_towards(Vector3(0, 0, -15), true)
-	_expect(walk_speed > 4.0 and walk_speed < 5.0, "walking speed is about 4.5 m/s (%.2f)" % walk_speed)
+	_expect(walk_speed > 3.9 and walk_speed < 4.6, "default pace is about 4.2 m/s (%.2f)" % walk_speed)
 	_expect(run_speed > walk_speed * 1.5, "running (Shift) is clearly faster (%.2f vs %.2f)" % [run_speed, walk_speed])
 
 	# Stamina: running drains it, walking recovers it.
@@ -100,6 +100,20 @@ func _run() -> void:
 	_expect(not await _mantle_from(Vector3(12, 0.05, -3.4), Vector3(0, 0, -1)), "a guard rail is never mantled")
 	_expect(not await _mantle_from(Vector3(18, 0.05, -2.9), Vector3(0, 0, -1)) or elena.global_position.z > -4.45, "a mantle never carries Elena through a rail")
 
+	# Turning keeps momentum; a reversal brakes quickly (no sliding through zero for a second).
+	elena.global_position = Vector3(-20, 0.05, 20)
+	await bot.wait(0.3)
+	await _speed_towards(Vector3(-20, 0, -20), false)
+	var turn := await _hold_dir(Vector2(1, 0), 0.25)
+	_expect(turn["speed"] > 3.0 and turn["dir"].dot(Vector3(1, 0, 0)) > 0.9, "a 90-degree turn at pace keeps its speed (%.2f m/s) and points the new way within 0.25 s" % turn["speed"])
+	await _hold_dir(Vector2(0, -1), 1.0)
+	var reverse := await _time_to_reverse()
+	_expect(reverse < 0.45, "a full reversal at pace brakes and turns back in %.2f s" % reverse)
+	# Fatigue costs sprinting, not walking.
+	elena.condition.stamina = 0.0
+	var tired_speed := await _speed_towards(elena.global_position + Vector3(0, 0, -12), false)
+	_expect(tired_speed >= 0.85 * 4.2 - 0.05, "with no stamina left Elena still walks at >= 85 %% pace (%.2f)" % tired_speed)
+	elena.condition.stamina = 100.0
 	# Jump.
 	elena.global_position = Vector3(25, 0.05, 0)
 	await bot.wait(0.3)
@@ -114,6 +128,36 @@ func _run() -> void:
 	bot.release_all()
 	print("Elena movement: %d passed, %d failed" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
+
+
+## Holds a stick direction (world x/z) for `seconds`; returns final horizontal speed and direction.
+func _hold_dir(stick: Vector2, seconds: float) -> Dictionary:
+	var t := 0.0
+	while t < seconds:
+		await get_tree().physics_frame
+		t += get_physics_process_delta_time()
+		bot.release_all()
+		Input.action_press("move_right", maxf(0, stick.x))
+		Input.action_press("move_left", maxf(0, -stick.x))
+		Input.action_press("move_down", maxf(0, stick.y))
+		Input.action_press("move_up", maxf(0, -stick.y))
+	bot.release_all()
+	var v := Vector3(elena.velocity.x, 0, elena.velocity.z)
+	return {"speed": v.length(), "dir": v.normalized()}
+
+
+## From moving -z at pace, pushes +z and measures how long until the velocity points +z.
+func _time_to_reverse() -> float:
+	var t := 0.0
+	while t < 2.0:
+		await get_tree().physics_frame
+		t += get_physics_process_delta_time()
+		bot.release_all()
+		Input.action_press("move_down", 1.0)
+		if elena.velocity.z > 0.5:
+			break
+	bot.release_all()
+	return t
 
 
 func _speed_towards(target: Vector3, run: bool) -> float:

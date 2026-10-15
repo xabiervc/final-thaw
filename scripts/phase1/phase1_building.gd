@@ -115,6 +115,13 @@ func _shell() -> void:
 	b.wall_x("OuterEastMid", 30.15, -1.5, 4.5, 0.0, LOW_TOP, wall)
 	b.wall_x("OuterEastOverGallery", 30.15, 4.5, 7.5, 0.23, LOW_TOP, wall)
 	b.wall_x("OuterEastSouth", 30.15, 7.5, 13.8, 0.0, LOW_TOP, wall)
+	# Exterior skin: roofs and the step between the tall north block and the low south block, seen only from
+	# outside (intro establishing shot, the street). Single-sided, no collision, no shadow.
+	var roof: Material = b.flat(Color(0.1, 0.11, 0.12), 0.9)
+	b.exterior_skin("RoofNorthBlock", Vector2(30.6, 8.8), Vector3(15.0, TOP, -5.9), "+y", roof)
+	b.exterior_skin("RoofSouthBlock", Vector2(30.6, 15.3), Vector3(15.0, LOW_TOP, 6.15), "+y", roof)
+	b.exterior_skin("RoofStepFace", Vector2(30.6, TOP - LOW_TOP), Vector3(15.0, (TOP + LOW_TOP) * 0.5, -1.5), "+z", wall)
+	b.exterior_skin("WestUpperInfill", Vector2(3.0, TOP - LOW_TOP), Vector3(-0.31, (TOP + LOW_TOP) * 0.5, -3.0), "-x", wall)
 	# Visual roof framing over the tall block (no collision: the camera orbits freely inside).
 	for i in 6:
 		b.visual("RoofBeam_%02d" % i, Vector3(0.22, 0.35, 10.0), Vector3(2.5 + i * 5.0, TOP - 0.2, -5.0), mats.get_material("steel"), true)

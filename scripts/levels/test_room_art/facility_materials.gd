@@ -157,7 +157,7 @@ func _build(key: String) -> Material:
 			m.set_shader_parameter("tint", Color(0.42, 0.44, 0.46))
 			m.set_shader_parameter("tile_m", 4.0)
 			m.set_shader_parameter("joint_spacing", 1000.0)
-			m.set_shader_parameter("wetness", 0.16)
+			m.set_shader_parameter("wetness", 0.04)
 			m.set_shader_parameter("room_bounds", Vector4(34.0, -15.5, 76.0, 14.0))
 			return m
 		"fence":

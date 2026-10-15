@@ -13,11 +13,20 @@ signal jumped
 ## Emitted when a ledge mantle starts (height of the ledge above the feet, in metres).
 signal mantled(height: float)
 
-@export var max_speed: float = 4.5
-@export var run_multiplier: float = 1.7
-@export var crouch_multiplier: float = 0.5
-@export var acceleration: float = 15.0
-@export var deceleration: float = 15.0
+## Ground speeds (2026-10-15 tuning, matched to the animation clips' natural speeds, see phase1_spatial_player.gd):
+## default pace 4.2 m/s (a light run), sprint 6.8 m/s, crouched 1.4 m/s.
+@export var max_speed: float = 4.2
+@export var run_multiplier: float = 1.62
+@export var crouch_multiplier: float = 0.33
+@export var acceleration: float = 22.0
+@export var deceleration: float = 28.0
+## Turning on the ground keeps momentum: the velocity rotates towards the new direction at this rate (rad/s)
+## instead of sliding through zero. A reversal sharper than REVERSE_ANGLE brakes hard and re-accelerates.
+@export var ground_turn_rate: float = 11.0
+@export var reverse_brake: float = 42.0
+const REVERSE_ANGLE := 2.3
+## Falling is a little heavier than rising: a firmer, less floaty arc with the same jump height.
+@export var fall_gravity_multiplier: float = 1.25
 ## Lower acceleration in the air: jumps keep their arc instead of steering like on the ground.
 @export var air_acceleration: float = 7.0
 @export var min_speed: float = 0.1
@@ -243,10 +252,7 @@ func _physics_process(delta: float) -> void:
 	var move_dir: Vector3 = movement_basis * Vector3(input_vec.x, 0.0, input_vec.y)
 	var target: Vector3 = move_dir * speed
 	var horizontal := Vector3(velocity.x, 0.0, velocity.z)
-	var rate := acceleration if input_vec != Vector2.ZERO else deceleration
-	if not on_floor:
-		rate = air_acceleration
-	horizontal = horizontal.move_toward(target, rate * delta)
+	horizontal = _ground_velocity(horizontal, target, on_floor, delta)
 	if input_vec == Vector2.ZERO and on_floor and horizontal.length() < min_speed:
 		horizontal = Vector3.ZERO
 	velocity.x = horizontal.x
@@ -256,7 +262,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = -0.5
 		_coyote_left = coyote_time
 	else:
-		velocity.y -= gravity * delta
+		velocity.y -= gravity * (fall_gravity_multiplier if velocity.y < 0.0 else 1.0) * delta
 		_coyote_left = maxf(0.0, _coyote_left - delta)
 
 	if input_enabled and InputMap.has_action("jump") and Input.is_action_just_pressed("jump"):
@@ -289,6 +295,29 @@ func _physics_process(delta: float) -> void:
 	if global_position.y < -6.0:
 		velocity = Vector3.ZERO
 		fell_off.emit()
+
+## Horizontal velocity response. On the ground, turns keep their speed (the direction rotates at
+## ground_turn_rate) and only a near-reversal brakes through zero; speed changes use acceleration/deceleration.
+## In the air, the slower air_acceleration keeps the arc committed.
+func _ground_velocity(horizontal: Vector3, target: Vector3, on_floor: bool, delta: float) -> Vector3:
+	if not on_floor:
+		return horizontal.move_toward(target, air_acceleration * delta)
+	var cur := horizontal.length()
+	var want := target.length()
+	if want < 0.01:
+		return horizontal.move_toward(Vector3.ZERO, deceleration * delta)
+	if cur < 0.3:
+		return horizontal.move_toward(target, acceleration * delta)
+	var cur_dir := horizontal / cur
+	var want_dir := target / want
+	var angle := cur_dir.signed_angle_to(want_dir, Vector3.UP)
+	if absf(angle) > REVERSE_ANGLE:
+		return horizontal.move_toward(target, reverse_brake * delta)
+	var step := clampf(angle, -ground_turn_rate * delta, ground_turn_rate * delta)
+	var new_dir := cur_dir.rotated(Vector3.UP, step)
+	var new_speed := move_toward(cur, want, (acceleration if want > cur else deceleration) * delta)
+	return new_dir * new_speed
+
 
 func _action(action: String) -> bool:
 	return InputMap.has_action(action) and Input.is_action_pressed(action)

@@ -410,6 +410,32 @@ func screen_text(label: String, text: String, pos: Vector3, facing: String, size
 	return l
 
 
+## Outside-only surface (roofs, upper facade infill): a single-sided quad facing `normal` ("+y", "+z", "-x"...),
+## no collision and no shadow, so it closes the building's silhouette from outside (cinematics, the yard) while
+## staying invisible from inside and never touching the gameplay camera.
+func exterior_skin(label: String, size: Vector2, center: Vector3, normal: String, material: Material) -> MeshInstance3D:
+	var m := MeshInstance3D.new()
+	m.name = label
+	var q := QuadMesh.new()
+	q.size = size
+	m.mesh = q
+	m.material_override = material
+	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	m.position = center
+	match normal:
+		"+y":
+			m.rotation = Vector3(-PI * 0.5, 0.0, 0.0)
+		"-x":
+			m.rotation = Vector3(0.0, -PI * 0.5, 0.0)
+		"+x":
+			m.rotation = Vector3(0.0, PI * 0.5, 0.0)
+		"-z":
+			m.rotation = Vector3(0.0, PI, 0.0)
+	m.layers = band_layer(_band(center.y))
+	root.add_child(m)
+	return m
+
+
 ## A light lights its own storey (by its mounting height, ~1.8 m above the floor, or `band` if given) and layer 1.
 func light(label: String, pos: Vector3, color: Color, energy: float, light_range: float, band: int = -1) -> OmniLight3D:
 	var l := OmniLight3D.new()

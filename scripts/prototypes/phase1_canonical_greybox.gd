@@ -309,8 +309,8 @@ func _look(from: Vector3, at: Vector3) -> Transform3D:
 func _intro_shots() -> Array:
 	return [
 		{"black": true, "duration": 6.5, "title": T.t("intro_card_name"), "subtitle": T.t("intro_card_role")},
-		{"duration": 9.0, "from": _look(Vector3(-22.0, 2.4, 6.0), Vector3(-6.0, 6.5, -7.5)), "to": _look(Vector3(-17.0, 3.4, 3.0), Vector3(-3.0, 6.6, -7.5)),
-			"fov": 52.0, "fade_in": 1.5, "lines": [[0.6, T.t("intro_line_1")]]},
+		{"duration": 9.0, "from": _look(Vector3(-30.0, 15.0, 22.0), Vector3(8.0, 3.0, -2.0)), "to": _look(Vector3(-24.0, 9.0, 14.0), Vector3(-2.0, 5.0, -4.0)),
+			"fov": 50.0, "fade_in": 1.5, "lines": [[0.6, T.t("intro_line_1")]]},
 		{"duration": 9.5, "from": _look(Vector3(5.0, 1.7, 3.6), Vector3(14.5, 3.4, -3.0)), "to": _look(Vector3(8.4, 1.4, 2.6), Vector3(14.5, 4.2, -3.0)),
 			"fov": 55.0, "lines": [[0.4, T.t("intro_line_2")]]},
 		{"duration": 8.5, "from": _look(Vector3(17.6, -0.2, 7.2), Vector3(21.5, -1.5, 4.2)), "to": _look(Vector3(19.4, -0.7, 6.4), Vector3(21.5, -1.4, 4.2)),

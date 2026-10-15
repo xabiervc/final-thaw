@@ -192,13 +192,15 @@ def anim_crouch_idle():
 
 
 def anim_crouch_walk():
-	n = 36
+	# A real crouched stride (v2, 2026-10-15): the earlier 16-degree shuffle planted the feet at ~0.45 m/s while the
+	# game moves a crouched Elena at ~1.7 m/s, so the feet slid. Longer swing and a faster cadence: ~1.4 m/s.
+	n = 30
 
 	def f(i):
 		t = i / n * TAU
 		p = Pose()
-		swing_leg(p, "l", t, 16, 30, toe=10.0, base_flex=0.0)
-		swing_leg(p, "r", t + math.pi, 16, 30, toe=10.0, base_flex=0.0)
+		swing_leg(p, "l", t, 27, 44, toe=12.0, base_flex=0.0)
+		swing_leg(p, "r", t + math.pi, 27, 44, toe=12.0, base_flex=0.0)
 		for s in ("l", "r"):  # on top of the swing, the crouch posture
 			p.r("thigh_" + s, "x", -36).r("calf_" + s, "x", 33 + 36).r("foot_" + s, "x", -33)
 		swing_arm(p, "l", t, 10, 30)

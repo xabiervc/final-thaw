@@ -21,6 +21,21 @@ const CAMERA_MODES := {
 	"pursuit": {"length": 3.4, "fov": 71.0, "offset": 0.6, "height": 1.38},
 }
 const CAMERA_BLEND := 2.2
+## Natural ground speed of each locomotion clip at playback 1.0 (measured from planted-foot travel in Godot and
+## from the authored stride, tools/blender/elena_mpfb/animate_elena.py). Playback = ground speed / clip speed,
+## so the feet do not skate. The run clip covers the default pace (~1x) and the sprint (~1.6x).
+const WALK_CLIP_SPEED := 1.8
+const RUN_CLIP_SPEED := 4.3
+const CROUCH_CLIP_SPEED := 0.85
+## Walk <-> run clip switch, with hysteresis so analog speeds near the boundary do not flicker.
+const RUN_CLIP_ABOVE := 2.8
+const WALK_CLIP_BELOW := 2.4
+## Body lean (degrees) into acceleration and turns; smoothed, and reduced to a third with reduced motion.
+const LEAN_FORWARD_MAX := 7.0
+const LEAN_SIDE_MAX := 8.0
+var _gait_run: bool = false
+var _prev_velocity: Vector3 = Vector3.ZERO
+var _lean: Vector2 = Vector2.ZERO
 var camera_mode: String = "explore"
 ## True while a cinematic owns the camera: look input is ignored.
 var look_locked: bool = false
@@ -123,6 +138,27 @@ func play_gesture(name_: String, seconds: float = 0.8) -> void:
 	_gesture_left = seconds
 
 
+## Leans the body into what the controller is doing: forward when accelerating, back when braking, sideways into
+## turns (centripetal). Visual only; collision and camera are unaffected.
+func _update_lean(delta: float, on_floor: bool) -> void:
+	if visual == null or delta <= 0.0:
+		return
+	var v := Vector3(velocity.x, 0.0, velocity.z)
+	var accel := (v - _prev_velocity) / delta
+	_prev_velocity = v
+	var target := Vector2.ZERO
+	if on_floor and not is_climbing:
+		var facing := Vector3(sin(visual.rotation.y), 0.0, cos(visual.rotation.y))
+		var side := facing.cross(Vector3.UP)
+		target.x = clampf(accel.dot(facing) / 30.0, -1.0, 1.0) * LEAN_FORWARD_MAX
+		target.y = clampf(-accel.dot(side) / 30.0, -1.0, 1.0) * LEAN_SIDE_MAX
+		if AccessibilityManager.is_reduced_motion():
+			target /= 3.0
+	_lean = _lean.lerp(target, clampf(delta * 6.0, 0.0, 1.0))
+	visual.rotation.x = deg_to_rad(_lean.x)
+	visual.rotation.z = deg_to_rad(_lean.y)
+
+
 func _update_animation(delta: float) -> void:
 	if anim == null:
 		return
@@ -143,16 +179,23 @@ func _update_animation(delta: float) -> void:
 		wanted = "land"
 	elif is_crouching:
 		wanted = "crouch_walk" if speed > 0.25 else "crouch_idle"
-		playback = clampf(speed / 1.5, 0.7, 1.4) if speed > 0.25 else 1.0
+		playback = clampf(speed / CROUCH_CLIP_SPEED, 0.6, 2.0) if speed > 0.25 else 1.0
 	elif speed > 0.3:
-		wanted = "run" if is_running and anim.has_animation("run") else "walk"
+		if _gait_run and speed < WALK_CLIP_BELOW and not is_running:
+			_gait_run = false
+		elif not _gait_run and (speed > RUN_CLIP_ABOVE or is_running):
+			_gait_run = true
+		wanted = "run" if _gait_run else "walk"
 		# Playback follows ground speed so the feet do not skate.
-		playback = clampf(speed / (6.5 if wanted == "run" else 2.5), 0.7, 1.5)
+		playback = clampf(speed / (RUN_CLIP_SPEED if _gait_run else WALK_CLIP_SPEED), 0.55, 1.75)
 	elif _gesture_left > 0.0:
 		wanted = _gesture
 	anim.speed_scale = playback
 	if anim.current_animation != wanted:
-		anim.play(wanted, 0.12)
+		# Locomotion changes blend softly; airborne and landing states cut in quickly to stay responsive.
+		var blend := 0.08 if wanted in ["jump", "fall", "land", "climb"] else 0.2
+		anim.play(wanted, blend)
+	_update_lean(delta, on_floor)
 	# The orbit pivot follows the body: lower while crouched so the camera reads low passages.
 	var stand_h := float((CAMERA_MODES[camera_mode] as Dictionary)["height"])
 	pivot.position.y = lerpf(pivot.position.y, 0.85 if is_crouching else stand_h, clampf(delta * 8.0, 0.0, 1.0))

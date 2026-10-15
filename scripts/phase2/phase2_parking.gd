@@ -295,10 +295,31 @@ func _beyond_the_wall() -> void:
 		b.static_visual(Vector3(0.9, 0.12, 0.35), Vector3(x + 0.35, 0.4 + 4.95, -25.0), b.flat(Color(1.0, 0.72, 0.4), 0.4, 0.0, 3.0), false)
 	var window: Material = b.flat(Color(1.0, 0.8, 0.5), 0.5, 0.0, 1.8)
 	var dark: Material = b.flat(Color(0.05, 0.06, 0.08), 0.9)
-	for spec in [[48.0, -48.0, 14.0, 22.0], [66.0, -52.0, 18.0, 30.0], [86.0, -46.0, 12.0, 18.0], [100.0, -20.0, 10.0, 26.0], [100.0, 10.0, 14.0, 16.0]]:
-		b.static_visual(Vector3(spec[2], spec[3], 8.0), Vector3(spec[0], spec[3] * 0.5, spec[1]), dark, false)
-		for j in 6:
-			b.static_visual(Vector3(0.9, 0.6, 0.1), Vector3(spec[0] - spec[2] * 0.35 + (j * 37 % 9) * spec[2] * 0.08, 3.0 + (j * 53 % 7) * spec[3] * 0.12, spec[1] + 4.06), window, false)
+	var window_dim: Material = b.flat(Color(0.55, 0.62, 0.75), 0.5, 0.0, 0.7)
+	# City blocks beyond the perimeter: [x, z, width, height]. Window grids on the faces that look at the yard and
+	# the street; roughly a third lit, a deterministic pattern (no randomness), a few cold-lit offices.
+	for spec in [[46.0, -48.0, 14.0, 22.0], [64.0, -54.0, 18.0, 31.0], [84.0, -47.0, 12.0, 18.0], [30.0, -52.0, 10.0, 14.0],
+			[104.0, -20.0, 10.0, 26.0], [104.0, 10.0, 14.0, 16.0], [96.0, 34.0, 16.0, 20.0]]:
+		var bx: float = spec[0]
+		var bz: float = spec[1]
+		var bw: float = spec[2]
+		var bh: float = spec[3]
+		b.static_visual(Vector3(bw, bh, 8.0), Vector3(bx, bh * 0.5, bz), dark, false)
+		var facing_z := bz < -10.0  # northern blocks show their south face, eastern ones their west face
+		var cols := int(bw / 1.6)
+		var rows := int((bh - 2.0) / 2.2)
+		for r in rows:
+			for c in cols:
+				var code := (r * 7 + c * 13 + int(bx)) % 10
+				if code > 3:
+					continue
+				var mat: Material = window if code < 3 else window_dim
+				var along := -bw * 0.5 + 0.8 + c * 1.6
+				var up := 2.0 + r * 2.2
+				if facing_z:
+					b.static_visual(Vector3(0.9, 1.1, 0.1), Vector3(bx + along, up, bz + 4.06), mat, false)
+				else:
+					b.static_visual(Vector3(0.1, 1.1, 0.9), Vector3(bx - 4.06, up, bz + along), mat, false)
 
 
 func _lights() -> void:
