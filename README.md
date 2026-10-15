@@ -91,3 +91,11 @@ Then run the prototype manually. Automated tests do not verify camera comfort, m
 Treat existing character models, lab kit, shaders, visual wrappers, scanner effects, HUD and synthesized audio as prototype assets. Review them from the intended third-person camera and verify collision, scale, traversal clearance, occlusion, provenance and licensing before production use.
 
 Keep changes narrow and reversible. Do not remove earlier scenes, change the save schema, or rewrite the full campaign until the combined puzzle/escape prototype has passed owner review.
+
+## Owner-approved next direction (2026-10-15)
+
+The current playable route described above is the **as-built prototype**, not the final approved direction for the next production pass. The owner has approved a target of illustrated 3D adventure art (informed by the Marcus character concept and illustrated industrial laboratory reference), a larger but legible interconnected Phase 1 building, a physically collapsed service-breach entrance, and a redesigned Phase 2 that begins with human operational discovery and continues into a hybrid first-person escape through a distinct parking garage to a public street.
+
+The escape target combines free movement and route choice with short contextual actions and brief looks back that show consequences. The robot-led route remains the current implementation until a replacement is integrated and verified. The future Marcus-led beat-'em-up progression is a documented design direction only: Elena begins dependent on Marcus and gradually learns limited defensive skills from him. Full combat implementation is not part of the current Phase 1/2 task.
+
+See [Design Authority](docs/DESIGN_AUTHORITY.md), [Working Vision](docs/VISION.md), [Core Loop](docs/CORE_LOOP.md), [Level Structure](docs/LEVEL_STRUCTURE.md), and [Project Status](PROJECT_STATUS.md). These approved targets do not imply implementation or verification; use the status and traceability documents for evidence.
