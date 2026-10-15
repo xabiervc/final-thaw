@@ -589,11 +589,18 @@ func _direct_clear(target: Vector3) -> bool:
 	return true
 
 
+## Contact catch. The manipulators also reach up to REACH_UP above its base: climbing onto a car or the crates beside
+## the unit is not a safe spot (it reaches slightly further when she is up there, over the edge of the cover).
+const REACH_UP := 1.9
+
+
 func _check_catch() -> void:
 	if state != "chase" and state != "alert":
 		return
 	var p := player.global_position
-	if absf(p.y - global_position.y) < 1.2 and Vector2(p.x - global_position.x, p.z - global_position.z).length() < CATCH_DISTANCE:
+	var dy := p.y - global_position.y
+	var flat := Vector2(p.x - global_position.x, p.z - global_position.z).length()
+	if dy > -1.2 and dy < REACH_UP and flat < CATCH_DISTANCE + (0.45 if dy > 0.8 else 0.0):
 		caught_player.emit()
 
 

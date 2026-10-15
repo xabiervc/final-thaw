@@ -188,6 +188,14 @@ func _run() -> void:
 	scene.call("_start_compressor")
 	await _frames(2.6)
 	_expect(unit.state == "investigate" and unit.last_known.distance_to(scene.Parking.COMPRESSOR_NOISE_AT) < 0.5, "the delayed compressor draws the unit to the cage (a place, not Elena)")
+	# --- climbing onto cover is not a safe spot next to the unit -----------------------------------------------
+	unit.global_position = Vector3(46.05, -2.0, -13.0)  # beside the covered car in bay 44.5 (north row)
+	_place(Vector3(45.2, -0.55, -13.0))  # standing on the car roof, at the edge
+	unit.set("state", "chase")
+	var caught_before: int = scene.catches
+	await _frames(0.2)
+	_expect(scene.catches > caught_before, "the unit's manipulators reach Elena on a car roof at the edge (no safe exploit)")
+	await _frames(1.5)
 	# --- catch and checkpoint ------------------------------------------------------------------------------------
 	scene.set("in_yard", false)
 	var cp_before: int = scene.checkpoint_index

@@ -47,7 +47,17 @@ Accessibility is part of the design, not a late patch.
 
 ## Current implementation
 
-### Flooded Shelter 2.5D slice
+### Phases 1–2 playable demo (main path)
+
+`scenes/prototypes/phase1_canonical_greybox.tscn` (opened by "Iniciar demo"): intro cinematic → Phase 1 investigation in the Helix facility → Phase 2 Containment escape through the building and the service yard (same scene) → ending cinematic → results. As-built record: `docs/design/FASE1_PREMIUM_AUDIT.md` (v4.0); status and evidence: `PROJECT_STATUS.md`. Key code:
+- `scripts/prototypes/phase1_canonical_greybox.gd` — the mission orchestrator.
+- `scripts/phase1/` — the building, route graph, recovery unit and mission state.
+- `scripts/phase2/phase2_parking.gd` — the yard.
+- `scripts/game/` — text (`data/game_text.json`), field notes, cinematics, music, palette.
+- `scripts/managers/game_settings.gd` — options; `input_remap_manager.gd` — remapping.
+- `scripts/ui/` — pause menu, options panel, HUD.
+
+### Flooded Shelter 2.5D slice (legacy)
 
 The Flooded Shelter slice includes:
 
@@ -76,7 +86,7 @@ final-thaw/
 │           ├── elena_vast_concept.png
 │           └── marcus_reyes_concept.png
 ├── config/
-├── data/
+├── data/                 # narrative resources, game_text.json (ES/EN game text)
 ├── docs/
 ├── prompts/
 ├── scenes/
@@ -84,7 +94,7 @@ final-thaw/
 │   ├── levels/
 │   └── props/
 ├── schemas/
-├── scripts/
+├── scripts/              # game/, phase1/, phase2/, managers/, ui/, audio/, characters/, prototypes/
 ├── tests/
 ├── AGENTS.md
 ├── CLAUDE.md

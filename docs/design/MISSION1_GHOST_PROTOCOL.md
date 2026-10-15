@@ -1,5 +1,7 @@
 # Mission 1 — The Ghost Protocol
 
+> **v4.0 note (2026-10-15, as-built):** The investigation now runs through field notes (observation → hypothesis → test → conclusion). G's outer hatch is only operated after the record is read; reading the record never triggers Containment. See [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 > **Nota v3.0 (2026-10-15, as-built):** Selector, aislador y rearme están en E (P2), no en D1/D2, según la spec funcional y el contrato lógico (C6). Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
 
 **Status:** current design contract for the investigation/puzzle portion of Phase 1. The circuit behavior is governed by `FASE1_LOGIC_CONTRACT.md`; the building-wide spatial sequence is governed by `FASE1_ARCHITECTURAL_LAYOUT.md`, `FASE1_SPATIAL_GRAPH.md`, `FASE1_GREYBOX_SPEC.md` and `fase1_fase2_mapa_progresion.md`. Not implemented or playtested as a complete sequence; not final full-game canon.

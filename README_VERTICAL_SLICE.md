@@ -1,5 +1,7 @@
 # Final Thaw - Flooded Shelter playable prototype
 
+> **v4.0 note (2026-10-15, as-built):** The canonical scene no longer hands off to the motion prototype; Phase 2 continues in the same scene. See [FASE1_PREMIUM_AUDIT.md](docs/design/FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 Status: experimental branch `feat/godot-vertical-slice`. This is a 2D greybox prototype, not the full 25-minute production vertical slice. It adds no new autoloads, does not change `project.godot`, and leaves Phase 0 intact.
 
 ## Run

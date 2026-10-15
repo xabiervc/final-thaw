@@ -1,5 +1,7 @@
 > **Design status update — 2026-10-14:** This file preserves the earlier full-campaign narrative as historical source material. The 16-phase dual-protagonist structure, Marcus combat arc, fixed timeline, final-boss sequence and three-ending system are **under review**, not binding requirements for the current prototype. The active opening hypothesis is an Elena-led investigation/system puzzle followed by a third-person traversal and escape sequence. See [VISION.md](VISION.md), [DESIGN_PIVOT_PROTOTYPE_BRIEF.md](DESIGN_PIVOT_PROTOTYPE_BRIEF.md) and [MOTION_CHASE_PROTOTYPE.md](design/MOTION_CHASE_PROTOTYPE.md). Do not silently discard established character or world facts; reconcile them after the prototype playtest.
 
+> **v4.0 note (2026-10-15, as-built):** The opening is implemented: intro and ending cinematics, lines N1-01/N1-02/N2-01/N2-06 as subtitles, public-address announcements, field notes. STAFF-M1 (N2-02) was removed. The restricted record's last line names FINAL THAW STATION as the hook for Phase 3. Texts: `data/game_text.json`. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 ## Current opening narrative and script beats (design proposal; not implemented)
 
 **Authority:** this section governs the current opening proposal only. The legacy campaign below remains archived. Existing facts about Elena, Iris, Selene, Aster and Helix are retained where compatible; this opening does not lock the full campaign, Marcus's role, chronology or endings.

@@ -1,5 +1,7 @@
 # Phase 1 — Canonical build and verification
 
+> **Nota v4.0 (2026-10-15, as-built):** La escena canónica contiene intro, Fase 1, Fase 2 (patio), final y resultados. Tests nuevos o actualizados: playthrough (hasta la calle), containment (sin STAFF), escape_live (patio), game_systems; se retira test_phase2_parking_entry. Ver [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 > **Nota v3.0 (2026-10-15, as-built):** La escena canónica implementa la ruta completa. Tests: playthrough, edges, containment, escape_live, canonical, parking_entry. Resultados en `PROJECT_STATUS.md` §7. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
 
 **Estado:** la arquitectura de referencia se ha revisado a v2.1 para representar un laboratorio completo, puzle distribuido, persecución interior y salida alternativa. La escena canónica aún refleja parcialmente el diseño anterior: la galería de evacuación, el segmento de persecución interior y la salida distinta del túnel de entrada no están implementados ni validados. No declarar greybox aceptado.

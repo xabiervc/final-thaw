@@ -1,5 +1,7 @@
 # FINAL THAW — Critical Documentation Index
 
+> **v4.0 note (2026-10-15, as-built):** `scenes/prototypes/phase2_parking_chase.tscn` no longer exists; Phase 2 is in `scenes/prototypes/phase1_canonical_greybox.tscn`. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 **Current status:** prototype-led redesign of the opening. Older documents still describe a former dual-protagonist, combat-arena and fixed 16-phase campaign; treat those as historical material until deliberately reconciled.
 
 ## Read these first

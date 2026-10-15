@@ -1,6 +1,65 @@
 # FINAL THAW — Master Asset List
 
-## Status legend
+## Phases 1–2 demo — asset register (2026-10-15)
+
+This register covers every asset the playable demo uses (`scenes/prototypes/phase1_canonical_greybox.tscn`: intro, Phase 1, Phase 2, ending). Status:
+- **final**: production quality, no replacement planned.
+- **temporary**: works and is coherent, but must be replaced before release.
+- **generated**: produced procedurally by a script in this repository (reproducible), quality noted.
+- **missing**: needed and not present; the gap is described.
+
+Licences are stated only where they were actually checked. Poly Haven and ambientCG assets are CC0 1.0 per their sites and API metadata, recorded at download in `D:/Projects/external_assets/polyhaven/models_1k/manifest.json`. **The MPFB base-asset licence for Elena is not yet verified.**
+
+| Asset | File / resource | Use | Status | Licence / provenance | Replacement work |
+|---|---|---|---|---|---|
+| Elena (body, outfit, hair) | `assets/models/lab_ref/ref_elena_mpfb.glb`, `assets/textures/lab_ref/elena_*` | Player character | temporary | MPFB 2 base (code GPL-3.0; base-asset licence **unverified**), outfit and hair from scripts in `tools/blender/elena_mpfb/` | Final sculpted character from `assets/concept/characters/elena_vast_concept.png`; verify or replace the MPFB base |
+| Elena animations (13 clips) | same `.glb` (idle, walk, run, crouch_idle, crouch_walk, jump, fall, land, climb, scan, interact, alert, caught) | Locomotion, gestures | generated | Procedural keys, `tools/blender/elena_mpfb/animate_elena.py` | Mocap or hand-keyed set (see "missing" below); procedural poses are readable but stiff |
+| Missing Elena animations | — | — | missing | — | Turn-in-place, start/stop, dedicated sprint, crawl, hit-react, look-at |
+| Recovery unit | `assets/models/characters/recovery_unit.glb` | Phase 2 pursuer | generated | `tools/blender/build_recovery_unit.py` (spec in the script header) | Concept art, then a final model with track animation and articulated manipulators |
+| Facility architecture | built in code (`scripts/phase1/phase1_building.gd`, `scripts/phase2/phase2_parking.gd`) | Building and yard | generated (greybox+) | Original | Modular art kit to the `LAB_STYLE_SPEC.md` direction |
+| Wall, floor, metal and concrete textures | `assets/textures/lab_photo/{painted_plaster_wall,concrete_panels,concrete_floor_worn_001,metal_plate_02}_*` | Facility surfaces | temporary (good quality) | Poly Haven, CC0 1.0 | Keep or swap for a unified trim-sheet kit |
+| Asphalt | `assets/textures/lab_photo/asphalt_033_*` | Yard, street | temporary (good quality) | ambientCG Asphalt033, CC0 1.0 (`tools/art/prepare_parking_textures.py`) | — |
+| Covered car | `assets/models/parking/covered_car/` | Fleet in the yard (one multimesh) | temporary (good quality) | Poly Haven "covered_car", author MP, CC0 1.0 | A few uncovered vehicles for variety |
+| Security light | `assets/models/parking/security_light/` | Yard floodlight fixtures | temporary | Poly Haven, Maximilian Schuster, CC0 1.0 | — |
+| Utility box | `assets/models/parking/utility_box_01/` | Egress enclosure | temporary | Poly Haven, James Ray Cock, CC0 1.0 | — |
+| Roller shutter | `assets/models/parking/rollershutter_door/` | Dock 2 noise device | temporary | Poly Haven, author MP, CC0 1.0 | — |
+| Chain-link fence | procedural texture (`facility_materials.gd`) | Cage and egress enclosure | generated | Original | Modelled fence kit with posts and gates |
+| City backdrop | boxes and window grids (`phase2_parking.gd`) | Exterior skyline | generated (placeholder) | Original | Matte-painted skyline card or low-poly city kit |
+| Music: investigation, tension, chase, release | `assets/audio/music/*.wav` | Adaptive score | generated (placeholder) | `tools/audio/render_music.gd` + `scripts/audio/game_synth.gd`; **not auditioned by ear** | Composed score; see prompts below |
+| Sound effects | runtime synthesis (`sfx_synth.gd`, `game_synth.gd`) | UI, interactions, unit, PA chime, compressor, shutter, wind | generated (placeholder) | Original; **not auditioned by ear** | Recorded or designed SFX; see prompts below |
+| Public address voice | — | PA lines (currently subtitles and a chime) | missing | — | VO recording, ES/EN |
+| Elena voice | — | Lines N1-01, N1-02, N2-01, N2-06 (currently subtitles) | missing | — | VO recording, ES/EN |
+| Intro and ending cinematics | in-engine shots (`phase1_canonical_greybox.gd`, `cinematic_director.gd`) | Story framing | temporary | Original | Illustrated panels or a staged in-engine edit with final assets; see prompts below |
+| UI theme | `scripts/ui/ui_kit.gd`, `prompt_hud.gd` | HUD, menus | temporary (coherent) | Original | Typography and iconography pass |
+| Concept art | `assets/concept/characters/*.png` | Reference only | final (reference) | Owner-supplied | — |
+
+### Production prompts for missing or temporary assets
+
+- **Intro panels (6, 16:9, illustrated, restrained realism).** "Night, a clandestine hydrological research facility on the edge of a flooded city; cold blue light and one sodium lamp over a service tunnel; a woman scientist in a long teal coat with a backpack instrument case, seen from behind, entering; muted palette (slate blue, teal, sodium amber); painterly but grounded, no fantasy elements." Character design follows `elena_vast_concept.png`.
+- **Ending panels (4).** "The same woman on an empty street above a sunken service yard at night; behind a gate, a tracked security robot with a red visor stands at the perimeter; floodlights switch on in sequence along the wall; she does not look back." The final card is typographic ("FINAL THAW STATION").
+- **Recovery unit concept.** "Autonomous facility recovery robot, 1.9 m, tracked base, narrow upright chassis, mast with a wide horizontal sensor visor; industrial grey with amber hazard bands; clearly a machine, no face; folded manipulator arms; worn, maintained, municipal-utility feel."
+- **Music.** Four stems, same key (D minor), loop-ready:
+  - Investigation: 24 s; low drone, sparse glassy tones, unease without threat.
+  - Tension: 72 bpm; heartbeat pulse, minor-second rub.
+  - Chase: 128 bpm; driving bass ostinato and percussion, no melody.
+  - Release: 10 s; open chord that settles.
+- **SFX.**
+  - Unit servo loop (electric drive whine with load).
+  - Track thumps.
+  - Alert stab: two rising tones, distinctive and short.
+  - PA chime, three tones.
+  - Compressor start-up and run loop.
+  - Roller shutter.
+  - Heavy gate clank.
+  - Exterior night wind with distant traffic.
+  - Footsteps by surface: concrete, grating, asphalt.
+- **VO.** Elena: calm, precise, low voice; four lines (ES/EN) from `data/game_text.json`. PA: neutral synthetic female voice; five lines.
+
+## Legacy — Flooded Shelter planning (2026-10 and earlier)
+
+The tables below belong to the earlier Flooded Shelter slice and are kept for reference.
+
+### Status legend (legacy)
 
 - `SPEC`: specification exists.
 - `CONCEPT`: concept/reference exists.

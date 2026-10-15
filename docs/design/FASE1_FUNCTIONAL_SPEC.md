@@ -1,5 +1,7 @@
 # FASE1 — Especificación funcional de implementación (v2.1)
 
+> **Nota v4.0 (2026-10-15, as-built):** STAFF-M1 se ha eliminado; la sección silenciosa la sostiene la fase de sospecha de la unidad. G exterior solo se acciona tras leer el registro. Sin handoff de escena: la Fase 2 continúa en el mismo nivel. Ver [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 > **Nota v3.0 (2026-10-15, as-built):** Por el cambio de datums, el panel de E y los controles de P2 quedan 3 m más altos. Nuevas decisiones de persecución: telemetría de contención, persiana R1 y barrido urgente (C10). El contrato eléctrico no cambia. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
 
 **Estado:** contrato funcional revisado para el diseño de edificio completo, puzle distribuido y huida interior. Las nuevas fases de persecución y salida alternativa aún no están implementadas ni validadas en Godot. No se afirma aceptación de runtime.  

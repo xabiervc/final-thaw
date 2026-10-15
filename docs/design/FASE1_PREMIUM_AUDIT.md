@@ -1,70 +1,164 @@
-# FINAL THAW — Fase 1: auditoría premium y registro as-built (v3.0)
+# FINAL THAW — Fases 1 y 2: registro as-built (v4.0)
 
-**Fecha:** 2026-10-15 · **Rama:** `feat/godot-vertical-slice` · **Motor:** Godot 4.7.2-stable (win64), renderer GL Compatibility (ANGLE, Intel HD 630).
-**Estado:** implementado y verificado por tests automáticos y un bot de recorrido que usa las acciones de input reales. **Sin playtest humano.** Rendimiento por debajo del objetivo de 60 FPS (ver §6). Este documento es la fuente de verdad del *as-built* v3.0. Donde contradice a v2.1, gana este documento y la escena; las specs v2.1 llevan una nota que remite aquí.
+**Fecha:** 2026-10-15 · **Rama:** `feat/godot-vertical-slice`
+**Motor:** Godot 4.7.2-stable (win64), renderer GL Compatibility (ANGLE sobre Intel HD 630).
+**Escena:** `scenes/prototypes/phase1_canonical_greybox.tscn`. Se abre con «Iniciar demo» y contiene la intro, la Fase 1, la Fase 2, el final y los resultados.
 
-## 1. Contradicciones encontradas y decisión tomada
+**Estado:**
+- Implementado y verificado con tests automáticos y con un bot de recorrido que usa las acciones de input reales.
+- **Sin playtest humano.**
+- El audio no se ha escuchado.
+- El rendimiento solo alcanza el objetivo con la calidad gráfica «Rendimiento» (§9).
 
-| # | Contradicción | Decisión v3.0 | Motivo |
-|---|---|---|---|
-| C1 | Datums P−1 −2 / P0 0 / M +1,5 / P2 +3 en todas las specs v2.1, con forjados de 0,25 m | **P−1 −2 · P0 0 · M +3 · P2 +6** | Con +1,5 m entre plantas quedaban 1,25 m de altura libre: imposible para una persona de 1,7 m. No había forma de cumplir el greybox v2.1 sin cambiar datums. |
-| C2 | S2 en X 9..13 subiendo hacia el norte; el pie quedaba con un labio de 22 cm accesible solo de lado | S2 es una cuña sólida (9,3,−3)→(13,5,6,−3) que sube hacia el este, con rellano en M en X 7,5..9 y barandilla inclinada | Entrada frontal, sin labios, sin caídas laterales. |
-| C3 | S1: la barandilla inclinada invadía el rellano superior (1 m), haciéndolo inalcanzable | S1 es una cuña sólida; guardas en P0; muro sur a Z=13,65 (rellano de 2,5 m) | La ruta P0→P−1 es transitable. |
-| C4 | El puente A→T y la galería de evacuación compartían Z 4,5..7,5; los muros de la galería (tope 0,48) cortaban el tablero | Tablero del puente de retorno a Y=0,35 sobre la galería; muros de la galería con tope a 0,23 | Cruce a distinto nivel; la galería queda libre debajo. |
-| C5 | La tabla del esquema estaba en la boca de la galería | SCHEMATIC_AT = (27,3, −2, 2,9), en el muro este del foso, al norte de la boca | Nada bloquea Z 4,5..7,5. |
-| C6 | MISSION1_GHOST_PROTOCOL sitúa selector/aislador en D1/D2; FUNCTIONAL_SPEC y LOGIC_CONTRACT los sitúan en E (control) | **En E (P2)**: SELECTOR (12,6,−7,6), AISLADOR (19,6,−7,6), REARME (17,2,6,−7,6), panel (15,5,7,55,−8,15) | La spec funcional es más reciente y el contrato lógico no cambia. MISSION1 es narrativa de la misión. |
-| C7 | El panel de E en el contrato funcional está a cota +3 | El panel queda +3 m más alto (P2 = +6) | Consecuencia directa de C1; el **contrato eléctrico no cambia**. |
-| C8 | El ascensor de misión estaba especificado a 1,5 m | Paradas P0 (0) y M (+3); el componente genérico ya usaba 3 m | Consecuencia de C1. |
-| C9 | DESIGN_PIVOT_PROTOTYPE_BRIEF describe un handoff directo G→H | Handoff físico: boca este de P−1 (X=34) → aparcamiento, sin teletransporte. El estado (momentum, orientación, unidad oculta que llega por la izquierda) se pasa con `phase1_handoff.gd`, consumido una sola vez | Respeta el brief del usuario: "sin cortes ni pérdida de estado". |
-| C10 | La spec v2.1 no explica cómo garantiza la persecución a la carrera si la jugadora huye antes de que la unidad la vea | Decisiones nuevas: **telemetría de contención** (el uso del ascensor y la liberación de R1 informan de la *ubicación*, nunca de la posición de Elena) + **persiana R1** con manivela (0,17 m/s; la unidad la fuerza a 0,9 m/s) + **barrido urgente** | Un jugador rápido sigue teniendo una persecución legible, con la reacquisición en el puente, sin trampas de información. |
-| C11 | O3 en (22,5, 0, −1,5) | O3 cae en (27,7, 0, 0,1) | La posición antigua bloqueaba la salida del ascensor en P0. |
-| C12 | Las cabeceras "no canónico" de varias specs citan versiones antiguas | Las specs v2.1 llevan nota v3.0 que remite aquí | Una sola fuente as-built. |
+Este documento es la fuente de verdad del *as-built*. Sustituye a la v3.0 (solo Fase 1) y prevalece sobre las specs v2.1. Las specs afectadas llevan una nota que remite aquí.
 
-## 2. Geometría as-built (metros; X este, Z sur, Y vertical)
+## 1. Decisiones de diseño (v4.0) y motivo
 
-- **Plantas:** P−1 Y −2 · P0 Y 0 · M Y +3 · P2 Y +6. Cubierta del bloque norte 9,2; bloque sur 4,5.
-- **Foso P−1:** X 10..28, Z 1..8. **Pozo S1:** X 24..26, Z 8..11. **Hueco del ascensor:** X 24,5..27,5, Z −4,5..−1,5.
-- **Galería de evacuación:** X 28..34, Z 4,5..7,5, Y −2; **boca este** en X=34. **Explanada** X 34..44, Z 0,5..11,5.
-- **Puente de retorno:** corte X 28..30, Z 3..9, tablero Y 0,35.
-- **R1 (persiana P0):** abierta Y 3,5 / cerrada Y 1,15; manivela en (29,4, 0, 0,3).
-- **O1** estantería del archivo (8, 6+1,1, −9,6) cae al iniciar la contención; **O2** rack de tuberías en M (13,2, 3,6, −6,8), 1,2 m, cubierta parcial; **O3** bandeja caída (27,7, 0, 0,1).
-- **Barandillas:** capa física 5 (valor 16). Elena colisiona con ellas (máscara 1|16) pero **no puede trepar sobre ellas ni a través de ellas**; los rayos de visión y la cámara usan solo la capa 1, así que se ve a través.
-- **Mantenimiento** (26,4, −2, 2,2) habilita el ascensor y pone en cola `SERVICE_OVERRIDE`. Llamadas del ascensor: P0 (28,2, 0, −1,2), M (28,2, 3, −4,9).
-- **Archivo** (4,6, 6, −8,8); **G** interior (3, 6, −7,25), exterior (0, 6, −7,5); **diagnóstico** (7,4, 6, −5,4).
-
-## 3. Ruta jugable verificada (bot de recorrido)
-
-Túnel oeste → nave A → foso P−1 (esquema y puente A→T) → mantenimiento (luces, bombas, el ascensor se activa) → ascensor P0→M → S2 → E: aislar ENSAYO, seleccionar ARCHIVO, comprobar, rearmar → archivo (solo con ARCHIVO estable) → abrir G exterior → la unidad entra → G interior → F/E → S2 → M (STAFF-M1, cubierta en O2) → ascensor → P0 (R1) → S1 → P−1 → galería → boca este → aparcamiento (Fase 2 continúa la persecución).
-
-## 4. Movimiento (`scripts/characters/elena_controller.gd`)
-
-- Andar 4,5 m/s; correr (Shift, acción `run`) ≥1,5× con drenaje de aguante 14/s; agacharse (Ctrl o C, acción `crouch`): cápsula 1,7→1,05 m, y no se levanta bajo techo bajo.
-- Salto con coyote time y buffer; control aéreo 7.
-- **Encaramarse** (salto + dirección): 0,45–1,85 m; comprueba apoyo, que no haya capa 16, hueco para la cápsula y rayos "a través" a 0,3/0,9/1,5 m. Coste de aguante 10. No hay escalada libre.
-- Cámara al hombro (desplazamiento 0,45 m); el modelo se oculta si el brazo de cámara mide menos de 1 m; el pivote baja al agacharse.
-
-## 5. Amenazas
-
-- **Unidad de recuperación** (`phase1_recovery_unit.gd`): estados latente/barrido/investigar/alerta/persecución/búsqueda. Visión de 9 m con semiángulo de 55° (×0,55 si Elena va agachada), sentido cercano de 1,6 m, oído según su movimiento; solo percibe en la misma planta. Usa el ascensor de verdad. Captura a 1,15 m. Iconos · ? ! !! y color del ojo; el escáner muestra su cono de visión.
-- **STAFF-M1** (`phase1_staff.gd`): ignora a Elena antes de la contención; visión 8 m con semiángulo de 50°; SOSPECHA a 0,8 s, ALERTA a 1,2 s → informa a la unidad y se retira. Nunca ataca. **No hay combate obligatorio.**
-- **Capturas:** checkpoints F/M/P0/P−1 restauran el estado y reponen a la unidad en un nodo justo (gantry_far / f_mid / lift_m / lift_p0).
-- **Ascensor:** espera mientras alguien va dentro (`hold_departure`), así no devuelve a Elena hacia la unidad.
-
-## 6. Rendimiento (honesto)
-
-Medido con `tools/capture/scene_capture.tscn --bench` a 720p en la HD 630, en el peor encuadre de cada zona:
-
-| Vista | Antes | Ahora |
+| # | Decisión | Motivo |
 |---|---|---|
-| Nave | 20–22 ms | 23 ms |
-| Foso | ~27 ms | ~24 ms |
-| Bombas (M) | 29,7 ms | 30,4 ms |
-| Control (E) | 30–33 ms | 22–26 ms |
-| Persecución en R1 | 17,6 ms | 14,7–16,5 ms |
-| Draw calls (peor vista) | 620 | 330 |
+| D1 | **Fases 1 y 2 en una sola escena.** El patio de servicio (aparcamiento) se construye junto al edificio, detrás de la boca este de P−1. Se eliminan el handoff a la escena del prototipo de movimiento (`phase1_handoff.gd`, `phase2_parking_chase.tscn`) y su test. | Sin cortes, teletransportes ni pérdida de estado: la unidad sigue físicamente a Elena. El prototipo de movimiento era un pasillo de 82 m con controlador, enemigo y HUD duplicados. |
+| D2 | **Se elimina STAFF-M1.** La sección silenciosa la sostiene la unidad, con una fase de sospecha visible (se frena y gira hacia el estímulo; «?» que aparece gradualmente). | El operario estaba quieto en una instalación clandestina y no aportaba nada que la unidad no pudiera dar con más coherencia. |
+| D3 | **G no se abre sin el registro.** Elena se niega («No me voy sin el registro del ensayo»). La auditoría sigue necesitando el `SERVICE_OVERRIDE` encolado por el mantenimiento. | Evita una contención sin la prueba. Leer el registro, por sí solo, nunca la activa (test negativo). |
+| D4 | **La causa se hace explícita sin revelar soluciones.** Al activar el mantenimiento se avisa de que se registra una orden de servicio que se auditará al abrir G exterior. Queda anotado en el cuaderno como «Riesgo asumido». | El jugador entiende la relación entre lo que hizo y el peligro que provoca. |
+| D5 | **Cuaderno de campo.** Las observaciones generan inferencias: la hipótesis aparece con el esquema más la medición o el examen del puente; la «hipótesis confirmada», tras un disparo real; la conclusión, con el registro. | Ciclo de investigación real (observar, hipótesis, prueba, conclusión) sin volcados de texto. Las notas nunca nombran el control ni el orden. |
+| D6 | **Telemetría de contención.** Usar el ascensor, la manivela de R1 o la cámara de la boca de servicio informa a la unidad de un *lugar*, nunca de la posición de Elena. Cada caso lo anuncia la megafonía. | Detección explicable; la persecución llega al patio. Antes, la unidad se quedaba buscando dentro. |
+| D7 | **La visión depende de la luz** en el patio: ×0,6 a oscuras, ×1 en los focos. Se combina con estar agachada (×0,55). Un indicador del HUD lo comunica con símbolo y texto. | Sigilo legible: el entorno importa y el jugador sabe por qué le ven. |
+| D8 | **Dos dispositivos de ruido en el patio:** el compresor de la jaula (arranque diferido 2 s) y la persiana del muelle 2 (se controla junto a la boca y suena al fondo del patio). | Despistar a la unidad con los sistemas de la propia instalación, lo que encaja con la identidad de científica. |
+| D9 | **Salida peatonal de emergencia** con apertura libre junto a la barrera de vehículos, que la contención baja. | La salida es obvia por diseño ambiental (rótulo verde, luz, carril pintado) y es creíble: una salida de emergencia no se bloquea. |
+| D10 | **El cansancio cuesta correr, no andar.** Andando, la velocidad nunca baja del 85 % del paso normal. | Antes, con 0 de aguante andaba al 60 %, una captura injusta. |
+| D11 | **Planificación de ruta de la unidad.** Empieza en el nodo más cercano al que puede ir en línea recta y replanifica si se atasca. | Corrige bloqueos detrás de muros, por ejemplo junto al hueco de S1, que impedían llegar al patio. |
 
-La sala de pruebas de referencia cuesta 9,7 ms. **El objetivo de 60 FPS (16,7 ms) no se cumple** en nave, foso, bombas ni control con este hardware. El coste aparece cuando coinciden materiales variados y luces; la causa sospechada es el cambio de programa de shader bajo ANGLE. El escalado de resolución empeoró el resultado; la separación del discard y las capas de luz por planta no tuvieron efecto medible, pero se mantienen. Siguiente paso: perfilar en el PC nuevo antes de decidir (sin cambiar de renderer sin aprobación del propietario).
+El contrato eléctrico (`FASE1_LOGIC_CONTRACT.md`) **no cambia**. Las contradicciones C1–C12 de la v3.0 siguen resueltas tal como se decidieron. Las cotas son P−1 −2, P0 0, M +3 y P2 +6.
 
-## 7. Evidencia de tests
+## 2. Flujo completo
 
-Ver §7 de `PROJECT_STATUS.md` (comando, exit codes y recuento por suite del commit registrado).
+**Intro** (~51 s, saltable). Explica quién es Elena, por qué está en Helix y qué sospecha. Plano exterior de la instalación; la nave con la columna Aster; el foso con el puente A–T; Elena saliendo del túnel; título.
+
+**Fase 1, investigación:**
+- Túnel oeste y el plan de evacuación del acceso, que adelanta la ruta de huida.
+- Informe oficial en control: «fallido, solo nodo T».
+- Foso P−1: esquema, puente A–T (examen o escáner, que da la hipótesis), etiqueta del taller y mantenimiento (riesgo asumido; da corriente al ascensor).
+- Ascensor a M, S2 a control E: aislar ENSAYO, seleccionar ARCHIVO, comprobar y rearmar. Un error provoca un disparo, que confirma la hipótesis.
+- Archivo F con ARCHIVO estable: registro y conclusión.
+- G exterior: auditoría y contención.
+
+**Fase 2, contención:**
+- Alarmas, R1 baja, la estantería O1 cae y la megafonía anuncia el protocolo.
+- La unidad entra por la pasarela exterior y hace un barrido silencioso; Elena retrocede por F, E, S2 y M.
+- Ascensor (telemetría) a P0 y bandeja O3 caída. La unidad la readquiere por línea de visión real: cámara de persecución y música de persecución.
+- Manivela de R1 (telemetría) y paso agachada; luego S1, el foso, la galería y la boca este.
+- **En el patio**, la cámara reporta la salida: la unidad acude, se encienden los focos en secuencia y baja la barrera.
+- Rutas A (sur, iluminada, corta) o B (norte, oscura, coches y columnas). Dispositivos de ruido. Hueco O3 de 1,3 m, recinto de salida y carril de emergencia.
+
+**Final** (~37 s, saltable). La unidad se detiene en el límite del sector y la megafonía transfiere a «seguridad exterior». Plano desde lo alto de la rampa: focos en secuencia y el lector «SECTOR EXTERIOR»; línea N2-06. Plano en la calle: consecuencia (la auditoría llevaba su credencial). Cartelas finales: el resultado se transfirió a la ESTACIÓN FINAL THAW; continuará en la Fase 3.
+
+**Resultados:** tiempo, entradas del cuaderno, capturas, pistas y dificultad. Vuelta al menú.
+
+## 3. Geometría as-built (metros; X este, Z sur, Y vertical)
+
+- **Edificio:** igual que la v3.0 (§2 anterior). Cubiertas solo visibles desde fuera (planos de una cara, sin colisión ni sombra).
+- **Patio:** suelo a Y −2; x 34..76, z −15,5..14. El concepto v0.3 se ajustó al borde real del edificio, así que la franja de fachada es el bloque de planta x 30,3..34. Muros perimetrales de 2,6 m que no se pueden escalar. La boca está en x 34, z 4,5..7,5.
+- **Filas de coches:** norte z −15,5..−10,5 y sur z 9..14 (bahías de 3×5). Columnas con racks a z −9,6 y 8.
+- **Cobertura:**
+  - O1, carro con bidones: (42, −2,4).
+  - Furgoneta: (47, 0,9).
+  - Pila de cajas escalonada (escalable): (54,5, −3,1).
+  - Jaula técnica (malla: bloquea el paso, no la vista): x 58..63,6, z −4,4..−0,9.
+  - O2: (65,6, 1,2).
+- **Recinto de salida:** valla en x 69,4 y en z −0,8, con el hueco O3 en x 72,3..73,6. La puerta del muro norte está en x 69,6..73,2: carril de vehículos con barrera (fondo a 1,15 m) y carril peatonal en x 72,1..73,2.
+- **Rampa y calle:** de z −15,8 a −24 (a Y 0,4); la calle va de z −24 a −34. Cruzar z < −16,6 termina la fase.
+- **Grafo de la unidad:** `phase1_route_graph.gd`, con nodos `yard_*`, `ya_*` (ruta A), `yb_*` (ruta B), `join`, `bar_s/n`, `egress` y `gate_in`.
+
+## 4. Puntos de control
+
+| ID | Elena | La unidad reinicia en |
+|---|---|---|
+| F | (6, 6, −6,2) | gantry_far |
+| M | (10,2, 3, −5,6) | f_mid |
+| P0 | (25, 0, 0,4) | lift_m |
+| P−1 | (25, −2, 6,8) | lift_p0 |
+| YARD | (35,6, −2, 6) | pit_w |
+| JOIN | (70, −2, 2,4) | yard_dec |
+| EGRESS | (72,95, −2, −4) | ya_2 |
+
+En cada caso hay al menos 15 m de ruta entre ambos y la unidad no tiene línea de visión inmediata (test). El menú de pausa permite «Volver al último punto seguro».
+
+## 5. Unidad de recuperación (`phase1_recovery_unit.gd`)
+
+- **Estados** (símbolo y color del visor, nunca solo color): barrido «·», sospecha «?» que aparece gradualmente, investigación «?», alerta «!», persecución «!!» y búsqueda «?».
+- **Sentidos:**
+  - Vista: cono de 55° con línea de visión real; alcance según dificultad. Agachada ×0,55; a oscuras ×0,6.
+  - Contacto cercano: 1,6 m.
+  - Oído según el movimiento de Elena: quieta 1,5 m, agachada 2,5, andando 6, corriendo 10, todo × la dificultad.
+  - Solo percibe en su mismo nivel.
+- **Memoria:** va a la última posición conocida. Al perder el contacto comprueba 5 m en la dirección en que la vio huir (solo si esa línea está despejada), busca y vuelve al barrido.
+- **Movimiento:** usa el grafo de rutas, el mismo ascensor y la persiana R1 (la fuerza). Nunca se teletransporta. Se detiene en el límite del sector.
+- **Audio posicional:** zumbido de servos según la velocidad, golpes de oruga y un aviso al entrar en alerta.
+
+## 6. Movimiento y cámara
+
+- **Velocidades:** paso por defecto 4,2 m/s, sprint 6,8 m/s (gasta aguante), agachada 1,4 m/s.
+- **Giros:** conservan la velocidad (11 rad/s). Una inversión frena y gira en unos 0,13 s.
+- **Salto y escalada:** caída ×1,25 para una parábola firme; coyote y buffer de salto. Puede encaramarse a bordes de 0,45 a 1,85 m (cajas, coches tapados, O2), nunca a vallas ni barandillas.
+- **Animación:** la velocidad de cada clip va ligada a su velocidad natural medida (andar 1,8, correr 4,3, agachada 0,85 m/s), con histéresis. Inclinación del cuerpo al acelerar y girar (reducida con «reducir movimiento»).
+- **Cámara:**
+  - «Exploración»: 5 m de distancia, FOV 65.
+  - «Persecución»: 3,4 m, FOV 71, hombro 0,6. Transición suave mientras la unidad está en alerta o persiguiendo, y 2,5 s más.
+  - Stick derecho; sensibilidad e inversión configurables.
+
+## 7. Opciones, accesibilidad y entrada
+
+Todas tienen efecto real y están cubiertas por `tests/test_game_systems.gd`.
+
+- **Remapeo de teclado y mando** de mover, correr, agacharse, saltar, interactuar, escanear y pista. Si la tecla o el botón ya se usa, las acciones se intercambian. Hay restaurar predeterminados. Se guarda en `GameManager.settings` (guardado JSON/CRC32, compatible con partidas antiguas). Esc y Start quedan fijos para el menú. Las acciones de combate heredadas de la Fase 0 siguen definidas (contrato de la Fase 0) pero no se usan ni se muestran.
+- **Dificultad** (Exploración / Estándar / Exigente): cambia la visión, la reacción, la velocidad, la búsqueda y el oído de la unidad, y el gasto de aguante.
+- **Accesibilidad:** tamaño de texto, alto contraste, reducir movimiento (sin destellos de alarma, sin cambio de FOV, inclinación reducida), subtítulos activables y su fondo, paleta para daltonismo (deuteranopía, protanopía, tritanopía) y velocidad de juego (50/75/100 %).
+- **Cámara:** sensibilidad e inversión. **Audio:** volumen general, música y efectos.
+- **Calidad gráfica:** Alta / Equilibrada / Rendimiento (§9).
+- **Idioma:** todo el texto del juego está en `data/game_text.json` (ES/EN). La señalética del mundo es diegética y está en español; las acciones y los paneles muestran la traducción al lado.
+
+## 8. Audio
+
+Todo el audio es sintético y provisional.
+- **Música adaptativa:** investigación, tensión, persecución y liberación. Cambia según el estado real del juego, no por temporizador.
+- **Ambiente y efectos:** zumbido de bombas mientras el mantenimiento está encendido; viento exterior en el patio; megafonía (campanilla y subtítulo); compresor, persiana y barrera.
+
+**No se ha escuchado.** Lista de producción y prompts en `docs/art/MASTER_ASSET_LIST.md`.
+
+## 9. Rendimiento medido
+
+Intel HD 630, 1280×720, Compatibility (ANGLE/D3D11). Mediana de 300–400 fotogramas, `tools/capture/scene_capture.tscn --bench`.
+
+| Lugar | Antes de corregir texturas | Alta | Equilibrada (por defecto) | Rendimiento |
+|---|---|---|---|---|
+| Nave | 21,8 | 20,3 | 18,4 | 16,2 |
+| Foso | 22,2 | 20,5 | — | — |
+| Bombas (M) | 24,7 | 20,2 | 18,1 | 15,6 |
+| Control | 18,6 | 18,9 | — | — |
+| R1 | 20,2 | 19,0 | — | — |
+| Patio, entrada | 23,2 | 20,7 | — | — |
+| Patio, centro | 23,8 | 21,7 | 19,6 | 17,6 |
+| Patio, salida | 22,0 | 20,7 | — | — |
+
+Valores en ms.
+
+- **Picos:** sin picos por encima de 50 ms en mediciones limpias. Los primeros picos de 78 ms coincidieron con otros procesos en ejecución.
+- **Corrección principal:** las texturas 3D se importaban sin compresión ni mipmaps; ahora usan S3TC con mipmaps.
+- **Cuellos de botella restantes** (medidos con interruptores): glow ~2 ms, sombra direccional ~2 ms, luces omni 1,5–2 ms, sombreador de superficies ~3 ms.
+- **Objetivo de 16,7 ms:**
+  - En «Rendimiento» se cumple en interiores. En el patio queda a 0,9 ms.
+  - En «Alta» y «Equilibrada» no se cumple en este equipo.
+
+## 10. Evidencia de tests
+
+Ver `PROJECT_STATUS.md` (comando, commit y recuento por suite).
+
+## 11. Lo que no está hecho o no está verificado
+
+- No hay playtest humano. Diversión, claridad del puzle sin pistas, justicia de la persecución con jugadores reales y confort de cámara siguen sin verificar.
+- Mando real sin probar: solo hay eventos inyectados en tests.
+- No hay voz grabada.
+- No existe gatear (prone). Los pasos bajos se hacen agachada: persiana R1 y barrera.
+- Faltan animaciones de giro en el sitio, arranque y parada, y reacción a golpes.
+- Arte provisional: edificio en greybox con texturas foto, ciudad de cajas, unidad generada.
+- Exportación web y licencia de MPFB sin verificar.

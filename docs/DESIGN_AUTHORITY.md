@@ -1,5 +1,7 @@
 # FINAL THAW — Design Authority During Prototype-Led Redesign
 
+> **v4.0 note (2026-10-15, as-built):** Where Phase 1–2 documents disagree with the built game, the as-built record wins, and every affected document carries a pointer to it. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 ## Purpose
 
 This document separates current design direction, actual implementation evidence, protected technical contracts and legacy full-campaign specifications. The project is developing a two-mission opening; the former campaign package is not fully reconciled with this direction.

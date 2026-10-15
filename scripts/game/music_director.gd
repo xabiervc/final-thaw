@@ -1,7 +1,7 @@
 extends Node
 ## Adaptive music: three synchronised loop layers (investigation, tension, chase) always playing in step and
 ## crossfaded by gameplay state, plus a one-shot release for the escape. The layers are original placeholder
-## music rendered by tools/audio/render_music.gd (see docs/art/ASSET_REGISTER.md); the mix logic is final.
+## music rendered by tools/audio/render_music.gd (see docs/art/MASTER_ASSET_LIST.md); the mix logic is final.
 ##
 ## Modes, set by the scene from real game state (never from a timer):
 ##   investigation - Phase 1 exploration           tension - Containment, not detected / searching

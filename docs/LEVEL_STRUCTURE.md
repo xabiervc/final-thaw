@@ -1,5 +1,7 @@
 # FINAL THAW — Level Structure and Spatial Design Contract
 
+> **v4.0 note (2026-10-15, as-built):** The Phase 2 yard is built (section 10). STAFF-M1 was removed from the quiet section; the recovery unit's suspicion stage replaces it. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 **Status:** design authority for the current two-mission opening; Phase 2 design is specified below, but the parking prototype remains implementation evidence only. Not art-final, not runtime-verified, and not locked full-game canon.  
 **Branch reviewed:** `feat/godot-vertical-slice`  
 **Primary references:** `docs/VISION.md`, `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md`, `docs/CORE_LOOP.md`, `docs/design/MOTION_CHASE_PROTOTYPE.md`, `docs/design/fase1_fase2_mapa_progresion.md`.
@@ -350,8 +352,18 @@ Do not create parallel documents when an existing authority can be updated. Keep
 
 **Implementation-verified** is a separate gate: run the Godot scene and tests, manually play all routes, inspect camera/collisions/AI/audio, and record engine version, renderer, commit, exact commands/results, defects and evidence. Static documentation does not pass this gate.
 
-## 10. Current implementation boundary
+## 10. Current implementation boundary (as built, 2026-10-15)
 
-The existing `scenes/prototypes/phase2_parking_chase.tscn` wraps the motion/chase prototype with `parking_entry_mode=true` and `initial_checkpoint_index=2`. The builder uses a linear X-axis course, floor half-depth 7 m, a checkpoint near `(34.5, 0, 0)`, and an exit threshold at X=78 m. The parking concept is a separate 48 × 30 m local-coordinate proposal; no world coordinates are locked. After the Phase 1 room route and exit mouth are approved, reconcile the parking entrance, checkpoint, elevation and route against that actual threshold. Do not force the interior route to fit the old prototype. The gaps, tunnel, duct and climb belong to the mechanics prototype and are not automatically required in the parking level.
+The yard is built by `scripts/phase2/phase2_parking.gd` in the same scene as the facility (`scenes/prototypes/phase1_canonical_greybox.tscn`). The prototype corridor scene `phase2_parking_chase.tscn` no longer exists. The route bot walks the whole yard to the street (`tests/test_phase1_playthrough`), and a live run against the unit reaches the exit without a catch (`tests/test_phase1_escape_live`).
 
-The current implementation and tests must be inspected and executed by the programming owner. Until evidence is supplied, do not claim that the route is playable, that alternate routes are balanced, that the AI is fair, or that the design is runtime-verified.
+**Deviations from the v0.3 concept, and why:**
+- **Envelope:** world x 34..76 and z −15.5..14 at Y −2, instead of x 28.7..76.7 and z −15.8..14.2. The concept's 5.3 m "facade band" is the real plant block between the building's east wall (x 30.3) and the yard.
+- **Facility response:** the concept describes a "visible change in security state". It is implemented as floodlights switching on in sequence, the vehicle boom coming down and readers changing to "SECTOR EXTERIOR". A service camera over the mouth reports Elena's exit, so the unit follows her into the yard.
+- **Egress:** the north gate splits into a vehicle lane, closed by the boom (Elena can still duck under it), and a fail-safe pedestrian emergency lane. The exit is obvious from the enclosure fence, the green emergency sign and light, and the painted pedestrian walkway, not from a game marker.
+- **Distraction:** added the cage compressor (2 s delayed start) and the dock 2 roller shutter (controlled from beside the mouth, heard at the far end) for misdirection, as Beat P2-04 anticipated.
+- **Darkness:** light pools define exposure. The unit sees at ×0.6 range in the dark (×1 in the pools), and the HUD shows the stealth level with a symbol and text.
+- **Climbable cover:** cars, the crate stack and O2 can be climbed onto (0.45–1.85 m). The unit cannot follow, but it can reach 1.8 m up, so standing on a car beside it is not a safe exploit.
+
+The remaining concept rules hold: two routes with different exposure, O1/O2 cover, a fixed 1.3 m O3 aperture, the recovery checkpoints (YARD at the mouth, JOIN, EGRESS), no required jump and no invisible walls.
+
+**Not verified:** fairness and tension with human players, and camera comfort in the yard. See `PROJECT_STATUS.md`.

@@ -1,5 +1,7 @@
 # FINAL THAW — Design Pivot and Prototype Brief
 
+> **v4.0 note (2026-10-15, as-built):** The parking area is part of the facility scene (no scene change, no handoff); STAFF-M1 was removed; intro and ending cinematics exist. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 > **Nota v3.0 (2026-10-15, as-built):** No hay handoff directo G→H. La salida es física por la boca este de P−1 hacia el aparcamiento, sin teletransporte, y conserva momentum, orientación y la unidad (C9). Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md).
 
 **Status:** active working brief for the opening prototype; not the locked full-game specification.  

@@ -1,5 +1,7 @@
 # FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v1.1)
 
+> **Nota v4.0 (2026-10-15, as-built):** Recorrido implementado de la intro a la calle en una sola escena; el bot de ruta lo recorre completo. STAFF-M1 eliminado. Ver [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 > **Nota v3.0 (2026-10-15, as-built):** El recorrido completo, incluido el handoff físico al aparcamiento, está implementado y lo recorre el bot de ruta (`tests/test_phase1_playthrough.tscn`). No hay playtest humano. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
 
 **Estado:** recorrido y estructura de la experiencia revisados según la dirección arquitectónica de edificio completo, puzle distribuido y huida por una salida alternativa. La escena actual aún no demuestra este recorrido: la evasión silenciosa, la transición a carrera, la salida alternativa seleccionada y el handoff al aparcamiento requieren implementación y pruebas. La galería/boca este queda seleccionada como baseline de diseño: X=34, Z=4,5..7,5, Y=−2, con galería 6×3 m; la validación física en escena sigue pendiente. El inicio narrativo y sus beats/diálogos provisionales se especifican en `docs/narrative_complete.md`; no son canon completo aprobado. La respuesta automática de la instalación es la dirección narrativa propuesta; siguen abiertas la supervisión exacta, el destinatario concreto y la identidad final de la unidad.

@@ -1,5 +1,7 @@
 # Motion and chase prototype — hitos A and B (v2)
 
+> **v4.0 note (2026-10-15, as-built):** This prototype is a mechanics test bed, no longer connected to the demo: the Phase 1 → parking handoff and `phase2_parking_chase.tscn` were removed, and the demo's parking yard lives in the facility scene. See [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 **Status:** prototype for owner validation. Not integrated into the campaign, not art-final. The v1 test was run by the owner (passed); the v2 code and its test have **not** been run yet.
 
 ## Purpose

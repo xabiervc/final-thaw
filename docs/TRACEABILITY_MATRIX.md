@@ -1,5 +1,7 @@
 # FINAL THAW — Prototype Traceability Matrix
 
+> **v4.0 note (2026-10-15, as-built):** Phase 1–2 requirements now map to these suites: test_phase1_playthrough, test_phase1_containment, test_phase1_escape_live, test_game_systems, test_elena_movement, test_phase1_canonical_greybox. Results are in PROJECT_STATUS.md. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
+
 **Status:** scoped to the current two-mission opening. This matrix replaces any claim that the former full campaign's traceability is complete.  
 **Implementation reference:** `scripts/prototypes/motion_chase_prototype.gd`, `scenes/prototypes/phase2_parking_chase.tscn`  
 **Design references:** `docs/CORE_LOOP.md`, `docs/LEVEL_STRUCTURE.md`, `docs/design/MISSION1_GHOST_PROTOCOL.md`, `docs/design/MOTION_CHASE_PROTOTYPE.md`.

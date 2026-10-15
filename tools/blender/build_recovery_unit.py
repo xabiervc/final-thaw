@@ -2,7 +2,7 @@
 
     blender --background --factory-startup --python tools/blender/build_recovery_unit.py -- --repo D:/Projects/github/final-thaw
 
-Specification (docs/art/ASSET_REGISTER.md, "Recovery unit"): no concept art exists for the enemy, so the spec follows the
+Specification (docs/art/MASTER_ASSET_LIST.md, "Phases 1-2 asset register"): no concept art exists for the enemy, so the spec follows the
 established narrative intent — an autonomous facility recovery/security machine, never a person, no face.
   * Scale: 1.95 m tall, footprint 0.95 x 1.10 m (fits the 0.42 m-radius gameplay capsule and the 1.3 m O3 aperture).
   * Silhouette: low tracked base, narrow upright chassis, a mast, and a wide sensor head whose horizontal visor ("Eye")

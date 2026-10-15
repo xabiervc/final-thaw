@@ -4,7 +4,7 @@ extends RefCounted
 ##
 ## Short effects are generated at runtime (fractions of a second). Music layers are long, so they are rendered
 ## offline by tools/audio/render_music.gd into assets/audio/music/*.wav and loaded as resources.
-## These are functional placeholders, not final audio (see docs/art/ASSET_REGISTER.md).
+## These are functional placeholders, not final audio (see docs/art/MASTER_ASSET_LIST.md).
 
 const S := preload("res://scripts/audio/sfx_synth.gd")
 const RATE := 22050
