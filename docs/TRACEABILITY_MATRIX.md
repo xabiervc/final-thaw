@@ -116,3 +116,23 @@ Use these labels consistently:
 - **Accepted:** the design owner reviewed the evidence and accepted the result.
 
 Never collapse these states into a generic “done”.
+
+## 9. Owner-approved redesign requirements (2026-10-15; specified, not yet verified)
+
+These requirements are now part of the active design target. They are not evidence of implementation. Update the status and evidence columns as code, scenes, tests and in-engine review become available.
+
+| Requirement | Target behavior | Required verification | Initial status |
+|---|---|---|---|
+| Illustrated art identity | Character and environment share an illustrated 3D style based on the owner-provided Marcus concept and illustrated laboratory reference | Godot gameplay-camera captures; visual review at target resolution; performance comparison | Specified; proof required |
+| Elena scanner integration | Device is wrist-mounted/holstered credibly or uses draw/use/stow animation; no unnatural hand attachment | Idle, locomotion and scan animation review in Godot | Specified; review required |
+| Phase 1 spatial depth | Central pumping hall anchors multiple purposeful, interconnected rooms and vertical routes | Complete route walkthrough; room-purpose audit; navigation/collision checks | Specified; redesign required |
+| Phase 1 navigation clarity | Landmarks, light, signs and sightlines support orientation; no maze or repetitive unmotivated backtracking | Human playtest; record confusion points and route completion | Specified; playtest required |
+| Irreversible entrance | Damaged service breach collapses physically behind Elena; return is blocked by actual geometry/collision | Negative-route tests from reachable approaches plus in-engine inspection | Specified; implementation/retest required |
+| Human operational discovery | Elena observes meaningful Helix/Aster activity before human detection triggers the escape | State-transition tests and in-engine playthrough | Specified; redesign required |
+| Human pursuit | Human threat has readable detection, suspicion, search and pursuit; robot is not the target principal antagonist for this sequence | Behavior tests and manual fairness review | Specified; redesign required |
+| Hybrid first-person escape | Free movement and route choice are combined with short contextual actions; not a QTE-only video | Keyboard/controller tests, route test, skip/pause/accessibility checks | Specified; prototype required |
+| Consequences of actions | Brief motivated looks back show player-caused outcomes, such as an obstacle delaying pursuers | Scripted interaction tests plus visual/manual confirmation | Specified; implementation required |
+| Parking-to-street ending | Distinct parking-garage sequence ends in public street/crowd escape with credible continuity | End-to-end route test, scene-state checks and manual playthrough | Specified; redesign required |
+| Future Marcus/Elena progression | Elena starts dependent, learns limited defense from Marcus and later handles basic threats; Marcus encounters become more demanding | Future combat-system behavior tests and staged playtest | Design contract only; out of current slice scope |
+
+Keep existing historical test results attached to the commits on which they were executed. Do not retroactively treat them as coverage for this redesign. A requirement is accepted only when the relevant implementation, test execution and any required hands-on review are recorded.
