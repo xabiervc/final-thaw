@@ -150,6 +150,41 @@ func add_box_to_batch(size: Vector3, xf: Transform3D, material: Material, shadow
 	(_batches[key]["st"] as SurfaceTool).append_from(bm, 0, xf)
 
 
+## Any mesh (kit piece, prop) merged into the static batches, one batch per surface material. `materials` overrides the
+## mesh's own surface materials (same order). Visual only: collision, if any, is added separately.
+func add_mesh_to_batch(mesh: Mesh, xf: Transform3D, materials: Array = [], shadow: bool = true) -> void:
+	if mesh == null:
+		return
+	var c := xf.origin
+	var band := _band(c.y + 0.5)
+	for s in mesh.get_surface_count():
+		var material: Material = materials[s] if s < materials.size() and materials[s] != null else mesh.surface_get_material(s)
+		if material == null:
+			continue
+		var key := "%d|%d|%d|%d|%s" % [material.get_instance_id(), int(floor(c.x / CELL)), int(floor(c.z / CELL)), band, shadow]
+		if not _batches.has(key):
+			var st := SurfaceTool.new()
+			st.begin(Mesh.PRIMITIVE_TRIANGLES)
+			_batches[key] = {"st": st, "mat": material, "shadow": shadow, "band": band}
+		(_batches[key]["st"] as SurfaceTool).append_from(mesh, s, xf)
+
+
+## Collision only (the art layer draws what is there): a box body on the world layer.
+func solid(label: String, size: Vector3, center: Vector3, layer: int = LAYER_WORLD) -> StaticBody3D:
+	var b := StaticBody3D.new()
+	b.name = label
+	b.position = center
+	b.collision_layer = layer
+	b.collision_mask = 0
+	var shape := CollisionShape3D.new()
+	var box := BoxShape3D.new()
+	box.size = size
+	shape.shape = box
+	b.add_child(shape)
+	root.add_child(b)
+	return b
+
+
 ## Builds one MeshInstance3D per batch. Returns how many were created.
 func flush() -> int:
 	var n := 0

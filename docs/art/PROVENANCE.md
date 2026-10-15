@@ -91,6 +91,61 @@ All 3D textures (`lab_photo`, `parking`, `props`) are imported VRAM-compressed w
 
 The raw packs and the AMC files stay outside the repository (`D:/Projects/external_assets/makehuman`, `D:/Projects/external_assets/cmu_mocap`, with `SOURCE.txt`); only the processed textures and the exported GLB are shipped.
 
+### Helix Station B environment (2026-10-15)
+
+Downloaded through the official Poly Haven API (`https://api.polyhaven.com/info/<id>`, `/files/<id>`) by `D:/Projects/external_assets/_tools/dl_ph_facility.py` and `dl_ph_textures_facility.py` (kept outside the repository; author and licence metadata merged into `polyhaven/models_1k/manifest.json` and `polyhaven/manifest.json`). Fetched but not used yet: modular pipes, ducts, cables, fences, fire escape, factory facade, electricity poles, street lamps, chemistry set, compressor and a few clutter props.
+
+| Files | Source asset | Licence | Change |
+|---|---|---|---|
+| `assets/textures/facility/brick_{diff,nor,arm}.*` | Poly Haven `brick_wall_02` (https://polyhaven.com/a/brick_wall_02) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/tile_{diff,nor,arm}.*` | Poly Haven `long_white_tiles` (https://polyhaven.com/a/long_white_tiles) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/green_steel_{diff,nor,arm}.*` | Poly Haven `green_metal_rust` (https://polyhaven.com/a/green_metal_rust) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/tread_plate_{diff,nor,arm}.*` | Poly Haven `metal_grate_rusty` (https://polyhaven.com/a/metal_grate_rusty) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/floor_painted_{diff,nor,arm}.*` | Poly Haven `painted_concrete` (https://polyhaven.com/a/painted_concrete) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/floor_damaged_{diff,nor,arm}.*` | Poly Haven `concrete_floor_damaged_01` (https://polyhaven.com/a/concrete_floor_damaged_01) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/concrete_raw_{diff,nor,arm}.*` | Poly Haven `concrete_wall_006` (https://polyhaven.com/a/concrete_wall_006) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/roof_sheet_{diff,nor,arm}.*` | Poly Haven `corrugated_iron_02` (https://polyhaven.com/a/corrugated_iron_02) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/rubble_{diff,nor,arm}.*` | Poly Haven `concrete_debris` (https://polyhaven.com/a/concrete_debris) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/rust_{diff,nor,arm}.*` | Poly Haven `rust_coarse_01` (https://polyhaven.com/a/rust_coarse_01) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/dirty_concrete_{diff,nor,arm}.*` | Poly Haven `dirty_concrete` (https://polyhaven.com/a/dirty_concrete) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+| `assets/textures/facility/plaster_peeling_{diff,nor,arm}.*` | Poly Haven `peeling_painted_wall` (https://polyhaven.com/a/peeling_painted_wall) | CC0 1.0 | 2K -> 1K (`tools/art/prepare_facility_textures.py`) |
+
+| Files | Source asset | Authors | Licence | Change |
+|---|---|---|---|---|
+| `assets/models/props/ph/barrel_02.glb` | Poly Haven `Barrel_02` (https://polyhaven.com/a/Barrel_02) | Jorge Camacho | CC0 1.0 | joined, pivot at base, decimated to 1499 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/caged_hanging_light.glb` | Poly Haven `caged_hanging_light` (https://polyhaven.com/a/caged_hanging_light) | Ulan Cabanilla | CC0 1.0 | joined, pivot at base, decimated to 2999 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/cardboard_box_01.glb` | Poly Haven `cardboard_box_01` (https://polyhaven.com/a/cardboard_box_01) | Rahul Chaudhary | CC0 1.0 | joined, pivot at base, decimated to 800 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/cement_bag.glb` | Poly Haven `cement_bag` (https://polyhaven.com/a/cement_bag) | PierreB3D | CC0 1.0 | joined, pivot at base, decimated to 800 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/classic_laptop.glb` | Poly Haven `classic_laptop` (https://polyhaven.com/a/classic_laptop) | Arrangemonk | CC0 1.0 | joined, pivot at base, decimated to 2500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/clipboard.glb` | Poly Haven `clipboard` (https://polyhaven.com/a/clipboard) | ProgrammerOnCoffee | CC0 1.0 | joined, pivot at base, decimated to 500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/concrete_road_barrier.glb` | Poly Haven `concrete_road_barrier` (https://polyhaven.com/a/concrete_road_barrier) | Amal Kumar | CC0 1.0 | joined, pivot at base, decimated to 2499 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/exterior_aircon_unit.glb` | Poly Haven `exterior_aircon_unit` (https://polyhaven.com/a/exterior_aircon_unit) | Monsta3D | CC0 1.0 | joined, pivot at base, decimated to 3000 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/hand_truck.glb` | Poly Haven `hand_truck` (https://polyhaven.com/a/hand_truck) | Mutanzom3D | CC0 1.0 | joined, pivot at base, decimated to 2500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/hanging_industrial_lamp.glb` | Poly Haven `hanging_industrial_lamp` (https://polyhaven.com/a/hanging_industrial_lamp) | Kuutti Siitonen | CC0 1.0 | joined, pivot at base, decimated to 3000 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/industrial_microscope.glb` | Poly Haven `industrial_microscope` (https://polyhaven.com/a/industrial_microscope) | Lukas Walzer | CC0 1.0 | joined, pivot at base, decimated to 2500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/industrial_storage_cart.glb` | Poly Haven `industrial_storage_cart` (https://polyhaven.com/a/industrial_storage_cart) | Jule Bielitz | CC0 1.0 | joined, pivot at base, decimated to 3000 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/industrial_wall_lamp.glb` | Poly Haven `industrial_wall_lamp` (https://polyhaven.com/a/industrial_wall_lamp) | Kuutti Siitonen | CC0 1.0 | joined, pivot at base, decimated to 1500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/ladder_sectioned_01.glb` | Poly Haven `ladder_sectioned_01` (https://polyhaven.com/a/ladder_sectioned_01) | MP | CC0 1.0 | joined, pivot at base, decimated to 2499 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/metal_office_desk.glb` | Poly Haven `metal_office_desk` (https://polyhaven.com/a/metal_office_desk) | Ulan Cabanilla | CC0 1.0 | joined, pivot at base, decimated to 2500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/metal_stool_02.glb` | Poly Haven `metal_stool_02` (https://polyhaven.com/a/metal_stool_02) | Ulan Cabanilla | CC0 1.0 | joined, pivot at base, decimated to 1500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/metal_tool_chest.glb` | Poly Haven `metal_tool_chest` (https://polyhaven.com/a/metal_tool_chest) | Yann Kervran, John Hutcheson | CC0 1.0 | joined, pivot at base, decimated to 2500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/mounted_fluorescent_lights.glb` | Poly Haven `mounted_fluorescent_lights` (https://polyhaven.com/a/mounted_fluorescent_lights) | Ulan Cabanilla | CC0 1.0 | joined, pivot at base, decimated to 1500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/office_notepads.glb` | Poly Haven `office_notepads` (https://polyhaven.com/a/office_notepads) | Ulan Cabanilla | CC0 1.0 | joined, pivot at base, decimated to 666 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/overhead_crane.glb` | Poly Haven `overhead_crane` (https://polyhaven.com/a/overhead_crane) | Timothy3D | CC0 1.0 | joined, pivot at base, decimated to 10000 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/plastic_crate_02.glb` | Poly Haven `plastic_crate_02` (https://polyhaven.com/a/plastic_crate_02) | Fabi_G | CC0 1.0 | joined, pivot at base, decimated to 1500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/portable_generator.glb` | Poly Haven `portable_generator` (https://polyhaven.com/a/portable_generator) | James Ray Cock | CC0 1.0 | joined, pivot at base, decimated to 3500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/power_box_01.glb` | Poly Haven `power_box_01` (https://polyhaven.com/a/power_box_01) | Rico Cilliers, Yann Kervran | CC0 1.0 | joined, pivot at base, decimated to 2500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/retro_multimeter.glb` | Poly Haven `retro_multimeter` (https://polyhaven.com/a/retro_multimeter) | elli moeller | CC0 1.0 | joined, pivot at base, decimated to 1500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/schoolchair_01.glb` | Poly Haven `SchoolChair_01` (https://polyhaven.com/a/SchoolChair_01) | Ethan Place | CC0 1.0 | joined, pivot at base, decimated to 1500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/security_camera_01.glb` | Poly Haven `security_camera_01` (https://polyhaven.com/a/security_camera_01) | Alexander Otterbeck, Yann Kervran | CC0 1.0 | joined, pivot at base, decimated to 2000 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/tool_cart.glb` | Poly Haven `tool_cart` (https://polyhaven.com/a/tool_cart) | Savva Zakharov | CC0 1.0 | joined, pivot at base, decimated to 3000 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/utility_box_02.glb` | Poly Haven `utility_box_02` (https://polyhaven.com/a/utility_box_02) | James Ray Cock | CC0 1.0 | joined, pivot at base, decimated to 2499 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/water_manhole_cover.glb` | Poly Haven `water_manhole_cover` (https://polyhaven.com/a/water_manhole_cover) | Raunox | CC0 1.0 | joined, pivot at base, decimated to 1500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/wooden_crate_01.glb` | Poly Haven `wooden_crate_01` (https://polyhaven.com/a/wooden_crate_01) | James Ray Cock | CC0 1.0 | joined, pivot at base, decimated to 1499 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+| `assets/models/props/ph/worn_metal_rack.glb` | Poly Haven `worn_metal_rack` (https://polyhaven.com/a/worn_metal_rack) | Luca B | CC0 1.0 | joined, pivot at base, decimated to 2500 triangles, textures <= 1K (`tools/blender/prepare_ph_props.py`) |
+
+Generated in this repository: `assets/models/env/station_kit.glb` (`tools/blender/build_station_kit.py`: roof truss, arched window, Aster base/ring/crown, vertical pump, gate valve, Helix console and rack, cable tray, high-bay and bulkhead lamps; no external source; material names map to the facility palette).
+
 ### Generated by scripts in this repository (no external source)
 
 | Asset | Script | Notes |

@@ -169,10 +169,19 @@ func _environment() -> void:
 	var env := Environment.new()
 	env.background_mode = Environment.BG_COLOR
 	env.background_color = Color(0.03, 0.04, 0.06)
+	# Night on emergency power (docs/art/ASSET_PRODUCTION_BIBLE.md, "Lighting"): low, neutral ambient so the practical
+	# lights and the moonlight through the clerestory carry the shapes; thin depth fog for distance.
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.36, 0.43, 0.52)
-	env.ambient_light_energy = 0.52
+	env.ambient_light_color = Color(0.3, 0.33, 0.38)
+	env.ambient_light_energy = 0.42
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
+	env.tonemap_exposure = 1.08
+	env.fog_enabled = true
+	env.fog_light_color = Color(0.08, 0.1, 0.13)
+	env.fog_density = 0.008
+	env.adjustment_enabled = true
+	env.adjustment_contrast = 1.08
+	env.adjustment_saturation = 0.95
 	env.glow_enabled = true
 	env.glow_intensity = 0.4
 	env.glow_hdr_threshold = 1.2
@@ -182,10 +191,14 @@ func _environment() -> void:
 	_env = env
 	var sun := DirectionalLight3D.new()
 	_sun = sun
-	sun.rotation_degrees = Vector3(-55.0, 205.0, 0.0)
-	sun.light_color = Color(0.62, 0.72, 0.86)
-	sun.light_energy = 0.35
+	sun.name = "Moon"
+	# Moonlight from the south-south-west, low enough to fall through the hall's south clerestory windows.
+	sun.rotation_degrees = Vector3(-38.0, 20.0, 0.0)
+	sun.light_color = Color(0.62, 0.71, 0.86)
+	sun.light_energy = 0.6
 	sun.shadow_enabled = true
+	sun.shadow_bias = 0.06
+	sun.shadow_normal_bias = 1.5
 	# One orthogonal shadow pass instead of four PSSM splits: the interior is compact (measured on the HD 630).
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_max_distance = 30.0

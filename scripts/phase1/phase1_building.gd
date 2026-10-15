@@ -10,6 +10,7 @@ extends RefCounted
 
 const Builder := preload("res://scripts/phase1/phase1_builder.gd")
 const Parking := preload("res://scripts/phase2/phase2_parking.gd")
+const Art := preload("res://scripts/phase1/phase1_art.gd")
 
 const Y_P1 := -2.0
 const Y_P0 := 0.0
@@ -49,6 +50,8 @@ const LIFT_CALL_M_AT := Vector3(28.2, 3.0, -4.9)
 
 var b = null  # Builder
 var mats = null
+## Environment art layer (scripts/phase1/phase1_art.gd): what the player sees beyond the layout.
+var art = null
 
 # Dynamic parts the scene drives.
 var lift_gate_lower: StaticBody3D
@@ -94,13 +97,15 @@ func build() -> void:
 	_lift_landings()
 	_column()
 	_lighting()
+	art = Art.new(b, mats)
+	art.build()
 	b.flush()
 
 
 # --- shell ------------------------------------------------------------------------------------------------------
 
 func _shell() -> void:
-	var wall: Material = mats.get_material("wall")
+	var wall: Material = mats.get_material("st_wall")
 	# West wall (outside face at x = -0.3): entry tunnel opening at P0, G outer door at P2.
 	b.wall_x("OuterWestNorth", -0.15, -10.3, -8.25, 0.0, TOP, wall)
 	b.wall_x("OuterWestGBelow", -0.15, -8.25, -6.75, 0.0, Y_P2, wall)
@@ -117,11 +122,15 @@ func _shell() -> void:
 	b.wall_x("OuterEastSouth", 30.15, 7.5, 13.8, 0.0, LOW_TOP, wall)
 	# Exterior skin: roofs and the step between the tall north block and the low south block, seen only from
 	# outside (intro establishing shot, the street). Single-sided, no collision, no shadow.
-	var roof: Material = b.flat(Color(0.1, 0.11, 0.12), 0.9)
+	var roof: Material = mats.get_material("st_roof")
 	b.exterior_skin("RoofNorthBlock", Vector2(30.6, 8.8), Vector3(15.0, TOP, -5.9), "+y", roof)
-	b.exterior_skin("RoofSouthBlock", Vector2(30.6, 15.3), Vector3(15.0, LOW_TOP, 6.15), "+y", roof)
-	b.exterior_skin("RoofStepFace", Vector2(30.6, TOP - LOW_TOP), Vector3(15.0, (TOP + LOW_TOP) * 0.5, -1.5), "+z", wall)
-	b.exterior_skin("WestUpperInfill", Vector2(3.0, TOP - LOW_TOP), Vector3(-0.31, (TOP + LOW_TOP) * 0.5, -3.0), "-x", wall)
+	# Low wings (aisles) around the raised pump hall (x 6.85..28.15, z -1.5..8.3, roofed by phase1_art.gd).
+	b.exterior_skin("RoofWestWing", Vector2(7.15, 15.3), Vector3(3.275, LOW_TOP, 6.15), "+y", roof)
+	b.exterior_skin("RoofSouthWing", Vector2(23.45, 5.5), Vector3(18.575, LOW_TOP, 11.05), "+y", roof)
+	b.exterior_skin("RoofEastWing", Vector2(2.15, 9.8), Vector3(29.225, LOW_TOP, 3.4), "+y", roof)
+	b.exterior_skin("RoofStepFaceWest", Vector2(7.15, TOP - LOW_TOP), Vector3(3.275, (TOP + LOW_TOP) * 0.5, -1.5), "+z", mats.get_material("st_brick_outside"))
+	b.exterior_skin("RoofStepFaceEast", Vector2(2.15, TOP - LOW_TOP), Vector3(29.225, (TOP + LOW_TOP) * 0.5, -1.5), "+z", mats.get_material("st_brick_outside"))
+	b.exterior_skin("WestUpperInfill", Vector2(3.0, TOP - LOW_TOP), Vector3(-0.31, (TOP + LOW_TOP) * 0.5, -3.0), "-x", mats.get_material("st_brick_outside"))
 	# Visual roof framing over the tall block (no collision: the camera orbits freely inside).
 	for i in 6:
 		b.visual("RoofBeam_%02d" % i, Vector3(0.22, 0.35, 10.0), Vector3(2.5 + i * 5.0, TOP - 0.2, -5.0), mats.get_material("steel"), true)
@@ -130,24 +139,24 @@ func _shell() -> void:
 # --- P0: entry, nave, workshop, service gallery, south band --------------------------------------------------
 
 func _p0() -> void:
-	b.slab_with_holes("GroundFloor", Rect2(0.0, -10.0, 30.0, 23.5), [PIT, S1_WELL, SHAFT, BRIDGE_CUT], Y_P0)
+	b.slab_with_holes("GroundFloor", Rect2(0.0, -10.0, 30.0, 23.5), [PIT, S1_WELL, SHAFT, BRIDGE_CUT], Y_P0, mats.get_material("st_floor_painted"))
 	# Entry tunnel X -3..0: floor, side walls, ceiling and a closed security gate behind the spawn.
-	b.slab("AccessTunnelFloor", Rect2(-3.0, 4.5, 3.0, 3.0), Y_P0)
-	b.wall_z("AccessTunnelSouth", 4.35, -3.3, 0.0, 0.0, 2.65)
-	b.wall_z("AccessTunnelNorth", 7.65, -3.3, 0.0, 0.0, 2.65)
-	b.slab("AccessTunnelCeiling", Rect2(-3.3, 4.2, 3.3, 3.6), 2.65, mats.get_material("bulkhead"))
+	b.slab("AccessTunnelFloor", Rect2(-3.0, 4.5, 3.0, 3.0), Y_P0, mats.get_material("st_floor_damaged"))
+	b.wall_z("AccessTunnelSouth", 4.35, -3.3, 0.0, 0.0, 2.65, mats.get_material("st_concrete"))
+	b.wall_z("AccessTunnelNorth", 7.65, -3.3, 0.0, 0.0, 2.65, mats.get_material("st_concrete"))
+	b.slab("AccessTunnelCeiling", Rect2(-3.3, 4.2, 3.3, 3.6), 2.65, mats.get_material("st_concrete"))
 	b.wall_x("AccessTunnelGate", -3.15, 4.5, 7.5, 0.0, 2.4, mats.get_material("steel"))
 	b.paint_sign("AccessTunnelSign", "ACCESO TÉCNICO  ·  HELIX B", Vector3(-0.2, 1.9, 6.0), "-x", 36)
 	# A/B threshold piers and lintel.
-	b.wall_x("AccessNavePierSouth", 7.0, 4.0, 5.6, 0.0, 3.2)
-	b.wall_x("AccessNavePierNorth", 7.0, 8.4, 10.0, 0.0, 3.2)
-	b.wall_x("AccessNaveLintel", 7.0, 5.6, 8.4, 2.8, 3.2)
+	b.wall_x("AccessNavePierSouth", 7.0, 4.0, 5.6, 0.0, 3.2, mats.get_material("st_wall"))
+	b.wall_x("AccessNavePierNorth", 7.0, 8.4, 10.0, 0.0, 3.2, mats.get_material("st_wall"))
+	b.wall_x("AccessNaveLintel", 7.0, 5.6, 8.4, 2.8, 3.2, mats.get_material("st_wall"))
 	b.paint_sign("AccessLabel", "A  ·  ESCLUSA DE ACCESO", Vector3(3.5, 0.02, 8.6), "floor", 54)
 	b.paint_sign("AccessEvacPlan", "PLAN DE EVACUACIÓN\nRUTA ESTE  →  FOSO  →  GALERÍA DE DESCARGA", Vector3(0.05, 1.6, 9.0), "+x", 30)
 	# B/C partition under M (2.75 m clear), with a service doorway.
-	b.wall_x("NaveWorkshopPierNorth", 20.0, -10.0, -7.2, 0.0, Y_M - 0.25)
-	b.wall_x("NaveWorkshopPierSouth", 20.0, -4.8, -2.0, 0.0, Y_M - 0.25)
-	b.wall_x("NaveWorkshopLintel", 20.0, -7.2, -4.8, 2.3, Y_M - 0.25)
+	b.wall_x("NaveWorkshopPierNorth", 20.0, -10.0, -7.2, 0.0, Y_M - 0.25, mats.get_material("st_wall"))
+	b.wall_x("NaveWorkshopPierSouth", 20.0, -4.8, -2.0, 0.0, Y_M - 0.25, mats.get_material("st_wall"))
+	b.wall_x("NaveWorkshopLintel", 20.0, -7.2, -4.8, 2.3, Y_M - 0.25, mats.get_material("st_wall"))
 	b.paint_sign("NaveLabel", "B  ·  NAVE DE ENSAYO ASTER", Vector3(10.5, 0.02, -0.4), "floor", 54)
 	b.paint_sign("WorkshopLabel", "C  ·  TALLER", Vector3(22.0, 0.02, -3.0), "floor", 48)
 	b.paint_sign("ServiceGalleryLabel", "GALERÍA DE SERVICIO", Vector3(26.0, 0.02, 0.4), "floor", 40)
@@ -164,28 +173,28 @@ func _p0() -> void:
 	b.body("AccessCrateHigh", Vector3(1.2, 1.5, 1.0), Vector3(6.4, 0.75, 12.4), mats.get_material("locker"))
 	# Collapsed direct stair P0 -> P2: the upper flight still hangs from P2 (its foot ends 2.5 m above the floor)
 	# and the lower flight lies as rubble. Visible, unmistakably broken, never walkable (FASE1_SPATIAL_GRAPH no-edge).
-	var stair: MeshInstance3D = b.visual("BrokenApproachStairVisual", Vector3(2.0, 0.22, 4.95), Vector3(3.0, 4.25, -1.25), mats.get_material("grate"), true)
+	var stair: MeshInstance3D = b.visual("BrokenApproachStairVisual", Vector3(2.0, 0.22, 4.95), Vector3(3.0, 4.25, -1.25), mats.get_material("st_tread"), true)
 	stair.rotation.x = atan2(3.5, 3.5)
-	b.body("BrokenStairRubble", Vector3(2.2, 0.9, 2.4), Vector3(3.0, 0.45, 1.8), mats.get_material("bulkhead"))
-	b.visual("BrokenStairRubbleSlab", Vector3(1.9, 0.18, 2.6), Vector3(3.1, 0.95, 1.6), mats.get_material("grate"), true).rotation = Vector3(0.35, 0.2, 0.1)
+	b.body("BrokenStairRubble", Vector3(2.2, 0.9, 2.4), Vector3(3.0, 0.45, 1.8), mats.get_material("st_rubble"))
+	b.visual("BrokenStairRubbleSlab", Vector3(1.9, 0.18, 2.6), Vector3(3.1, 0.95, 1.6), mats.get_material("st_tread"), true).rotation = Vector3(0.35, 0.2, 0.1)
 	b.paint_sign("BrokenStairSign", "ESCALERA COLAPSADA  ·  NO PASAR", Vector3(3.0, 1.5, 3.02), "+z", 34, Color(1.0, 0.7, 0.3))
 
 
 # --- P-1: pit, S1, maintenance and the tampered bridge ------------------------------------------------------------
 
 func _pit() -> void:
-	b.slab("PitFloor", PIT, Y_P1, mats.get_material("floor"))
+	b.slab("PitFloor", PIT, Y_P1, mats.get_material("st_floor_damaged"))
 	# Retaining walls between the pit floor and the P0 slab (no hidden void under the floor edge).
-	b.wall_z("PitWallNorth", 0.85, 9.7, 28.3, Y_P1, -0.25)
-	b.wall_z("PitWallSouthWest", 8.15, 9.7, 23.85, Y_P1, -0.25)
-	b.wall_z("PitWallSouthEast", 8.15, 26.15, 28.3, Y_P1, -0.25)
-	b.wall_x("PitWallWest", 9.85, 1.0, 8.0, Y_P1, -0.25)
-	b.wall_x("PitWallEastNorth", 28.15, 1.0, 4.35, Y_P1, -0.25)
-	b.wall_x("PitWallEastSouth", 28.15, 7.65, 8.0, Y_P1, -0.25)
+	b.wall_z("PitWallNorth", 0.85, 9.7, 28.3, Y_P1, -0.25, mats.get_material("st_concrete"))
+	b.wall_z("PitWallSouthWest", 8.15, 9.7, 23.85, Y_P1, -0.25, mats.get_material("st_concrete"))
+	b.wall_z("PitWallSouthEast", 8.15, 26.15, 28.3, Y_P1, -0.25, mats.get_material("st_concrete"))
+	b.wall_x("PitWallWest", 9.85, 1.0, 8.0, Y_P1, -0.25, mats.get_material("st_concrete"))
+	b.wall_x("PitWallEastNorth", 28.15, 1.0, 4.35, Y_P1, -0.25, mats.get_material("st_concrete"))
+	b.wall_x("PitWallEastSouth", 28.15, 7.65, 8.0, Y_P1, -0.25, mats.get_material("st_concrete"))
 	# S1: solid stair P0 (south, z = 11) -> P-1 (north, z = 8), walled well, guard rails on P0 around the well.
-	b.wedge("S1Stair", Vector3(25.0, Y_P1, 8.0), Vector3(25.0, Y_P0, 11.0), 2.0, Y_P1 - 0.2)
-	b.wall_x("S1WellWest", 23.85, 8.0, 11.0, Y_P1, -0.25)
-	b.wall_x("S1WellEast", 26.15, 8.0, 11.0, Y_P1, -0.25)
+	b.wedge("S1Stair", Vector3(25.0, Y_P1, 8.0), Vector3(25.0, Y_P0, 11.0), 2.0, Y_P1 - 0.2, mats.get_material("st_concrete"))
+	b.wall_x("S1WellWest", 23.85, 8.0, 11.0, Y_P1, -0.25, mats.get_material("st_concrete"))
+	b.wall_x("S1WellEast", 26.15, 8.0, 11.0, Y_P1, -0.25, mats.get_material("st_concrete"))
 	b.rail_z("S1GuardWest", 8.0, 11.0, 23.9, Y_P0)
 	b.rail_z("S1GuardEast", 8.0, 11.0, 26.1, Y_P0)
 	b.paint_sign("S1Sign", "S1  ↓  FOSO / D", Vector3(25.0, 0.02, 12.3), "floor", 56)
@@ -196,9 +205,8 @@ func _pit() -> void:
 	b.rail_x("PitRailSouthEast", 26.15, 28.0, 8.05, Y_P0)
 	b.rail_z("PitRailEastNorth", 1.0, 3.0, 28.05, Y_P0)
 	# D1: drainage pumps, sump and tide marks.
-	b.body("D1PumpA", Vector3(0.9, 1.1, 0.9), Vector3(14.0, Y_P1 + 0.55, 2.0), mats.get_material("machine"))
-	b.body("D1PumpB", Vector3(0.9, 1.1, 0.9), Vector3(16.5, Y_P1 + 0.55, 2.0), mats.get_material("machine"))
-	b.static_visual(Vector3(5.0, 0.18, 0.18), Vector3(15.0, Y_P1 + 1.4, 1.5), mats.get_material("pipe"), true)  # D1Manifold
+	b.solid("D1PumpA", Vector3(1.0, 2.6, 1.0), Vector3(14.0, Y_P1 + 1.3, 2.0))  # drawn by phase1_art.gd (kit_pump)
+	b.solid("D1PumpB", Vector3(1.0, 2.6, 1.0), Vector3(16.5, Y_P1 + 1.3, 2.0))
 	b.body("D1Sump", Vector3(1.4, 0.2, 1.1), Vector3(12.2, Y_P1 + 0.1, 6.4), mats.get_material("steel"))
 	b.paint_sign("D1Label", "D1  ·  ACHIQUE", Vector3(14.5, Y_P1 + 0.02, 5.0), "floor", 54)
 	b.paint_sign("D1TideMark", "NIVEL MÁX. 14/03", Vector3(10.05, Y_P1 + 0.6, 4.0), "+x", 26, Color(0.85, 0.3, 0.25))
@@ -224,9 +232,9 @@ func _pit() -> void:
 
 func _east_bridge_and_gallery() -> void:
 	# The east return corridor (X 28..30) bridges the gallery: ramps up 0.35 m so the gallery below keeps 2.23 m.
-	b.wedge("EastReturnRampNorth", Vector3(29.0, Y_P0, 3.0), Vector3(29.0, BRIDGE_DECK, 4.5), 2.0, -0.25, mats.get_material("grate"), false)
-	b.slab("EastReturnBridgeDeck", Rect2(28.0, 4.5, 2.0, 3.0), BRIDGE_DECK, mats.get_material("grate"), 0.12)
-	b.wedge("EastReturnRampSouth", Vector3(29.0, Y_P0, 9.0), Vector3(29.0, BRIDGE_DECK, 7.5), 2.0, -0.25, mats.get_material("grate"), false)
+	b.wedge("EastReturnRampNorth", Vector3(29.0, Y_P0, 3.0), Vector3(29.0, BRIDGE_DECK, 4.5), 2.0, -0.25, mats.get_material("st_tread"), false)
+	b.slab("EastReturnBridgeDeck", Rect2(28.0, 4.5, 2.0, 3.0), BRIDGE_DECK, mats.get_material("st_tread"), 0.12)
+	b.wedge("EastReturnRampSouth", Vector3(29.0, Y_P0, 9.0), Vector3(29.0, BRIDGE_DECK, 7.5), 2.0, -0.25, mats.get_material("st_tread"), false)
 	b.rail_z("EastReturnBridgeRail", 3.0, 8.05, 28.05, Y_P0, RAIL + BRIDGE_DECK + 0.1)
 	b.paint_sign("EastReturnSign", "RETORNO ESTE", Vector3(29.0, 0.02, 1.7), "floor", 40)
 	# R1: sector shutter between the service gallery and the east return. Raised (open) until Containment.
@@ -237,10 +245,10 @@ func _east_bridge_and_gallery() -> void:
 	b.static_visual(Vector3(0.08, 0.45, 0.45), Vector3(29.85, 1.1, 0.35), mats.get_material("pipe_red"), false)  # R1CrankWheel
 	b.paint_sign("R1CrankSign", "DESBLOQUEO\nDE EMERGENCIA", Vector3(29.84, 1.7, 0.35), "-x", 32, Color(1.0, 0.8, 0.4))
 	# P-1 evacuation gallery X 28..34, Z 4.5..7.5, floor Y -2, 2.23 m clear, roofed, walled.
-	b.slab("EvacGalleryFloor", GALLERY, Y_P1, mats.get_material("floor"))
-	b.wall_z("EvacGalleryNorth", 4.35, 28.0, MOUTH_X, Y_P1, 0.23)
-	b.wall_z("EvacGallerySouth", 7.65, 28.0, MOUTH_X, Y_P1, 0.23)
-	b.slab("EvacGalleryRoof", Rect2(30.0, 4.2, MOUTH_X - 30.0, 3.6), 0.48, mats.get_material("bulkhead"))
+	b.slab("EvacGalleryFloor", GALLERY, Y_P1, mats.get_material("st_floor_damaged"))
+	b.wall_z("EvacGalleryNorth", 4.35, 28.0, MOUTH_X, Y_P1, 0.23, mats.get_material("st_concrete"))
+	b.wall_z("EvacGallerySouth", 7.65, 28.0, MOUTH_X, Y_P1, 0.23, mats.get_material("st_concrete"))
+	b.slab("EvacGalleryRoof", Rect2(30.0, 4.2, MOUTH_X - 30.0, 3.6), 0.48, mats.get_material("st_concrete"))
 	b.paint_sign("EvacGallerySign", "GALERÍA DE DESCARGA  →  SALIDA DE SERVICIO", Vector3(28.4, Y_P1 + 1.7, 4.52), "+z", 26, Color(0.4, 1.0, 0.55))
 	b.static_visual(Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 4.53), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)  # EvacGalleryStripN
 	b.static_visual(Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 7.47), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)  # EvacGalleryStripS
@@ -250,9 +258,9 @@ func _east_bridge_and_gallery() -> void:
 # --- M: pump room and observation, over the north block --------------------------------------------------------
 
 func _mezzanine() -> void:
-	b.slab("MezzanineFloor", Rect2(7.5, -10.0, 22.35, 5.5), Y_M, mats.get_material("grate"))
+	b.slab("MezzanineFloor", Rect2(7.5, -10.0, 22.35, 5.5), Y_M, mats.get_material("st_tread"))
 	# S2 landing (X 7.5..9) in front of the stair foot, plus the slab the solid stair stands on.
-	b.slab("S2BaseSlab", Rect2(7.5, -4.5, 6.0, 3.0), Y_M, mats.get_material("grate"))
+	b.slab("S2BaseSlab", Rect2(7.5, -4.5, 6.0, 3.0), Y_M, mats.get_material("st_tread"))
 	# Guard rails: west edge (open to the P0 west area), S2 landing, atrium edge, east of the shaft.
 	b.rail_z("MezzanineRailWest", -10.0, -1.5, 7.45, Y_M)
 	b.rail_x("S2LandingRailSouth", 7.5, 9.0, -1.55, Y_M)
@@ -279,7 +287,7 @@ func _mezzanine() -> void:
 # --- S2: M (+3, west foot) -> P2 walkway (+6, east head) ------------------------------------------------------------
 
 func _s2() -> void:
-	b.wedge("S2Stair", Vector3(9.0, Y_M, -3.0), Vector3(13.5, Y_P2, -3.0), 3.0, Y_M)
+	b.wedge("S2Stair", Vector3(9.0, Y_M, -3.0), Vector3(13.5, Y_P2, -3.0), 3.0, Y_M, mats.get_material("st_tread"))
 	b.sloped_rail("S2RailSouth", Vector3(9.0, Y_M, -1.55), Vector3(13.5, Y_P2, -1.55))
 	b.paint_sign("S2Sign", "S2  ↑  CONTROL", Vector3(8.25, Y_M + 0.02, -5.4), "floor", 40)
 
@@ -287,18 +295,18 @@ func _s2() -> void:
 # --- P2: archive F, control E, airlock G, observation walkway ------------------------------------------------------
 
 func _p2() -> void:
-	b.slab("UpperFloorFG", Rect2(0.0, -10.0, 9.0, 5.5), Y_P2)
-	b.slab("ControlRoomFloor", Rect2(9.0, -10.0, 15.0, 5.5), Y_P2)
-	b.slab("ObservationWalkway", Rect2(13.5, -4.5, 11.0, 3.0), Y_P2, mats.get_material("grate"))
+	b.slab("UpperFloorFG", Rect2(0.0, -10.0, 9.0, 5.5), Y_P2, mats.get_material("helix_floor"))
+	b.slab("ControlRoomFloor", Rect2(9.0, -10.0, 15.0, 5.5), Y_P2, mats.get_material("helix_floor"))
+	b.slab("ObservationWalkway", Rect2(13.5, -4.5, 11.0, 3.0), Y_P2, mats.get_material("st_tread"))
 	# Walls of the upper rooms.
-	b.wall_z("UpperSouthWallFG", -4.65, 0.0, 9.0, Y_P2, TOP)
-	b.wall_x("ArchiveControlPierNorth", 9.0, -10.0, -8.0, Y_P2, TOP)
-	b.wall_x("ArchiveControlPierSouth", 9.0, -5.6, -4.5, Y_P2, TOP)
-	b.wall_x("ArchiveControlLintel", 9.0, -8.0, -5.6, Y_P2 + 2.3, TOP)
-	b.wall_x("AirlockArchivePierNorth", 3.0, -10.0, -8.0, Y_P2, TOP)
-	b.wall_x("AirlockArchivePierSouth", 3.0, -6.5, -4.5, Y_P2, TOP)
-	b.wall_x("AirlockArchiveLintel", 3.0, -8.0, -6.5, Y_P2 + 2.2, TOP)
-	b.wall_z("ControlNorthWall", -8.5, 9.0, 24.0, Y_P2, TOP)
+	b.wall_z("UpperSouthWallFG", -4.65, 0.0, 9.0, Y_P2, TOP, mats.get_material("helix_panel"))
+	b.wall_x("ArchiveControlPierNorth", 9.0, -10.0, -8.0, Y_P2, TOP, mats.get_material("helix_panel"))
+	b.wall_x("ArchiveControlPierSouth", 9.0, -5.6, -4.5, Y_P2, TOP, mats.get_material("helix_panel"))
+	b.wall_x("ArchiveControlLintel", 9.0, -8.0, -5.6, Y_P2 + 2.3, TOP, mats.get_material("helix_panel"))
+	b.wall_x("AirlockArchivePierNorth", 3.0, -10.0, -8.0, Y_P2, TOP, mats.get_material("helix_panel"))
+	b.wall_x("AirlockArchivePierSouth", 3.0, -6.5, -4.5, Y_P2, TOP, mats.get_material("helix_panel"))
+	b.wall_x("AirlockArchiveLintel", 3.0, -8.0, -6.5, Y_P2 + 2.2, TOP, mats.get_material("helix_panel"))
+	b.wall_z("ControlNorthWall", -8.5, 9.0, 24.0, Y_P2, TOP, mats.get_material("helix_panel"))
 	# Rails: E over S2, E east edge, walkway south and shaft edges.
 	b.rail_x("ControlRailOverS2", 9.0, 13.5, -4.45, Y_P2)
 	b.rail_z("ControlRailEast", -8.35, -4.5, 24.05, Y_P2)
@@ -350,10 +358,10 @@ func _gantry() -> void:
 	b.static_visual(Vector3(0.7, 0.1, 0.3), Vector3(-5.7, 3.95, 9.4), b.flat(Color(1.0, 0.72, 0.42), 0.4, 0.0, 3.0), false)
 	b.light("TunnelExteriorSodium", Vector3(-5.7, 3.7, 9.0), Color(1.0, 0.72, 0.42), 1.4, 7.0, 1)
 	b.light("GantryTowerLamp", Vector3(-11.6, Y_P2 + 2.6, -7.5), Color(0.8, 0.9, 1.0), 1.2, 9.0, 3)
-	b.slab("ExteriorGantry", Rect2(-12.0, -8.5, 12.0, 2.0), Y_P2, mats.get_material("grate"), 0.3)
+	b.slab("ExteriorGantry", Rect2(-12.0, -8.5, 12.0, 2.0), Y_P2, mats.get_material("st_tread"), 0.3)
 	b.rail_x("GantryRailNorth", -12.0, -0.3, -8.55, Y_P2)
 	b.rail_x("GantryRailSouth", -12.0, -0.3, -6.45, Y_P2)
-	b.body("ServiceTower", Vector3(3.0, 9.4, 6.0), Vector3(-13.5, 4.7, -7.5), mats.get_material("bulkhead"))
+	b.body("ServiceTower", Vector3(3.0, 9.4, 6.0), Vector3(-13.5, 4.7, -7.5), mats.get_material("st_brick_outside"))
 	gantry_door = b.visual("ServiceTowerDoor", Vector3(0.1, 2.3, 1.6), Vector3(-11.97, Y_P2 + 1.15, -7.5), mats.get_material("steel_light"), false)
 	for x in [-10.0, -5.0]:
 		b.visual("GantryColumn_%d" % int(-x), Vector3(0.3, Y_P2, 0.3), Vector3(x, Y_P2 * 0.5, -7.5), mats.get_material("steel"), true)
@@ -363,10 +371,10 @@ func _gantry() -> void:
 
 func _lift_landings() -> void:
 	b.slab("LiftPitFloor", SHAFT, -0.6, mats.get_material("steel"))
-	b.wall_z("LiftPitWallNorth", -4.65, 24.2, 27.8, -0.85, -0.25)
-	b.wall_z("LiftPitWallSouth", -1.35, 24.2, 27.8, -0.85, -0.25)
-	b.wall_x("LiftPitWallWest", 24.35, -4.5, -1.5, -0.85, -0.25)
-	b.wall_x("LiftPitWallEast", 27.65, -4.5, -1.5, -0.85, -0.25)
+	b.wall_z("LiftPitWallNorth", -4.65, 24.2, 27.8, -0.85, -0.25, mats.get_material("st_concrete"))
+	b.wall_z("LiftPitWallSouth", -1.35, 24.2, 27.8, -0.85, -0.25, mats.get_material("st_concrete"))
+	b.wall_x("LiftPitWallWest", 24.35, -4.5, -1.5, -0.85, -0.25, mats.get_material("st_concrete"))
+	b.wall_x("LiftPitWallEast", 27.65, -4.5, -1.5, -0.85, -0.25, mats.get_material("st_concrete"))
 	lift_gate_lower = b.body("LiftSafetyGateLower", Vector3(3.0, RAIL, 0.12), Vector3(26.0, Y_P0 + RAIL * 0.5, -1.44), mats.get_material("safety_paint"), Builder.LAYER_NO_MANTLE, true, false)
 	lift_gate_upper = b.body("LiftSafetyGateUpper", Vector3(3.0, RAIL, 0.12), Vector3(26.0, Y_M + RAIL * 0.5, -4.56), mats.get_material("safety_paint"), Builder.LAYER_NO_MANTLE, true, false)
 	for side in [24.45, 27.55]:
@@ -381,8 +389,9 @@ func _lift_landings() -> void:
 # --- the Aster calibration column: landmark through all levels; its rings show circuit state --------------------
 
 func _column() -> void:
-	b.body("AsterVerticalColumn", Vector3(0.58, TOP, 0.58), Vector3(14.5, TOP * 0.5, -3.0), mats.get_material("steel_light"))
-	b.body("AsterColumnFooting", Vector3(1.2, 0.3, 1.2), Vector3(14.5, 0.15, -3.0), mats.get_material("steel"))
+	# Collision of the core and its plinth; the apparatus is drawn by phase1_art.gd.
+	b.solid("AsterVerticalColumn", Vector3(0.62, TOP, 0.62), Vector3(14.5, TOP * 0.5, -3.0))
+	b.solid("AsterColumnFooting", Vector3(1.5, 0.5, 1.5), Vector3(14.5, 0.25, -3.0))
 	for i in 3:
 		column_rings.append(b.visual("AsterRing_%d" % i, Vector3(0.75, 0.12, 0.75), Vector3(14.5, 1.6 + i * 3.0, -3.0), b.flat(Color(0.15, 0.17, 0.18), 0.4, 0.3), false))
 	b.paint_sign("AsterColumnLabel", "ASTER  ·  COLUMNA DE CALIBRACIÓN", Vector3(14.5, 2.4, -2.68), "+z", 30, Color(0.5, 0.9, 0.88))
@@ -391,14 +400,16 @@ func _column() -> void:
 # --- lighting: dim emergency base, maintenance circuit, alarm lights (off until Containment) ------------------------
 
 func _lighting() -> void:
-	b.light("NaveLight", Vector3(12.0, 4.2, -2.0), Color(0.72, 0.84, 0.95), 0.9, 10.0)
-	b.light("AccessLight", Vector3(3.5, 2.4, 7.0), Color(1.0, 0.82, 0.62), 0.8, 7.0)
-	b.light("WorkshopLight", Vector3(22.0, 2.3, -6.0), Color(0.9, 0.85, 0.7), 0.7, 6.0)
-	b.light("SouthBandLight", Vector3(20.0, 2.6, 11.0), Color(0.72, 0.84, 0.95), 0.7, 8.0)
-	b.light("ControlLight", Vector3(16.0, Y_P2 + 2.4, -6.5), Color(0.75, 0.88, 1.0), 0.9, 10.0)
-	b.light("ArchiveLight", Vector3(5.0, Y_P2 + 2.3, -7.0), Color(0.75, 0.95, 0.9), 0.7, 6.0)
-	b.light("PumpRoomEmergency", Vector3(18.0, Y_M + 2.3, -5.5), Color(0.75, 0.85, 1.0), 0.7, 10.0)
-	b.light("PitEmergency", Vector3(20.0, -0.6, 4.5), Color(0.95, 0.5, 0.35), 0.6, 9.0)
+	# Practical lights (fixtures drawn by phase1_art.gd): warm bulkheads and sodium on the old station, cool
+	# fluorescent on the Helix insert and the pump gallery (docs/art/ASSET_PRODUCTION_BIBLE.md, "Lighting").
+	b.light("NaveLight", Vector3(12.0, 4.2, -2.0), Color(1.0, 0.76, 0.5), 0.75, 9.0)
+	b.light("AccessLight", Vector3(1.2, 2.5, 7.0), Color(1.0, 0.8, 0.56), 0.95, 7.5)
+	b.light("WorkshopLight", Vector3(22.0, 2.4, -6.0), Color(0.96, 0.86, 0.68), 0.85, 6.5)
+	b.light("SouthBandLight", Vector3(20.0, 3.9, 11.0), Color(0.85, 0.9, 0.95), 0.65, 8.0)
+	b.light("ControlLight", Vector3(16.0, Y_P2 + 2.4, -6.5), Color(0.8, 0.9, 1.0), 0.85, 10.0)
+	b.light("ArchiveLight", Vector3(5.0, Y_P2 + 2.3, -7.0), Color(0.72, 0.92, 0.9), 0.6, 6.0)
+	b.light("PumpRoomEmergency", Vector3(18.0, Y_M + 2.3, -5.5), Color(0.82, 0.9, 0.98), 0.75, 10.0)
+	b.light("PitEmergency", Vector3(20.0, -0.6, 4.5), Color(1.0, 0.68, 0.38), 0.8, 9.0)
 	for spec in [["PitServiceLight", Vector3(15.0, -0.4, 4.5), 10.0], ["D2ServiceLight", Vector3(24.0, -0.4, 4.0), 7.0], ["PumpServiceLight", Vector3(22.0, Y_M + 2.3, -6.5), 9.0], ["LiftServiceLight", Vector3(26.0, 2.4, 0.0), 6.0]]:
 		var l: OmniLight3D = b.light(spec[0], spec[1], Color(0.8, 0.9, 1.0), 0.0, spec[2])
 		l.visible = false  # maintenance circuit: off until the switch is thrown

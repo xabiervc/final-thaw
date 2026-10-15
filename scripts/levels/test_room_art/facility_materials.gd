@@ -69,6 +69,32 @@ func _wall(texture_name: String, tint: Color, tile_m: float) -> ShaderMaterial:
 	return m
 
 
+## Helix Station B surfaces (docs/art/ASSET_PRODUCTION_BIBLE.md, "Helix Station B"): world-space PBR sets from
+## assets/textures/facility (Poly Haven CC0, tools/art/prepare_facility_textures.py) on station_surface.gdshader.
+const STATION_DIR := "res://assets/textures/facility/"
+const STATION_SHADER := preload("res://assets/shaders/station_surface.gdshader")
+
+
+func _station(set_a: String, tint: Color, tile_m: float, options: Dictionary = {}) -> ShaderMaterial:
+	var m := ShaderMaterial.new()
+	m.shader = STATION_SHADER
+	m.set_shader_parameter("albedo_a", load(STATION_DIR + set_a + "_diff.jpg"))
+	m.set_shader_parameter("normal_a", load(STATION_DIR + set_a + "_nor.png"))
+	m.set_shader_parameter("arm_a", load(STATION_DIR + set_a + "_arm.jpg"))
+	m.set_shader_parameter("tint_a", tint)
+	m.set_shader_parameter("tile_a", tile_m)
+	m.set_shader_parameter("noise_tex", noise())
+	if options.has("dado"):
+		var b: String = options["dado"]
+		m.set_shader_parameter("albedo_b", load(STATION_DIR + b + "_diff.jpg"))
+		m.set_shader_parameter("normal_b", load(STATION_DIR + b + "_nor.png"))
+		m.set_shader_parameter("arm_b", load(STATION_DIR + b + "_arm.jpg"))
+	for key in options:
+		if key != "dado":
+			m.set_shader_parameter(key, options[key])
+	return m
+
+
 func _flat(color: Color, roughness: float, metallic: float = 0.0) -> StandardMaterial3D:
 	var m := StandardMaterial3D.new()
 	m.albedo_color = color
@@ -231,5 +257,109 @@ func _build(key: String) -> Material:
 		"chevron":
 			# Exit floor chevrons: unlit paint before power, green after (animated).
 			return _emissive(SAFE_GREEN, 0.0, Color(0.16, 0.2, 0.17))
+		# --- Helix Station B (historic station, Helix insert, neglect) ---
+		"st_wall":
+			# Pump-hall wall: aged brick over a glazed tile dado with a dark green bullnose band.
+			return _station("brick", Color(0.92, 0.88, 0.86), 2.4, {"dado": "tile", "tile_b": 1.3, "dado_height": 1.4,
+				"saturation_a": 0.8, "tint_b": Color(0.86, 0.85, 0.8), "saturation_b": 0.7, "cap_color": Color(0.11, 0.19, 0.15),
+				"normal_strength": 1.2, "rotate_b": true})
+		"st_brick":
+			return _station("brick", Color(0.92, 0.88, 0.86), 2.4, {"saturation_a": 0.8, "normal_strength": 1.2, "grime_strength": 0.25})
+		"st_brick_outside":
+			# Exterior brick: no interior flood marks, weather streaks instead.
+			return _station("brick", Color(0.85, 0.8, 0.78), 2.4, {"saturation_a": 0.75, "tide_strength": 0.0, "streak_strength": 0.4,
+				"grime_strength": 0.3, "grime_height": 0.8})
+		"st_tile":
+			return _station("tile", Color(0.86, 0.85, 0.8), 1.3, {"saturation_a": 0.7})  # vertical tile panels (A set is not rotated)
+		"st_concrete":
+			return _station("concrete_raw", Color(0.78, 0.78, 0.76), 4.0, {"saturation_a": 0.5, "tide_strength": 0.7})
+		"st_concrete_outside":
+			return _station("concrete_raw", Color(0.7, 0.71, 0.7), 4.0, {"saturation_a": 0.5, "tide_strength": 0.0, "streak_strength": 0.4})
+		"st_floor_painted":
+			return _station("floor_painted", Color(0.6, 0.64, 0.62), 4.5, {"saturation_a": 0.3, "is_floor": true, "normal_strength": 0.7})
+		"st_floor_damaged":
+			return _station("floor_damaged", Color(0.8, 0.8, 0.8), 3.0, {"saturation_a": 0.45, "is_floor": true})
+		"st_tread":
+			# Tread plate: catwalks, mezzanine decks, stair landings (rust toned down).
+			return _station("tread_plate", Color(0.62, 0.6, 0.58), 0.9, {"saturation_a": 0.35, "is_floor": true, "metallic_amount": 0.7,
+				"normal_strength": 1.4})
+		"st_green_steel":
+			# Station green: painted riveted steel, pumps, old machinery (triplanar for curved kit pieces).
+			return _station("green_steel", Color(0.82, 0.9, 0.86), 1.6, {"saturation_a": 0.7, "triplanar": true, "metallic_amount": 0.5,
+				"grime_strength": 0.25, "tide_strength": 0.4})
+		"st_green_steel_flat":
+			return _station("green_steel", Color(0.82, 0.9, 0.86), 1.6, {"saturation_a": 0.7, "metallic_amount": 0.5, "grime_strength": 0.25})
+		"st_roof":
+			return _station("roof_sheet", Color(0.62, 0.63, 0.64), 2.0, {"saturation_a": 0.5, "metallic_amount": 0.6, "tide_strength": 0.0,
+				"grime_strength": 0.0})
+		"st_rubble":
+			return _station("rubble", Color(0.8, 0.79, 0.77), 1.4, {"triplanar": true, "saturation_a": 0.5, "tide_strength": 0.0})
+		"st_rust":
+			return _station("rust", Color(0.8, 0.72, 0.66), 1.2, {"triplanar": true, "saturation_a": 0.6, "metallic_amount": 0.3})
+		"st_plaster":
+			# Old service corridor plaster, peeling (the source's pink pushed to a faded station cream).
+			return _station("plaster_peeling", Color(0.92, 0.95, 0.88), 2.2, {"saturation_a": 0.12, "dado": "tile", "tile_b": 1.3,
+				"dado_height": 1.2, "tint_b": Color(0.86, 0.85, 0.8), "saturation_b": 0.7, "rotate_b": true})
+		"st_yard_concrete":
+			return _station("dirty_concrete", Color(0.66, 0.67, 0.68), 4.0, {"saturation_a": 0.4, "is_floor": true})
+		"helix_panel":
+			# Helix insert: off-white composite panels with 1.2 m seams, recent and maintained (no flood marks).
+			var hp := _wall("painted_plaster_wall", Color(0.62, 0.63, 0.61), 2.5)
+			hp.set_shader_parameter("seam_spacing", 1.2)
+			hp.set_shader_parameter("seam_height_a", 0.12)
+			hp.set_shader_parameter("seam_height_b", 2.4)
+			hp.set_shader_parameter("seam_darkness", 0.4)
+			hp.set_shader_parameter("tide_height", -1.0)
+			hp.set_shader_parameter("grime_strength", 0.15)
+			hp.set_shader_parameter("roughness_bias", -0.25)
+			return hp
+		"helix_floor":
+			# Helix raised access floor: 60 cm grey tiles, dry.
+			var hf := ShaderMaterial.new()
+			hf.shader = FLOOR_SHADER
+			hf.set_shader_parameter("albedo_tex", load(PHOTO_DIR + "concrete_floor_worn_001_diff.jpg"))
+			hf.set_shader_parameter("arm_tex", load(PHOTO_DIR + "concrete_floor_worn_001_arm.jpg"))
+			hf.set_shader_parameter("normal_tex", load(PHOTO_DIR + "concrete_floor_worn_001_nor.png"))
+			hf.set_shader_parameter("noise_tex", noise())
+			hf.set_shader_parameter("tint", Color(0.6, 0.62, 0.62))
+			hf.set_shader_parameter("tile_m", 2.0)
+			hf.set_shader_parameter("joint_spacing", 0.6)
+			hf.set_shader_parameter("wetness", 0.0)
+			hf.set_shader_parameter("room_bounds", Vector4(0.0, -10.0, 24.0, -4.5))
+			return hf
+		"copper":
+			return _flat(Color(0.72, 0.42, 0.25), 0.35, 0.9)
+		"graphite":
+			return _flat(Color(0.12, 0.13, 0.14), 0.55, 0.4)
+		"pipe_water":
+			return _flat(Color(0.2, 0.32, 0.25), 0.55, 0.25)
+		"pipe_drain":
+			return _flat(Color(0.13, 0.135, 0.14), 0.6, 0.3)
+		"pipe_fire":
+			return _flat(Color(0.36, 0.09, 0.06), 0.55, 0.2)
+		"pipe_air":
+			return _flat(Color(0.33, 0.43, 0.5), 0.5, 0.3)
+		"conduit":
+			return _flat(Color(0.45, 0.4, 0.27), 0.6, 0.3)
+		"cable":
+			return _flat(Color(0.07, 0.075, 0.08), 0.7)
+		"glass_dark":
+			return _flat(Color(0.03, 0.035, 0.04), 0.08, 0.0)
+		"window_moon":
+			# Night sky seen through grimy wired glass: faint cold glow, brighter at the top, dirt streaks.
+			var wg := ShaderMaterial.new()
+			wg.shader = preload("res://assets/shaders/window_glass.gdshader")
+			wg.set_shader_parameter("noise_tex", noise())
+			return wg
+		"lamp_fluor":
+			return _emissive(Color(0.85, 0.9, 0.94), 2.6, Color(0.7, 0.72, 0.74))
+		"lamp_sodium":
+			return _emissive(Color(1.0, 0.68, 0.36), 3.0, Color(0.5, 0.35, 0.2))
+		"lamp_bulkhead":
+			return _emissive(Color(1.0, 0.82, 0.58), 2.2, Color(0.5, 0.42, 0.3))
+		"aster_violet":
+			return _emissive(Color(0.79, 0.76, 1.0), 2.2, Color(0.2, 0.19, 0.26))
+		"exit_green":
+			return _emissive(Color(0.35, 0.78, 0.48), 1.8, Color(0.05, 0.12, 0.07))
 	push_warning("FacilityMaterials: unknown material %s" % key)
 	return _flat(Color.MAGENTA, 1.0)

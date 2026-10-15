@@ -1,0 +1,408 @@
+{
+ "barrel_02": {
+  "authors": [
+   "Jorge Camacho"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.488,
+   0.88,
+   0.485
+  ],
+  "source": "https://polyhaven.com/a/Barrel_02",
+  "tris": 1499
+ },
+ "caged_hanging_light": {
+  "authors": [
+   "Ulan Cabanilla"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   1.167,
+   0.75,
+   0.315
+  ],
+  "source": "https://polyhaven.com/a/caged_hanging_light",
+  "tris": 2999
+ },
+ "cardboard_box_01": {
+  "authors": [
+   "Rahul Chaudhary"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.387,
+   0.34,
+   0.515
+  ],
+  "source": "https://polyhaven.com/a/cardboard_box_01",
+  "tris": 800
+ },
+ "cement_bag": {
+  "authors": [
+   "PierreB3D"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.462,
+   0.18,
+   0.7
+  ],
+  "source": "https://polyhaven.com/a/cement_bag",
+  "tris": 800
+ },
+ "classic_laptop": {
+  "authors": [
+   "Arrangemonk"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.653,
+   0.545,
+   0.486
+  ],
+  "source": "https://polyhaven.com/a/classic_laptop",
+  "tris": 2500
+ },
+ "clipboard": {
+  "authors": [
+   "ProgrammerOnCoffee"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.228,
+   0.042,
+   0.337
+  ],
+  "source": "https://polyhaven.com/a/clipboard",
+  "tris": 500
+ },
+ "concrete_road_barrier": {
+  "authors": [
+   "Amal Kumar"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   1.544,
+   0.834,
+   0.636
+  ],
+  "source": "https://polyhaven.com/a/concrete_road_barrier",
+  "tris": 2499
+ },
+ "exterior_aircon_unit": {
+  "authors": [
+   "Monsta3D"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   1.8,
+   0.927,
+   0.375
+  ],
+  "source": "https://polyhaven.com/a/exterior_aircon_unit",
+  "tris": 3000
+ },
+ "hand_truck": {
+  "authors": [
+   "Mutanzom3D"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.593,
+   1.407,
+   0.693
+  ],
+  "source": "https://polyhaven.com/a/hand_truck",
+  "tris": 2500
+ },
+ "hanging_industrial_lamp": {
+  "authors": [
+   "Kuutti Siitonen"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.55,
+   1.357,
+   0.55
+  ],
+  "source": "https://polyhaven.com/a/hanging_industrial_lamp",
+  "tris": 3000
+ },
+ "industrial_microscope": {
+  "authors": [
+   "Lukas Walzer"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.215,
+   0.464,
+   0.494
+  ],
+  "source": "https://polyhaven.com/a/industrial_microscope",
+  "tris": 2500
+ },
+ "industrial_storage_cart": {
+  "authors": [
+   "Jule Bielitz"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   1.609,
+   1.381,
+   1.108
+  ],
+  "source": "https://polyhaven.com/a/industrial_storage_cart",
+  "tris": 3000
+ },
+ "industrial_wall_lamp": {
+  "authors": [
+   "Kuutti Siitonen"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.274,
+   0.432,
+   0.14
+  ],
+  "source": "https://polyhaven.com/a/industrial_wall_lamp",
+  "tris": 1500
+ },
+ "ladder_sectioned_01": {
+  "authors": [
+   "MP"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.662,
+   2.133,
+   0.178
+  ],
+  "source": "https://polyhaven.com/a/ladder_sectioned_01",
+  "tris": 2499
+ },
+ "metal_office_desk": {
+  "authors": [
+   "Ulan Cabanilla"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   2.0,
+   0.788,
+   0.947
+  ],
+  "source": "https://polyhaven.com/a/metal_office_desk",
+  "tris": 2500
+ },
+ "metal_stool_02": {
+  "authors": [
+   "Ulan Cabanilla"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.448,
+   0.458,
+   0.472
+  ],
+  "source": "https://polyhaven.com/a/metal_stool_02",
+  "tris": 1500
+ },
+ "metal_tool_chest": {
+  "authors": [
+   "Yann Kervran",
+   "John Hutcheson"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.685,
+   0.652,
+   0.409
+  ],
+  "source": "https://polyhaven.com/a/metal_tool_chest",
+  "tris": 2500
+ },
+ "mounted_fluorescent_lights": {
+  "authors": [
+   "Ulan Cabanilla"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.912,
+   0.037,
+   0.645
+  ],
+  "source": "https://polyhaven.com/a/mounted_fluorescent_lights",
+  "tris": 1500
+ },
+ "office_notepads": {
+  "authors": [
+   "Ulan Cabanilla"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   1.103,
+   0.022,
+   0.66
+  ],
+  "source": "https://polyhaven.com/a/office_notepads",
+  "tris": 666
+ },
+ "overhead_crane": {
+  "authors": [
+   "Timothy3D"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   12.492,
+   5.142,
+   4.0
+  ],
+  "source": "https://polyhaven.com/a/overhead_crane",
+  "tris": 10000
+ },
+ "plastic_crate_02": {
+  "authors": [
+   "Fabi_G"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.506,
+   0.254,
+   0.405
+  ],
+  "source": "https://polyhaven.com/a/plastic_crate_02",
+  "tris": 1500
+ },
+ "portable_generator": {
+  "authors": [
+   "James Ray Cock"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.822,
+   0.577,
+   0.566
+  ],
+  "source": "https://polyhaven.com/a/portable_generator",
+  "tris": 3500
+ },
+ "power_box_01": {
+  "authors": [
+   "Rico Cilliers",
+   "Yann Kervran"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.461,
+   0.504,
+   0.399
+  ],
+  "source": "https://polyhaven.com/a/power_box_01",
+  "tris": 2500
+ },
+ "retro_multimeter": {
+  "authors": [
+   "elli moeller"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.216,
+   0.279,
+   0.202
+  ],
+  "source": "https://polyhaven.com/a/retro_multimeter",
+  "tris": 1500
+ },
+ "schoolchair_01": {
+  "authors": [
+   "Ethan Place"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.567,
+   1.007,
+   0.678
+  ],
+  "source": "https://polyhaven.com/a/SchoolChair_01",
+  "tris": 1500
+ },
+ "security_camera_01": {
+  "authors": [
+   "Alexander Otterbeck",
+   "Yann Kervran"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.17,
+   0.286,
+   0.554
+  ],
+  "source": "https://polyhaven.com/a/security_camera_01",
+  "tris": 2000
+ },
+ "tool_cart": {
+  "authors": [
+   "Savva Zakharov"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   1.278,
+   0.969,
+   0.755
+  ],
+  "source": "https://polyhaven.com/a/tool_cart",
+  "tris": 3000
+ },
+ "utility_box_02": {
+  "authors": [
+   "James Ray Cock"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.918,
+   1.119,
+   0.432
+  ],
+  "source": "https://polyhaven.com/a/utility_box_02",
+  "tris": 2499
+ },
+ "water_manhole_cover": {
+  "authors": [
+   "Raunox"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.692,
+   0.068,
+   0.692
+  ],
+  "source": "https://polyhaven.com/a/water_manhole_cover",
+  "tris": 1500
+ },
+ "wooden_crate_01": {
+  "authors": [
+   "James Ray Cock"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.82,
+   0.348,
+   0.408
+  ],
+  "source": "https://polyhaven.com/a/wooden_crate_01",
+  "tris": 1499
+ },
+ "worn_metal_rack": {
+  "authors": [
+   "Luca B"
+  ],
+  "license": "CC0 1.0",
+  "size": [
+   0.915,
+   1.9,
+   0.6
+  ],
+  "source": "https://polyhaven.com/a/worn_metal_rack",
+  "tris": 2500
+ }
+}

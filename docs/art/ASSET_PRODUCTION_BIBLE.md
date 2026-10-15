@@ -89,6 +89,85 @@ FINAL THAW combines a restrained climate-thriller atmosphere with expressive, re
 - Geometry: modular walls, floors, ceilings, terminals, containment units and technical props.
 - Avoid organic decay except where the narrative requires contrast.
 
+## Phases 1–2 demo: Helix Station B art direction (v2, 2026-10-15)
+
+This section governs every asset of the playable demo (`scenes/prototypes/phase1_canonical_greybox.tscn`). It replaces the older "Helix laboratory" notes above for this location. Reference for people: `assets/concept/characters/elena_vast_concept.png`.
+
+### The place
+
+**Estación de Bombeo B** is a municipal storm-water pumping station from the 1920s: load-bearing brick, riveted steel, cast-iron pipework, an overhead travelling crane over the pump hall, a drainage pit and culverts. Helix leased it in the 2040s and inserted the **Aster** trial into the old pump hall: a clean, cable-fed, white-and-copper apparatus in a dirty historic shell. The two languages never blur:
+
+| Layer | Materials | Where |
+|---|---|---|
+| **Historic station** (most of the space) | aged red-brown brick (`brick_wall_02`), white glazed tile dado to 1.4 m (`long_white_tiles`), green-painted riveted steel and machinery (`green_metal_rust`), cast-iron pipes painted by function, worn painted concrete floors (`painted_concrete`, `concrete_floor_damaged_01`), rusty tread plate (`metal_grate_rusty`), corrugated roof (`corrugated_iron_02`) | nave, pit, pump gallery, culverts, exterior |
+| **Helix insert** (only where Helix built) | off-white composite panels, anodised aluminium extrusions, black rubber gaskets, cable trays with grey cable, copper bus bars, small glass instrument windows | Aster column and its gantry, control room E, archive F, airlock G, lift |
+| **Neglect** (narrative, not decoration) | tide marks from the March flood (`NIVEL MÁX. 14/03`), mineral bloom on low brick, rust runs under fixings, standing water in the pit | below 1 m in P−1 and P0; never on the Helix insert, which is recent and maintained |
+
+Believable before spectacular: every prop has a job (pumping, power, measurement, maintenance, storage).
+
+### Palette
+
+- **Base:** brick `#6E3B2C`→`#8C4E3A`, tile off-white `#C9C4B5` (never pure white), station green `#3F5A4A`, concrete `#7A7670`, steel graphite `#33373A`, Helix panel `#C8CBC6`.
+- **Pipe colours by function** (readable, real-world convention): water `#3E5E4A` green, drainage `#2F3133` black-grey, fire main `#7A2018` red, compressed air `#6F8FA3` pale blue, power conduit `#9A8A5A` ochre.
+- **Accents, reserved:** amber `#F2B340` = something Elena can use; cyan `#7FF0E6` = Elena's scanner and inference only; red `#E04A3A` = danger, alarms, the recovery unit's alert; green `#58C77A` = safe egress signs only; **Aster** = copper `#B87333` conductors plus a pale violet-white calibration light `#C9C2FF` and the eight-point star mark (`✳`) stencilled on its hardware. No other emissive hues.
+
+### Materials and roughness
+
+| Material | Roughness | Notes |
+|---|---|---|
+| Brick | 0.85–0.95 | mortar darker and rougher; damp band darker and 0.6 rough |
+| Glazed tile | 0.25–0.4 | crazed, grimy joints; chips show 0.9 biscuit |
+| Painted steel | 0.5–0.7 | edge wear to bare metal (metallic 0.8, 0.35 rough) |
+| Bare/galvanised steel | 0.3–0.45 metallic | rails, Helix fixings |
+| Concrete floor | 0.7–0.9 | wet patches 0.15 |
+| Helix panel | 0.4–0.5 | clean, low variation |
+| Rubber, cable | 0.75–0.9 | |
+| Glass, screens | 0.05–0.15 | screens emissive, low energy |
+
+Uniform roughness across a surface is a defect. World-space shading (tide line, damp band, grime toward floors, streaks under fixings) is done in the facility shaders so splits and reuse never show seams.
+
+### Lighting
+
+Night, emergency and maintenance power only: **low ambient, pools of motivated light, strong shapes.** Each room has one dominant source and one accent:
+
+| Room | Key | Accent |
+|---|---|---|
+| Culvert and breach | cold moonlight through the breach | a dying amber bulkhead lamp inside |
+| Access A | caged bulkhead lamp, warm | moonlight from the nave |
+| Nave B (pump hall) | high clerestory moonlight shafts, cold | Aster column's violet-white rings; amber work lamp on the crane |
+| Pit P−1 | sodium work lamps, orange | water reflections; red tide-mark |
+| Pump gallery M | caged fluorescent battens, some dead | green pump status lamps |
+| Control E | monitor glow, cool | one warm desk lamp |
+| Archive F | red standby lamps | the console screen |
+| Yard | sodium floodlights | city glow on the low cloud |
+
+Light colours: moon `#9DB4D9`, fluorescent `#D8E6F0`, sodium `#FFB766`, bulkhead `#FFD7A0`, emergency red `#FF4A3A`. Fixtures are always modelled (no light without a visible source in hero views). Fog: depth fog only, interior `#141A20` thin, exterior `#1B2430` denser with height falloff for atmospheric perspective.
+
+### Decals, signage and wear
+
+- Signage is diegetic Spanish (the station is in a Spanish city): stencilled room codes (`B · NAVE DE BOMBEO`), pipe flow arrows, enamel safety plates, Helix labels in a clean sans on the insert only. Every sign has a reason to exist.
+- Wear follows causes: grime gathers low and in corners, rust runs down from fixings, scuffs at hand height near doors and controls, clean paths on floors where people walked.
+- No random graffiti inside (a guarded site); the outside yard wall may carry some.
+
+### Scale and density
+
+1 unit = 1 m. Doors 2.1 m (historic doors 2.6 m arched), corridors ≥ 1.8 m, stair rise 0.18 m, rail 1.1 m. Prop density: hero rooms dense along walls and around the landmark, with clear walking lanes ≥ 1.5 m; transit spaces sparse. Every room keeps a readable floor plan from the gameplay camera.
+
+### Budgets (Intel HD 630 at 720p, "Performance" preset 16.7 ms)
+
+- Visible triangles ≤ 350k; draw calls ≤ 350 per view (static geometry is batched per material per 12 m cell per storey).
+- Real lights: ≤ 6 affecting any one batch; no dynamic shadows except the moon and the yard floodlight key.
+- Textures: tiling materials 1K (VRAM-compressed, mipmapped), hero props 1K, small props 512, Elena 2K atlas + 2K skin.
+- CC0 props are decimated to the standard-prop budget (≤ 2k tris) unless they are hero props (≤ 10k).
+
+### Camera and composition
+
+The gameplay camera (5 m arm, pitch ≈ −30°) must read the floor plan: tall stuff goes to walls and corners; the centre of rooms stays clear. Landmarks (the Aster column, the crane, the pit's pumps, the yard gate) are visible from several rooms. Cinematic shots use 35–55 mm equivalents, low angles in the hall, and always show a light source in frame.
+
+### UI relationship
+
+The HUD stays minimal and graphic (thin rules, small caps); world text carries information first. UI accents reuse the reserved hues: amber for interaction prompts, cyan for inference banners, red for danger.
+
 ## Technical standards
 
 ### Units and orientation

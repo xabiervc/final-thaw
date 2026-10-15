@@ -91,6 +91,9 @@ static func apply_graphics(env: Environment, sun: DirectionalLight3D) -> void:
 		env.glow_enabled = g == "high"
 	if sun != null:
 		sun.shadow_enabled = g != "performance"
+		# Without its shadow the moon would light every interior through the roofs: on "performance" it lights only
+		# the outdoors (yard band) and characters.
+		sun.light_cull_mask = 0xFFFFF if g != "performance" else (1 | (1 << 5))
 
 
 static func subtitles_enabled() -> bool:
