@@ -23,6 +23,8 @@ signal lost_contact  # chase -> searching (Elena broke contact)
 
 const Graph := preload("res://scripts/phase1/phase1_route_graph.gd")
 const Synth := preload("res://scripts/audio/game_synth.gd")
+## Modelled unit (tools/blender/build_recovery_unit.py); the primitive build below is the fallback.
+const MODEL_PATH := "res://assets/models/characters/recovery_unit.glb"
 
 const URGENT_SWEEP_FACTOR := 1.45
 const INVESTIGATE_SPEED := 3.4
@@ -628,6 +630,33 @@ func _build_visual() -> void:
 	var warn := StandardMaterial3D.new()
 	warn.albedo_color = Color(0.72, 0.53, 0.1)
 	warn.roughness = 0.7
+	_eye_mat = StandardMaterial3D.new()
+	_eye_mat.emission_enabled = true
+	_eye_mat.albedo_color = Color(0.05, 0.05, 0.05)
+	if not _build_model():
+		_build_primitive(shell, dark, warn)
+	_build_lamp_icon_cone()
+
+
+## The modelled unit: its "Eye" visor node carries the state material.
+func _build_model() -> bool:
+	if not ResourceLoader.exists(MODEL_PATH):
+		return false
+	var scene := load(MODEL_PATH) as PackedScene
+	if scene == null:
+		return false
+	var model := scene.instantiate() as Node3D
+	model.name = "UnitModel"
+	_visual.add_child(model)
+	var eyes := model.find_children("Eye*", "MeshInstance3D", true, false)
+	if eyes.is_empty():
+		model.queue_free()
+		return false
+	(eyes[0] as MeshInstance3D).material_override = _eye_mat
+	return true
+
+
+func _build_primitive(shell: Material, dark: Material, warn: Material) -> void:
 	# Silhouette: tracked base, narrow chassis, hazard band, tall sensor mast with a wide visor. Reads as a machine
 	# (not a person) from any angle, and the visor shows where it is looking.
 	_piece(Vector3(0.95, 0.32, 1.05), Vector3(0.0, 0.18, 0.0), dark)          # tracked base
@@ -641,11 +670,11 @@ func _build_visual() -> void:
 	for side in [-1.0, 1.0]:
 		_piece(Vector3(0.12, 0.7, 0.14), Vector3(0.38 * side, 0.92, 0.1), dark)  # folded manipulators
 		_piece(Vector3(0.1, 0.12, 0.3), Vector3(0.38 * side, 0.52, 0.2), shell)   # grippers
-	_eye_mat = StandardMaterial3D.new()
-	_eye_mat.emission_enabled = true
-	_eye_mat.albedo_color = Color(0.05, 0.05, 0.05)
 	var eye := _piece(Vector3(0.5, 0.07, 0.04), Vector3(0.0, 1.73, 0.2), _eye_mat)
 	eye.name = "Eye"
+
+
+func _build_lamp_icon_cone() -> void:
 	_lamp = OmniLight3D.new()
 	_lamp.position = Vector3(0.0, 1.75, 0.5)
 	_lamp.omni_range = 3.5

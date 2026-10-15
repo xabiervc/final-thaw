@@ -106,6 +106,22 @@ static func gate_clank() -> AudioStreamWAV:
 	return S.to_stream(S._normalize(b, 0.75))
 
 
+## Exterior night wind over the yard: band-limited noise with slow gusts and a faint distant traffic rumble
+## (looping, 6 s). Tells the player, by ear, that they are outside.
+static func exterior_wind() -> AudioStreamWAV:
+	var b := S._buffer(6.0)
+	var r := S._rng(351)
+	var lp := 0.0
+	var lp2 := 0.0
+	for i in b.size():
+		var t := float(i) / RATE
+		lp += 0.08 * (r.randf_range(-1.0, 1.0) - lp)
+		lp2 += 0.01 * (r.randf_range(-1.0, 1.0) - lp2)
+		var gust := 0.55 + 0.45 * sin(TAU * t / 6.0) * sin(TAU * t / 2.0 + 0.7)
+		b[i] = lp * gust * 1.6 + lp2 * 5.0 + sin(TAU * 41.0 * t) * 0.03
+	return S.to_stream(S._make_loopable(S._normalize(b, 0.55), 0.4), true)
+
+
 ## Checkpoint / note recorded: a soft two-note confirmation (quieter than the puzzle chime).
 static func note_tick() -> AudioStreamWAV:
 	var b := S._buffer(0.5)

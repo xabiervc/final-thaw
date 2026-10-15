@@ -129,6 +129,7 @@ var _sfx: Dictionary = {}
 var _alarm_loop: AudioStreamPlayer
 var _compressor_audio: AudioStreamPlayer3D
 var _shutter_audio: AudioStreamPlayer3D
+var _pump_hum: AudioStreamPlayer3D
 var _steps: Array[AudioStreamPlayer] = []
 var _env: Environment
 var _sun: DirectionalLight3D
@@ -270,6 +271,25 @@ func _build_audio() -> void:
 	_compressor_audio.max_distance = 45.0
 	_compressor_audio.position = Parking.COMPRESSOR_NOISE_AT + Vector3(0.0, 1.0, 0.0)
 	add_child(_compressor_audio)
+	# Pump machinery (M): runs only while maintenance power is on.
+	_pump_hum = AudioStreamPlayer3D.new()
+	_pump_hum.stream = Synth.generator_hum()
+	_pump_hum.bus = "SFX"
+	_pump_hum.unit_size = 5.0
+	_pump_hum.max_distance = 24.0
+	_pump_hum.volume_db = -10.0
+	_pump_hum.position = Vector3(18.5, Building.Y_M + 1.0, -7.0)
+	add_child(_pump_hum)
+	# Exterior wind over the yard (outside the building it is the loudest bed; inside it fades behind the walls).
+	var wind := AudioStreamPlayer3D.new()
+	wind.stream = GSynth.exterior_wind()
+	wind.bus = "SFX"
+	wind.unit_size = 22.0
+	wind.max_distance = 60.0
+	wind.volume_db = -12.0
+	wind.position = Vector3(55.0, Parking.Y + 3.0, -1.0)
+	wind.autoplay = true
+	add_child(wind)
 	_shutter_audio = AudioStreamPlayer3D.new()
 	_shutter_audio.stream = GSynth.shutter_roll()
 	_shutter_audio.bus = "SFX"
@@ -608,6 +628,10 @@ func _toggle_maintenance() -> void:
 		_log("mission", "SERVICE_OVERRIDE queued")
 		notes.add("maintenance_risk", "event")
 	_sound("power_up" if circuit.maintenance_on else "power_down")
+	if circuit.maintenance_on:
+		_pump_hum.play()
+	else:
+		_pump_hum.stop()
 	for l in building.service_lights:
 		l.visible = true
 		var tw := create_tween()
