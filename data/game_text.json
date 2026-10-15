@@ -304,8 +304,8 @@
 		"en": "If the trial worked and someone buried it, the proof is still here: in the wiring and in the restricted archive."
 	},
 	"intro_line_4": {
-		"es": "Helix B. Entro por el túnel de servicio; la puerta se cierra sola detrás de mí. Mi salida prevista: la esclusa G, en la planta de control.",
-		"en": "Helix B. I go in through the service tunnel; the door locks itself behind me. My planned way out: airlock G, on the control floor."
+		"es": "Helix B. La entrada de servicio está vigilada; el aliviadero del canal, no. Mi salida prevista: la esclusa G, en la planta de control.",
+		"en": "Helix B. The service entrance is watched; the channel's storm culvert isn't. My planned way out: airlock G, on the control floor."
 	},
 	"intro_line_5": {
 		"es": "Medir. Comprobar. Salir sin dejar rastro.",
@@ -1096,8 +1096,8 @@
 		"en": "Another way out"
 	},
 	"note_exit_plan_body": {
-		"es": "Sin la pasarela, me queda la ruta del plan de evacuación: bajar al foso y salir por la galería de descarga al aparcamiento.",
-		"en": "Without the gantry, I still have the evacuation plan's route: down to the pit and out through the drainage gallery into the car park."
+		"es": "Sin la pasarela, me queda la ruta del plan de evacuación: bajar al foso y salir por la galería de descarga. La alarma habrá liberado su puerta.",
+		"en": "Without the gantry, I still have the evacuation plan's route: down to the pit and out through the drainage gallery. The alarm will have released its door."
 	},
 	"note_parking_title": {
 		"es": "Patio de servicio",
@@ -1170,5 +1170,57 @@
 	"credits_body": {
 		"es": "Diseño, código, niveles, música y efectos sintetizados: equipo de FINAL THAW (desarrollo asistido por Claude Code).\n\nElena: cuerpo base, piel, ojos, cejas, pestañas y cabello de MakeHuman / MPFB 2 (CC0). Captura de movimiento: los datos usados en este proyecto proceden de mocap.cs.cmu.edu; la base de datos se creó con financiación de NSF EIA-0196217.\n\nRecursos de terceros (CC0 1.0, dominio público):\nPoly Haven: «Covered Car» y «Roller Shutter Door» (MP), «Security Light» (Maximilian Schuster), «Utility Box 01» (James Ray Cock), texturas de hormigón, yeso y metal.\nambientCG: «Asphalt 033».\n\nHerramientas: Godot Engine 4.7 (MIT), Blender 5.2 (GPL), MPFB 2 (GPL).\n\nParte del arte, la música y el sonido de esta demo son provisionales.",
 		"en": "Design, code, levels, synthesised music and effects: the FINAL THAW team (development assisted by Claude Code).\n\nElena: base body, skin, eyes, brows, lashes and hair from MakeHuman / MPFB 2 (CC0). Motion capture: the data used in this project was obtained from mocap.cs.cmu.edu; the database was created with funding from NSF EIA-0196217.\n\nThird-party assets (CC0 1.0, public domain):\nPoly Haven: \"Covered Car\" and \"Roller Shutter Door\" (MP), \"Security Light\" (Maximilian Schuster), \"Utility Box 01\" (James Ray Cock), concrete, plaster and metal textures.\nambientCG: \"Asphalt 033\".\n\nTools: Godot Engine 4.7 (MIT), Blender 5.2 (GPL), MPFB 2 (GPL).\n\nSome of the art, music and sound in this demo are provisional."
+	},
+	"obj_enter": {
+		"es": "Entra en la estación por el colector C-2",
+		"en": "Get into the station through culvert C-2"
+	},
+	"line_n1_00": {
+		"es": "Elena: «¡No…! El colector se ha hundido. Por ahí ya no se sale.»",
+		"en": "Elena: \"No… the culvert's caved in. There's no getting out that way.\""
+	},
+	"ban_collapse_title": {
+		"es": "COLECTOR HUNDIDO",
+		"en": "CULVERT COLLAPSED"
+	},
+	"ban_collapse_body": {
+		"es": "El tramo bajo la calle ha cedido detrás de ti. Tendrás que salir por otro sitio.",
+		"en": "The stretch under the road gave way behind you. You will have to leave another way."
+	},
+	"hint_enter_1": {
+		"es": "La boca del colector C-2 está en el muro este del canal, encima del montón de escombros.",
+		"en": "The mouth of culvert C-2 is in the channel's east wall, above the heap of rubble."
+	},
+	"hint_enter_2": {
+		"es": "El colector es bajo: agáchate con {crouch} para pasar bajo la rejilla.",
+		"en": "The culvert is low: crouch with {crouch} to get under the grating."
+	},
+	"note_entry_lost_title": {
+		"es": "Sin vuelta atrás",
+		"en": "No way back"
+	},
+	"note_entry_lost_body": {
+		"es": "El colector C-2 se hundió en cuanto lo crucé: la calle de encima estaba socavada desde la riada de marzo. Ya no puedo salir por donde entré.",
+		"en": "Culvert C-2 caved in as soon as I was through: the road above had been undermined since the March flood. I can't leave the way I came in."
+	},
+	"note_egress_lock_title": {
+		"es": "Salida de evacuación bloqueada",
+		"en": "Evacuation exit locked"
+	},
+	"note_egress_lock_body": {
+		"es": "La puerta de la galería de descarga tiene un electroimán: solo se libera si salta la alarma de evacuación. La salida existe, pero no puedo abrirla sin que la instalación sepa que estoy aquí.",
+		"en": "The drainage-gallery door has a maglock: it only releases when the evacuation alarm goes off. The way out exists, but I can't open it without the facility knowing I'm here."
+	},
+	"hs_egress": {
+		"es": "Puerta de evacuación",
+		"en": "Evacuation door"
+	},
+	"ex_egress_title": {
+		"es": "Salida de emergencia bloqueada",
+		"en": "Emergency exit locked"
+	},
+	"ex_egress_body": {
+		"es": "Electroimán activo. Placa: «Desbloqueo automático con alarma de evacuación». Por el cristal armado se ve el patio de servicio.",
+		"en": "Maglock engaged. Plate: \"Automatic release on evacuation alarm\". Through the wired glass: the service yard."
 	}
 }

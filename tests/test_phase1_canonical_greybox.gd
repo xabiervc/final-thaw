@@ -68,8 +68,9 @@ func _run() -> void:
 	_expect(_solid_below(scene, 31.0, 6.0, -1.5, 1.0) and _solid_below(scene, 38.0, 6.0, -1.5, 1.0), "the evacuation gallery and the service yard have floors at -2")
 	# Phase 2 yard (same scene): open mouth, solid non-climbable perimeter, gate lanes, cars with collision.
 	var space: PhysicsDirectSpaceState3D = scene.get_world_3d().direct_space_state
-	var mouth := PhysicsRayQueryParameters3D.create(Vector3(31.0, -0.8, 6.0), Vector3(37.0, -0.8, 6.0), 1 | 16)
-	_expect(space.intersect_ray(mouth).is_empty(), "the service mouth is open from the gallery into the yard at chest height")
+	# (The evacuation door at x 31.2 is shut until Containment: tests/test_phase1_entry.gd walks it locked and released.)
+	var mouth := PhysicsRayQueryParameters3D.create(Vector3(31.6, -0.8, 6.0), Vector3(37.0, -0.8, 6.0), 1 | 16)
+	_expect(space.intersect_ray(mouth).is_empty(), "the service mouth is open from the gallery (past the evacuation door) into the yard at chest height")
 	var north: StaticBody3D = scene.get_node("YardNorthWallWest")
 	_expect((north.collision_layer & 1) != 0 and (north.collision_layer & 16) != 0, "yard perimeter walls block sight and can never be mantled")
 	var lane := PhysicsRayQueryParameters3D.create(Vector3(72.7, -1.0, -14.0), Vector3(72.7, -1.0, -17.5), 1 | 16)

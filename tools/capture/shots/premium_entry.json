@@ -1,0 +1,146 @@
+{
+ "scene": "res://scenes/prototypes/phase1_canonical_greybox.tscn",
+ "props": {
+  "play_intro": false,
+  "entry_sequence": true
+ },
+ "shots": [
+  {
+   "name": "50_channel_start",
+   "pos": [
+    -11.5,
+    -1.0,
+    9.6
+   ],
+   "face": [
+    0.3,
+    -1
+   ],
+   "yaw": -0.35,
+   "pitch": -0.38,
+   "mode": "explore",
+   "wait_s": 1.5
+  },
+  {
+   "name": "51_culvert_mouth",
+   "pos": [
+    -11.0,
+    -1.0,
+    8.6
+   ],
+   "face": [
+    0.6,
+    -1
+   ],
+   "cam": [
+    [
+     -12.8,
+     0.4,
+     9.6
+    ],
+    [
+     -9.4,
+     0.2,
+     6.0
+    ]
+   ],
+   "fov": 50,
+   "hud": false
+  },
+  {
+   "name": "52_in_culvert",
+   "calls": [],
+   "pos": [
+    -6.6,
+    0.0,
+    6.0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "yaw": -1.57,
+   "pitch": -0.5,
+   "mode": "explore",
+   "wait_s": 1.0
+  },
+  {
+   "name": "53_channel_overview",
+   "pos": [
+    -11.5,
+    -1.0,
+    9.6
+   ],
+   "cam": [
+    [
+     -20.0,
+     9.0,
+     18.0
+    ],
+    [
+     -8.0,
+     0.0,
+     5.0
+    ]
+   ],
+   "fov": 50,
+   "hud": false
+  },
+  {
+   "name": "54_after_collapse_tunnel",
+   "pos": [
+    -1.9,
+    0.0,
+    6.0
+   ],
+   "face": [
+    -1,
+    0
+   ],
+   "calls": [
+    "_collapse_entry"
+   ],
+   "yaw": 1.4,
+   "pitch": -0.3,
+   "mode": "explore",
+   "wait_s": 3.0
+  },
+  {
+   "name": "55_collapse_from_road",
+   "pos": [
+    -1.9,
+    0.0,
+    6.0
+   ],
+   "cam": [
+    [
+     -7.5,
+     3.4,
+     9.0
+    ],
+    [
+     -4.4,
+     0.6,
+     6.0
+    ]
+   ],
+   "fov": 50,
+   "hud": false
+  },
+  {
+   "name": "56_egress_door_locked",
+   "pos": [
+    29.4,
+    -2.0,
+    6.0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "yaw": -1.57,
+   "pitch": -0.2,
+   "mode": "explore"
+  }
+ ]
+}

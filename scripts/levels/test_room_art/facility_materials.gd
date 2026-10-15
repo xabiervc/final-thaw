@@ -327,6 +327,9 @@ func _build(key: String) -> Material:
 			hf.set_shader_parameter("wetness", 0.0)
 			hf.set_shader_parameter("room_bounds", Vector4(0.0, -10.0, 24.0, -4.5))
 			return hf
+		"water_still":
+			# Standing water: near-black, glossy, a little green from the silt.
+			return _flat(Color(0.035, 0.045, 0.04), 0.04, 0.0)
 		"copper":
 			return _flat(Color(0.72, 0.42, 0.25), 0.35, 0.9)
 		"graphite":

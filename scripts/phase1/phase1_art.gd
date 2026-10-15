@@ -53,6 +53,7 @@ func build() -> void:
 	_hall_props()
 	_hall_lighting()
 	_fixtures()
+	_entry_dressing()
 
 
 # --- helpers ------------------------------------------------------------------------------------------------------
@@ -305,6 +306,46 @@ func _hall_props() -> void:
 	place(kit.prop("hand_truck"), Vector3(10.3, 0.0, -1.1), 2.6)
 	place(kit.prop("portable_generator"), Vector3(26.4, Y_P1, 7.0), PI)
 	place(kit.prop("power_box_01"), Vector3(10.05, -0.95, 5.0), PI * 0.5)
+
+
+## The flood channel and culvert C-2 (layout in phase1_building.gd _entry): a road above with its guard rail and lamp,
+## standing water and what the March flood washed down, a fallen fence panel half hiding the pried grate, and the
+## inspection chamber's dying amber lamp glowing at the far end of the culvert, the light that draws the player in.
+func _entry_dressing() -> void:
+	b.force_band = b.YARD_BAND
+	var bank := 1.6
+	var floor_y := -1.0
+	# standing water down the middle of the channel (dark, glossy) and silt along the walls
+	box(Vector3(2.2, 0.02, 20.0), Vector3(-11.6, floor_y + 0.012, 9.6), "water_still", false)
+	box(Vector3(0.5, 0.12, 20.0), Vector3(-13.25, floor_y + 0.05, 9.6), "st_rubble", false)
+	# road guard rail along both banks
+	for x in [-13.95, -9.05]:
+		for k in 11:
+			box(Vector3(0.08, 0.9, 0.08), Vector3(x, bank + 0.45, -1.5 + k * 2.0), "graphite", false)
+		box(Vector3(0.06, 0.06, 21.0), Vector3(x, bank + 0.88, 9.0), "steel_light", false)
+		box(Vector3(0.05, 0.05, 21.0), Vector3(x, bank + 0.5, 9.0), "steel_light", false)
+	# road lamp leaning over the channel near the culvert mouth
+	box(Vector3(0.16, 5.2, 0.16), Vector3(-8.6, bank + 2.6, 9.4), "graphite")
+	box(Vector3(1.6, 0.1, 0.1), Vector3(-9.35, bank + 5.15, 9.4), "graphite", false)
+	box(Vector3(0.55, 0.12, 0.28), Vector3(-10.1, bank + 5.05, 9.4), "lamp_sodium", false)
+	var road := lamp("ChannelRoadLamp", Vector3(-10.1, bank + 4.7, 9.2), Color(1.0, 0.7, 0.42), 1.9, 11.0, b.YARD_BAND)
+	road.light_cull_mask = 1 | b.band_layer(b.YARD_BAND)
+	# what the flood washed down: a blue drum, crates, a cardboard box going soft
+	place(kit.prop("barrel_02"), Vector3(-12.6, floor_y, 13.2), 1.1)
+	place(kit.prop("plastic_crate_02"), Vector3(-10.4, floor_y, 15.6), 0.6)
+	place(kit.prop("wooden_crate_01"), Vector3(-12.9, floor_y, 3.4), 2.0)
+	place(kit.prop("cardboard_box_01"), Vector3(-11.9, floor_y, 17.0), 0.4)
+	# the fallen fence panel leaning across the culvert mouth's north side (concealment: the breach is behind it)
+	var fence: Material = mats.get_material("fence")
+	var panel := Transform3D(Basis(Vector3(0, 1, 0), 0.25).rotated(Vector3(0, 0, 1), 0.35), Vector3(-9.9, floor_y + 1.2, 7.6))
+	b.add_box_to_batch(Vector3(0.04, 2.2, 2.6), panel, fence, false)
+	b.add_box_to_batch(Vector3(0.06, 2.3, 0.06), panel.translated_local(Vector3(0.0, 0.0, 1.3)), mats.get_material("graphite"), false)
+	b.add_box_to_batch(Vector3(0.06, 2.3, 0.06), panel.translated_local(Vector3(0.0, 0.0, -1.3)), mats.get_material("graphite"), false)
+	b.force_band = -1
+	# the far end of the culvert: the inspection chamber's amber bulkhead, dying (inside, P0 band)
+	place(kit.kit("kit_bulkhead"), Vector3(-2.2, 2.1, 4.52), 0.0, 1.0, false)
+	var glow := lamp("CulvertChamberGlow", Vector3(-2.2, 1.7, 4.9), Color(1.0, 0.66, 0.36), 0.9, 6.0)
+	glow.light_cull_mask = 1 | b.band_layer(1) | b.band_layer(b.YARD_BAND)
 
 
 ## Visible sources for the building's practical lights (phase1_building.gd _lighting) and the P2 suspended ceiling.

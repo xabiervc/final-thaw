@@ -31,8 +31,10 @@ const GSynth = preload("res://scripts/audio/game_synth.gd")
 const T = preload("res://scripts/game/game_text.gd")
 
 const MENU_SCENE := "res://scenes/ui/main_menu.tscn"
+## Without the entry sequence (tests, retries) play starts in the inspection tunnel, already through the collapsed culvert.
 const SPAWN := Vector3(-2.3, 0.0, 6.0)
-const INTRO_START := Vector3(-2.75, 0.0, 6.0)
+## The intro ends with Elena walking up the flood channel to the breached culvert; play starts at Building.ENTRY_START.
+const INTRO_START := Vector3(-11.5, -1.0, 15.0)
 const INTERACTION_REACH := 1.8
 const SCAN_CHARGE_TIME := 0.9
 const SCAN_REVEAL_TIME := 3.0
@@ -63,6 +65,7 @@ const CHECKPOINTS := [
 	{"id": "EGRESS", "pos": Vector3(72.95, -2.0, -4.0), "unit": "ya_2"},
 ]
 const HINTS := {
+	"enter": ["hint_enter_1", "hint_enter_2"],
 	"explore": ["hint_explore_1", "hint_explore_2", "hint_explore_3"],
 	"lift": ["hint_lift_1", "hint_lift_2"],
 	"circuit": ["hint_circuit_1", "hint_circuit_2", "hint_circuit_3"],
@@ -74,6 +77,10 @@ const HINTS := {
 
 ## Test and chapter seams.
 @export var play_intro: bool = true
+## Start in the flood channel and play the entry (culvert crawl, collapse) without the intro (tests). The intro implies it.
+var entry_sequence: bool = false
+## False until Elena is through culvert C-2 and it has caved in behind her.
+var entry_done: bool = true
 var spawn_unit_enabled: bool = true
 ## Called with the results instead of showing the results screen and returning to the menu (tests).
 var ending_override: Callable = Callable()
@@ -146,6 +153,9 @@ func _ready() -> void:
 	_build_scan_parts()
 	_build_actors()
 	_build_audio()
+	entry_done = not (play_intro or entry_sequence)
+	if entry_done:
+		building.collapse_entry(false, self)
 	_refresh_state_fixtures()
 	notes.noted.connect(_on_note)
 	GameManager.stats_changed.connect(_apply_options)
@@ -222,10 +232,14 @@ func _build_lift() -> void:
 func _build_actors() -> void:
 	player = Player.new()
 	player.name = "Elena"
-	player.position = INTRO_START if play_intro else SPAWN
+	player.position = INTRO_START if play_intro else (Building.ENTRY_START if entry_sequence else SPAWN)
 	add_child(player)
-	player.visual.rotation.y = PI * 0.5  # facing the opening into A
-	player.set("orbit_yaw", -PI * 0.5)
+	if play_intro or entry_sequence:
+		player.visual.rotation.y = PI  # north, up the channel toward the culvert mouth
+		player.set("orbit_yaw", -0.35)
+	else:
+		player.visual.rotation.y = PI * 0.5  # facing the opening into A
+		player.set("orbit_yaw", -PI * 0.5)
 	hud = HudScript.new()
 	hud.name = "PromptHUD"
 	add_child(hud)
@@ -353,18 +367,19 @@ func _intro_shots() -> Array:
 			"fov": 55.0, "lines": [[0.4, T.t("intro_line_2")]]},
 		{"duration": 8.5, "from": _look(Vector3(17.6, -0.2, 7.2), Vector3(21.5, -1.5, 4.2)), "to": _look(Vector3(19.4, -0.7, 6.4), Vector3(21.5, -1.4, 4.2)),
 			"fov": 50.0, "lines": [[0.4, T.t("intro_line_3")]]},
-		{"duration": 9.0, "from": _look(Vector3(5.8, 1.5, 6.7), Vector3(-1.5, 1.1, 6.0)), "to": _look(Vector3(5.1, 1.55, 6.9), Vector3(0.0, 1.2, 6.0)),
-			"fov": 55.0, "lines": [[0.3, T.t("intro_line_4")]], "on_start": _intro_walk},
+		{"duration": 9.0, "from": _look(Vector3(-11.0, 0.6, 5.0), Vector3(-11.6, 0.0, 14.0)), "to": _look(Vector3(-10.4, 0.9, 6.6), Vector3(-11.4, -0.1, 11.0)),
+			"fov": 50.0, "lines": [[0.3, T.t("intro_line_4")]], "on_start": _intro_walk},
 		{"duration": 5.0, "fov": 65.0, "lines": [[0.2, T.t("intro_line_5")]], "on_start": _intro_settle},
 		{"black": true, "duration": 3.5, "title": "FINAL THAW", "subtitle": T.t("intro_title_sub")},
 	]
 
 
-## Elena walks out of the tunnel (camera-space "forward": the gameplay yaw faces +x) for a few metres and stops.
+## Elena walks up the flood channel toward the breached culvert (camera-space "forward": the gameplay yaw faces north)
+## and stops below the rubble at its mouth, where play begins.
 func _intro_walk() -> void:
-	_sound("door")
+	player.set("movement_basis", Basis.IDENTITY)
 	player.set("scripted_input", Vector2(0.0, -0.42))
-	get_tree().create_timer(2.6).timeout.connect(func():
+	get_tree().create_timer(3.0).timeout.connect(func():
 		if phase == "intro":
 			player.set("scripted_input", Vector2.ZERO))
 
@@ -398,7 +413,7 @@ func _begin_play() -> void:
 	hud.call("set_hud_visible", true)
 	get_tree().paused = false
 	music.set_mode("investigation")
-	_set_objective(T.t("obj_investigate"))
+	_set_objective(T.t("obj_investigate") if entry_done else T.t("obj_enter"))
 	notes.add("anomaly", "event")
 
 
@@ -422,6 +437,8 @@ func _physics_process(delta: float) -> void:
 	if InputMap.has_action("hint") and Input.is_action_just_pressed("hint"):
 		_show_hint()
 	_track_safety(delta)
+	if not entry_done and player.global_position.x > Building.ENTRY_THROUGH_X and player.global_position.y > -0.5:
+		_collapse_entry()
 	_story_beats()
 	_footsteps(delta)
 	if phase != "investigation":
@@ -495,6 +512,39 @@ func _announce(key: String) -> void:
 	_log("pa", key)
 
 
+# --- the entry collapse ------------------------------------------------------------------------------------------
+
+## Elena is through culvert C-2: its last stretch, under the road undermined by the March flood, caves in behind her.
+## Real geometry, deterministic: the blocker's collision comes on and the debris lands in fixed places.
+func _collapse_entry() -> void:
+	entry_done = true
+	building.collapse_entry(true, self)
+	_sound("gate")
+	get_tree().create_timer(0.25).timeout.connect(func(): _sound("land"))
+	get_tree().create_timer(0.5).timeout.connect(func(): _sound("clunk"))
+	if not AccessibilityManager.is_reduced_motion():
+		_shake(0.7, 0.09)
+	_say("N1-00", T.t("line_n1_00"), 4.0)
+	_banner(T.t("ban_collapse_title"), T.t("ban_collapse_body"), "warn", 4.5)
+	_set_objective(T.t("obj_investigate"))
+	notes.add("entry_lost", "event")
+	_log("entry", "culvert C-2 collapsed behind Elena at %s" % _fmt(player.global_position))
+
+
+## Short camera shake (the gameplay camera's offsets; never used with reduced motion).
+func _shake(seconds: float, strength: float) -> void:
+	var view: Camera3D = player.get("view")
+	var tw := create_tween()
+	var steps := int(seconds / 0.05)
+	for i in steps:
+		var k := strength * (1.0 - float(i) / float(steps))
+		var off := Vector2(sin(float(i) * 2.7) * k, cos(float(i) * 3.9) * k * 0.7)
+		tw.tween_property(view, "h_offset", off.x, 0.05)
+		tw.parallel().tween_property(view, "v_offset", off.y, 0.05)
+	tw.tween_property(view, "h_offset", 0.0, 0.05)
+	tw.parallel().tween_property(view, "v_offset", 0.0, 0.05)
+
+
 # --- interactions ------------------------------------------------------------------------------------------------
 
 func _hotspots() -> Array:
@@ -517,6 +567,7 @@ func _hotspots() -> Array:
 		{"id": "g_inner", "at": Building.G_INNER_AT, "verb": "verb_close" if _g_inner_open else "verb_open", "name": "hs_g_inner"},
 		{"id": "g_outer", "at": Building.G_OUTER_AT + Vector3(0.75, 0.0, 0.0), "verb": "verb_open", "name": "hs_g_outer"},
 		{"id": "r1_crank", "at": Building.R1_CRANK_AT, "verb": "verb_stop_release" if _r1_cranking else "verb_release", "name": "hs_r1"},
+		{"id": "egress", "at": Building.EGRESS_PANEL_AT, "verb": "verb_examine", "name": "hs_egress"},
 		{"id": "compressor", "at": Parking.COMPRESSOR_PANEL_AT, "verb": "verb_start", "name": "hs_compressor"},
 		{"id": "dock_panel", "at": Parking.DOCK_PANEL_AT, "verb": "verb_raise", "name": "hs_dock"},
 	]
@@ -565,6 +616,8 @@ func _available(id: String) -> bool:
 			return in_yard and not _compressor_used
 		"dock_panel":
 			return in_yard and not _shutter_used
+		"egress":
+			return phase == "investigation"
 	return true
 
 
@@ -583,6 +636,11 @@ func _interact(id: String) -> void:
 			_examine("bridge", "ex_bridge_title", "ex_bridge_body", "warn")
 		"workshop_tag":
 			_examine("workshop_tag", "ex_workshop_tag_title", "ex_workshop_tag_body", "warn")
+		"egress":
+			_sound("denied")
+			_banner(T.t("ex_egress_title"), T.t("ex_egress_body"), "info", 7.0)
+			notes.add("egress_lock")
+			_log("clue", "egress_lock")
 		"lift_lower":
 			_call_lift("lower")
 		"lift_upper":
@@ -777,6 +835,7 @@ func _begin_containment() -> void:
 	parking.reader_mouth.modulate = GamePalette.color("danger")
 	_topple_o1()
 	_close_r1()
+	building.release_egress(self)
 	lift.departed.connect(_on_lift_departed)
 	_set_checkpoint(0)
 	_set_objective(T.t("obj_retreat"))
@@ -1245,6 +1304,8 @@ func _on_note(id: String, kind: String) -> void:
 
 
 func _hint_stage_now() -> String:
+	if not entry_done:
+		return "enter"
 	if in_yard:
 		return "yard"
 	if phase != "investigation":

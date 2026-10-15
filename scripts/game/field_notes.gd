@@ -13,9 +13,9 @@ signal noted(id: String, kind: String)  # kind: "observation" | "inference" | "e
 const T := preload("res://scripts/game/game_text.gd")
 
 ## Display order (inferences sit right after the observations that support them).
-const ORDER := ["anomaly", "official_report", "access_plan", "schematic", "bridge", "workshop_tag", "scan_bridge", "hypothesis",
-	"maintenance_risk", "trip", "test_result", "archive_stable", "record", "conclusion", "containment", "unit",
-	"exit_plan", "parking", "parking_devices"]
+const ORDER := ["anomaly", "entry_lost", "official_report", "access_plan", "egress_lock", "schematic", "bridge", "workshop_tag",
+	"scan_bridge", "hypothesis", "maintenance_risk", "trip", "test_result", "archive_stable", "record", "conclusion", "containment",
+	"unit", "exit_plan", "parking", "parking_devices"]
 
 var _have: Dictionary = {}
 

@@ -33,6 +33,25 @@ const R1_OPEN_Y := 3.5
 const R1_CLOSED_Y := 1.15
 const R1_CRANK_AT := Vector3(29.4, 0.0, 0.3)
 
+# Concealed entry (v5, 2026-10-15): a walled flood channel west of the station, a breached storm culvert under a
+# road grating, the old inspection tunnel. The culvert's last stretch collapses once Elena is through.
+const CHANNEL := Rect2(-13.5, -2.0, 4.0, 22.0)  # x -13.5..-9.5, z -2..20
+const CHANNEL_FLOOR := -1.0
+const BANK_TOP := 1.6
+const CULVERT_X0 := -9.5
+const CULVERT_X1 := -3.3
+const CULVERT_Z := Vector2(5.3, 6.7)
+const CULVERT_TOP := 1.25
+## Debris zone of the collapse (x range): the culvert's shallow last stretch under the road, next to the tunnel.
+const COLLAPSE_X := Vector2(-5.4, -3.35)
+## Where play starts after the intro: in the channel, the breached culvert mouth ahead to the north-east.
+const ENTRY_START := Vector3(-11.5, CHANNEL_FLOOR, 9.6)
+## Crossing this x inside the tunnel means Elena is through the culvert (the collapse fires behind her).
+const ENTRY_THROUGH_X := -2.75
+## Evacuation gallery egress door (maglock released only by the evacuation alarm, i.e. Containment).
+const EGRESS_DOOR_X := 31.2
+const EGRESS_PANEL_AT := Vector3(30.6, -2.0, 4.9)
+
 # Interaction anchors used by the scene script.
 const MAINTENANCE_AT := Vector3(26.4, -2.0, 2.2)
 const SCHEMATIC_AT := Vector3(27.3, -2.0, 2.9)
@@ -74,6 +93,16 @@ var pump_lamps: Array[MeshInstance3D] = []
 ## Phase 2 service yard, built in the same pass (same builder, same static batches).
 var parking = null
 var r1_shutter: StaticBody3D
+## Entry collapse: the blocker (collision off until the collapse), the grating section that falls and the debris pieces
+## (each with its rest transform; the scene animates them into place).
+var entry_blocker: StaticBody3D
+var entry_grate_falls: Node3D
+var entry_debris: Array[MeshInstance3D] = []
+var entry_debris_rest: Array[Transform3D] = []
+var entry_dust: CPUParticles3D
+## Evacuation egress door (slides open on Containment) and its maglock lamp.
+var egress_door: StaticBody3D
+var egress_lamp: MeshInstance3D
 var r1_beacon: MeshInstance3D
 var gantry_door: MeshInstance3D
 
@@ -85,6 +114,7 @@ func _init(root: Node3D, materials) -> void:
 
 func build() -> void:
 	_shell()
+	_entry()
 	_p0()
 	_pit()
 	_east_bridge_and_gallery()
@@ -145,8 +175,12 @@ func _p0() -> void:
 	b.wall_z("AccessTunnelSouth", 4.35, -3.3, 0.0, 0.0, 2.65, mats.get_material("st_concrete"))
 	b.wall_z("AccessTunnelNorth", 7.65, -3.3, 0.0, 0.0, 2.65, mats.get_material("st_concrete"))
 	b.slab("AccessTunnelCeiling", Rect2(-3.3, 4.2, 3.3, 3.6), 2.65, mats.get_material("st_concrete"))
-	b.wall_x("AccessTunnelGate", -3.15, 4.5, 7.5, 0.0, 2.4, mats.get_material("steel"))
-	b.paint_sign("AccessTunnelSign", "ACCESO TÉCNICO  ·  HELIX B", Vector3(-0.2, 1.9, 6.0), "-x", 36)
+	# Culvert headwall at the tunnel's west end: the culvert (z 5.3..6.7, 1.25 m high) comes through it.
+	b.wall_x("CulvertHeadwallSouth", -3.15, 4.5, CULVERT_Z.x, 0.0, 2.65, mats.get_material("st_concrete"))
+	b.wall_x("CulvertHeadwallNorth", -3.15, CULVERT_Z.y, 7.5, 0.0, 2.65, mats.get_material("st_concrete"))
+	b.wall_x("CulvertHeadwallLintel", -3.15, CULVERT_Z.x, CULVERT_Z.y, CULVERT_TOP, 2.65, mats.get_material("st_concrete"))
+	b.paint_sign("AccessTunnelSign", "CÁMARA DE REGISTRO  ·  COLECTOR C-2", Vector3(-0.2, 1.9, 6.0), "-x", 36)
+	b.paint_sign("CulvertPlate", "C-2  ·  ALIVIADERO\nNO ENTRAR SIN PERMISO", Vector3(-2.98, 1.7, 6.0), "+x", 24, Color(0.85, 0.82, 0.7))
 	# A/B threshold piers and lintel.
 	b.wall_x("AccessNavePierSouth", 7.0, 4.0, 5.6, 0.0, 3.2, mats.get_material("st_wall"))
 	b.wall_x("AccessNavePierNorth", 7.0, 8.4, 10.0, 0.0, 3.2, mats.get_material("st_wall"))
@@ -253,6 +287,7 @@ func _east_bridge_and_gallery() -> void:
 	b.static_visual(Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 4.53), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)  # EvacGalleryStripN
 	b.static_visual(Vector3(5.6, 0.05, 0.05), Vector3(31.0, Y_P1 + 0.3, 7.47), b.flat(Color(0.3, 1.0, 0.45), 0.4, 0.0, 1.4), false)  # EvacGalleryStripS
 	b.light("EvacGalleryLight", Vector3(31.0, Y_P1 + 1.9, 6.0), Color(0.9, 0.45, 0.3), 0.9, 5.0, 0)
+	_egress_door()
 
 
 # --- M: pump room and observation, over the north block --------------------------------------------------------
@@ -348,15 +383,12 @@ ENSAYO ASTER", Vector3(13.6, Y_P2 + 1.25, -8.38), "+z", 26, Color(0.9, 0.88, 0.8
 
 func _gantry() -> void:
 	# Exterior ground west of the building (seen in the intro and from the gantry); the tunnel stays enclosed.
-	var ground: Material = mats.get_material("asphalt")
-	b.slab("ExteriorGroundWest", Rect2(-40.0, -30.0, 36.7, 60.0), 0.0, ground, 0.3)
-	b.slab("ExteriorGroundTunnelNorth", Rect2(-3.3, -30.0, 3.0, 34.2), 0.0, ground, 0.3)
-	b.slab("ExteriorGroundTunnelSouth", Rect2(-3.3, 7.8, 3.0, 22.2), 0.0, ground, 0.3)
+	# (The exterior ground west of the building is the embankment built in _entry.)
 	for z in [-24.0, -12.0, 0.0, 12.0, 24.0]:
-		b.static_visual(Vector3(0.08, 2.2, 12.0), Vector3(-30.0, 1.1, z), mats.get_material("fence"), false)
-	b.static_visual(Vector3(0.15, 4.0, 0.15), Vector3(-6.0, 2.0, 9.4), mats.get_material("steel"), true)  # tunnel lamp post
-	b.static_visual(Vector3(0.7, 0.1, 0.3), Vector3(-5.7, 3.95, 9.4), b.flat(Color(1.0, 0.72, 0.42), 0.4, 0.0, 3.0), false)
-	b.light("TunnelExteriorSodium", Vector3(-5.7, 3.7, 9.0), Color(1.0, 0.72, 0.42), 1.4, 7.0, 1)
+		b.static_visual(Vector3(0.08, 2.2, 12.0), Vector3(-30.0, BANK_TOP + 1.1, z), mats.get_material("fence"), false)
+	b.static_visual(Vector3(0.15, 4.0, 0.15), Vector3(-6.0, BANK_TOP + 2.0, 9.4), mats.get_material("steel"), true)  # road lamp post
+	b.static_visual(Vector3(0.7, 0.1, 0.3), Vector3(-5.7, BANK_TOP + 3.95, 9.4), b.flat(Color(1.0, 0.72, 0.42), 0.4, 0.0, 3.0), false)
+	b.light("TunnelExteriorSodium", Vector3(-5.7, BANK_TOP + 3.7, 9.0), Color(1.0, 0.72, 0.42), 1.4, 7.5, Builder.YARD_BAND)
 	b.light("GantryTowerLamp", Vector3(-11.6, Y_P2 + 2.6, -7.5), Color(0.8, 0.9, 1.0), 1.2, 9.0, 3)
 	b.slab("ExteriorGantry", Rect2(-12.0, -8.5, 12.0, 2.0), Y_P2, mats.get_material("st_tread"), 0.3)
 	b.rail_x("GantryRailNorth", -12.0, -0.3, -8.55, Y_P2)
@@ -365,6 +397,247 @@ func _gantry() -> void:
 	gantry_door = b.visual("ServiceTowerDoor", Vector3(0.1, 2.3, 1.6), Vector3(-11.97, Y_P2 + 1.15, -7.5), mats.get_material("steel_light"), false)
 	for x in [-10.0, -5.0]:
 		b.visual("GantryColumn_%d" % int(-x), Vector3(0.3, Y_P2, 0.3), Vector3(x, Y_P2 * 0.5, -7.5), mats.get_material("steel"), true)
+
+
+# --- concealed entry: flood channel, breached storm culvert, the collapse --------------------------------------------
+
+func _entry() -> void:
+	# Outdoors: built on the yard band, so the moon lights it on every graphics preset and interior lights never do.
+	b.force_band = Builder.YARD_BAND
+	var bank: Material = mats.get_material("asphalt")
+	var lining: Material = mats.get_material("st_concrete_outside")
+	var top := BANK_TOP
+	var base := CHANNEL_FLOOR
+	var cx0 := CHANNEL.position.x
+	var cx1 := CHANNEL.end.x
+	var cz0 := CHANNEL.position.y
+	var cz1 := CHANNEL.end.y
+	# Embankment (road level 1.6 m above the channel floor... 2.6 m of wall: nothing here can be climbed).
+	_bank("BankWest", Rect2(-40.0, -30.0, cx0 - 0.4 + 40.0, 60.0), top, base, bank)
+	_bank("BankNorthEnd", Rect2(cx0 - 0.4, -30.0, cx1 - cx0 + 0.8, cz0 + 30.0), top, base, bank)
+	_bank("BankSouthEnd", Rect2(cx0 - 0.4, cz1, cx1 - cx0 + 0.8, 30.0 - cz1), top, base, bank)
+	_bank("BankEastNorth", Rect2(cx1 + 0.4, -30.0, CULVERT_X1 - cx1 - 0.4, CULVERT_Z.x - 0.15 + 30.0), top, base, bank)
+	_bank("BankEastSouth", Rect2(cx1 + 0.4, CULVERT_Z.y + 0.15, CULVERT_X1 - cx1 - 0.4, 30.0 - CULVERT_Z.y - 0.15), top, base, bank)
+	_bank("BankTunnelNorth", Rect2(CULVERT_X1, -30.0, -0.3 - CULVERT_X1, 34.2), top, base, bank)
+	_bank("BankTunnelSouth", Rect2(CULVERT_X1, 7.8, -0.3 - CULVERT_X1, 22.2), top, base, bank)
+	# Channel: floor, concrete linings (west, and east around the culvert mouth), a weir with a trash rack at the north
+	# end and a crushed pipe at the south end.
+	b.slab("ChannelFloor", Rect2(cx0, cz0, cx1 - cx0, cz1 - cz0), base, mats.get_material("st_floor_damaged"), 0.5)
+	b.body("ChannelLiningWest", Vector3(0.4, top - base, cz1 - cz0), Vector3(cx0 - 0.2, (top + base) * 0.5, (cz0 + cz1) * 0.5), lining)
+	b.body("ChannelLiningEastSouth", Vector3(0.4, top - base, CULVERT_Z.x - cz0), Vector3(cx1 + 0.2, (top + base) * 0.5, (cz0 + CULVERT_Z.x) * 0.5), lining)
+	b.body("ChannelLiningEastNorth", Vector3(0.4, top - base, cz1 - CULVERT_Z.y), Vector3(cx1 + 0.2, (top + base) * 0.5, (CULVERT_Z.y + cz1) * 0.5), lining)
+	b.body("CulvertMouthLintel", Vector3(0.4, top - CULVERT_TOP, CULVERT_Z.y - CULVERT_Z.x), Vector3(cx1 + 0.2, (top + CULVERT_TOP) * 0.5, (CULVERT_Z.x + CULVERT_Z.y) * 0.5), lining)
+	b.body("CulvertMouthSill", Vector3(0.4, -base, CULVERT_Z.y - CULVERT_Z.x), Vector3(cx1 + 0.2, base * 0.5, (CULVERT_Z.x + CULVERT_Z.y) * 0.5), lining)
+	b.body("ChannelWeir", Vector3(cx1 - cx0, top - base, 0.5), Vector3((cx0 + cx1) * 0.5, (top + base) * 0.5, cz0 - 0.25), lining)
+	for k in 9:  # trash rack bars in front of the weir
+		b.static_visual(Vector3(0.04, top - base - 0.2, 0.04), Vector3(cx0 + 0.3 + k * 0.42, (top + base) * 0.5 - 0.1, cz0 + 0.25), mats.get_material("st_rust"), true)
+	b.static_visual(Vector3(cx1 - cx0, 0.08, 0.08), Vector3((cx0 + cx1) * 0.5, top - 0.3, cz0 + 0.25), mats.get_material("st_rust"), false)
+	b.body("ChannelSouthEnd", Vector3(cx1 - cx0, top - base, 0.5), Vector3((cx0 + cx1) * 0.5, (top + base) * 0.5, cz1 + 0.25), lining)
+	b.static_visual(Vector3(cx1 - cx0 - 0.4, 1.4, 1.6), Vector3((cx0 + cx1) * 0.5, base + 0.5, cz1 - 0.6), mats.get_material("st_rubble"), true)  # silt and rubble
+	# Rubble mound up to the culvert mouth (its floor is 1 m above the channel's): slopes on every side, so it can be
+	# walked onto from anywhere (a wedge's vertical sides snag the player like a kerb).
+	_rubble_mound(Vector3(cx1, 0.0, 6.0), base)
+	# Storm culvert C-2 (x -9.1..-3.3): floor, walls to road level, a road grating as its roof (the grating stops Elena
+	# from standing up but neither the camera nor sight lines: it sits on the no-mantle layer 5).
+	b.slab("CulvertFloor", Rect2(cx1 + 0.4, CULVERT_Z.x - 0.15, CULVERT_X1 - cx1 - 0.4, CULVERT_Z.y - CULVERT_Z.x + 0.3), 0.0, mats.get_material("st_floor_damaged"), 1.0)
+	b.body("CulvertWallSouth", Vector3(CULVERT_X1 - cx1 - 0.4, top, 0.15), Vector3((cx1 + 0.4 + CULVERT_X1) * 0.5, top * 0.5, CULVERT_Z.x - 0.075), lining)
+	b.body("CulvertWallNorth", Vector3(CULVERT_X1 - cx1 - 0.4, top, 0.15), Vector3((cx1 + 0.4 + CULVERT_X1) * 0.5, top * 0.5, CULVERT_Z.y + 0.075), lining)
+	var grate: Material = mats.get_material("fence")
+	var standing := COLLAPSE_X.x - (cx1 + 0.4)
+	b.body("CulvertGrating", Vector3(standing, 0.05, CULVERT_Z.y - CULVERT_Z.x), Vector3(cx1 + 0.4 + standing * 0.5, CULVERT_TOP + 0.025, (CULVERT_Z.x + CULVERT_Z.y) * 0.5), grate, Builder.LAYER_NO_MANTLE, false)
+	for k in int(standing / 1.0) + 1:  # grating bearers
+		b.static_visual(Vector3(0.06, 0.12, CULVERT_Z.y - CULVERT_Z.x + 0.3), Vector3(cx1 + 0.45 + k * 1.0, CULVERT_TOP - 0.03, (CULVERT_Z.x + CULVERT_Z.y) * 0.5), mats.get_material("st_rust"), false)
+	# The grating section over the collapse zone: its own body, removed when it falls in.
+	entry_grate_falls = b.body("CulvertGratingFalls", Vector3(COLLAPSE_X.y - COLLAPSE_X.x, 0.05, CULVERT_Z.y - CULVERT_Z.x), Vector3((COLLAPSE_X.x + COLLAPSE_X.y) * 0.5, CULVERT_TOP + 0.025, (CULVERT_Z.x + CULVERT_Z.y) * 0.5), grate, Builder.LAYER_NO_MANTLE, false, false)
+	# The breach: the inspection grate at the culvert mouth, pried open and bent aside (it was locked).
+	var bent: MeshInstance3D = b.visual("CulvertBreachGrate", Vector3(0.05, 1.15, 1.35), Vector3(cx1 + 0.55, 0.6, CULVERT_Z.x + 0.2), mats.get_material("st_rust"), true)
+	bent.rotation = Vector3(0.12, -1.15, 0.08)
+	b.static_visual(Vector3(0.1, 0.18, 0.1), Vector3(cx1 + 0.45, 0.55, CULVERT_Z.y - 0.05), mats.get_material("graphite"), false)  # sheared hasp
+	b.paint_sign("CulvertMouthSign", "C-2", Vector3(cx1 + 0.02, 1.42, 6.0), "-x", 40, Color(0.8, 0.78, 0.7))
+	_collapse_parts()
+	b.force_band = -1
+
+
+## The culvert's last stretch caves in behind Elena. `animate`: the debris drops in a staggered fall and the dust bursts
+## (the scene adds the sound and the camera shake); otherwise the end state is applied at once (tests, skipped entry).
+## Either way the blocker's collision is on and the fallen grating section is gone: the way in no longer exists.
+func collapse_entry(animate: bool, host: Node) -> void:
+	(entry_blocker.get_child(0) as CollisionShape3D).disabled = false
+	entry_grate_falls.visible = false
+	for child in entry_grate_falls.get_children():
+		if child is CollisionShape3D:
+			(child as CollisionShape3D).disabled = true
+	for i in entry_debris.size():
+		var m: MeshInstance3D = entry_debris[i]
+		var rest: Transform3D = entry_debris_rest[i]
+		m.visible = true
+		if not animate:
+			m.transform = rest
+			continue
+		var start := rest
+		start.origin += Vector3(0.0, 1.7 + 0.35 * float(i % 3), 0.0)
+		start.basis = rest.basis.rotated(Vector3(0.3, 1.0, 0.2).normalized(), 0.6 + 0.2 * float(i))
+		m.transform = start
+		var tw := host.create_tween()
+		tw.tween_interval(0.07 * float(i))
+		tw.tween_property(m, "transform", rest, 0.42 + 0.05 * float(i % 4)).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	if animate:
+		entry_dust.restart()
+		entry_dust.emitting = true
+
+
+## Containment's evacuation alarm releases the maglock: the lamp turns green and the door swings open toward the yard.
+func release_egress(host: Node, instant: bool = false) -> void:
+	egress_lamp.material_override = b.flat(Color(0.3, 0.95, 0.45), 0.4, 0.0, 2.0)
+	if egress_door.get_parent() == b.root:
+		var hinge := Node3D.new()
+		hinge.name = "EgressHinge"
+		b.root.add_child(hinge)
+		hinge.position = Vector3(EGRESS_DOOR_X, Y_P1, GALLERY.position.y + 0.4)
+		egress_door.reparent(hinge, true)
+	var hinge_node := egress_door.get_parent() as Node3D
+	if instant:
+		hinge_node.rotation.y = 1.75
+	else:
+		host.create_tween().tween_property(hinge_node, "rotation:y", 1.75, 1.2).set_delay(0.6).set_trans(Tween.TRANS_SINE)
+
+
+## A rubble heap against the wall at x = mouth.x whose flat top meets the culvert sill: convex collision and the same
+## triangles drawn in rubble. Slopes are ~30 degrees at most (walkable).
+func _rubble_mound(mouth: Vector3, base: float) -> void:
+	var t1 := Vector3(mouth.x, mouth.y, mouth.z - 0.6)
+	var t2 := Vector3(mouth.x, mouth.y, mouth.z + 0.6)
+	var t3 := Vector3(mouth.x - 0.7, mouth.y - 0.05, mouth.z)
+	var ring := [Vector3(mouth.x, base, mouth.z - 2.3), Vector3(mouth.x - 1.1, base, mouth.z - 2.0), Vector3(mouth.x - 2.5, base, mouth.z - 1.2),
+		Vector3(mouth.x - 3.2, base, mouth.z), Vector3(mouth.x - 2.5, base, mouth.z + 1.2), Vector3(mouth.x - 1.1, base, mouth.z + 2.0),
+		Vector3(mouth.x, base, mouth.z + 2.3)]
+	var body := StaticBody3D.new()
+	body.name = "CulvertRubbleMound"
+	body.collision_layer = Builder.LAYER_WORLD
+	body.collision_mask = 0
+	var shape := CollisionShape3D.new()
+	var hull := ConvexPolygonShape3D.new()
+	hull.points = PackedVector3Array([t1, t2, t3] + ring)
+	shape.shape = hull
+	body.add_child(shape)
+	b.root.add_child(body)
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	# top: t1 - t3 - t2; sides: fan from the top edge down to the ring
+	for tri in [[t1, t3, t2]]:
+		for v in tri:
+			st.add_vertex(v)
+	var tops := [t1, t1, t3, t3, t3, t2, t2]
+	for i in range(ring.size() - 1):
+		var a: Vector3 = ring[i]
+		var c: Vector3 = ring[i + 1]
+		var top: Vector3 = tops[i] if i < tops.size() else t2
+		st.add_vertex(top)
+		st.add_vertex(a)
+		st.add_vertex(c)
+		if i in [1, 4]:
+			st.add_vertex(top)
+			st.add_vertex(c)
+			st.add_vertex(tops[i + 1])
+	st.generate_normals()
+	b.add_mesh_to_batch(st.commit(), Transform3D.IDENTITY, [mats.get_material("st_rubble")], true)
+
+
+func _bank(label: String, rect: Rect2, top: float, base: float, material: Material) -> void:
+	if rect.size.x <= 0.01 or rect.size.y <= 0.01:
+		return
+	b.body(label, Vector3(rect.size.x, top - base, rect.size.y), Vector3(rect.position.x + rect.size.x * 0.5, (top + base) * 0.5, rect.position.y + rect.size.y * 0.5), material)
+
+
+## The collapse's end state, built now and hidden: a blocker that fills the culvert's last stretch (collision off until it
+## falls), concrete and soil debris, the bent grating section, a sinkhole in the road and a dust burst. Deterministic: the
+## same pieces land in the same places every time; the scene animates them falling from above.
+func _collapse_parts() -> void:
+	var zx := (COLLAPSE_X.x + COLLAPSE_X.y) * 0.5
+	var zz := (CULVERT_Z.x + CULVERT_Z.y) * 0.5
+	entry_blocker = b.solid("EntryCollapseBlocker", Vector3(COLLAPSE_X.y - COLLAPSE_X.x, BANK_TOP, CULVERT_Z.y - CULVERT_Z.x + 0.3), Vector3(zx, BANK_TOP * 0.5, zz))
+	(entry_blocker.get_child(0) as CollisionShape3D).disabled = true
+	var rubble: Material = mats.get_material("st_rubble")
+	var concrete: Material = mats.get_material("st_concrete_outside")
+	var soil: Material = mats.get_material("asphalt")
+	var specs := [
+		# size, rest position, rest rotation, material
+		[Vector3(2.1, 0.9, 1.5), Vector3(zx, 0.42, zz), Vector3(0.05, 0.0, 0.08), rubble],
+		[Vector3(1.4, 0.7, 1.2), Vector3(zx - 0.6, 0.95, zz + 0.1), Vector3(0.3, 0.4, -0.2), rubble],
+		[Vector3(1.2, 0.18, 1.5), Vector3(zx + 0.3, 1.2, zz - 0.1), Vector3(0.0, 0.3, 0.55), concrete],
+		[Vector3(0.9, 0.16, 1.1), Vector3(zx - 0.7, 1.35, zz - 0.2), Vector3(-0.4, -0.2, 0.3), concrete],
+		[Vector3(0.6, 0.5, 0.6), Vector3(zx + 0.75, 0.3, zz + 0.45), Vector3(0.6, 0.2, 0.4), rubble],
+		[Vector3(0.5, 0.4, 0.5), Vector3(COLLAPSE_X.y + 0.25, 0.2, zz - 0.4), Vector3(0.3, 0.9, 0.2), rubble],
+		[Vector3(0.45, 0.35, 0.4), Vector3(COLLAPSE_X.y + 0.45, 0.17, zz + 0.35), Vector3(-0.5, 0.4, 0.1), rubble],
+		[Vector3(2.0, 0.5, 1.9), Vector3(zx, 1.45, zz), Vector3(0.0, 0.0, 0.0), soil],
+	]
+	for i in specs.size():
+		var spec: Array = specs[i]
+		var m: MeshInstance3D = b.visual("EntryDebris_%02d" % i, spec[0], spec[1], spec[3], true)
+		m.rotation = spec[2]
+		entry_debris_rest.append(m.transform)
+		m.visible = false
+		entry_debris.append(m)
+	# the fallen grating section, hanging into the hole at an angle
+	var g: MeshInstance3D = b.visual("EntryDebrisGrate", Vector3(COLLAPSE_X.y - COLLAPSE_X.x, 0.05, CULVERT_Z.y - CULVERT_Z.x), Vector3(zx + 0.2, 1.05, zz), mats.get_material("fence"), false)
+	g.rotation = Vector3(0.2, 0.1, 0.62)
+	entry_debris_rest.append(g.transform)
+	g.visible = false
+	entry_debris.append(g)
+	entry_dust = CPUParticles3D.new()
+	entry_dust.name = "EntryCollapseDust"
+	entry_dust.position = Vector3(COLLAPSE_X.y + 0.3, 0.9, zz)
+	entry_dust.emitting = false
+	entry_dust.one_shot = true
+	entry_dust.amount = 36
+	entry_dust.lifetime = 2.6
+	entry_dust.explosiveness = 0.85
+	entry_dust.direction = Vector3(1.0, 0.2, 0.0)
+	entry_dust.spread = 55.0
+	entry_dust.initial_velocity_min = 0.8
+	entry_dust.initial_velocity_max = 2.6
+	entry_dust.gravity = Vector3(0.0, -0.4, 0.0)
+	entry_dust.damping_min = 0.6
+	entry_dust.damping_max = 1.2
+	entry_dust.scale_amount_min = 0.5
+	entry_dust.scale_amount_max = 1.4
+	var quad := QuadMesh.new()
+	quad.size = Vector2(0.6, 0.6)
+	var dust_mat := StandardMaterial3D.new()
+	dust_mat.albedo_color = Color(0.55, 0.52, 0.48, 0.22)
+	dust_mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	dust_mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	dust_mat.billboard_mode = BaseMaterial3D.BILLBOARD_ENABLED
+	dust_mat.vertex_color_use_as_albedo = true
+	quad.material = dust_mat
+	entry_dust.mesh = quad
+	var fade := Gradient.new()
+	fade.set_color(0, Color(1, 1, 1, 0.9))
+	fade.set_color(1, Color(1, 1, 1, 0.0))
+	entry_dust.color_ramp = fade
+	b.root.add_child(entry_dust)
+
+
+# --- evacuation egress: maglocked door in the gallery (released only by the evacuation alarm) --------------------------
+
+func _egress_door() -> void:
+	# A steel door with a wired-glass vision panel across the evacuation gallery: before the alarm it is held by a
+	# magnetic lock (the yard and the way out are visible through the glass); Containment's alarm releases it.
+	var x := EGRESS_DOOR_X
+	b.wall_x("EgressFrameSouth", x, GALLERY.position.y, GALLERY.position.y + 0.4, Y_P1, 0.23, mats.get_material("st_concrete"))
+	b.wall_x("EgressFrameNorth", x, GALLERY.end.y - 0.4, GALLERY.end.y, Y_P1, 0.23, mats.get_material("st_concrete"))
+	b.static_visual(Vector3(0.3, 0.23 - (Y_P1 + 2.1), 2.2), Vector3(x, (0.23 + Y_P1 + 2.1) * 0.5, 6.0), mats.get_material("st_concrete"), true)
+	egress_door = b.body("EgressDoor", Vector3(0.1, 2.1, 2.2), Vector3(x, Y_P1 + 1.05, 6.0), mats.get_material("st_green_steel_flat"), 1, true, false)
+	var panel: MeshInstance3D = b.visual("EgressDoorWindow", Vector3(0.12, 0.6, 0.5), Vector3(0.0, 0.35, 0.0), mats.get_material("window_moon"), false)
+	panel.reparent(egress_door, false)
+	panel.position = Vector3(0.0, 0.35, 0.3)
+	var bar: MeshInstance3D = b.visual("EgressDoorPushBar", Vector3(0.16, 0.06, 1.6), Vector3.ZERO, mats.get_material("steel_light"), false)
+	bar.reparent(egress_door, false)
+	bar.position = Vector3(-0.08, -0.05, 0.0)
+	b.static_visual(Vector3(0.12, 0.12, 0.4), Vector3(x - 0.12, Y_P1 + 2.0, 6.0), mats.get_material("graphite"), false)  # maglock
+	egress_lamp = b.visual("EgressMaglockLamp", Vector3(0.05, 0.06, 0.12), Vector3(x - 0.19, Y_P1 + 2.0, 6.0), b.flat(Color(0.95, 0.2, 0.1), 0.4, 0.0, 1.8), false)
+	b.static_visual(Vector3(0.3, 0.4, 0.06), EGRESS_PANEL_AT + Vector3(0.0, 1.3, -0.35), mats.get_material("graphite"), false)
+	b.paint_sign("EgressSign", "SALIDA DE EMERGENCIA\nDESBLOQUEO AUTOMÁTICO CON ALARMA", Vector3(x - 0.07, Y_P1 + 2.15, 6.0), "-x", 20, Color(0.45, 0.95, 0.6))
 
 
 # --- lift landings (the lift component brings its own deck, deck gates and rails) -----------------------------------
