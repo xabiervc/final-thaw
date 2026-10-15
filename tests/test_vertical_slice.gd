@@ -177,12 +177,15 @@ func _check_colorblind_palettes() -> void:
 func _check_input_remapping() -> void:
 	var original_key: int = InputRemapManager.current_keycode("interact")
 	var rebound: bool = InputRemapManager.rebind("interact", KEY_R)
-	var stored: Variant = GameStateManager.get_nested(["input_rebinds", "interact"], KEY_NONE)
+	# 2026-10-15: bindings are stored in GameManager.settings (written to the JSON/CRC32 save), no longer in the
+	# in-memory GameStateManager, which was never written to disk. Full save/reload is tested in test_game_systems.
+	var bindings: Dictionary = GameManager.settings.get("bindings", {})
+	var stored: Variant = (bindings.get("interact", {}) as Dictionary).get("key", KEY_NONE)
 	_expect(rebound and InputRemapManager.current_keycode("interact") == KEY_R, "Interact can be rebound")
 	_expect(stored is int and stored == KEY_R, "Interact rebinding persists")
 
 	InputRemapManager.rebind("interact", original_key, false)
-	GameStateManager.set_nested(["input_rebinds", "interact"], KEY_NONE)
+	bindings.erase("interact")
 	_expect(InputRemapManager.current_keycode("interact") == original_key, "Interact original binding is restored")
 
 func _check_sound_cues() -> void:

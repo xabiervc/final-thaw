@@ -24,9 +24,21 @@ var subtitle_size: int = 2
 var input_profile: String = "default"
 ## Persisted boolean preferences (e.g. accessibility_high_contrast); kept across new games like the other options.
 var flags: Dictionary = {}
+## Persisted player options (difficulty, camera, audio, subtitles, game speed, input bindings). Read and written
+## through GameSettings / InputRemapManager; kept across new games. Older saves without it load with defaults.
+var settings: Dictionary = {}
+## Slot the options menus write to. Tests point it elsewhere so they never overwrite the player's options.
+var settings_slot: int = 0
 
 func _ready() -> void:
 	load_game(0)
+	# Autoload order runs InputSetup before this load: re-apply the persisted bindings and options now.
+	InputRemapManager.restore_all()
+	GameSettings.apply()
+
+## Saves the options (and the rest of the session state, as the options menu always has) to settings_slot.
+func save_settings() -> bool:
+	return save_game(settings_slot)
 
 func save_path(slot: int) -> String:
 	return "user://save_%d.json" % slot
@@ -90,6 +102,7 @@ func _collect() -> Dictionary:
 		"subtitle_size": subtitle_size,
 		"input_profile": input_profile,
 		"flags": flags,
+		"settings": settings,
 		"active_character_id": active_character_id,
 		"current_checkpoint_id": current_checkpoint_id,
 		"has_prototype": has_prototype,
@@ -111,6 +124,8 @@ func _apply(d: Dictionary) -> void:
 	input_profile = str(d.get("input_profile", "default"))
 	var saved_flags = d.get("flags", {})
 	flags = saved_flags if typeof(saved_flags) == TYPE_DICTIONARY else {}
+	var saved_settings = d.get("settings", {})
+	settings = saved_settings if typeof(saved_settings) == TYPE_DICTIONARY else {}
 	active_character_id = str(d.get("active_character_id", "elena"))
 	current_checkpoint_id = str(d.get("current_checkpoint_id", ""))
 	has_prototype = bool(d.get("has_prototype", false))

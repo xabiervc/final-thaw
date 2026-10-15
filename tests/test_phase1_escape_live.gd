@@ -1,18 +1,19 @@
 extends Node
-## The escape with the recovery unit and STAFF-M1 live, played like a careful first-time player: retreat as soon
-## as G opens, cross the pump room crouched behind the pump bank, take the lift, run from P0 to the east mouth.
-## Fairness check: the escape must be completable, the run must be triggered by a real reacquisition, and the
-## parking handoff must carry an active pursuit. Run: godot --headless --fixed-fps 60 --path . res://tests/test_phase1_escape_live.tscn
+## The escape with the recovery unit live, played like a careful first-time player: retreat as soon as G opens,
+## cross the pump room crouched behind the pump bank, take the lift, run from P0 to the east mouth, then cross the
+## yard by the darker north lane, through the O3 aperture and out by the emergency lane.
+## Fairness check: the escape must be completable without being caught, the run must be triggered by a real
+## reacquisition, and the pursuit must still be on when Elena reaches the yard (no reset at the mouth).
+## Run: godot --headless --fixed-fps 60 --path . res://tests/test_phase1_escape_live.tscn
 
 const SCENE := "res://scenes/prototypes/phase1_canonical_greybox.tscn"
 const RouteBot := preload("res://tests/support/route_bot.gd")
-const Handoff := preload("res://scripts/phase1/phase1_handoff.gd")
 
 var passed := 0
 var failed := 0
 var scene: Node3D
 var bot
-var handoff_seen: Dictionary = {}
+var results_seen: Dictionary = {}
 
 
 func _ready() -> void:
@@ -38,7 +39,8 @@ func _walk(label: String, pts: Array, opts: Dictionary) -> bool:
 
 func _run() -> void:
 	scene = (load(SCENE) as PackedScene).instantiate()
-	scene.set("handoff_override", func(state): handoff_seen = state)
+	scene.set("play_intro", false)
+	scene.set("ending_override", func(r): results_seen = r)
 	add_child(scene)
 	await get_tree().physics_frame
 	bot = RouteBot.new()
@@ -49,6 +51,7 @@ func _run() -> void:
 	scene.circuit.set_maintenance(true)
 	scene.lift.set_powered(true)
 	scene.mission.on_maintenance(false, true)
+	scene.mission.on_record_read()
 	scene.lift.call_to("upper")
 	scene.call("_toggle_g_inner")  # she came in through the inner leaf
 	scene.player.global_position = Vector3(1.0, 6.05, -7.4)
@@ -77,15 +80,18 @@ func _run() -> void:
 	ok = ok and await _walk("east return (run)", [Vector3(29, 0, 2.7)], {"min_y": -0.5, "run": true})
 	ok = ok and await _walk("bridge -> S1 (run)", [Vector3(29, 0.35, 6.0), Vector3(29, 0, 9.6), Vector3(28, 0, 12.4), Vector3(25, 0, 12.4), Vector3(25, 0, 11.6)], {"min_y": -0.5, "run": true})
 	ok = ok and await _walk("S1 -> gallery -> mouth (run)", [Vector3(25, -1, 9.5), Vector3(25, -2, 7.2), Vector3(27, -2, 6.0), Vector3(29.5, -2, 6.0), Vector3(33.2, -2, 6.0), Vector3(36.0, -2, 6.0)], {"min_y": -2.5, "run": true})
-	await bot.wait(0.3)
+	var unit_state_at_mouth: String = str(scene.unit.state) if scene.unit != null else "-"
+	print("at the yard: %.1f s, catches %d, unit %s at %s, stamina %.0f" % [(Time.get_ticks_msec() - t0) / 1000.0, scene.catches, unit_state_at_mouth, scene.unit.global_position if scene.unit != null else Vector3.ZERO, scene.player.get("condition").stamina])
+	# A careful player catches her breath in the dark north lane (walking, behind the parked cars) and sprints the end.
+	ok = ok and await _walk("yard: north lane (darker, broken sightlines), walking", [Vector3(38.5, -2, 6.0), Vector3(38.5, -2, -6.6), Vector3(49, -2, -6.6), Vector3(56.5, -2, -6.6), Vector3(61, -2, -6.6), Vector3(66.5, -2, -6.0)], {"min_y": -2.5})
+	ok = ok and await _walk("yard: convergence (run)", [Vector3(68.2, -2, -0.4), Vector3(70.5, -2, 1.2)], {"min_y": -2.5, "run": true})
+	ok = ok and await _walk("yard: O3 aperture -> emergency lane -> out", [Vector3(72.95, -2, 0.6), Vector3(72.95, -2, -2.4), Vector3(72.95, -2, -10.0), Vector3(72.7, -2, -14.2), Vector3(72.7, -2, -15.6), Vector3(72.7, -1.7, -17.2)], {"min_y": -2.5, "run": true})
 	bot.release_all()
-	print("escape time %.1f s, catches %d, staff %s, unit %s, unit spotted %d" % [(Time.get_ticks_msec() - t0) / 1000.0, scene.catches, scene.staff.state, scene.unit.state if scene.unit != null else "-", scene.unit.times_spotted if scene.unit != null else 0])
-	_expect(ok, "a careful first attempt completes the escape route")
+	print("escape time %.1f s, catches %d, unit %s, unit spotted %d, lost %d" % [(Time.get_ticks_msec() - t0) / 1000.0, scene.catches, scene.unit.state if scene.unit != null else "-", scene.unit.times_spotted if scene.unit != null else 0, scene.unit.times_lost if scene.unit != null else 0])
+	_expect(ok, "a careful first attempt completes the escape route, yard included")
 	_expect(scene.catches == 0, "the careful route is fair: no catch (%d)" % scene.catches)
 	_expect(scene.unit != null and scene.unit.has_reacquired, "the run was triggered by a real reacquisition, not a timer")
-	_expect(not handoff_seen.is_empty(), "the parking handoff happens at the east mouth")
-	if not handoff_seen.is_empty():
-		_expect(str(handoff_seen["unit_state"]) in ["chase", "alert", "search", "investigate"], "the pursuit is still on at the handoff (%s)" % handoff_seen["unit_state"])
-	Handoff.consume()
+	_expect(unit_state_at_mouth in ["chase", "alert", "search", "investigate", "sweep"] and scene.unit != null and scene.unit.global_position.x > 20.0, "the unit followed her physically to the lower level (it is not reset at the mouth)")
+	_expect(scene.phase in ["escaped", "ended"], "the escape ends at the north gate")
 	print("Phase 1 escape live: %d passed, %d failed" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)

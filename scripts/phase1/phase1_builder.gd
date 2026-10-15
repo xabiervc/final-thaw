@@ -35,6 +35,16 @@ static func band_of(y: float) -> int:
 	return BAND_TOPS.size()
 
 
+## The exterior service yard (Phase 2) is its own band: its lights never reach the interior storeys and the
+## interior lights never reach the yard. Set `force_band = YARD_BAND` while building it.
+const YARD_BAND := 4
+var force_band: int = -1
+
+
+func _band(y: float) -> int:
+	return force_band if force_band >= 0 else band_of(y)
+
+
 static func band_layer(band: int) -> int:
 	return 1 << (band + 1)
 var _batches: Dictionary = {}  # key -> {"st": SurfaceTool, "mat": Material, "shadow": bool}
@@ -89,7 +99,7 @@ func body(label: String, size: Vector3, center: Vector3, material: Material, lay
 		mesh.material_override = material
 		if not shadow:
 			mesh.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
-		mesh.layers = band_layer(band_of(center.y))
+		mesh.layers = band_layer(_band(center.y))
 		b.add_child(mesh)
 	root.add_child(b)
 	return b
@@ -105,13 +115,13 @@ func add_box_to_batch(size: Vector3, xf: Transform3D, material: Material, shadow
 	var y0 := c.y - size.y * 0.5
 	var y1 := c.y + size.y * 0.5
 	# Tall walls are sliced at storey boundaries so each slice is lit by its own storey (visual only).
-	for top in BAND_TOPS:
+	for top in ([] if force_band >= 0 else BAND_TOPS):
 		var t := float(top)
 		if y0 < t - 0.05 and y1 > t + 0.05 and xf.basis.is_equal_approx(Basis.IDENTITY):
 			add_box_to_batch(Vector3(size.x, t - y0, size.z), Transform3D(Basis.IDENTITY, Vector3(c.x, (y0 + t) * 0.5, c.z)), material, shadow)
 			add_box_to_batch(Vector3(size.x, y1 - t, size.z), Transform3D(Basis.IDENTITY, Vector3(c.x, (t + y1) * 0.5, c.z)), material, shadow)
 			return
-	var band := band_of(c.y)
+	var band := _band(c.y)
 	var key := "%d|%d|%d|%d|%s" % [material.get_instance_id(), int(floor(c.x / CELL)), int(floor(c.z / CELL)), band, shadow]
 	if not _batches.has(key):
 		var st := SurfaceTool.new()
@@ -148,7 +158,7 @@ func visual(label: String, size: Vector3, center: Vector3, material: Material, s
 	m.mesh = bm
 	m.position = center
 	m.material_override = material
-	m.layers = band_layer(band_of(center.y))
+	m.layers = band_layer(_band(center.y))
 	if not shadow:
 		m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	root.add_child(m)
@@ -332,7 +342,7 @@ func wedge(label: String, low: Vector3, high: Vector3, width: float, base_y: flo
 	mi.name = label + "Mesh"
 	mi.mesh = st.commit()
 	mi.material_override = mat("grate") if material == null else material
-	mi.layers = band_layer(band_of((low.y + high.y) * 0.5))
+	mi.layers = band_layer(_band((low.y + high.y) * 0.5))
 	b.add_child(mi)
 	if treads:
 		var rise := high.y - low.y
@@ -377,7 +387,7 @@ func paint_sign(label: String, text: String, pos: Vector3, facing: String, size:
 	l.shaded = true
 	l.double_sided = false
 	l.no_depth_test = false
-	l.layers = band_layer(band_of(pos.y))
+	l.layers = band_layer(_band(pos.y))
 	match facing:
 		"+x":
 			l.rotation.y = PI * 0.5
@@ -403,7 +413,7 @@ func screen_text(label: String, text: String, pos: Vector3, facing: String, size
 ## A light lights its own storey (by its mounting height, ~1.8 m above the floor, or `band` if given) and layer 1.
 func light(label: String, pos: Vector3, color: Color, energy: float, light_range: float, band: int = -1) -> OmniLight3D:
 	var l := OmniLight3D.new()
-	l.light_cull_mask = 1 | band_layer(band if band >= 0 else band_of(pos.y - 1.8))
+	l.light_cull_mask = 1 | band_layer(band if band >= 0 else (force_band if force_band >= 0 else band_of(pos.y - 1.8)))
 	l.name = label
 	l.position = pos
 	l.light_color = color

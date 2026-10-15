@@ -49,6 +49,12 @@ var _tween: Tween = null
 var _card_tween: Tween = null
 var _banner_tween: Tween = null
 var _completed: bool = false
+var _visibility: Label = null
+var _note_toast: PanelContainer = null
+var _note_label: Label = null
+var _note_tween: Tween = null
+## True while the last input came from a gamepad: prompts and the legend then show pad buttons.
+static var using_pad: bool = false
 
 
 func _ready() -> void:
@@ -143,6 +149,22 @@ func _build_condition() -> void:
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.custom_minimum_size = Vector2(240.0, 0.0)
 	_status.visible = false
+	_visibility = _make_label(box, 14, TEXT)
+	_visibility.visible = false
+	# Field-notes toast, under the condition card.
+	_note_toast = PanelContainer.new()
+	_note_toast.add_theme_stylebox_override("panel", _style(CARD_BG, AMBER, 3))
+	_note_toast.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+	_note_toast.offset_left = -330.0 - MARGIN
+	_note_toast.offset_right = -MARGIN
+	_note_toast.offset_top = MARGIN + 92.0
+	_note_toast.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	_note_toast.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_note_toast.modulate.a = 0.0
+	add_child(_note_toast)
+	_note_label = _make_label(_note_toast, 14, AMBER)
+	_note_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_note_label.custom_minimum_size = Vector2(300.0, 0.0)
 
 
 func _build_prompt() -> void:
@@ -273,6 +295,13 @@ func set_legend_actions(actions: Array) -> void:
 	_instructions.text = control_legend(actions)
 
 
+## The control the player should press for an action, on the device they are using now.
+static func action_label(action: String) -> String:
+	if using_pad:
+		return InputRemapManager.pad_label(InputRemapManager.current_pad_button(action))
+	return key_name(action)
+
+
 static func control_legend(actions: Array = []) -> String:
 	var entries: Array = LEGEND
 	if not actions.is_empty():
@@ -284,8 +313,15 @@ static func control_legend(actions: Array = []) -> String:
 	for entry in entries:
 		var keys := ""
 		if entry[0] == "move":
-			for a in ["move_up", "move_left", "move_down", "move_right"]:
-				keys += key_name(a)
+			if using_pad:
+				keys = NarrativeTextManager.get_option("hud_pad_left_stick", "L-stick")
+			else:
+				for a in ["move_up", "move_left", "move_down", "move_right"]:
+					keys += key_name(a)
+		elif using_pad:
+			keys = InputRemapManager.pad_label(InputRemapManager.current_pad_button(entry[0])) if entry[0] != "pause" else "Menu"
+			if entry[0] == "run":
+				keys += " / RT"
 		else:
 			keys = "/".join(key_names(entry[0], 2))
 		if keys.is_empty():
@@ -298,6 +334,21 @@ func _refresh_texts() -> void:
 	if not _completed:
 		_section_label.text = _directive_header()
 	_instructions.text = control_legend(legend_actions)
+
+
+func _input(event: InputEvent) -> void:
+	var pad := using_pad
+	if event is InputEventJoypadButton or (event is InputEventJoypadMotion and absf((event as InputEventJoypadMotion).axis_value) > 0.5):
+		pad = true
+	elif event is InputEventKey or event is InputEventMouseButton:
+		pad = false
+	if pad != using_pad:
+		using_pad = pad
+		_refresh_texts()
+		if not _last_prompt.is_empty():
+			var p := _last_prompt
+			_last_prompt = ""
+			set_prompt(p)
 
 
 # --- accessibility --------------------------------------------------------------------------------------------------
@@ -318,9 +369,12 @@ func _apply_accessibility() -> void:
 	_prompt_name.add_theme_font_size_override("font_size", int(16 * scale))
 	_banner_title.add_theme_font_size_override("font_size", int(26 * scale))
 	_banner_body.add_theme_font_size_override("font_size", int(15 * scale))
+	_visibility.add_theme_font_size_override("font_size", int(14 * scale))
+	_note_label.add_theme_font_size_override("font_size", int(14 * scale))
+	_note_label.custom_minimum_size.x = 300.0 * clampf(scale, 1.0, 1.4)
 
 	var bg_alpha := 0.97 if high_contrast else 0.86
-	for card in [_card, _condition_card, _prompt_box, _banner]:
+	for card in [_card, _condition_card, _prompt_box, _banner, _note_toast]:
 		var s := (card as PanelContainer).get_theme_stylebox("panel") as StyleBoxFlat
 		s.bg_color.a = bg_alpha
 		if high_contrast:
@@ -465,6 +519,43 @@ func show_banner(title: String, body: String = "", accent: Color = GREEN, second
 		_banner_tween.tween_property(_banner, "modulate:a", 0.0, fade * 2.0)
 	else:
 		_banner_tween.tween_callback(func(): _banner.modulate.a = 0.0)
+
+
+## Stealth readout: -1 hides it; 0 in shadow, 1 partly lit, 2 exposed. Symbol + word, never colour alone.
+func set_visibility(level: int) -> void:
+	if level < 0:
+		_visibility.visible = false
+		return
+	var keys := ["hud_vis_hidden", "hud_vis_partial", "hud_vis_exposed"]
+	var symbols := ["○", "◐", "●"]
+	var roles := ["ok", "warn", "danger"]
+	_visibility.text = "%s  %s" % [symbols[level], GameText.t(keys[level])]
+	_visibility.add_theme_color_override("font_color", Color.WHITE if AccessibilityManager.is_high_contrast() else GamePalette.color(roles[level]).lerp(TEXT, 0.35))
+	_visibility.visible = true
+	_condition_card.visible = true
+
+
+## Small, non-blocking notice when Elena writes something in her field notes.
+func show_note(text: String) -> void:
+	_note_label.text = text
+	if _note_tween != null:
+		_note_tween.kill()
+	var fade := AccessibilityManager.animation_duration(0.3)
+	_note_tween = create_tween()
+	if fade > 0.0:
+		_note_tween.tween_property(_note_toast, "modulate:a", 1.0, fade)
+	else:
+		_note_toast.modulate.a = 1.0
+	_note_tween.tween_interval(3.5)
+	if fade > 0.0:
+		_note_tween.tween_property(_note_toast, "modulate:a", 0.0, fade * 2.0)
+	else:
+		_note_tween.tween_callback(func(): _note_toast.modulate.a = 0.0)
+
+
+## Cinematics hide the whole HUD; gameplay shows it again.
+func set_hud_visible(on: bool) -> void:
+	visible = on
 
 
 func is_banner_visible() -> bool:

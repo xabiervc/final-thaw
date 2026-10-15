@@ -45,7 +45,7 @@ func _solid_below(scene: Node3D, x: float, z: float, from_y: float, depth: float
 func _run() -> void:
 	print("Godot: ", Engine.get_version_info()["string"])
 	var scene = CanonicalScene.instantiate()
-	scene.set("handoff_override", func(_s): pass)
+	scene.set("play_intro", false)
 	add_child(scene)
 	await get_tree().physics_frame
 	await get_tree().physics_frame
@@ -65,7 +65,18 @@ func _run() -> void:
 	_expect(not _solid_below(scene, 15.0, 4.0, 0.5, 1.0) and not _solid_below(scene, 22.0, 4.0, 0.5, 1.0), "P0 has real voids above D1 and D2")
 	_expect(_solid_below(scene, 15.0, 4.0, -1.5, 1.0), "D1/D2 have a continuous floor at -2")
 	_expect(_solid_below(scene, 25.0, 12.6, 0.5, 0.7), "the S1 top landing is solid floor")
-	_expect(_solid_below(scene, 31.0, 6.0, -1.5, 1.0) and _solid_below(scene, 38.0, 6.0, -1.5, 1.0), "the evacuation gallery and the exterior apron have floors at -2")
+	_expect(_solid_below(scene, 31.0, 6.0, -1.5, 1.0) and _solid_below(scene, 38.0, 6.0, -1.5, 1.0), "the evacuation gallery and the service yard have floors at -2")
+	# Phase 2 yard (same scene): open mouth, solid non-climbable perimeter, gate lanes, cars with collision.
+	var space: PhysicsDirectSpaceState3D = scene.get_world_3d().direct_space_state
+	var mouth := PhysicsRayQueryParameters3D.create(Vector3(31.0, -0.8, 6.0), Vector3(37.0, -0.8, 6.0), 1 | 16)
+	_expect(space.intersect_ray(mouth).is_empty(), "the service mouth is open from the gallery into the yard at chest height")
+	var north: StaticBody3D = scene.get_node("YardNorthWallWest")
+	_expect((north.collision_layer & 1) != 0 and (north.collision_layer & 16) != 0, "yard perimeter walls block sight and can never be mantled")
+	var lane := PhysicsRayQueryParameters3D.create(Vector3(72.7, -1.0, -14.0), Vector3(72.7, -1.0, -17.5), 1 | 16)
+	_expect(space.intersect_ray(lane).is_empty(), "the pedestrian emergency lane through the north wall is open")
+	_expect(scene.get_node_or_null("FleetCar_00") != null and scene.get_node_or_null("FleetCars_covered_car") != null, "the fleet cars have collision and are drawn as one multimesh")
+	_expect(absf(scene.parking.boom.rotation.z) > 1.0, "the vehicle boom starts raised (Containment lowers it)")
+	_expect(scene.parking.floodlights.size() == 5 and not scene.parking.floodlights[0].visible, "the yard floodlights start off")
 	_expect(scene.get_node_or_null("S1Stair") != null and scene.get_node_or_null("S2Stair") != null, "S1 and S2 are solid stairs")
 	_expect(scene.get_node_or_null("EastReturnBridgeDeck") != null, "the east return bridges the gallery (no jump, no hole)")
 
@@ -87,14 +98,14 @@ func _run() -> void:
 	# Spawn and actors.
 	_expect(scene.player.global_position.x < 0.0 and absf(scene.player.global_position.z - 6.0) < 0.01, "Elena starts inside the west entry tunnel")
 	_expect(scene.unit == null, "no recovery unit exists before Containment")
-	_expect(scene.staff != null and scene.staff.global_position.y > 2.5, "STAFF-M1 works in the pump room M")
+	_expect(scene.get_node_or_null("StaffM1") == null, "no idle staff NPC populates the facility (STAFF-M1 removed)")
 
 	# Mission and circuit contracts.
 	_expect(not scene.mission.service_override_queued and not scene.mission.containment_active, "mission flags start clear")
 	var info: Dictionary = scene.circuit.inspect()
 	_expect(str(info["current"]) == "ARCHIVE_UNPOWERED" and str(info["destination"]) == "ENSAYO" and not scene.circuit.trial_isolated, "circuit initial state follows the logic contract")
 	scene.call("_open_g_outer")
-	_expect(not scene.mission.containment_active and scene.phase == "investigation", "G without a queued audit answers 'locked' and starts nothing")
+	_expect(not scene.mission.containment_active and scene.phase == "investigation", "G before the record (and without a queued audit) starts nothing")
 	scene.call("_toggle_maintenance")
 	_expect(scene.mission.service_override_queued and scene.lift.powered, "maintenance ON powers the lift and queues SERVICE_OVERRIDE")
 	scene.call("_toggle_maintenance")
@@ -102,14 +113,17 @@ func _run() -> void:
 	_expect(scene.circuit.outputs()["archive"] == false, "maintenance never powers the archive (independent branch)")
 
 	# Texts never give the answer.
-	var forbidden := ["aísla", "aisla", "selecciona", "rearma la", "pulsa el"]
+	var forbidden := ["aísla", "aisla", "selecciona", "rearma la", "pulsa el", "isolate the", "select the", "press the", "re-arm the"]
 	var clean := true
-	for hint in scene.HINTS:
-		for word in forbidden:
-			if str(hint).to_lower().contains(word):
-				clean = false
-	_expect(clean, "requested hints explain relationships and never name the control to operate")
-	_expect(str(scene.ARCHIVE_RECORD).begins_with("ENSAYO ASTER — RESULTADO RETENIDO."), "the archive record uses the N1-03 working copy")
+	for stage in scene.HINTS:
+		for key in scene.HINTS[stage]:
+			var e: Dictionary = GameText.entry(str(key))
+			for lang in ["es", "en"]:
+				for word in forbidden:
+					if str(e.get(lang, "")).to_lower().contains(word):
+						clean = false
+	_expect(clean, "requested hints (ES and EN) explain relationships and never name the control to operate")
+	_expect(str(GameText.entry("archive_record")["es"]).begins_with("ENSAYO ASTER — RESULTADO RETENIDO."), "the archive record uses the N1-03 working copy")
 
 	scene.queue_free()
 	completed = true

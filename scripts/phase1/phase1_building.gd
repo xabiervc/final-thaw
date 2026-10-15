@@ -9,6 +9,7 @@ extends RefCounted
 ## the lift landings (gated) and doorways. Stairs are solid wedges, so there is no space under them.
 
 const Builder := preload("res://scripts/phase1/phase1_builder.gd")
+const Parking := preload("res://scripts/phase2/phase2_parking.gd")
 
 const Y_P1 := -2.0
 const Y_P0 := 0.0
@@ -24,7 +25,6 @@ const S1_WELL := Rect2(24.0, 8.0, 2.0, 3.0)
 const SHAFT := Rect2(24.5, -4.5, 3.0, 3.0)
 const BRIDGE_CUT := Rect2(28.0, 3.0, 2.0, 6.0)
 const GALLERY := Rect2(28.0, 4.5, 6.0, 3.0)
-const APRON := Rect2(34.0, 0.5, 10.0, 11.0)
 const MOUTH_X := 34.0
 const BRIDGE_DECK := 0.35
 ## R1 shutter centre heights: raised (open, hidden in the lintel box) and closed (resting on the floor).
@@ -68,7 +68,8 @@ var alarm_lights: Array[OmniLight3D] = []
 var column_rings: Array[MeshInstance3D] = []
 var scan_parts: Array[Node3D] = []
 var pump_lamps: Array[MeshInstance3D] = []
-var exit_reader: Label3D
+## Phase 2 service yard, built in the same pass (same builder, same static batches).
+var parking = null
 var r1_shutter: StaticBody3D
 var r1_beacon: MeshInstance3D
 var gantry_door: MeshInstance3D
@@ -84,7 +85,8 @@ func build() -> void:
 	_p0()
 	_pit()
 	_east_bridge_and_gallery()
-	_apron()
+	parking = Parking.new(b, mats, b.root)
+	parking.build()
 	_mezzanine()
 	_s2()
 	_p2()
@@ -238,26 +240,6 @@ func _east_bridge_and_gallery() -> void:
 	b.light("EvacGalleryLight", Vector3(31.0, Y_P1 + 1.9, 6.0), Color(0.9, 0.45, 0.3), 0.9, 5.0, 0)
 
 
-# --- exterior apron at the east mouth (start of the parking area) -------------------------------------------------
-
-func _apron() -> void:
-	b.slab("ServiceApronFloor", APRON, Y_P1, mats.get_material("floor"))
-	b.wall_x("ApronWestNorth", MOUTH_X + 0.15, APRON.position.y, 4.5, Y_P1, 0.48, mats.get_material("bulkhead"))
-	b.wall_x("ApronWestSouth", MOUTH_X + 0.15, 7.5, APRON.end.y, Y_P1, 0.48, mats.get_material("bulkhead"))
-	b.wall_z("ApronNorthRetaining", APRON.position.y - 0.15, MOUTH_X, APRON.end.x, Y_P1, 0.4, mats.get_material("bulkhead"))
-	b.wall_z("ApronSouthRetaining", APRON.end.y + 0.15, MOUTH_X, APRON.end.x, Y_P1, 0.4, mats.get_material("bulkhead"))
-	# Parking language continues past the mouth: bay lines, a column, a lamp mast and a parked service van.
-	for i in 4:
-		b.visual("ApronBayLine_%02d" % i, Vector3(0.1, 0.02, 3.2), Vector3(37.0 + i * 2.6, Y_P1 + 0.012, 2.4), b.flat(Color(0.75, 0.7, 0.45), 0.9), false)
-	b.body("ApronColumn", Vector3(0.8, 4.0, 0.8), Vector3(40.0, Y_P1 + 2.0, 8.6), mats.get_material("bulkhead"))
-	b.body("ApronVan", Vector3(4.2, 1.9, 1.9), Vector3(40.5, Y_P1 + 0.95, 2.4), b.flat(Color(0.2, 0.24, 0.27), 0.6, 0.2))
-	b.static_visual(Vector3(0.15, 4.5, 0.15), Vector3(36.0, Y_P1 + 2.25, 10.8), mats.get_material("steel"), true)  # ApronLampMast
-	b.light("ApronSodiumLight", Vector3(36.5, Y_P1 + 4.2, 9.5), Color(1.0, 0.72, 0.42), 1.6, 12.0, 0)
-	exit_reader = b.screen_text("ApronContainmentReader", "PROTOCOLO DE CONTENCIÓN: INACTIVO", Vector3(MOUTH_X + 0.32, Y_P1 + 2.0, 9.0), "+x", 24, Color(0.6, 0.9, 0.7))
-	b.paint_sign("ApronParkingSign", "APARCAMIENTO DE SERVICIO", Vector3(MOUTH_X + 0.32, Y_P1 + 2.6, 2.5), "+x", 40, Color(0.9, 0.85, 0.6))
-	b.wall_x("ApronEastFence", APRON.end.x + 0.15, APRON.position.y, APRON.end.y, Y_P1, Y_P1 + 2.4, mats.get_material("steel"))
-
-
 # --- M: pump room and observation, over the north block --------------------------------------------------------
 
 func _mezzanine() -> void:
@@ -333,6 +315,11 @@ func _p2() -> void:
 	archive_text = b.screen_text("ArchiveStatusText", "", ARCHIVE_AT + Vector3(0.0, 1.25, -0.28), "+z", 32)
 	b.static_visual(Vector3(0.4, 1.1, 0.7), DIAGNOSTIC_AT + Vector3(-0.55, 0.55, 0.0), mats.get_material("steel_light"), true)  # DiagnosticTerminal
 	b.paint_sign("DiagnosticLabel", "DIAGNÓSTICO\n(EMERGENCIA)", DIAGNOSTIC_AT + Vector3(-0.33, 1.3, 0.0), "+x", 34)
+	# The official test report, printed and left on the control desk: the claim the evidence contradicts.
+	b.body("OfficialReportDesk", Vector3(1.2, 0.9, 0.6), Vector3(13.6, Y_P2 + 0.45, -8.1), mats.get_material("steel"))
+	b.static_visual(Vector3(0.42, 0.012, 0.3), Vector3(13.5, Y_P2 + 0.906, -8.0), b.flat(Color(0.86, 0.85, 0.8), 0.9), false)  # report pages
+	b.paint_sign("OfficialReportTitle", "INFORME OFICIAL
+ENSAYO ASTER", Vector3(13.6, Y_P2 + 1.25, -8.38), "+z", 26, Color(0.9, 0.88, 0.8))
 	# O1: archive shelving, upright against the north wall until Containment knocks it over.
 	o1_shelf = b.body("O1ArchiveShelf", Vector3(1.0, 2.2, 0.45), Vector3(8.0, Y_P2 + 1.1, -9.6), mats.get_material("locker"), 1, true, false)
 	# G airlock: inner leaf (to F) and outer leaf (to the exterior gantry).
@@ -345,6 +332,17 @@ func _p2() -> void:
 # --- exterior gantry beyond G (where the recovery unit approaches) -------------------------------------------------
 
 func _gantry() -> void:
+	# Exterior ground west of the building (seen in the intro and from the gantry); the tunnel stays enclosed.
+	var ground: Material = mats.get_material("asphalt")
+	b.slab("ExteriorGroundWest", Rect2(-40.0, -30.0, 36.7, 60.0), 0.0, ground, 0.3)
+	b.slab("ExteriorGroundTunnelNorth", Rect2(-3.3, -30.0, 3.0, 34.2), 0.0, ground, 0.3)
+	b.slab("ExteriorGroundTunnelSouth", Rect2(-3.3, 7.8, 3.0, 22.2), 0.0, ground, 0.3)
+	for z in [-24.0, -12.0, 0.0, 12.0, 24.0]:
+		b.static_visual(Vector3(0.08, 2.2, 12.0), Vector3(-30.0, 1.1, z), mats.get_material("fence"), false)
+	b.static_visual(Vector3(0.15, 4.0, 0.15), Vector3(-6.0, 2.0, 9.4), mats.get_material("steel"), true)  # tunnel lamp post
+	b.static_visual(Vector3(0.7, 0.1, 0.3), Vector3(-5.7, 3.95, 9.4), b.flat(Color(1.0, 0.72, 0.42), 0.4, 0.0, 3.0), false)
+	b.light("TunnelExteriorSodium", Vector3(-5.7, 3.7, 9.0), Color(1.0, 0.72, 0.42), 1.4, 7.0, 1)
+	b.light("GantryTowerLamp", Vector3(-11.6, Y_P2 + 2.6, -7.5), Color(0.8, 0.9, 1.0), 1.2, 9.0, 3)
 	b.slab("ExteriorGantry", Rect2(-12.0, -8.5, 12.0, 2.0), Y_P2, mats.get_material("grate"), 0.3)
 	b.rail_x("GantryRailNorth", -12.0, -0.3, -8.55, Y_P2)
 	b.rail_x("GantryRailSouth", -12.0, -0.3, -6.45, Y_P2)

@@ -154,7 +154,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_interact_with(str(target.get_meta("kind")))
 
 func _closest_object() -> Area2D:
-	var sensor_target := player.get_nearest_interactable()
+	var sensor_target: Area2D = player.get_nearest_interactable()
 	if sensor_target != null:
 		return sensor_target
 

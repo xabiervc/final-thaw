@@ -41,6 +41,17 @@ func noise() -> NoiseTexture2D:
 	return _noise
 
 
+## A 64 px diamond wire pattern (deterministic), for the chain-link fence material.
+func _chain_link_texture() -> ImageTexture:
+	var img := Image.create(64, 64, true, Image.FORMAT_RGBA8)
+	for y in 64:
+		for x in 64:
+			var a := absf(fmod(float(x + y), 32.0) - 16.0) < 1.6 or absf(fmod(float(x - y + 64), 32.0) - 16.0) < 1.6
+			img.set_pixel(x, y, Color(1, 1, 1, 1.0 if a else 0.0))
+	img.generate_mipmaps()
+	return ImageTexture.create_from_image(img)
+
+
 func get_material(key: String) -> Material:
 	if not _cache.has(key):
 		_cache[key] = _build(key)
@@ -135,6 +146,35 @@ func _build(key: String) -> Material:
 			m.set_shader_parameter("normal_tex", load(PHOTO_DIR + "concrete_floor_worn_001_nor.png"))
 			m.set_shader_parameter("noise_tex", noise())
 			return m
+		"asphalt":
+			# Phase 2 service yard: wet asphalt (ambientCG Asphalt033, CC0), no slab joints, puddles under the lights.
+			var m := ShaderMaterial.new()
+			m.shader = FLOOR_SHADER
+			m.set_shader_parameter("albedo_tex", load(PHOTO_DIR + "asphalt_033_diff.jpg"))
+			m.set_shader_parameter("arm_tex", load(PHOTO_DIR + "asphalt_033_arm.jpg"))
+			m.set_shader_parameter("normal_tex", load(PHOTO_DIR + "asphalt_033_nor.png"))
+			m.set_shader_parameter("noise_tex", noise())
+			m.set_shader_parameter("tint", Color(0.42, 0.44, 0.46))
+			m.set_shader_parameter("tile_m", 4.0)
+			m.set_shader_parameter("joint_spacing", 1000.0)
+			m.set_shader_parameter("wetness", 0.16)
+			m.set_shader_parameter("room_bounds", Vector4(34.0, -15.5, 76.0, 14.0))
+			return m
+		"fence":
+			# Chain-link mesh: see-through (alpha scissor), so fences block movement but never sight.
+			var m := StandardMaterial3D.new()
+			m.albedo_texture = _chain_link_texture()
+			m.albedo_color = Color(0.55, 0.58, 0.6)
+			m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
+			m.alpha_scissor_threshold = 0.5
+			m.cull_mode = BaseMaterial3D.CULL_DISABLED
+			m.metallic = 0.6
+			m.roughness = 0.5
+			m.uv1_triplanar = true
+			m.uv1_scale = Vector3(1.6, 1.6, 1.6)
+			return m
+		"paint_line":
+			return _flat(Color(0.82, 0.78, 0.55), 0.85)
 		"grate":
 			return PhotoMaterial.make("metal_plate_02", Color(0.3, 0.32, 0.33), 0.5, 0.8)
 		"grate_warm":

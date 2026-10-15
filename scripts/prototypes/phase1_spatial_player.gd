@@ -10,6 +10,20 @@ const HIDE_BODY_BELOW := 1.0
 var orbit_yaw: float = -0.21
 var orbit_pitch: float = -0.55
 @export var mouse_sensitivity: float = 0.002
+## Right-stick look speed at full deflection (rad/s), before the player's sensitivity option.
+const STICK_YAW_SPEED := 2.6
+const STICK_PITCH_SPEED := 1.7
+## Camera framings. "explore": wide, high, reads the space and the routes. "pursuit": closer over the shoulder,
+## a little wider field of view, for the chase (it never hides what is ahead: the shoulder offset keeps Elena to
+## the side and the arm stays long enough to show the next obstacle).
+const CAMERA_MODES := {
+	"explore": {"length": 5.0, "fov": 65.0, "offset": 0.45, "height": 1.25},
+	"pursuit": {"length": 3.4, "fov": 71.0, "offset": 0.6, "height": 1.38},
+}
+const CAMERA_BLEND := 2.2
+var camera_mode: String = "explore"
+## True while a cinematic owns the camera: look input is ignored.
+var look_locked: bool = false
 var pivot: Node3D
 var arm: SpringArm3D
 var view: Camera3D
@@ -50,8 +64,33 @@ func _setup_animation() -> void:
 		pose.process_mode = Node.PROCESS_MODE_DISABLED
 	anim.play("idle")
 
-func _process(_delta: float) -> void:
+func set_camera_mode(mode: String, instant: bool = false) -> void:
+	if not CAMERA_MODES.has(mode):
+		return
+	camera_mode = mode
+	if instant:
+		var m: Dictionary = CAMERA_MODES[mode]
+		arm.spring_length = float(m["length"])
+		view.fov = float(m["fov"])
+		arm.position.x = float(m["offset"])
+
+
+func _process(delta: float) -> void:
 	# The shared controller's breathing scale is skipped on purpose: it would squash the animated model.
+	if not look_locked and input_enabled:
+		var look := Input.get_vector("look_left", "look_right", "look_up", "look_down")
+		if look != Vector2.ZERO:
+			var sens := GameSettings.look_sensitivity()
+			orbit_yaw -= look.x * STICK_YAW_SPEED * sens * delta
+			var dy := look.y * STICK_PITCH_SPEED * sens * delta
+			orbit_pitch = clampf(orbit_pitch - (dy if not GameSettings.invert_y() else -dy), -1.2, 0.1)
+	# Framing blend (no field-of-view change with reduced motion).
+	var m: Dictionary = CAMERA_MODES[camera_mode]
+	var k := clampf(CAMERA_BLEND * delta, 0.0, 1.0)
+	arm.spring_length = lerpf(arm.spring_length, float(m["length"]), k)
+	arm.position.x = lerpf(arm.position.x, float(m["offset"]), k)
+	var fov_target: float = 65.0 if AccessibilityManager.is_reduced_motion() else float(m["fov"])
+	view.fov = lerpf(view.fov, fov_target, k)
 	pivot.rotation = Vector3(orbit_pitch, orbit_yaw, 0.0)
 	if visual != null and arm != null:
 		var close := arm.get_hit_length() < HIDE_BODY_BELOW
@@ -59,11 +98,13 @@ func _process(_delta: float) -> void:
 			visual.visible = not close
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed and input_enabled and not get_tree().paused:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		orbit_yaw -= event.relative.x * mouse_sensitivity
-		orbit_pitch = clampf(orbit_pitch - event.relative.y * mouse_sensitivity, -1.2, 0.1)
+	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED and not look_locked:
+		var sens := mouse_sensitivity * GameSettings.look_sensitivity()
+		orbit_yaw -= event.relative.x * sens
+		var dy: float = event.relative.y * sens
+		orbit_pitch = clampf(orbit_pitch - (dy if not GameSettings.invert_y() else -dy), -1.2, 0.1)
 
 func _physics_process(delta: float) -> void:
 	movement_basis = Basis(Vector3.UP, orbit_yaw)
@@ -113,4 +154,5 @@ func _update_animation(delta: float) -> void:
 	if anim.current_animation != wanted:
 		anim.play(wanted, 0.12)
 	# The orbit pivot follows the body: lower while crouched so the camera reads low passages.
-	pivot.position.y = lerpf(pivot.position.y, 0.85 if is_crouching else 1.25, clampf(delta * 8.0, 0.0, 1.0))
+	var stand_h := float((CAMERA_MODES[camera_mode] as Dictionary)["height"])
+	pivot.position.y = lerpf(pivot.position.y, 0.85 if is_crouching else stand_h, clampf(delta * 8.0, 0.0, 1.0))

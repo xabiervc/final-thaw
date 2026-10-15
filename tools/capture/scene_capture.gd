@@ -14,6 +14,7 @@ extends Node
 ##   --call=m1,m2            call these methods on the level root, in order (state setup, e.g. _toggle_maintenance)
 ##   --scale3d=f             3D resolution scale (HUD stays native)
 ##   --tweak=a,b             profiling switches: glow_off, shadows_off, omni_off, floor_off, pose_off, dressing_off, labels_off, hud_off, elena_off, batches_off, flatmat
+##   --props=play_intro:false set level properties before it enters the tree
 ##   --wait=90               frames to wait before the capture
 ##   --bench=240             frames to measure after the capture (0 = skip)
 ##   --out=D:/path/shot.png  screenshot output (outside the repository)
@@ -41,6 +42,16 @@ func _run() -> void:
 	var t0 := Time.get_ticks_usec()
 	var packed := load(scene_path) as PackedScene
 	var level := packed.instantiate()
+	# --props=name:value,name:value sets level properties before it enters the tree (bool/float/int/string).
+	for pair in String(_args.get("props", "")).split(",", false):
+		var kv := pair.split(":")
+		if kv.size() == 2:
+			var v: Variant = kv[1]
+			if kv[1] in ["true", "false"]:
+				v = kv[1] == "true"
+			elif kv[1].is_valid_float():
+				v = float(kv[1])
+			level.set(kv[0], v)
 	get_tree().root.add_child(level)
 	await get_tree().process_frame
 	await get_tree().process_frame

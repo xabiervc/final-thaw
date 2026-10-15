@@ -41,7 +41,25 @@ const NODES := {
 	"pit_w": Vector3(15.0, -2.0, 6.0),
 	"evac_w": Vector3(29.5, -2.0, 6.0),
 	"evac_e": Vector3(33.2, -2.0, 6.0),
-	"apron": Vector3(36.0, -2.0, 6.0),
+	# Phase 2 service yard (scripts/phase2/phase2_parking.gd). South route A (exposed), north route B (cover),
+	# convergence south of the egress fence, the 1.3 m service aperture, the egress approach and the gate.
+	"yard_mouth": Vector3(35.8, -2.0, 6.0),
+	"yard_dec": Vector3(38.5, -2.0, 6.0),
+	"ya_1": Vector3(43.0, -2.0, 4.5),
+	"ya_2": Vector3(52.0, -2.0, 4.5),
+	"ya_3": Vector3(61.0, -2.0, 4.5),
+	"ya_4": Vector3(68.0, -2.0, 4.0),
+	"join": Vector3(70.5, -2.0, 1.2),
+	"bar_s": Vector3(72.95, -2.0, 0.6),
+	"bar_n": Vector3(72.95, -2.0, -2.4),
+	"egress": Vector3(72.95, -2.0, -10.0),
+	"gate_in": Vector3(72.7, -2.0, -14.4),
+	"yb_1": Vector3(38.5, -2.0, -6.6),
+	"yb_2": Vector3(49.0, -2.0, -6.6),
+	"yb_3": Vector3(56.5, -2.0, -6.6),
+	"yb_4": Vector3(61.0, -2.0, -6.6),
+	"yb_5": Vector3(66.5, -2.0, -6.0),
+	"yb_6": Vector3(68.2, -2.0, -0.4),
 }
 
 const EDGES := [
@@ -53,13 +71,20 @@ const EDGES := [
 	["lift_m", "lift_p0", "lift"],
 	["lift_p0", "gal_w"], ["lift_p0", "gal_e"], ["gal_e", "r1"], ["r1", "ret_n"], ["ret_n", "bridge"],
 	["bridge", "ret_s"], ["ret_s", "south_e"], ["south_e", "s1_top"], ["s1_top", "s1_mid"], ["s1_mid", "s1_bot"],
-	["s1_bot", "pit_e"], ["pit_e", "pit_w"], ["pit_e", "evac_w"], ["evac_w", "evac_e"], ["evac_e", "apron"],
+	["s1_bot", "pit_e"], ["pit_e", "pit_w"], ["pit_e", "evac_w"], ["evac_w", "evac_e"], ["evac_e", "yard_mouth"],
+	["yard_mouth", "yard_dec"], ["yard_dec", "ya_1"], ["ya_1", "ya_2"], ["ya_2", "ya_3"], ["ya_3", "ya_4"],
+	["ya_4", "join"], ["yard_dec", "yb_1"], ["yb_1", "yb_2"], ["yb_2", "yb_3"], ["yb_3", "yb_4"], ["yb_4", "yb_5"],
+	["yb_5", "yb_6"], ["yb_6", "join"], ["ya_2", "yb_2"], ["join", "bar_s"], ["bar_s", "bar_n"], ["bar_n", "egress"],
+	["egress", "gate_in"],
 ]
 
 ## The Containment sweep: the order in which the protocol searches the building after G opens.
 const SWEEP := ["gantry_far", "gantry_mid", "g_out", "g_in", "f_mid", "f_door_e", "e_west", "e_mid", "walk_w",
 	"s2_top", "s2_bot", "m_s2", "m_a", "m_b", "m_c", "lift_m", "lift_p0", "gal_e", "r1", "ret_n", "bridge",
-	"ret_s", "south_e", "s1_top", "s1_mid", "s1_bot", "pit_e", "evac_w", "evac_e"]
+	"ret_s", "south_e", "s1_top", "s1_mid", "s1_bot", "pit_e", "evac_w", "evac_e", "yard_mouth", "yard_dec", "ya_1",
+	"ya_2", "ya_3", "ya_4", "join", "yb_6", "yb_5", "yb_4", "yb_3", "yb_2", "yb_1", "yard_dec"]
+## When the sweep runs out it loops over the lower level, the gallery and the yard (never back up to P2).
+const SWEEP_LOOP_FROM := "s1_bot"
 
 const LIFT_COST := 20.0
 

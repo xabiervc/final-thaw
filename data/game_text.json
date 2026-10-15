@@ -1,0 +1,1118 @@
+{
+	"opt_title": {
+		"es": "Opciones",
+		"en": "Options"
+	},
+	"opt_back": {
+		"es": "Guardar y volver",
+		"en": "Save and return"
+	},
+	"opt_tab_access": {
+		"es": "Accesibilidad",
+		"en": "Accessibility"
+	},
+	"opt_tab_game": {
+		"es": "Juego",
+		"en": "Gameplay"
+	},
+	"opt_tab_audio": {
+		"es": "Audio",
+		"en": "Audio"
+	},
+	"opt_tab_controls": {
+		"es": "Controles",
+		"en": "Controls"
+	},
+	"opt_text_size": {
+		"es": "Tamaño del texto (interfaz y subtítulos)",
+		"en": "Text size (interface and subtitles)"
+	},
+	"opt_high_contrast": {
+		"es": "Alto contraste",
+		"en": "High contrast"
+	},
+	"opt_reduced_motion": {
+		"es": "Reducir movimiento (sin destellos de alarma ni sacudidas de cámara)",
+		"en": "Reduce motion (no alarm flashing or camera shake)"
+	},
+	"opt_subtitles": {
+		"es": "Subtítulos de diálogo y avisos",
+		"en": "Dialogue and announcement subtitles"
+	},
+	"opt_subtitle_bg": {
+		"es": "Fondo de subtítulos",
+		"en": "Subtitle background"
+	},
+	"opt_bg_none": {
+		"es": "Ninguno",
+		"en": "None"
+	},
+	"opt_bg_dim": {
+		"es": "Tenue",
+		"en": "Dim"
+	},
+	"opt_bg_solid": {
+		"es": "Sólido",
+		"en": "Solid"
+	},
+	"opt_colorblind": {
+		"es": "Paleta para daltonismo",
+		"en": "Colour-blind palette"
+	},
+	"opt_cb_none": {
+		"es": "Estándar",
+		"en": "Standard"
+	},
+	"opt_cb_deut": {
+		"es": "Deuteranopía",
+		"en": "Deuteranopia"
+	},
+	"opt_cb_prot": {
+		"es": "Protanopía",
+		"en": "Protanopia"
+	},
+	"opt_cb_trit": {
+		"es": "Tritanopía",
+		"en": "Tritanopia"
+	},
+	"opt_game_speed": {
+		"es": "Velocidad de juego",
+		"en": "Game speed"
+	},
+	"opt_game_speed_note": {
+		"es": "Ralentiza todo el juego (movimiento, unidad, cinemáticas) para dar más tiempo de reacción. No tiene ninguna penalización.",
+		"en": "Slows the whole game (movement, unit, cinematics) for more reaction time. It carries no penalty."
+	},
+	"opt_difficulty": {
+		"es": "Dificultad",
+		"en": "Difficulty"
+	},
+	"opt_diff_explorer": {
+		"es": "Exploración",
+		"en": "Explorer"
+	},
+	"opt_diff_standard": {
+		"es": "Estándar",
+		"en": "Standard"
+	},
+	"opt_diff_demanding": {
+		"es": "Exigente",
+		"en": "Demanding"
+	},
+	"opt_diff_explorer_desc": {
+		"es": "La unidad ve menos lejos, tarda más en reaccionar y corre más despacio. Correr gasta menos aguante. Recomendado para disfrutar de la investigación.",
+		"en": "The unit sees less far, reacts more slowly and runs slower. Running costs less stamina. Recommended to enjoy the investigation."
+	},
+	"opt_diff_standard_desc": {
+		"es": "La experiencia prevista: la unidad es peligrosa pero siempre se le puede escapar leyendo su estado.",
+		"en": "The intended experience: the unit is dangerous but can always be escaped by reading its state."
+	},
+	"opt_diff_demanding_desc": {
+		"es": "La unidad ve más lejos, reacciona antes, oye mejor y busca durante más tiempo. Nada se oculta: su estado sigue siempre visible.",
+		"en": "The unit sees further, reacts sooner, hears better and searches longer. Nothing is hidden: its state is always shown."
+	},
+	"opt_camera_sens": {
+		"es": "Sensibilidad de cámara (ratón y stick)",
+		"en": "Camera sensitivity (mouse and stick)"
+	},
+	"opt_invert_y": {
+		"es": "Invertir eje vertical",
+		"en": "Invert vertical look"
+	},
+	"opt_master_volume": {
+		"es": "Volumen general",
+		"en": "Master volume"
+	},
+	"opt_music_volume": {
+		"es": "Música",
+		"en": "Music"
+	},
+	"opt_sfx_volume": {
+		"es": "Efectos y ambiente",
+		"en": "Effects and ambience"
+	},
+	"opt_ctrl_action": {
+		"es": "Acción",
+		"en": "Action"
+	},
+	"opt_ctrl_keyboard": {
+		"es": "Teclado",
+		"en": "Keyboard"
+	},
+	"opt_ctrl_gamepad": {
+		"es": "Mando",
+		"en": "Gamepad"
+	},
+	"opt_ctrl_note": {
+		"es": "Elige una acción y pulsa la nueva tecla o botón. Si ya estaba en uso, las dos acciones se intercambian.",
+		"en": "Choose an action and press the new key or button. If it was already in use, the two actions swap."
+	},
+	"opt_ctrl_fixed": {
+		"es": "Fijos: Esc / Start abren el menú; el stick izquierdo mueve, el derecho mira; el gatillo derecho también corre.",
+		"en": "Fixed: Esc / Start open the menu; left stick moves, right stick looks; the right trigger also runs."
+	},
+	"opt_ctrl_reset": {
+		"es": "Restaurar controles predeterminados",
+		"en": "Restore default controls"
+	},
+	"opt_ctrl_reset_done": {
+		"es": "Controles restaurados.",
+		"en": "Controls restored."
+	},
+	"opt_ctrl_press": {
+		"es": "Pulsa…",
+		"en": "Press…"
+	},
+	"opt_ctrl_capture_key": {
+		"es": "Pulsa una tecla para «{action}» (Esc cancela).",
+		"en": "Press a key for \"{action}\" (Esc cancels)."
+	},
+	"opt_ctrl_capture_pad": {
+		"es": "Pulsa un botón del mando para «{action}» (Start cancela).",
+		"en": "Press a gamepad button for \"{action}\" (Start cancels)."
+	},
+	"opt_ctrl_cancelled": {
+		"es": "Cambio cancelado.",
+		"en": "Change cancelled."
+	},
+	"opt_ctrl_done": {
+		"es": "«{action}» ahora usa {key}.",
+		"en": "\"{action}\" now uses {key}."
+	},
+	"opt_ctrl_swapped": {
+		"es": "«{action}» ahora usa {key}. Estaba asignado a «{other}», que pasa a {old}.",
+		"en": "\"{action}\" now uses {key}. It was assigned to \"{other}\", which now uses {old}."
+	},
+	"action_move_up": {
+		"es": "Avanzar",
+		"en": "Move forward"
+	},
+	"action_move_down": {
+		"es": "Retroceder",
+		"en": "Move back"
+	},
+	"action_move_left": {
+		"es": "Izquierda",
+		"en": "Move left"
+	},
+	"action_move_right": {
+		"es": "Derecha",
+		"en": "Move right"
+	},
+	"action_run": {
+		"es": "Correr",
+		"en": "Run"
+	},
+	"action_crouch": {
+		"es": "Agacharse",
+		"en": "Crouch"
+	},
+	"action_jump": {
+		"es": "Saltar / encaramarse",
+		"en": "Jump / climb up"
+	},
+	"action_interact": {
+		"es": "Interactuar",
+		"en": "Interact"
+	},
+	"action_scan": {
+		"es": "Escanear (mantener)",
+		"en": "Scan (hold)"
+	},
+	"action_hint": {
+		"es": "Pista",
+		"en": "Hint"
+	},
+	"action_pause": {
+		"es": "Menú",
+		"en": "Menu"
+	},
+	"pause_title": {
+		"es": "Pausa",
+		"en": "Paused"
+	},
+	"pause_resume": {
+		"es": "Continuar",
+		"en": "Resume"
+	},
+	"pause_notes": {
+		"es": "Cuaderno de campo",
+		"en": "Field notes"
+	},
+	"pause_options": {
+		"es": "Opciones",
+		"en": "Options"
+	},
+	"pause_retry": {
+		"es": "Volver al último punto seguro",
+		"en": "Return to last safe point"
+	},
+	"pause_quit": {
+		"es": "Salir al menú principal",
+		"en": "Quit to main menu"
+	},
+	"pause_back": {
+		"es": "Volver",
+		"en": "Back"
+	},
+	"pause_quit_title": {
+		"es": "¿Salir al menú principal?",
+		"en": "Quit to the main menu?"
+	},
+	"pause_quit_body": {
+		"es": "El progreso de esta misión no se guarda: al volver empezarás desde el principio. Las opciones sí se conservan.",
+		"en": "Progress in this mission is not saved: you will start again from the beginning. Your options are kept."
+	},
+	"pause_quit_yes": {
+		"es": "Salir",
+		"en": "Quit"
+	},
+	"pause_quit_no": {
+		"es": "Seguir jugando",
+		"en": "Keep playing"
+	},
+	"notes_title": {
+		"es": "Cuaderno de campo · Elena Vast",
+		"en": "Field notes · Elena Vast"
+	},
+	"notes_empty": {
+		"es": "Todavía no has anotado nada. Observa, examina y escanea.",
+		"en": "Nothing noted yet. Observe, examine and scan."
+	},
+	"cine_skip": {
+		"es": "Mantén {key} para saltar",
+		"en": "Hold {key} to skip"
+	},
+	"intro_card_name": {
+		"es": "Elena Vast",
+		"en": "Elena Vast"
+	},
+	"intro_card_role": {
+		"es": "Científica de sistemas atmosféricos. Codiseñó Aster, el protocolo que debía estabilizar el clima de toda una región.",
+		"en": "Atmospheric systems scientist. She co-designed Aster, the protocol meant to stabilise the climate of an entire region."
+	},
+	"intro_line_1": {
+		"es": "Hace tres semanas, Helix anunció que el último ensayo de Aster había fallado. Programa suspendido. Caso cerrado.",
+		"en": "Three weeks ago, Helix announced that the last Aster trial had failed. Programme suspended. Case closed."
+	},
+	"intro_line_2": {
+		"es": "Pero el consumo eléctrico de esta instalación no cuadra: durante la ventana del ensayo, la corriente fue a dos sitios a la vez.",
+		"en": "But this facility's power draw doesn't add up: during the trial window, current went to two places at once."
+	},
+	"intro_line_3": {
+		"es": "Si el ensayo funcionó y alguien lo enterró, la prueba sigue aquí: en los cables y en el archivo restringido.",
+		"en": "If the trial worked and someone buried it, the proof is still here: in the wiring and in the restricted archive."
+	},
+	"intro_line_4": {
+		"es": "Helix B. Entro por el túnel de servicio; la puerta se cierra sola detrás de mí. Mi salida prevista: la esclusa G, en la planta de control.",
+		"en": "Helix B. I go in through the service tunnel; the door locks itself behind me. My planned way out: airlock G, on the control floor."
+	},
+	"intro_line_5": {
+		"es": "Medir. Comprobar. Salir sin dejar rastro.",
+		"en": "Measure. Verify. Leave without a trace."
+	},
+	"intro_title_sub": {
+		"es": "Fase 1 · El protocolo fantasma",
+		"en": "Phase 1 · The Ghost Protocol"
+	},
+	"end_line_1": {
+		"es": "La auditoría llevaba mi credencial de acceso. Helix ya sabe quién ha entrado.",
+		"en": "The audit carried my access credential. Helix already knows who got in."
+	},
+	"end_card_1": {
+		"es": "Elena se lleva la copia del registro Aster: el ensayo funcionó. Alguien decidió que nadie debía saberlo.",
+		"en": "Elena takes the copy of the Aster record with her: the trial worked. Someone decided no one should ever know."
+	},
+	"end_card_2": {
+		"es": "La última línea del registro no habla del pasado: el resultado retenido fue transferido. Destino: ESTACIÓN FINAL THAW.",
+		"en": "The record's last line isn't about the past: the withheld result was transferred. Destination: FINAL THAW STATION."
+	},
+	"end_card_3": {
+		"es": "Fin de la demostración · Continuará en la Fase 3",
+		"en": "End of the demo · To be continued in Phase 3"
+	},
+	"obj_investigate": {
+		"es": "Investiga la anomalía eléctrica de la instalación",
+		"en": "Investigate the facility's electrical anomaly"
+	},
+	"obj_go_control": {
+		"es": "Sube a control (P2): el elevador ya tiene energía",
+		"en": "Go up to control (P2): the lift has power now"
+	},
+	"obj_leave_g": {
+		"es": "Tienes la prueba. Sal por la esclusa G, al oeste del archivo",
+		"en": "You have the proof. Leave through airlock G, west of the archive"
+	},
+	"obj_retreat": {
+		"es": "La pasarela está tomada. Retrocede sin que te vean y busca otra salida",
+		"en": "The gantry is taken. Fall back unseen and find another way out"
+	},
+	"obj_go_down": {
+		"es": "Baja al foso (P−1): el plan de evacuación marca la galería de descarga",
+		"en": "Get down to the pit (P−1): the evacuation plan shows the drainage gallery"
+	},
+	"obj_gallery": {
+		"es": "Sal por la galería de descarga, al este del foso",
+		"en": "Leave through the drainage gallery, east of the pit"
+	},
+	"obj_run_s1": {
+		"es": "¡Te ha visto! Baja por S1 al foso y sal por la galería de descarga",
+		"en": "It has seen you! Take S1 down to the pit and out through the drainage gallery"
+	},
+	"obj_yard": {
+		"es": "Cruza el patio hasta la salida de emergencia del muro norte",
+		"en": "Cross the yard to the emergency exit in the north wall"
+	},
+	"line_n1_01": {
+		"es": "Elena: «El acta dice que el ensayo se desmontó. La columna sigue cableada.»",
+		"en": "Elena: \"The report says the rig was dismantled. The column is still wired.\""
+	},
+	"line_n1_02": {
+		"es": "Elena: «Este puente no figura en el esquema.»",
+		"en": "Elena: \"This jumper isn't on the schematic.\""
+	},
+	"line_n2_01": {
+		"es": "Elena: «La auditoría ha activado el protocolo de contención.»",
+		"en": "Elena: \"The audit has triggered the containment protocol.\""
+	},
+	"line_not_yet": {
+		"es": "Elena: «Todavía no. No me voy sin el registro del ensayo.»",
+		"en": "Elena: \"Not yet. I'm not leaving without the trial record.\""
+	},
+	"line_n2_06": {
+		"es": "Elena: «Fuera del perímetro. Eso no significa que haya terminado.»",
+		"en": "Elena: \"Outside the perimeter. That doesn't mean it's over.\""
+	},
+	"pa_prefix": {
+		"es": "MEGAFONÍA: ",
+		"en": "PUBLIC ADDRESS: "
+	},
+	"pa_containment": {
+		"es": "«Auditoría de servicio recibida. Acceso no autorizado en esclusa G. Protocolo de contención activo.»",
+		"en": "\"Service audit received. Unauthorised access at airlock G. Containment protocol active.\""
+	},
+	"pa_r1_release": {
+		"es": "«Desbloqueo manual en compuerta R1.»",
+		"en": "\"Manual release at shutter R1.\""
+	},
+	"pa_lift": {
+		"es": "«Elevador de servicio en uso no autorizado.»",
+		"en": "\"Service lift in unauthorised use.\""
+	},
+	"pa_yard": {
+		"es": "«Movimiento en la salida de servicio. Contención: sector exterior. Salida de vehículos bloqueada.»",
+		"en": "\"Movement at the service exit. Containment: exterior sector. Vehicle exit locked.\""
+	},
+	"pa_exit": {
+		"es": "«Objetivo fuera del perímetro de recuperación. Transferido a seguridad exterior.»",
+		"en": "\"Target outside the recovery perimeter. Handed over to external security.\""
+	},
+	"verb_examine": {
+		"es": "Examinar",
+		"en": "Examine"
+	},
+	"verb_read": {
+		"es": "Leer",
+		"en": "Read"
+	},
+	"verb_operate": {
+		"es": "Accionar",
+		"en": "Operate"
+	},
+	"verb_call": {
+		"es": "Llamar",
+		"en": "Call"
+	},
+	"verb_send": {
+		"es": "Enviar",
+		"en": "Send"
+	},
+	"verb_rearm": {
+		"es": "Rearmar",
+		"en": "Re-arm"
+	},
+	"verb_consult": {
+		"es": "Consultar",
+		"en": "Consult"
+	},
+	"verb_close": {
+		"es": "Cerrar",
+		"en": "Close"
+	},
+	"verb_open": {
+		"es": "Abrir",
+		"en": "Open"
+	},
+	"verb_stop_release": {
+		"es": "Detener desbloqueo",
+		"en": "Stop release"
+	},
+	"verb_release": {
+		"es": "Desbloqueo de emergencia",
+		"en": "Emergency release"
+	},
+	"verb_start": {
+		"es": "Arrancar",
+		"en": "Start"
+	},
+	"verb_raise": {
+		"es": "Subir",
+		"en": "Raise"
+	},
+	"hs_access_plan": {
+		"es": "Plan de evacuación",
+		"en": "Evacuation plan"
+	},
+	"hs_official_report": {
+		"es": "Informe oficial del ensayo",
+		"en": "Official trial report"
+	},
+	"hs_maintenance": {
+		"es": "Interruptor de mantenimiento",
+		"en": "Maintenance switch"
+	},
+	"hs_schematic": {
+		"es": "Esquema de distribución",
+		"en": "Distribution schematic"
+	},
+	"hs_bridge": {
+		"es": "Conexión entre A y T",
+		"en": "Connection between A and T"
+	},
+	"hs_workshop_tag": {
+		"es": "Etiqueta de reparación",
+		"en": "Repair tag"
+	},
+	"hs_lift": {
+		"es": "Elevador",
+		"en": "Lift"
+	},
+	"hs_lift_deck": {
+		"es": "Elevador · otro nivel",
+		"en": "Lift · other level"
+	},
+	"hs_selector": {
+		"es": "Selector de recuperación (SELECTOR)",
+		"en": "Recovery selector (SELECTOR)"
+	},
+	"hs_isolator": {
+		"es": "Aislador del ensayo (AISLADOR)",
+		"en": "Trial isolator (AISLADOR)"
+	},
+	"hs_rearm": {
+		"es": "Protección de recuperación (REARME)",
+		"en": "Recovery protection (REARME)"
+	},
+	"hs_diagnostic": {
+		"es": "Terminal de diagnóstico",
+		"en": "Diagnostic terminal"
+	},
+	"hs_archive": {
+		"es": "Archivo restringido",
+		"en": "Restricted archive"
+	},
+	"hs_g_inner": {
+		"es": "Puerta interior de G",
+		"en": "Inner door of G"
+	},
+	"hs_g_outer": {
+		"es": "Compuerta exterior de G",
+		"en": "Outer hatch of G"
+	},
+	"hs_r1": {
+		"es": "Compuerta de sector R1",
+		"en": "Sector shutter R1"
+	},
+	"hs_compressor": {
+		"es": "Compresor C-3 (arranque diferido)",
+		"en": "Compressor C-3 (delayed start)"
+	},
+	"hs_dock": {
+		"es": "Persiana del muelle 2 (al fondo del patio)",
+		"en": "Dock 2 shutter (far end of the yard)"
+	},
+	"ex_access_plan_title": {
+		"es": "Plan de evacuación",
+		"en": "Evacuation plan"
+	},
+	"ex_access_plan_body": {
+		"es": "Ruta este: foso de distribución (P−1) → galería de descarga → salida de servicio al aparcamiento. La salida de emergencia del patio está en el muro norte.",
+		"en": "East route: distribution pit (P−1) → drainage gallery → service exit into the car park. The yard's emergency exit is in the north wall."
+	},
+	"ex_official_report_title": {
+		"es": "Informe oficial · Ensayo Aster",
+		"en": "Official report · Aster trial"
+	},
+	"ex_official_report_body": {
+		"es": "«Resultado: FALLIDO. Alimentación exclusiva del nodo T. Instalación desmontada tras el ensayo.» Firmado y archivado hace tres semanas.",
+		"en": "\"Result: FAILED. Exclusive supply to node T. Rig dismantled after the trial.\" Signed and filed three weeks ago."
+	},
+	"ex_schematic_title": {
+		"es": "Esquema de distribución prevista",
+		"en": "Intended distribution schematic"
+	},
+	"ex_schematic_body": {
+		"es": "Una fuente auxiliar. Emergencia → diagnóstico. Mantenimiento → luces y elevador. Protección → selector: ENSAYO → T, ARCHIVO → A. Ramas independientes: nunca las dos a la vez.",
+		"en": "One auxiliary source. Emergency → diagnostics. Maintenance → lights and lift. Protection → selector: TRIAL (ENSAYO) → T, ARCHIVE (ARCHIVO) → A. Independent branches: never both at once."
+	},
+	"ex_bridge_title": {
+		"es": "Conexión entre A y T",
+		"en": "Connection between A and T"
+	},
+	"ex_bridge_body": {
+		"es": "Un puente de cable une los bornes A y T. Abrazaderas nuevas, aislante fundido y el suelo quemado debajo: por aquí pasó mucha corriente.",
+		"en": "A cable jumper ties terminals A and T together. New clamps, melted insulation and a scorched floor underneath: a lot of current went through here."
+	},
+	"ex_workshop_tag_title": {
+		"es": "Etiqueta de reparación",
+		"en": "Repair tag"
+	},
+	"ex_workshop_tag_body": {
+		"es": "«Puente temporal A→T. Retirar tras ensayo.» Firma ilegible. Nadie lo retiró.",
+		"en": "\"Temporary jumper A→T. Remove after trial.\" Illegible signature. Nobody removed it."
+	},
+	"ban_lift_off_title": {
+		"es": "Elevador sin alimentación",
+		"en": "Lift without power"
+	},
+	"ban_lift_off_body": {
+		"es": "El panel del elevador está apagado.",
+		"en": "The lift panel is dead."
+	},
+	"ban_lift_call_off_body": {
+		"es": "El panel de llamada no responde. Depende del circuito de mantenimiento.",
+		"en": "The call panel doesn't respond. It depends on the maintenance circuit."
+	},
+	"ban_diagnostic_title": {
+		"es": "Terminal de diagnóstico",
+		"en": "Diagnostic terminal"
+	},
+	"ban_maint_on_title": {
+		"es": "Mantenimiento activo",
+		"en": "Maintenance on"
+	},
+	"ban_maint_on_body": {
+		"es": "Luces de servicio, bombas y elevador con alimentación. El sistema registra una orden de servicio: se auditará en la próxima apertura de la esclusa exterior G.",
+		"en": "Service lights, pumps and lift powered. The system logs a service order: it will be audited the next time airlock G's outer hatch opens."
+	},
+	"ban_maint_off_title": {
+		"es": "Mantenimiento apagado",
+		"en": "Maintenance off"
+	},
+	"ban_maint_off_body": {
+		"es": "Luces de servicio, bombas y elevador sin alimentación. La orden de servicio ya está registrada.",
+		"en": "Service lights, pumps and lift unpowered. The service order is already logged."
+	},
+	"ban_selector_title": {
+		"es": "Selector en {target}",
+		"en": "Selector on {target}"
+	},
+	"ban_isolated_title": {
+		"es": "Ensayo aislado",
+		"en": "Trial isolated"
+	},
+	"ban_connected_title": {
+		"es": "Ensayo conectado",
+		"en": "Trial connected"
+	},
+	"ban_check_panel": {
+		"es": "Comprueba el panel: el estado actual y el último disparo aparecen por separado.",
+		"en": "Check the panel: the current state and the last trip are shown separately."
+	},
+	"ban_trip_title": {
+		"es": "Protección disparada",
+		"en": "Protection tripped"
+	},
+	"ban_trip_body": {
+		"es": "Demanda simultánea registrada. No se ha perdido nada: el sistema puede recuperarse.",
+		"en": "Simultaneous demand logged. Nothing is lost: the system can recover."
+	},
+	"ban_rearm_ok_title": {
+		"es": "Protección rearmada",
+		"en": "Protection re-armed"
+	},
+	"ban_rearm_ok_body": {
+		"es": "La protección vuelve a estar disponible. El último disparo sigue registrado.",
+		"en": "Protection is available again. The last trip stays logged."
+	},
+	"ban_rearm_no_title": {
+		"es": "Rearme rechazado",
+		"en": "Re-arm refused"
+	},
+	"ban_rearm_no_body": {
+		"es": "La demanda simultánea sigue presente.",
+		"en": "The simultaneous demand is still present."
+	},
+	"ban_archive_no_title": {
+		"es": "Archivo no disponible",
+		"en": "Archive unavailable"
+	},
+	"ban_archive_no_body": {
+		"es": "Sin suministro estable en ARCHIVO. El diagnóstico sigue funcionando con la emergencia.",
+		"en": "No stable supply on ARCHIVE (ARCHIVO). Diagnostics still run on emergency power."
+	},
+	"ban_g_locked_title": {
+		"es": "Compuerta exterior bloqueada",
+		"en": "Outer hatch locked"
+	},
+	"ban_g_locked_body": {
+		"es": "La esclusa solo abre con una orden de servicio activa.",
+		"en": "The airlock only opens with an active service order."
+	},
+	"ban_containment_title": {
+		"es": "PROTOCOLO DE CONTENCIÓN",
+		"en": "CONTAINMENT PROTOCOL"
+	},
+	"ban_containment_body": {
+		"es": "La esclusa ha enviado la auditoría de servicio. Algo se mueve en la pasarela exterior.",
+		"en": "The airlock has sent the service audit. Something is moving on the exterior gantry."
+	},
+	"ban_lost_title": {
+		"es": "Contacto perdido",
+		"en": "Contact lost"
+	},
+	"ban_lost_body": {
+		"es": "La unidad busca donde te vio por última vez.",
+		"en": "The unit is searching where it last saw you."
+	},
+	"ban_caught_title": {
+		"es": "Te ha atrapado",
+		"en": "Caught"
+	},
+	"ban_caught_body": {
+		"es": "Vuelves al último punto seguro. Lo que has descubierto sigue contigo.",
+		"en": "Back to the last safe point. What you discovered stays with you."
+	},
+	"ban_compressor_title": {
+		"es": "Compresor C-3 armado",
+		"en": "Compressor C-3 armed"
+	},
+	"ban_compressor_body": {
+		"es": "Arrancará en dos segundos y hará ruido durante un rato. Aléjate.",
+		"en": "It starts in two seconds and will be loud for a while. Move away."
+	},
+	"ban_dock_title": {
+		"es": "Persiana del muelle 2",
+		"en": "Dock 2 shutter"
+	},
+	"ban_dock_body": {
+		"es": "La persiana del fondo del patio sube con estruendo.",
+		"en": "The shutter at the far end of the yard rattles open."
+	},
+	"ban_scan_title": {
+		"es": "TRAZAS",
+		"en": "TRACES"
+	},
+	"ban_scan_body": {
+		"es": "Continuidad eléctrica medida. Compárala con lo que dicen los planos.",
+		"en": "Electrical continuity measured. Compare it with what the drawings say."
+	},
+	"ban_scan_unit_title": {
+		"es": "ESCÁNER",
+		"en": "SCANNER"
+	},
+	"ban_scan_unit_body": {
+		"es": "Unidad localizada: su cono de visión queda marcado unos segundos.",
+		"en": "Unit located: its vision cone is marked for a few seconds."
+	},
+	"ban_inference_hypothesis": {
+		"es": "HIPÓTESIS",
+		"en": "HYPOTHESIS"
+	},
+	"ban_inference_test_result": {
+		"es": "HIPÓTESIS CONFIRMADA",
+		"en": "HYPOTHESIS CONFIRMED"
+	},
+	"ban_inference_conclusion": {
+		"es": "CONCLUSIÓN",
+		"en": "CONCLUSION"
+	},
+	"archive_record": {
+		"es": "ENSAYO ASTER — RESULTADO RETENIDO.\nRECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.\n\nActa oficial: alimentación exclusiva del nodo T.\nTelemetría de bornes: corriente simultánea en A y T durante la ventana de ensayo.\nCopia del resultado: TRANSFERIDA · destino: ESTACIÓN FINAL THAW.",
+		"en": "ASTER TRIAL — RESULT WITHHELD.\nDEPLOYMENT RECOMMENDATION: SUPPRESSED.\n\nOfficial report: exclusive supply to node T.\nTerminal telemetry: simultaneous current on A and T during the trial window.\nCopy of the result: TRANSFERRED · destination: FINAL THAW STATION."
+	},
+	"archive_screen_read": {
+		"es": "REGISTRO ASTER\nRESULTADO RETENIDO\nDESPLIEGUE: SUPRIMIDO",
+		"en": "ASTER RECORD\nRESULT WITHHELD\nDEPLOYMENT: SUPPRESSED"
+	},
+	"archive_screen_on": {
+		"es": "ARCHIVO\nSUMINISTRO ESTABLE",
+		"en": "ARCHIVE (ARCHIVO)\nSTABLE SUPPLY"
+	},
+	"archive_screen_off": {
+		"es": "ARCHIVO\nSIN SUMINISTRO",
+		"en": "ARCHIVE (ARCHIVO)\nNO SUPPLY"
+	},
+	"reader_active_interior": {
+		"es": "PROTOCOLO DE CONTENCIÓN: ACTIVO\nSECTOR INTERIOR",
+		"en": "CONTAINMENT PROTOCOL: ACTIVE\nINTERIOR SECTOR"
+	},
+	"reader_active_exterior": {
+		"es": "PROTOCOLO DE CONTENCIÓN: ACTIVO\nSECTOR EXTERIOR",
+		"en": "CONTAINMENT PROTOCOL: ACTIVE\nEXTERIOR SECTOR"
+	},
+	"hud_checkpoint": {
+		"es": "Punto seguro alcanzado",
+		"en": "Safe point reached"
+	},
+	"hud_r1_progress": {
+		"es": "Compuerta R1: {pct} %",
+		"en": "Shutter R1: {pct} %"
+	},
+	"hud_r1_crouch": {
+		"es": "  ·  ya cabes agachada",
+		"en": "  ·  you can crouch through now"
+	},
+	"hud_note_added": {
+		"es": "CUADERNO · {title}",
+		"en": "NOTES · {title}"
+	},
+	"hud_vis_hidden": {
+		"es": "EN SOMBRA · difícil de ver",
+		"en": "IN SHADOW · hard to see"
+	},
+	"hud_vis_partial": {
+		"es": "PENUMBRA · visible de cerca",
+		"en": "DIM · visible up close"
+	},
+	"hud_vis_exposed": {
+		"es": "EXPUESTA · visible de lejos",
+		"en": "EXPOSED · visible from afar"
+	},
+	"res_title": {
+		"es": "Fuera del perímetro",
+		"en": "Outside the perimeter"
+	},
+	"res_time": {
+		"es": "Tiempo: {m}:{s}",
+		"en": "Time: {m}:{s}"
+	},
+	"res_notes": {
+		"es": "Cuaderno: {n} de {total} entradas",
+		"en": "Field notes: {n} of {total} entries"
+	},
+	"res_catches": {
+		"es": "Veces atrapada: {n}",
+		"en": "Times caught: {n}"
+	},
+	"res_hints": {
+		"es": "Pistas pedidas: {n}",
+		"en": "Hints used: {n}"
+	},
+	"res_difficulty": {
+		"es": "Dificultad: {d}",
+		"en": "Difficulty: {d}"
+	},
+	"res_demo_end": {
+		"es": "Has completado la demostración de FINAL THAW (Fases 1 y 2). La historia continúa en la Fase 3, que aún no está implementada.",
+		"en": "You have completed the FINAL THAW demo (Phases 1 and 2). The story continues in Phase 3, which is not implemented yet."
+	},
+	"res_back": {
+		"es": "Volver al menú principal",
+		"en": "Back to the main menu"
+	},
+	"scan_bridge_label": {
+		"es": "CONTINUIDAD A → T\n(no figura en el esquema)",
+		"en": "CONTINUITY A → T\n(not on the schematic)"
+	},
+	"hint_prefix": {
+		"es": "Pista {i}/{n}: ",
+		"en": "Hint {i}/{n}: "
+	},
+	"hint_explore_1": {
+		"es": "El informe oficial está en control y el esquema eléctrico en el foso (P−1, bajando por S1). Lo interesante está en lo que no coincide entre ellos.",
+		"en": "The official report is up in control and the wiring schematic is in the pit (P−1, down S1). What matters is what doesn't match between them."
+	},
+	"hint_explore_2": {
+		"es": "Mantén {scan} cerca de los equipos del foso: el escáner mide continuidad eléctrica que a simple vista no se ve.",
+		"en": "Hold {scan} near the equipment in the pit: the scanner measures electrical continuity you cannot see."
+	},
+	"hint_explore_3": {
+		"es": "El esquema dice que ENSAYO y ARCHIVO son ramas independientes. ¿Lo son en el foso?",
+		"en": "The schematic says TRIAL and ARCHIVE are independent branches. Are they, down in the pit?"
+	},
+	"hint_lift_1": {
+		"es": "Para subir a control (P2) necesitas el elevador, y el elevador depende de otro circuito del foso.",
+		"en": "To get up to control (P2) you need the lift, and the lift depends on another circuit in the pit."
+	},
+	"hint_lift_2": {
+		"es": "El esquema del foso dice qué alimenta al elevador.",
+		"en": "The pit schematic says what powers the lift."
+	},
+	"hint_circuit_1": {
+		"es": "Si A y T están unidos, pedir ARCHIVO mientras el ensayo sigue conectado es pedir dos cosas a la vez.",
+		"en": "If A and T are tied together, asking for ARCHIVE while the trial is still connected is asking for two things at once."
+	},
+	"hint_circuit_2": {
+		"es": "La protección no vuelve sola tras un disparo. Elimina primero la doble demanda; después, rearma.",
+		"en": "Protection doesn't come back on its own after a trip. Remove the double demand first; then re-arm."
+	},
+	"hint_circuit_3": {
+		"es": "El panel de control separa el estado actual del último disparo. El terminal de diagnóstico funciona siempre.",
+		"en": "The control panel separates the current state from the last trip. The diagnostic terminal always works."
+	},
+	"hint_record_1": {
+		"es": "El archivo restringido (F), al oeste de control, ya tiene suministro estable.",
+		"en": "The restricted archive (F), west of control, has a stable supply now."
+	},
+	"hint_leave_1": {
+		"es": "La esclusa G está al oeste del archivo, en la misma planta.",
+		"en": "Airlock G is west of the archive, on the same floor."
+	},
+	"hint_escape_1": {
+		"es": "El plan de evacuación del acceso marca la ruta: foso → galería de descarga → salida de servicio este.",
+		"en": "The evacuation plan at the entrance shows the route: pit → drainage gallery → east service exit."
+	},
+	"hint_escape_2": {
+		"es": "Agachada ({crouch}) haces menos ruido y te ve peor. Lo que ves sobre la unidad (·, ?, !, !!) es lo que sabe de ti.",
+		"en": "Crouched ({crouch}) you make less noise and are harder to see. The symbol over the unit (·, ?, !, !!) is what it knows about you."
+	},
+	"hint_yard_1": {
+		"es": "La salida de emergencia está en el muro norte, dentro del recinto vallado: se entra por el hueco de la barrera O3.",
+		"en": "The emergency exit is in the north wall, inside the fenced enclosure: you get in through the gap in barrier O3."
+	},
+	"hint_yard_2": {
+		"es": "El compresor de la jaula y la persiana del muelle hacen ruido lejos de ti: úsalos para que la unidad vaya a mirar a otra parte. A oscuras te ve peor.",
+		"en": "The cage compressor and the dock shutter make noise away from you: use them to send the unit to look elsewhere. In the dark it sees you less well."
+	},
+	"diag_archive_none": {
+		"es": "ARCHIVO SIN SUMINISTRO",
+		"en": "ARCHIVE WITHOUT SUPPLY"
+	},
+	"diag_archive_stable": {
+		"es": "ARCHIVO ESTABLE",
+		"en": "ARCHIVE STABLE"
+	},
+	"diag_tripped_fault": {
+		"es": "PROTECCIÓN DISPARADA · FALLO PRESENTE",
+		"en": "PROTECTION TRIPPED · FAULT PRESENT"
+	},
+	"diag_tripped_rearm": {
+		"es": "PROTECCIÓN DISPARADA · REARME PENDIENTE",
+		"en": "PROTECTION TRIPPED · RE-ARM PENDING"
+	},
+	"diag_body": {
+		"es": "Estado actual: {current}\nDestino: {destination} · Ensayo: {trial}\nÚltimo disparo: {trip}",
+		"en": "Current state: {current}\nDestination: {destination} · Trial: {trial}\nLast trip: {trip}"
+	},
+	"diag_isolated": {
+		"es": "aislado",
+		"en": "isolated"
+	},
+	"diag_connected": {
+		"es": "conectado",
+		"en": "connected"
+	},
+	"diag_trip_double": {
+		"es": "DEMANDA SIMULTÁNEA",
+		"en": "SIMULTANEOUS DEMAND"
+	},
+	"diag_trip_none": {
+		"es": "ninguno",
+		"en": "none"
+	},
+	"panel_body": {
+		"es": "ESTADO ACTUAL\n{current}\n\nDESTINO  {destination}     ENSAYO  {trial}\nPROTECCIÓN  {protection}\nÚLTIMO DISPARO  {trip}",
+		"en": "CURRENT STATE\n{current}\n\nDESTINATION  {destination}     TRIAL  {trial}\nPROTECTION  {protection}\nLAST TRIP  {trip}"
+	},
+	"panel_isolated": {
+		"es": "AISLADO",
+		"en": "ISOLATED"
+	},
+	"panel_connected": {
+		"es": "CONECTADO",
+		"en": "CONNECTED"
+	},
+	"panel_available": {
+		"es": "DISPONIBLE",
+		"en": "AVAILABLE"
+	},
+	"panel_tripped": {
+		"es": "DISPARADA",
+		"en": "TRIPPED"
+	},
+	"panel_trip_none": {
+		"es": "NINGUNO",
+		"en": "NONE"
+	},
+	"indicator": {
+		"es": "ARCHIVO {archive}  ·  ENSAYO {trial}",
+		"en": "ARCHIVE {archive}  ·  TRIAL {trial}"
+	},
+	"ind_archive_on": {
+		"es": "■ ESTABLE",
+		"en": "■ STABLE"
+	},
+	"ind_archive_off": {
+		"es": "□ SIN SUMINISTRO",
+		"en": "□ NO SUPPLY"
+	},
+	"ind_trial_on": {
+		"es": "■ DEMANDA",
+		"en": "■ DEMAND"
+	},
+	"ind_trial_off": {
+		"es": "□ SIN DEMANDA",
+		"en": "□ NO DEMAND"
+	},
+	"dest_ensayo": {
+		"es": "ENSAYO",
+		"en": "TRIAL (ENSAYO)"
+	},
+	"dest_archivo": {
+		"es": "ARCHIVO",
+		"en": "ARCHIVE (ARCHIVO)"
+	},
+	"note_anomaly_title": {
+		"es": "Lo que vengo a comprobar",
+		"en": "What I came to check"
+	},
+	"note_anomaly_body": {
+		"es": "Helix dice que el ensayo Aster falló y que solo se alimentó el nodo T. Pero el consumo de la instalación durante la ventana del ensayo indica corriente en dos sitios a la vez.",
+		"en": "Helix says the Aster trial failed and that only node T was supplied. But the facility's draw during the trial window shows current in two places at once."
+	},
+	"note_official_report_title": {
+		"es": "Informe oficial",
+		"en": "Official report"
+	},
+	"note_official_report_body": {
+		"es": "«Resultado: fallido. Alimentación exclusiva del nodo T. Instalación desmontada.» Pero la columna Aster sigue cableada.",
+		"en": "\"Result: failed. Exclusive supply to node T. Rig dismantled.\" Yet the Aster column is still wired."
+	},
+	"note_access_plan_title": {
+		"es": "Plan de evacuación",
+		"en": "Evacuation plan"
+	},
+	"note_access_plan_body": {
+		"es": "Ruta este: foso de distribución → galería de descarga → salida de servicio al aparcamiento; salida de emergencia del patio en el muro norte.",
+		"en": "East route: distribution pit → drainage gallery → service exit into the car park; the yard's emergency exit is in the north wall."
+	},
+	"note_schematic_title": {
+		"es": "Esquema previsto",
+		"en": "Intended schematic"
+	},
+	"note_schematic_body": {
+		"es": "Las ramas están separadas: ENSAYO alimenta T, ARCHIVO alimenta A. Nunca las dos a la vez. Mantenimiento lleva luces y elevador.",
+		"en": "The branches are separate: TRIAL feeds T, ARCHIVE feeds A. Never both at once. Maintenance runs the lights and the lift."
+	},
+	"note_bridge_title": {
+		"es": "Puente A–T",
+		"en": "A–T jumper"
+	},
+	"note_bridge_body": {
+		"es": "Alguien unió los bornes A y T con un puente de cable. Abrazaderas nuevas, aislante fundido: pasó mucha corriente por aquí.",
+		"en": "Someone tied terminals A and T together with a cable jumper. New clamps, melted insulation: a lot of current went through."
+	},
+	"note_workshop_tag_title": {
+		"es": "Etiqueta del taller",
+		"en": "Workshop tag"
+	},
+	"note_workshop_tag_body": {
+		"es": "«Puente temporal A→T. Retirar tras ensayo.» Nunca se retiró.",
+		"en": "\"Temporary jumper A→T. Remove after trial.\" It was never removed."
+	},
+	"note_scan_bridge_title": {
+		"es": "Medición",
+		"en": "Measurement"
+	},
+	"note_scan_bridge_body": {
+		"es": "El escáner mide continuidad entre A y T. No es una sospecha: están unidos eléctricamente.",
+		"en": "The scanner reads continuity between A and T. Not a suspicion: they are electrically joined."
+	},
+	"note_hypothesis_title": {
+		"es": "Hipótesis",
+		"en": "Hypothesis"
+	},
+	"note_hypothesis_body": {
+		"es": "Durante el ensayo, la energía fue a T y a A a la vez a través del puente: el ensayo no se alimentó como dice el acta. Si es así, pedir ARCHIVO con el ensayo conectado será una doble demanda y la protección debería saltar.",
+		"en": "During the trial, power went to T and A at the same time through the jumper: the trial wasn't supplied the way the report says. If so, asking for ARCHIVE with the trial connected is a double demand and the protection should trip."
+	},
+	"note_maintenance_risk_title": {
+		"es": "Riesgo asumido",
+		"en": "A calculated risk"
+	},
+	"note_maintenance_risk_body": {
+		"es": "He activado mantenimiento para tener elevador. El sistema ha registrado una orden de servicio que se auditará al abrir la esclusa exterior G. Tendré que salir rápido.",
+		"en": "I switched maintenance on to get the lift. The system logged a service order that will be audited when airlock G's outer hatch opens. I'll have to leave quickly."
+	},
+	"note_trip_title": {
+		"es": "Disparo de la protección",
+		"en": "Protection trip"
+	},
+	"note_trip_body": {
+		"es": "La protección ha saltado por demanda simultánea.",
+		"en": "The protection tripped on simultaneous demand."
+	},
+	"note_test_result_title": {
+		"es": "Hipótesis confirmada",
+		"en": "Hypothesis confirmed"
+	},
+	"note_test_result_body": {
+		"es": "Con el ensayo conectado, pedir ARCHIVO dispara la protección: A y T comparten la misma alimentación. El acta oficial es falsa.",
+		"en": "With the trial connected, asking for ARCHIVE trips the protection: A and T share the same supply. The official report is false."
+	},
+	"note_archive_stable_title": {
+		"es": "Archivo con suministro",
+		"en": "Archive supplied"
+	},
+	"note_archive_stable_body": {
+		"es": "ARCHIVO tiene ahora suministro estable y limpio.",
+		"en": "ARCHIVE now has a clean, stable supply."
+	},
+	"note_record_title": {
+		"es": "Registro restringido",
+		"en": "Restricted record"
+	},
+	"note_record_body": {
+		"es": "ENSAYO ASTER — RESULTADO RETENIDO. RECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA. El resultado se copió y se transfirió a la Estación Final Thaw.",
+		"en": "ASTER TRIAL — RESULT WITHHELD. DEPLOYMENT RECOMMENDATION: SUPPRESSED. The result was copied and transferred to Final Thaw Station."
+	},
+	"note_conclusion_title": {
+		"es": "Conclusión",
+		"en": "Conclusion"
+	},
+	"note_conclusion_body": {
+		"es": "El ensayo no falló. Funcionó, y alguien lo ocultó y suprimió la recomendación de desplegarlo. Todavía no sé quién ni por qué.",
+		"en": "The trial didn't fail. It worked, and someone hid it and suppressed the recommendation to deploy it. I still don't know who or why."
+	},
+	"note_containment_title": {
+		"es": "Contención",
+		"en": "Containment"
+	},
+	"note_containment_body": {
+		"es": "Al abrir G, la orden de servicio que generé con el mantenimiento se ha auditado: el protocolo de contención se ha activado y la pasarela exterior está tomada.",
+		"en": "When G opened, the service order I created with maintenance was audited: the containment protocol is active and the exterior gantry is taken."
+	},
+	"note_unit_title": {
+		"es": "Unidad de recuperación",
+		"en": "Recovery unit"
+	},
+	"note_unit_body": {
+		"es": "Mira hacia delante en cono y oye pasos; corre peor que yo mientras tenga aliento. Persigue el último sitio donde me vio. Agachada, en silencio y a oscuras le cuesta más verme.",
+		"en": "It looks forward in a cone and hears footsteps; it runs slower than me while I have breath. It chases the last place it saw me. Crouched, quiet and in the dark I'm harder to see."
+	},
+	"note_exit_plan_title": {
+		"es": "Salida alternativa",
+		"en": "Another way out"
+	},
+	"note_exit_plan_body": {
+		"es": "Sin la pasarela, me queda la ruta del plan de evacuación: bajar al foso y salir por la galería de descarga al aparcamiento.",
+		"en": "Without the gantry, I still have the evacuation plan's route: down to the pit and out through the drainage gallery into the car park."
+	},
+	"note_parking_title": {
+		"es": "Patio de servicio",
+		"en": "Service yard"
+	},
+	"note_parking_body": {
+		"es": "La cámara de la salida de servicio me ha visto salir: la unidad vendrá hasta aquí. Focos encendidos y salida de vehículos bloqueada; la salida de emergencia peatonal del muro norte es de apertura libre.",
+		"en": "The camera at the service exit saw me come out: the unit will come here. Floodlights on and the vehicle exit locked; the pedestrian emergency exit in the north wall opens freely."
+	},
+	"note_parking_devices_title": {
+		"es": "Equipos del patio",
+		"en": "Yard equipment"
+	},
+	"note_parking_devices_body": {
+		"es": "El compresor de la jaula arranca con retardo y la persiana del muelle 2 está al fondo del patio: puedo hacer ruido lejos de mí.",
+		"en": "The cage compressor starts with a delay and the dock 2 shutter is at the far end of the yard: I can make noise away from me."
+	}
+}

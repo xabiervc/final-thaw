@@ -41,6 +41,7 @@ signal mantled(height: float)
 
 const STAND_HEIGHT := 1.7
 const CROUCH_HEIGHT := 1.05
+const WALK_FATIGUE_FLOOR := 0.85
 const CAPSULE_RADIUS := 0.32
 ## Physics layer bit of guard rails (layer 5): Elena collides with them but never mantles onto them.
 const NO_MANTLE_LAYER := 16
@@ -62,6 +63,10 @@ var is_running: bool = false
 var is_climbing: bool = false
 ## Base usada para transformar el input de movimiento (por defecto, mundo).
 var movement_basis: Basis = Basis.IDENTITY
+## While input is disabled (cinematics), a scripted stick vector in movement_basis space; zero = stand still.
+var scripted_input: Vector2 = Vector2.ZERO
+## Scripted running (cinematics): same as holding `run`.
+var scripted_run: bool = false
 
 var _t: float = 0.0
 var _coyote_left: float = 0.0
@@ -217,17 +222,22 @@ func _physics_process(delta: float) -> void:
 	var input_vec := Vector2.ZERO
 	if input_enabled:
 		input_vec = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	elif scripted_input != Vector2.ZERO:
+		input_vec = scripted_input  # cinematics walk Elena with the same physics and animation as play
 
-	var wants_run: bool = input_enabled and _action("run") and input_vec != Vector2.ZERO
+	var wants_run: bool = ((input_enabled and _action("run")) or (not input_enabled and scripted_run)) and input_vec != Vector2.ZERO
 	var wants_crouch: bool = input_enabled and _action("crouch")
 	_set_crouching((wants_crouch and on_floor) or (is_crouching and not _can_stand()))
 
-	var speed: float = max_speed * condition.speed_multiplier()
+	# Fatigue mostly costs sprinting: running uses the full condition multiplier, but walking never drops below
+	# WALK_FATIGUE_FLOOR of normal pace (an exhausted Elena can still walk away and recover; she cannot sprint).
+	var tired: float = condition.speed_multiplier()
+	var speed: float = max_speed * maxf(tired, WALK_FATIGUE_FLOOR)
 	is_running = false
 	if is_crouching:
 		speed *= crouch_multiplier
 	elif wants_run and condition.stamina > 0.0 and on_floor:
-		speed *= run_multiplier
+		speed = max_speed * tired * run_multiplier
 		is_running = true
 
 	var move_dir: Vector3 = movement_basis * Vector3(input_vec.x, 0.0, input_vec.y)
