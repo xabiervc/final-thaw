@@ -1134,5 +1134,33 @@
 	"opt_graphics_note": {
 		"es": "En gráficos integrados (p. ej. Intel HD 630 a 720p), «Rendimiento» se acerca a 60 FPS; «Alta» ronda los 50.",
 		"en": "On integrated graphics (e.g. Intel HD 630 at 720p), \"Performance\" approaches 60 FPS; \"High\" is around 50."
+	},
+	"ban_inference_hypothesis_body": {
+		"es": "A y T recibieron energía a la vez durante el ensayo. Se puede comprobar en control. (Cuaderno de campo)",
+		"en": "A and T were powered at the same time during the trial. It can be tested in control. (Field notes)"
+	},
+	"ban_inference_test_result_body": {
+		"es": "La protección salta por doble demanda: el acta oficial es falsa. (Cuaderno de campo)",
+		"en": "The protection trips on double demand: the official report is false. (Field notes)"
+	},
+	"ban_inference_conclusion_body": {
+		"es": "El ensayo funcionó y alguien lo ocultó. (Cuaderno de campo)",
+		"en": "The trial worked and someone hid it. (Field notes)"
+	},
+	"opt_ctrl_stick_up": {
+		"es": "Stick izq. ↑",
+		"en": "Left stick ↑"
+	},
+	"opt_ctrl_stick_down": {
+		"es": "Stick izq. ↓",
+		"en": "Left stick ↓"
+	},
+	"opt_ctrl_stick_left": {
+		"es": "Stick izq. ←",
+		"en": "Left stick ←"
+	},
+	"opt_ctrl_stick_right": {
+		"es": "Stick izq. →",
+		"en": "Left stick →"
 	}
 }

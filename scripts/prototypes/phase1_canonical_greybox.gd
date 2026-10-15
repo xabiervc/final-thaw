@@ -1203,7 +1203,7 @@ func _on_note(id: String, kind: String) -> void:
 	_sound("note")
 	var title := T.t("note_%s_title" % id)
 	if kind == "inference":
-		_banner(T.t("ban_inference_" + id), title, "info", 5.0)
+		_banner(T.t("ban_inference_" + id), T.t("ban_inference_" + id + "_body"), "info", 6.0)
 	hud.call("show_note", T.t("hud_note_added", {"title": title}))
 
 

@@ -7,6 +7,7 @@ extends Node
 const SCENE := "res://scenes/prototypes/phase1_canonical_greybox.tscn"
 const SLOT := 98
 const FieldNotes := preload("res://scripts/game/field_notes.gd")
+const PromptHudScript := preload("res://scripts/ui/prompt_hud.gd")
 
 var passed := 0
 var failed := 0
@@ -231,6 +232,46 @@ func _scene_systems() -> void:
 	scene.pause_menu.close()
 	await get_tree().process_frame
 	_expect(not get_tree().paused and not scene.pause_menu.is_open, "resuming unpauses the game")
+	# Gamepad, through the real input pipeline (injected device events, no hardware available in this environment).
+	var yaw_before: float = scene.player.get("orbit_yaw")
+	var z_before: float = scene.player.global_position.z
+	var stick := InputEventJoypadMotion.new()
+	stick.axis = JOY_AXIS_LEFT_Y
+	stick.axis_value = -1.0
+	Input.parse_input_event(stick)
+	var look := InputEventJoypadMotion.new()
+	look.axis = JOY_AXIS_RIGHT_X
+	look.axis_value = 1.0
+	Input.parse_input_event(look)
+	await _frames(0.6)
+	var moved: float = absf(scene.player.global_position.z - z_before) + absf(scene.player.velocity.x) + absf(scene.player.velocity.z)
+	var turned: bool = absf(float(scene.player.get("orbit_yaw")) - yaw_before) > 0.3
+	stick.axis_value = 0.0
+	Input.parse_input_event(stick)
+	look.axis_value = 0.0
+	Input.parse_input_event(look)
+	_expect(moved > 0.5, "the left stick moves Elena through the input map")
+	_expect(turned, "the right stick turns the camera")
+	var button := InputEventJoypadButton.new()
+	button.button_index = JOY_BUTTON_X
+	button.pressed = true
+	Input.parse_input_event(button)
+	await get_tree().process_frame
+	await get_tree().physics_frame  # buffered device events are flushed on the physics tick
+	var interact_on: bool = Input.is_action_pressed("interact")
+	_expect(interact_on and PromptHudScript.using_pad, "the X / square button is 'interact', and the HUD switches to gamepad prompts")
+	_expect(PromptHudScript.control_legend(["interact"]).contains("X /"), "the control legend shows the gamepad button")
+	button.pressed = false
+	Input.parse_input_event(button)
+	var key := InputEventKey.new()
+	key.physical_keycode = KEY_W
+	key.pressed = true
+	Input.parse_input_event(key)
+	key.pressed = false
+	Input.parse_input_event(key)
+	await get_tree().process_frame
+	await get_tree().physics_frame
+	_expect(not PromptHudScript.using_pad, "pressing a key switches the prompts back to the keyboard")
 	# Graphics quality changes the real rendering features of the scene.
 	GameSettings.set_value("graphics", "performance")
 	var perf_ok: bool = not scene._env.glow_enabled and not scene._sun.shadow_enabled

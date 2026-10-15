@@ -23,7 +23,11 @@ var _difficulty_note: Label
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	set_anchors_preset(Control.PRESET_FULL_RECT)
+	# Under a CanvasLayer (pause menu) the anchors alone leave the rect at zero: set offsets too, and follow resizes.
+	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	if size == Vector2.ZERO:
+		size = get_viewport_rect().size
+	get_viewport().size_changed.connect(func(): size = get_viewport_rect().size)
 	_build()
 
 
@@ -226,7 +230,10 @@ func _refresh_remap() -> void:
 		var row: Dictionary = _remap_rows[action]
 		var capturing: bool = action == _capture_action
 		(row["key"] as Button).text = T.t("opt_ctrl_press") if capturing and not _capture_pad else InputRemapManager.key_label(InputRemapManager.current_keycode(action))
-		(row["pad"] as Button).text = T.t("opt_ctrl_press") if capturing and _capture_pad else InputRemapManager.pad_label(InputRemapManager.current_pad_button(action))
+		var pad_text := InputRemapManager.pad_label(InputRemapManager.current_pad_button(action))
+		if str(action).begins_with("move_") and InputRemapManager.current_pad_button(action) < 0:
+			pad_text = T.t("opt_ctrl_stick_" + str(action).trim_prefix("move_"))
+		(row["pad"] as Button).text = T.t("opt_ctrl_press") if capturing and _capture_pad else pad_text
 
 
 func _begin_capture(action: String, pad: bool) -> void:

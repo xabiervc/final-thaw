@@ -70,15 +70,15 @@ static func button(text: String, min_width: float = 260.0) -> Button:
 ## Full-screen dimmer with a centred card; returns [root, card content VBox].
 static func modal(parent: Node, accent: Color = CYAN, width: float = 620.0) -> Array:
 	var root := Control.new()
-	root.set_anchors_preset(Control.PRESET_FULL_RECT)
+	root.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.mouse_filter = Control.MOUSE_FILTER_STOP
 	parent.add_child(root)
 	var dim := ColorRect.new()
 	dim.color = Color(0, 0, 0, 0.62)
-	dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	dim.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.add_child(dim)
 	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	center.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	root.add_child(center)
 	var card := PanelContainer.new()
 	card.add_theme_stylebox_override("panel", panel_style(accent))

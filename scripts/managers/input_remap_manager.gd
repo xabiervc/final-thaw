@@ -132,8 +132,13 @@ static func reset_all() -> void:
 # --- labels ---------------------------------------------------------------------------------------------------------
 
 static func key_label(keycode: int) -> String:
-	if keycode == KEY_NONE:
-		return "—"
+	match keycode:
+		KEY_NONE:
+			return "—"
+		KEY_SPACE:
+			return NarrativeTextManager.get_option("hud_key_space", "Espacio")
+		KEY_ESCAPE:
+			return "Esc"
 	return OS.get_keycode_string(keycode)
 
 
