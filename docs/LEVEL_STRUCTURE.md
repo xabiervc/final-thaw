@@ -367,3 +367,31 @@ The yard is built by `scripts/phase2/phase2_parking.gd` in the same scene as the
 The remaining concept rules hold: two routes with different exposure, O1/O2 cover, a fixed 1.3 m O3 aperture, the recovery checkpoints (YARD at the mouth, JOIN, EGRESS), no required jump and no invisible walls.
 
 **Not verified:** fairness and tension with human players, and camera comfort in the yard. See `PROJECT_STATUS.md`.
+
+## 7. Owner-approved spatial and escape direction — 2026-10-15
+
+This section records the next design target. The geometry and sequence below are not yet certified as built or runtime-verified. Existing parking dimensions and drawings remain useful references where compatible, but must be reconciled with the new human-stealth and hybrid first-person design before implementation is considered accepted.
+
+### 7.1 Phase 1 building composition
+Keep the large central pumping hall as the principal spatial landmark. It should be visually memorable, multi-level and dense with meaningful machinery, catwalks, pipes and sightlines, inspired by the owner's illustrated laboratory reference. Surround it with purposeful, interconnected spaces—maintenance, control, archive/research and service areas as appropriate to the approved architectural plan.
+
+The player should understand how rooms relate to the central hall through visible landmarks, lighting, signage and glimpses of other elevations. Provide optional discoveries and shortcuts, but avoid maze-like routing and repetitive backtracking. Each major room must contribute a puzzle clue, environmental interaction, traversal challenge, narrative discovery, route choice or optional reward.
+
+Elena's entry is through a damaged service breach or culvert. A collapse physically blocks the entry behind her. Return through that exact route must be impossible because of actual geometry/collision, not dialogue or an invisible blocker. The exit route belongs elsewhere in the building.
+
+### 7.2 Phase 2 transition and operational zone
+After completing the required investigation and opening the appropriate gate, Elena enters a previously unseen operational area. She should initially move cautiously and observe a small number of human personnel working on a meaningful Helix/Aster activity. The scene must reveal information and build tension before detection; avoid NPCs that serve no gameplay or narrative purpose.
+
+The principal redesigned pursuer is human. Detection, suspicion, search, communication and chase behavior must be readable and fair. The current robotic recovery unit is existing prototype behavior, not the approved final direction for this sequence.
+
+### 7.3 Hybrid first-person chase
+Use first-person perspective for the principal escape. Preserve free movement and route choices, punctuated by brief contextual actions (vault, duck/slide, push an object, operate a mechanism or select a route). Short, motivated looks back can show consequences such as a pursuer stumbling over an object. Avoid a QTE-only sequence, arbitrary failure and long interruptions of control.
+
+### 7.4 Parking and public exit
+The parking garage is a separately designed chase space, not required to be adjacent to the central hall. Connect it through a credible service route or a deliberate scene transition that preserves motion, sound, orientation and narrative continuity. Design vehicle rows, columns, ramps/barriers and readable route alternatives for the intended chase. Elena exits to a public street and loses the pursuers among pedestrians. The crowd may be staged efficiently; a full pedestrian simulation is not a requirement.
+
+### 7.5 Future Marcus combat phases
+Do not fold the full beat-'em-up into this level-design scope. Future Marcus-led phases should include Elena as a companion whose defensive capability progresses from dependence on Marcus to limited self-defense learned from him. The level and encounter design should later reflect this progression; the current Phase 1/2 priority remains investigation, human discovery and escape.
+
+### 7.6 Art and verification gate
+Use the owner's Marcus concept and illustrated laboratory reference to guide the art language: illustrated 3D, painterly materials, controlled edge definition, strong silhouettes and readable cinematic lighting. Before expanding production, validate one playable section in Godot from the gameplay camera. Reconcile layout drawings, collision, navigation, camera, scene transitions and the actual implementation; concept art or static renders do not prove a playable route.
