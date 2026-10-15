@@ -1,0 +1,7 @@
+{
+ "shots": [
+  {"name": "30_main_menu", "scene": "res://scenes/ui/main_menu.tscn", "wait_s": 1.5},
+  {"name": "31_options", "scene": "res://scenes/ui/options_menu.tscn", "wait_s": 1.5},
+  {"name": "32_credits", "scene": "res://scenes/ui/credits.tscn", "wait_s": 1.5}
+ ]
+}

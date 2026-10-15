@@ -1,0 +1,52 @@
+{
+ "scene": "res://scenes/prototypes/phase1_canonical_greybox.tscn",
+ "props": {
+  "play_intro": false
+ },
+ "shots": [
+  {
+   "name": "25_ending_prep",
+   "calls": [
+    "_begin_containment"
+   ],
+   "pos": [
+    71.2,
+    -2.0,
+    -12.0
+   ],
+   "face": [
+    0,
+    -1
+   ],
+   "unit": [
+    71.0,
+    -2.0,
+    -4.5
+   ],
+   "wait_s": 1.0
+  },
+  {
+   "name": "26_ending_gate",
+   "calls": [
+    "_begin_ending"
+   ],
+   "keep_camera": true,
+   "wait_s": 2.0
+  },
+  {
+   "name": "27_ending_lookback",
+   "keep_camera": true,
+   "wait_s": 5.0
+  },
+  {
+   "name": "28_ending_street",
+   "keep_camera": true,
+   "wait_s": 6.0
+  },
+  {
+   "name": "29_ending_card",
+   "keep_camera": true,
+   "wait_s": 9.0
+  }
+ ]
+}

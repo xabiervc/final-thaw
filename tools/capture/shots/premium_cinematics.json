@@ -1,0 +1,33 @@
+{
+ "scene": "res://scenes/prototypes/phase1_canonical_greybox.tscn",
+ "props": {
+  "play_intro": true
+ },
+ "shots": [
+  {
+   "name": "20_intro_establishing",
+   "keep_camera": true,
+   "wait_s": 10.0
+  },
+  {
+   "name": "21_intro_nave",
+   "keep_camera": true,
+   "wait_s": 9.5
+  },
+  {
+   "name": "22_intro_pit",
+   "keep_camera": true,
+   "wait_s": 9.0
+  },
+  {
+   "name": "23_intro_entry",
+   "keep_camera": true,
+   "wait_s": 9.0
+  },
+  {
+   "name": "24_intro_handoff",
+   "keep_camera": true,
+   "wait_s": 4.5
+  }
+ ]
+}

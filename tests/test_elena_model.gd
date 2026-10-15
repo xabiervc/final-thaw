@@ -9,8 +9,9 @@ extends Node
 
 const ElenaScript = preload("res://scripts/characters/elena_controller.gd")
 
-const EXPECTED_MESHES := 21  # 16 body/outfit pieces + 4 eyelash lines + the hair cards
-const TRIANGLE_BUDGET := 30000
+const EXPECTED_MESHES := 16  # v2: body, eyes, brows, lashes, hair, coat, tape, pockets, knit, trousers, boots, 2 straps, backpack, Aster + screen
+## v2 budget (docs/art/ASSET_PRODUCTION_BIBLE.md): 33k triangles; the MakeHuman ponytail and the modelled backpack added ~2k.
+const TRIANGLE_BUDGET := 33000
 const ELENA_HEIGHT := 1.7
 const HEIGHT_TOLERANCE := 0.06
 
@@ -50,7 +51,7 @@ func _test_model_or_graceful_fallback() -> void:
 	_expect(shape != null and shape.shape is CapsuleShape3D and is_equal_approx((shape.shape as CapsuleShape3D).radius, 0.32) and is_equal_approx((shape.shape as CapsuleShape3D).height, 1.7), "the collision capsule is unchanged (0.32 m x 1.7 m)")
 	if not _loadable():
 		_expect(not elena.uses_mpfb_model, "without an importable GLB the controller falls back to primitives")
-		print("NOTE: ref_elena_mpfb.glb is not importable here (run godot --headless --path . --import first); model checks skipped")
+		print("NOTE: elena.glb is not importable here (run godot --headless --path . --import first); model checks skipped")
 		elena.queue_free()
 		return
 	_expect(elena.uses_mpfb_model, "the MPFB model is used when it can be loaded")
@@ -74,7 +75,7 @@ func _test_model_or_graceful_fallback() -> void:
 	var box := _local_aabb(elena, meshes)
 	_expect(absf(box.size.y - ELENA_HEIGHT) <= HEIGHT_TOLERANCE, "the model is about 1.70 m tall (%.3f m)" % box.size.y)
 	_expect(absf(box.position.y) <= 0.05, "the model stands on the floor (min y = %.3f)" % box.position.y)
-	var lights: Array = elena.visual.find_children("*", "OmniLight3D", false, false)
+	var lights: Array = elena.visual.find_children("*", "OmniLight3D", true, false)
 	_expect(lights.size() == 1, "the model path adds exactly one Aster light")
 	elena.queue_free()
 

@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/characters/elena/elena_skin_albedo.jpg" id="1"]
+[ext_resource type="Texture2D" path="res://assets/textures/characters/elena/elena_skin_normal.png" id="2"]
+
+[resource]
+resource_name = "elena_skin"
+albedo_texture = ExtResource("1")
+roughness = 0.56
+normal_enabled = true
+normal_scale = 0.45
+normal_texture = ExtResource("2")
+rim_enabled = true
+rim = 0.12
+rim_tint = 0.6
+backlight_enabled = true
+backlight = Color(0.32, 0.12, 0.08, 1)

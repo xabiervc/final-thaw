@@ -1,0 +1,120 @@
+{
+ "alert": {
+  "frames": 14,
+  "loop": false,
+  "note": "subject 77 duck to avoid a flying object (startle)",
+  "source": "CMU 77_09 frames 214-268",
+  "speed": 0.0
+ },
+ "caught": {
+  "loop": false,
+  "source": "procedural (animate_elena.py v1)",
+  "speed": 0.0
+ },
+ "climb": {
+  "loop": false,
+  "source": "procedural (animate_elena.py v1)",
+  "speed": 0.0
+ },
+ "crouch_idle": {
+  "frames": 104,
+  "loop": true,
+  "note": "subject 77 standing with a layered crouch",
+  "source": "CMU 77_02 frames 452-866",
+  "speed": 0.004
+ },
+ "crouch_walk": {
+  "frames": 34,
+  "loop": true,
+  "note": "subject 35 walk with a layered crouch (pelvis -30 cm, IK legs)",
+  "source": "CMU 35_01 frames 36-170",
+  "speed": 1.335
+ },
+ "fall": {
+  "frames": 13,
+  "loop": true,
+  "note": "subject 127 run-jump-stop: apex to touch-down, ping-pong loop",
+  "source": "CMU 127_21 frames 100-124",
+  "speed": 0.0
+ },
+ "idle": {
+  "frames": 104,
+  "loop": true,
+  "note": "subject 77 'careful actions': standing, alert weight shifts",
+  "source": "CMU 77_02 frames 452-866",
+  "speed": 0.004
+ },
+ "interact": {
+  "loop": false,
+  "source": "procedural (animate_elena.py v1)",
+  "speed": 0.0
+ },
+ "jump": {
+  "frames": 10,
+  "loop": false,
+  "note": "subject 127 run-jump-stop: push-off to just past the apex (0.32 s, the rise lasts ~0.2 s)",
+  "source": "CMU 127_21 frames 68-106",
+  "speed": 0.0
+ },
+ "land": {
+  "frames": 14,
+  "loop": false,
+  "note": "subject 127 run-jump-stop: impact and knee absorption",
+  "source": "CMU 127_21 frames 126-178",
+  "speed": 0.0
+ },
+ "run": {
+  "frames": 23,
+  "loop": true,
+  "note": "subject 35 run/jog, steady 3.5 m/s",
+  "source": "CMU 35_22 frames 36-126",
+  "speed": 3.731
+ },
+ "scan": {
+  "loop": false,
+  "source": "procedural (animate_elena.py v1)",
+  "speed": 0.0
+ },
+ "sprint": {
+  "frames": 22,
+  "loop": true,
+  "note": "subject 143 run, 6 m/s",
+  "source": "CMU 143_01 frames 4-88",
+  "speed": 7.508
+ },
+ "start": {
+  "frames": 17,
+  "loop": false,
+  "note": "subject 143 start to run: the push-off steps",
+  "source": "CMU 143_03 frames 112-176",
+  "speed": 0.0
+ },
+ "stop": {
+  "frames": 18,
+  "loop": false,
+  "note": "subject 143 run to stop: last braking step and settle",
+  "source": "CMU 143_02 frames 80-150",
+  "speed": 0.0
+ },
+ "turn_left": {
+  "frames": 38,
+  "loop": false,
+  "note": "subject 69 turn in place, 90 degrees left",
+  "source": "CMU 69_16 frames 450-600",
+  "speed": 0.0
+ },
+ "turn_right": {
+  "frames": 33,
+  "loop": false,
+  "note": "subject 69 turn in place, 90 degrees right",
+  "source": "CMU 69_18 frames 330-460",
+  "speed": 0.0
+ },
+ "walk": {
+  "frames": 34,
+  "loop": true,
+  "note": "subject 35 walk, steady 1.3 m/s",
+  "source": "CMU 35_01 frames 36-170",
+  "speed": 1.335
+ }
+}

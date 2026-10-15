@@ -1,0 +1,414 @@
+{
+ "scene": "res://tools/capture/character_lookdev.tscn",
+ "props": {
+  "lighting": "neutral"
+ },
+ "shots": [
+  {
+   "name": "idle_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle",
+   "seek": 0.0,
+   "wait_s": 0.6
+  },
+  {
+   "name": "idle_150",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle",
+   "seek": 1.5,
+   "wait_s": 0.6
+  },
+  {
+   "name": "walk_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "walk",
+   "seek": 0.0,
+   "wait_s": 0.6
+  },
+  {
+   "name": "walk_028",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "walk",
+   "seek": 0.28,
+   "wait_s": 0.6
+  },
+  {
+   "name": "walk_056",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "walk",
+   "seek": 0.56,
+   "wait_s": 0.6
+  },
+  {
+   "name": "run_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "run",
+   "seek": 0.0,
+   "wait_s": 0.6
+  },
+  {
+   "name": "run_019",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "run",
+   "seek": 0.19,
+   "wait_s": 0.6
+  },
+  {
+   "name": "run_038",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "run",
+   "seek": 0.38,
+   "wait_s": 0.6
+  },
+  {
+   "name": "sprint_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "sprint",
+   "seek": 0.0,
+   "wait_s": 0.6
+  },
+  {
+   "name": "sprint_017",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "sprint",
+   "seek": 0.17,
+   "wait_s": 0.6
+  },
+  {
+   "name": "sprint_035",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "sprint",
+   "seek": 0.35,
+   "wait_s": 0.6
+  },
+  {
+   "name": "crouch_walk_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.0,
+   "wait_s": 0.6
+  },
+  {
+   "name": "crouch_walk_025",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.25,
+   "wait_s": 0.6
+  },
+  {
+   "name": "crouch_walk_050",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.6
+    ],
+    [
+     0,
+     0.85,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.5,
+   "wait_s": 0.6
+  }
+ ]
+}

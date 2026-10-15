@@ -21,19 +21,36 @@ const CAMERA_MODES := {
 	"pursuit": {"length": 3.4, "fov": 71.0, "offset": 0.6, "height": 1.38},
 }
 const CAMERA_BLEND := 2.2
-## Natural ground speed of each locomotion clip at playback 1.0 (measured from planted-foot travel in Godot and
-## from the authored stride, tools/blender/elena_mpfb/animate_elena.py). Playback = ground speed / clip speed,
-## so the feet do not skate. The run clip covers the default pace (~1x) and the sprint (~1.6x).
-const WALK_CLIP_SPEED := 1.8
-const RUN_CLIP_SPEED := 4.3
-const CROUCH_CLIP_SPEED := 0.85
-## Walk <-> run clip switch, with hysteresis so analog speeds near the boundary do not flicker.
+## Natural ground speed (m/s) of each locomotion clip at playback 1.0. The retarget measures it from the capture scaled to Elena
+## (tools/blender/elena_mpfb/animate_elena_v2.py writes elena_clips.json next to the model); these are the fallbacks.
+## Playback = ground speed / clip speed, so the feet do not skate.
+const CLIP_TABLE := "res://assets/models/characters/elena/elena_clips.json"
+var clip_speed: Dictionary = {"walk": 1.34, "run": 3.73, "sprint": 7.51, "crouch_walk": 1.34}
+## Gait switches, with hysteresis so analog speeds near a boundary do not flicker. The default pace (4.2 m/s) runs; the sprint
+## (6.8 m/s) uses the sprint clip.
 const RUN_CLIP_ABOVE := 2.8
 const WALK_CLIP_BELOW := 2.4
+const SPRINT_CLIP_ABOVE := 5.6
+const RUN_CLIP_BELOW_SPRINT := 5.0
 ## Body lean (degrees) into acceleration and turns; smoothed, and reduced to a third with reduced motion.
 const LEAN_FORWARD_MAX := 7.0
 const LEAN_SIDE_MAX := 8.0
-var _gait_run: bool = false
+## Clips that cycle (the rest play once); set here so the model's import settings do not matter.
+const LOOPING_CLIPS := ["idle", "walk", "run", "sprint", "crouch_idle", "crouch_walk", "fall"]
+## Transitions (captured, in place): "start" when setting off, a pivot ("turn_left"/"turn_right") when setting off in a direction
+## far from where she faces, "stop" after a run ends in a standstill. Each plays for a short window, then locomotion blends in.
+## Any change of state (air, crouch, a new start) cuts a transition short, so they never delay control.
+const START_TIME := 0.26
+const START_PLAYBACK := 1.25
+const PIVOT_ANGLE := 1.9  # radians between facing and the new direction that makes a standing start a pivot
+const PIVOT_TIME := 0.3
+const PIVOT_PLAYBACK := 1.8
+const STOP_FROM_SPEED := 2.5
+const STOP_TIME := 0.5
+var _gait: String = "walk"
+var _transition: String = ""
+var _transition_left: float = 0.0
+var _prev_speed: float = 0.0
 var _prev_velocity: Vector3 = Vector3.ZERO
 var _lean: Vector2 = Vector2.ZERO
 var camera_mode: String = "explore"
@@ -75,9 +92,69 @@ func _setup_animation() -> void:
 	if candidate == null or not candidate.has_animation("idle"):
 		return
 	anim = candidate
+	_load_clip_table()
+	for clip in LOOPING_CLIPS:
+		if anim.has_animation(clip):
+			anim.get_animation(clip).loop_mode = Animation.LOOP_LINEAR
 	if pose != null:
 		pose.process_mode = Node.PROCESS_MODE_DISABLED
 	anim.play("idle")
+
+func _load_clip_table() -> void:
+	if not FileAccess.file_exists(CLIP_TABLE):
+		return
+	var table = JSON.parse_string(FileAccess.get_file_as_string(CLIP_TABLE))
+	if not table is Dictionary:
+		return
+	for clip in clip_speed.keys():
+		if table.has(clip) and float(table[clip].get("speed", 0.0)) > 0.2:
+			clip_speed[clip] = float(table[clip]["speed"])
+
+
+## Starts, pivots and stops on the ground (see START_TIME and the constants above).
+func _update_transition(delta: float, speed: float) -> void:
+	_transition_left -= delta
+	if _transition_left <= 0.0:
+		_transition = ""
+	var moving_off := _prev_speed < 0.3 and speed >= 0.3
+	if moving_off:
+		var heading := atan2(velocity.x, velocity.z)
+		var error := absf(wrapf(heading - visual.rotation.y, -PI, PI)) if visual != null else 0.0
+		if error > PIVOT_ANGLE and anim.has_animation("turn_left"):
+			var left := wrapf(heading - visual.rotation.y, -PI, PI) > 0.0
+			_set_transition("turn_left" if left else "turn_right", PIVOT_TIME)
+		elif anim.has_animation("start"):
+			_set_transition("start", START_TIME)
+	elif _transition == "stop" and speed > 0.3:
+		_transition = ""  # moving again: back to locomotion at once
+	elif _prev_speed > STOP_FROM_SPEED and speed < 0.3 and anim.has_animation("stop"):
+		_set_transition("stop", STOP_TIME)
+	elif _transition == "start" and speed < 0.3:
+		_transition = ""
+
+
+func _set_transition(clip: String, seconds: float) -> void:
+	_transition = clip
+	_transition_left = seconds
+	if anim.current_animation == clip:
+		anim.seek(0.0, true)
+
+
+## Walk / run / sprint from the ground speed, with hysteresis.
+func _update_gait(speed: float) -> void:
+	match _gait:
+		"walk":
+			if speed > RUN_CLIP_ABOVE or (is_running and speed > 2.0):
+				_gait = "run"
+		"run":
+			if speed < WALK_CLIP_BELOW and not is_running:
+				_gait = "walk"
+			elif speed > SPRINT_CLIP_ABOVE and anim.has_animation("sprint"):
+				_gait = "sprint"
+		_:
+			if speed < RUN_CLIP_BELOW_SPRINT:
+				_gait = "run"
+
 
 func set_camera_mode(mode: String, instant: bool = false) -> void:
 	if not CAMERA_MODES.has(mode):
@@ -179,21 +256,27 @@ func _update_animation(delta: float) -> void:
 		wanted = "land"
 	elif is_crouching:
 		wanted = "crouch_walk" if speed > 0.25 else "crouch_idle"
-		playback = clampf(speed / CROUCH_CLIP_SPEED, 0.6, 2.0) if speed > 0.25 else 1.0
-	elif speed > 0.3:
-		if _gait_run and speed < WALK_CLIP_BELOW and not is_running:
-			_gait_run = false
-		elif not _gait_run and (speed > RUN_CLIP_ABOVE or is_running):
-			_gait_run = true
-		wanted = "run" if _gait_run else "walk"
-		# Playback follows ground speed so the feet do not skate.
-		playback = clampf(speed / (RUN_CLIP_SPEED if _gait_run else WALK_CLIP_SPEED), 0.55, 1.75)
-	elif _gesture_left > 0.0:
-		wanted = _gesture
+		playback = clampf(speed / float(clip_speed["crouch_walk"]), 0.6, 2.0) if speed > 0.25 else 1.0
+	else:
+		_update_transition(delta, speed)
+		if not _transition.is_empty():
+			wanted = _transition
+			playback = START_PLAYBACK if _transition == "start" else (PIVOT_PLAYBACK if _transition.begins_with("turn") else 1.0)
+		elif speed > 0.3:
+			_update_gait(speed)
+			wanted = _gait
+			# Playback follows ground speed so the feet do not skate.
+			playback = clampf(speed / float(clip_speed.get(_gait, 1.0)), 0.55, 1.75)
+		elif _gesture_left > 0.0:
+			wanted = _gesture
+	if not on_floor or is_crouching or is_climbing:
+		_transition = ""
+		_transition_left = 0.0
+	_prev_speed = speed
 	anim.speed_scale = playback
 	if anim.current_animation != wanted:
 		# Locomotion changes blend softly; airborne and landing states cut in quickly to stay responsive.
-		var blend := 0.08 if wanted in ["jump", "fall", "land", "climb"] else 0.2
+		var blend := 0.08 if wanted in ["jump", "fall", "land", "climb"] else (0.1 if wanted in ["start", "stop", "turn_left", "turn_right"] else 0.2)
 		anim.play(wanted, blend)
 	_update_lean(delta, on_floor)
 	# The orbit pivot follows the body: lower while crouched so the camera reads low passages.

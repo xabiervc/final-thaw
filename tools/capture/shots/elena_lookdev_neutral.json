@@ -1,0 +1,198 @@
+{
+ "scene": "res://tools/capture/character_lookdev.tscn",
+ "props": {
+  "lighting": "neutral"
+ },
+ "shots": [
+  {
+   "name": "neutral_front",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    0,
+    1
+   ],
+   "cam": [
+    [
+     0,
+     1.0,
+     3.2
+    ],
+    [
+     0,
+     0.9,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle"
+  },
+  {
+   "name": "neutral_34",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    0,
+    1
+   ],
+   "cam": [
+    [
+     2.1,
+     1.3,
+     2.4
+    ],
+    [
+     0,
+     0.95,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle"
+  },
+  {
+   "name": "neutral_side",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    0,
+    1
+   ],
+   "cam": [
+    [
+     3.3,
+     1.0,
+     0
+    ],
+    [
+     0,
+     0.9,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle"
+  },
+  {
+   "name": "neutral_back",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    0,
+    1
+   ],
+   "cam": [
+    [
+     0,
+     1.1,
+     -3.2
+    ],
+    [
+     0,
+     0.95,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle"
+  },
+  {
+   "name": "neutral_face",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    0,
+    1
+   ],
+   "cam": [
+    [
+     0,
+     1.6,
+     0.95
+    ],
+    [
+     0,
+     1.55,
+     0
+    ]
+   ],
+   "fov": 30,
+   "hud": false,
+   "anim": "idle"
+  },
+  {
+   "name": "neutral_face34",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    0,
+    1
+   ],
+   "cam": [
+    [
+     0.6,
+     1.62,
+     0.75
+    ],
+    [
+     0,
+     1.56,
+     0
+    ]
+   ],
+   "fov": 30,
+   "hud": false,
+   "anim": "idle"
+  },
+  {
+   "name": "neutral_walk",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    0,
+    1
+   ],
+   "cam": [
+    [
+     3.3,
+     1.0,
+     0
+    ],
+    [
+     0,
+     0.9,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "walk",
+   "seek": 0.35
+  }
+ ]
+}

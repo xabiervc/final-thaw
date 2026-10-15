@@ -4,9 +4,11 @@ const B = preload("res://scripts/components/build_util.gd")
 const ConditionScript = preload("res://scripts/components/character_condition.gd")
 const PoseScript = preload("res://scripts/characters/elena_procedural_pose.gd")
 
-## Modelo con textura de Elena (MPFB). Si no se puede cargar, se usa el cuerpo procedural.
-const MPFB_MODEL_PATH := "res://assets/models/lab_ref/ref_elena_mpfb.glb"
-const MPFB_MATERIAL_DIR := "res://assets/materials/lab_ref/"
+## Elena's model (v2, 2026-10-15: MPFB body and rig, MakeHuman CC0 skin, eyes, brows, lashes and hair; see
+## tools/blender/elena_mpfb/build_elena_v2.py). If it cannot be loaded, the primitive body is used.
+const MPFB_MODEL_PATH := "res://assets/models/characters/elena/elena.glb"
+## Imported surfaces get the .tres named like their material, looked up in these folders in order.
+const MPFB_MATERIAL_DIRS := ["res://assets/materials/characters/elena/", "res://assets/materials/lab_ref/"]
 
 signal fell_off
 signal jumped
@@ -177,7 +179,7 @@ func _build_mpfb_visual() -> bool:
 	model.name = "ElenaModel"
 	visual.add_child(model)
 	_dress_model(model)
-	_add_aster_glow(Vector3(-0.16, 1.1, 0.4), 0.7, 1.8)
+	_add_aster_glow(model)
 	pose = PoseScript.new()
 	pose.name = "ProceduralPose"
 	add_child(pose)
@@ -204,20 +206,37 @@ func _material_for(material_name: String) -> Material:
 		return null
 	if _material_cache.has(material_name):
 		return _material_cache[material_name]
-	var path := MPFB_MATERIAL_DIR + material_name + ".tres"
 	var material: Material = null
-	if ResourceLoader.exists(path):
-		material = load(path) as Material
+	for dir in MPFB_MATERIAL_DIRS:
+		var path: String = dir + material_name + ".tres"
+		if ResourceLoader.exists(path):
+			material = load(path) as Material
+			break
 	_material_cache[material_name] = material
 	return material
 
-func _add_aster_glow(pos: Vector3, energy: float, light_range: float) -> void:
+## The Aster scanner's screen: a faint cyan spill that follows the right hand. Kept weak and short on purpose: at
+## 0.7 energy from below the hand it lit her face and coat neon cyan (2026-10-15 baseline captures).
+const ASTER_GLOW_ENERGY := 0.22
+const ASTER_GLOW_RANGE := 1.1
+
+func _add_aster_glow(model: Node) -> void:
 	var glow := OmniLight3D.new()
-	glow.light_color = Color(0.3, 0.95, 0.9)
-	glow.light_energy = energy
-	glow.omni_range = light_range
-	glow.position = pos
-	visual.add_child(glow)
+	glow.name = "AsterGlow"
+	glow.light_color = Color(0.5, 0.88, 0.86)
+	glow.light_energy = ASTER_GLOW_ENERGY
+	glow.omni_range = ASTER_GLOW_RANGE
+	glow.shadow_enabled = false
+	var skeleton := model.find_children("*", "Skeleton3D", true, false)
+	if not skeleton.is_empty() and (skeleton[0] as Skeleton3D).find_bone("hand_r") >= 0:
+		var attach := BoneAttachment3D.new()
+		attach.bone_name = "hand_r"
+		skeleton[0].add_child(attach)
+		glow.position = Vector3(0.0, 0.08, 0.06)
+		attach.add_child(glow)
+	else:
+		glow.position = Vector3(-0.16, 1.1, 0.4)
+		visual.add_child(glow)
 
 func _process(delta: float) -> void:
 	_t += delta

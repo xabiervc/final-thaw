@@ -1,0 +1,30 @@
+{
+ "scene": "res://scenes/prototypes/phase1_canonical_greybox.tscn",
+ "props": {"play_intro": false},
+ "shots": [
+  {"name": "01_elena_gameplay", "pos": [11.0, 0.0, -6.0], "face": [1, 0.35], "yaw": -1.95, "pitch": -0.42, "mode": "explore", "wait_s": 1.5},
+  {"name": "02_elena_close_front", "pos": [11.0, 0.0, -6.0], "face": [1, 0], "cam": [[12.25, 1.6, -6.0], [11.0, 1.52, -6.0]], "fov": 32, "hud": false, "anim": "idle"},
+  {"name": "02b_elena_full_front", "pos": [11.0, 0.0, -6.0], "face": [1, 0], "cam": [[14.4, 1.0, -6.0], [11.0, 0.88, -6.0]], "fov": 38, "hud": false, "anim": "idle"},
+  {"name": "02c_elena_three_quarter", "pos": [11.0, 0.0, -6.0], "face": [1, 0], "cam": [[13.2, 1.3, -4.1], [11.0, 0.95, -6.0]], "fov": 40, "hud": false, "anim": "idle"},
+  {"name": "02d_elena_side", "pos": [11.0, 0.0, -6.0], "face": [1, 0], "cam": [[11.0, 1.0, -2.6], [11.0, 0.9, -6.0]], "fov": 40, "hud": false, "anim": "idle"},
+  {"name": "02e_elena_back", "pos": [11.0, 0.0, -6.0], "face": [1, 0], "cam": [[7.6, 1.0, -6.0], [11.0, 0.9, -6.0]], "fov": 40, "hud": false, "anim": "idle"},
+  {"name": "02f_elena_walk_side", "pos": [11.0, 0.0, -6.0], "face": [1, 0], "cam": [[11.0, 1.0, -2.6], [11.0, 0.9, -6.0]], "fov": 40, "hud": false, "anim": "walk", "seek": 0.3},
+  {"name": "03_entry_tunnel", "pos": [-1.6, 0.0, 6.0], "face": [1, 0], "yaw": 1.2, "pitch": -0.35, "mode": "explore"},
+  {"name": "03b_entry_exterior", "pos": [-1.6, 0.0, 6.0], "face": [-1, 0], "cam": [[-10.0, 2.2, 11.5], [-1.0, 1.3, 6.0]], "fov": 55, "hud": false},
+  {"name": "04_nave", "pos": [5.5, 0.0, 6.8], "face": [1, -0.6], "yaw": -2.1, "pitch": -0.3, "mode": "explore"},
+  {"name": "04b_nave_wide", "pos": [5.5, 0.0, 6.8], "face": [1, -0.6], "cam": [[3.0, 2.2, 9.5], [16.0, 3.2, -4.0]], "fov": 62, "hud": false},
+  {"name": "05_pit_machinery", "pos": [13.0, -2.0, 5.6], "face": [0.3, -1], "yaw": 0.25, "pitch": -0.45, "mode": "explore"},
+  {"name": "05b_pump_room", "pos": [11.5, 3.0, -5.4], "face": [1, -0.2], "yaw": -1.75, "pitch": -0.35, "mode": "explore"},
+  {"name": "06_control_room", "pos": [12.0, 6.0, -6.0], "face": [1, -0.4], "yaw": -1.85, "pitch": -0.4, "mode": "explore"},
+  {"name": "06b_archive", "pos": [7.6, 6.0, -6.2], "face": [-1, -0.5], "yaw": 1.35, "pitch": -0.4, "mode": "explore"},
+  {"name": "07_puzzle_before", "pos": [24.6, -2.0, 4.6], "face": [0.4, -1], "yaw": -0.25, "pitch": -0.38, "mode": "explore"},
+  {"name": "07b_puzzle_after", "calls": ["_toggle_maintenance"], "pos": [24.6, -2.0, 4.6], "face": [0.4, -1], "yaw": -0.25, "pitch": -0.38, "mode": "explore", "wait_s": 2.0},
+  {"name": "08_building_exterior", "pos": [-1.6, 0.0, 6.0], "cam": [[-30.0, 15.0, 22.0], [8.0, 3.0, -2.0]], "fov": 50, "hud": false},
+  {"name": "09_traversal_r1", "pos": [27.0, 0.0, 0.3], "face": [1, 0], "yaw": -1.4, "pitch": -0.35, "mode": "explore"},
+  {"name": "10_yard", "calls": ["_begin_containment", "_enter_yard"], "pos": [37.5, -2.0, 6.0], "face": [1, -0.3], "yaw": -1.75, "pitch": -0.3, "mode": "explore", "wait_s": 5.0},
+  {"name": "10b_yard_wide", "pos": [37.5, -2.0, 6.0], "cam": [[36.0, 4.5, 12.5], [62.0, -1.0, -6.0]], "fov": 60, "hud": false},
+  {"name": "11_chase", "pos": [49.0, -2.0, 3.2], "face": [1, -0.5], "yaw": -1.15, "pitch": -0.28, "mode": "pursuit", "unit": [43.5, -2.0, 5.0], "wait_s": 0.6},
+  {"name": "12_egress", "pos": [72.7, -2.0, -2.0], "face": [0, -1], "yaw": 0.0, "pitch": -0.3, "mode": "explore"},
+  {"name": "13_street", "pos": [71.0, 0.4, -27.0], "cam": [[61.0, 2.0, -29.5], [71.0, 1.3, -24.0]], "fov": 55, "hud": false}
+ ]
+}

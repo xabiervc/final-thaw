@@ -18,6 +18,8 @@ extends Node
 ##   --wait=90               frames to wait before the capture
 ##   --bench=240             frames to measure after the capture (0 = skip)
 ##   --out=D:/path/shot.png  screenshot output (outside the repository)
+##   --shots=res://tools/capture/shots/premium.json --outdir=D:/path   repeatable shot list (one scene load, many
+##                           captures; see _run_shots). Before/after comparisons reuse the same list.
 ## Example:
 ##   godot --path . --resolution 1920x1080 res://tools/capture/scene_capture.tscn -- --pos=-9.5,0.1,3.5 --out=D:/Projects/evidence/a.png
 
@@ -34,7 +36,127 @@ func _ready() -> void:
 			_args[arg.substr(0, eq)] = arg.substr(eq + 1)
 	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	Engine.max_fps = 0
-	_run.call_deferred()
+	if _args.has("shots"):
+		_run_shots.call_deferred()
+	else:
+		_run.call_deferred()
+
+
+## Shot list: {"scene": path, "props": {...}, "shots": [shot, ...]}. Each shot (all keys optional except name):
+##   "name"            file name (without .png)
+##   "calls"           level methods called once before this shot (state persists to later shots)
+##   "pos" [x,y,z]     Elena position; "face" [dx,dz] her facing; "yaw"/"pitch" orbit camera; "mode" camera mode
+##   "anim" name       Elena animation to hold for the capture ("speed" its playback scale, "seek" a time in s)
+##   "unit" [x,y,z]    put the recovery unit here (spawned if needed), facing Elena; "unit_state" display state
+##   "cam" [[from],[at]] free camera (overrides the gameplay camera); "fov" its field of view
+##   "hud" false       hide every CanvasLayer for this shot
+##   "wait_s" seconds  real time to wait before capturing (default 1.2)
+##   "scene" path      a different scene for this shot only (e.g. the main menu); "press" button names to press
+func _run_shots() -> void:
+	var spec_path := String(_args["shots"])
+	var spec: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(spec_path))
+	var outdir := String(_args.get("outdir", "D:/Projects/evidence/final-thaw/shots"))
+	DirAccess.make_dir_recursive_absolute(outdir)
+	var only := String(_args.get("only", "")).split(",", false)
+	var level: Node = null
+	var level_scene := String(spec.get("scene", ""))
+	var free_cam := Camera3D.new()
+	for shot: Dictionary in spec["shots"]:
+		var shot_name := String(shot["name"])
+		if not only.is_empty() and not (shot_name in only):
+			continue
+		if shot.has("scene"):
+			var other := (load(String(shot["scene"])) as PackedScene).instantiate()
+			get_tree().root.add_child(other)
+			await _wait_seconds(float(shot.get("wait_s", 1.0)))
+			for button_name in shot.get("press", []):
+				var button := other.find_child(String(button_name), true, false) as BaseButton
+				if button != null:
+					button.pressed.emit()
+					await _wait_seconds(0.6)
+			await RenderingServer.frame_post_draw
+			_save(outdir, shot_name)
+			other.queue_free()
+			await get_tree().process_frame
+			continue
+		if level == null:
+			level = (load(level_scene) as PackedScene).instantiate()
+			for key in spec.get("props", {}):
+				level.set(key, spec["props"][key])
+			get_tree().root.add_child(level)
+			await _wait_seconds(0.5)
+			level.add_child(free_cam)
+		for method in shot.get("calls", []):
+			if level.has_method(String(method)):
+				level.call(String(method))
+				await _wait_seconds(0.25)
+		var player = level.get("player")
+		if shot.has("pos") and player != null:
+			var p: Array = shot["pos"]
+			player.global_position = Vector3(p[0], p[1], p[2])
+			player.velocity = Vector3.ZERO
+		if shot.has("face") and player != null:
+			var f: Array = shot["face"]
+			player.visual.rotation.y = atan2(float(f[0]), float(f[1]))
+		if player != null and shot.has("yaw"):
+			player.set("orbit_yaw", float(shot["yaw"]))
+		if player != null and shot.has("pitch"):
+			player.set("orbit_pitch", float(shot["pitch"]))
+		if player != null and shot.has("mode"):
+			player.call("set_camera_mode", String(shot["mode"]), true)
+		if shot.has("unit"):
+			var unit = level.get("unit")
+			if unit == null and level.has_method("_spawn_unit"):
+				level.call("_spawn_unit")
+				unit = level.get("unit")
+			if unit != null:
+				var u: Array = shot["unit"]
+				unit.call("halt")
+				unit.global_position = Vector3(u[0], u[1], u[2])
+				if player != null:
+					var to: Vector3 = player.global_position - unit.global_position
+					unit.rotation.y = atan2(to.x, to.z)
+				if shot.has("unit_state"):
+					unit.set("state", String(shot["unit_state"]))
+		for layer in level.find_children("*", "CanvasLayer", true, false):
+			layer.visible = bool(shot.get("hud", true))
+		if shot.has("cam"):
+			var c: Array = shot["cam"]
+			var from := Vector3(c[0][0], c[0][1], c[0][2])
+			var at := Vector3(c[1][0], c[1][1], c[1][2])
+			free_cam.global_transform = Transform3D(Basis.IDENTITY, from).looking_at(at, Vector3.UP)
+			free_cam.fov = float(shot.get("fov", 50.0))
+			free_cam.make_current()
+		elif player != null and player.get("view") != null and not shot.get("keep_camera", false):
+			(player.get("view") as Camera3D).make_current()
+		var anim: AnimationPlayer = player.get("anim") if player != null else null
+		if anim != null and shot.has("anim"):
+			player.set("input_enabled", false)
+			player.set_physics_process(false)
+			anim.play(String(shot["anim"]), 0.0)
+			anim.speed_scale = float(shot.get("speed", 1.0))
+			if shot.has("seek"):
+				anim.seek(float(shot["seek"]), true)
+				anim.speed_scale = 0.0
+		await _wait_seconds(float(shot.get("wait_s", 1.2)))
+		await RenderingServer.frame_post_draw
+		_save(outdir, shot_name)
+		if player != null:
+			player.set_physics_process(true)
+	get_tree().quit()
+
+
+func _wait_seconds(s: float) -> void:
+	var end := Time.get_ticks_msec() + int(s * 1000.0)
+	while Time.get_ticks_msec() < end:
+		await get_tree().process_frame
+
+
+func _save(outdir: String, shot_name: String) -> void:
+	var img := get_viewport().get_texture().get_image()
+	var path := outdir.path_join(shot_name + ".png")
+	img.save_png(path)
+	print("SHOT %s (%dx%d)" % [path, img.get_width(), img.get_height()])
 
 
 func _run() -> void:

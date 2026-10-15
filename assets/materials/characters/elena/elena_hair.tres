@@ -1,0 +1,15 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/textures/characters/elena/elena_hair_albedo.png" id="1"]
+
+[resource]
+resource_name = "elena_hair"
+transparency = 4
+alpha_scissor_threshold = 0.4
+cull_mode = 2
+albedo_texture = ExtResource("1")
+roughness = 0.52
+metallic_specular = 0.35
+rim_enabled = true
+rim = 0.25
+rim_tint = 0.8

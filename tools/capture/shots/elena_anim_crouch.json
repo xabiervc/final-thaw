@@ -1,0 +1,356 @@
+{
+ "scene": "res://tools/capture/character_lookdev.tscn",
+ "props": {
+  "lighting": "neutral"
+ },
+ "shots": [
+  {
+   "name": "crouch_idle_side_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     0.8,
+     3.4
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_idle",
+   "seek": 0.0,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_idle_front_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     3.4,
+     0.8,
+     0
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_idle",
+   "seek": 0.0,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_idle_side_150",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     0.8,
+     3.4
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_idle",
+   "seek": 1.5,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_idle_front_150",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     3.4,
+     0.8,
+     0
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_idle",
+   "seek": 1.5,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_walk_side_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     0.8,
+     3.4
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.0,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_walk_front_000",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     3.4,
+     0.8,
+     0
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.0,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_walk_side_028",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     0.8,
+     3.4
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.28,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_walk_front_028",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     3.4,
+     0.8,
+     0
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.28,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_walk_side_056",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     0.8,
+     3.4
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.56,
+   "wait_s": 0.5
+  },
+  {
+   "name": "crouch_walk_front_056",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     3.4,
+     0.8,
+     0
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "crouch_walk",
+   "seek": 0.56,
+   "wait_s": 0.5
+  },
+  {
+   "name": "idle_side_050",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     0,
+     0.8,
+     3.4
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle",
+   "seek": 0.5,
+   "wait_s": 0.5
+  },
+  {
+   "name": "idle_front_050",
+   "pos": [
+    0,
+    0,
+    0
+   ],
+   "face": [
+    1,
+    0
+   ],
+   "cam": [
+    [
+     3.4,
+     0.8,
+     0
+    ],
+    [
+     0,
+     0.65,
+     0
+    ]
+   ],
+   "fov": 38,
+   "hud": false,
+   "anim": "idle",
+   "seek": 0.5,
+   "wait_s": 0.5
+  }
+ ]
+}

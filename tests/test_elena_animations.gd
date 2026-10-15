@@ -1,15 +1,20 @@
 extends Node
-## The 13 animations of Elena's MPFB rig (tools/blender/elena_mpfb/animate_elena.py) are present with the exact names, loop where they
-## should, have sensible lengths, do not move the character horizontally and animate the same skeleton the model uses.
+## Elena's animations (v2: CMU motion-capture locomotion and the v1 procedural gestures, tools/blender/elena_mpfb/animate_elena_v2.py)
+## are present with the exact names, loop where they should, have sensible lengths, do not move the character horizontally and
+## animate the same skeleton the model uses.
 ## Ejecutar: godot --headless --path . res://tests/test_elena_animations.tscn
 ## Codigo de salida: 0 si todo pasa, 1 si algo falla.
 
-const MODEL := "res://assets/models/lab_ref/ref_elena_mpfb.glb"
-const NAMES := ["idle", "walk", "run", "crouch_idle", "crouch_walk", "jump", "fall", "land", "climb", "scan", "interact", "alert", "caught"]
-const LOOPING := ["idle", "walk", "run", "crouch_idle", "crouch_walk", "fall"]
+const MODEL := "res://assets/models/characters/elena/elena.glb"
+const NAMES := ["idle", "walk", "run", "sprint", "crouch_idle", "crouch_walk", "jump", "fall", "land", "climb", "scan", "interact", "alert", "caught"]
+const LOOPING := ["idle", "walk", "run", "sprint", "crouch_idle", "crouch_walk", "fall"]
 const MIN_LENGTH := 0.3
 const MAX_LENGTH := 4.0
 const MAX_HORIZONTAL_TRAVEL := 0.03  # metres of pelvis drift allowed (it is only the grounding correction)
+## Standing clips keep the captured weight shifts: the hips may sway this much, but the feet are pinned (checked below).
+const IDLE_CLIPS := ["idle", "crouch_idle"]
+const MAX_IDLE_SWAY := 0.06
+const MAX_PLANTED_FOOT_SLIDE := 0.02
 
 var failed := 0
 var passed := 0
@@ -47,7 +52,8 @@ func _ready() -> void:
 					var value: Vector3 = animation.track_get_key_value(track, key)
 					travel = maxf(travel, Vector2(value.x - first.x, value.y - first.y).length())  # x,y of the parent frame are horizontal
 		_expect(bones_ok, "'%s' only animates bones that exist" % animation_name)
-		_expect(travel <= MAX_HORIZONTAL_TRAVEL, "'%s' does not move the character horizontally (%.3f m)" % [animation_name, travel])
+		var limit := MAX_IDLE_SWAY if IDLE_CLIPS.has(animation_name) else MAX_HORIZONTAL_TRAVEL
+		_expect(travel <= limit, "'%s' does not move the character horizontally (%.3f m, limit %.2f)" % [animation_name, travel, limit])
 		if should_loop:
 			var closed := true
 			for track in animation.get_track_count():
@@ -58,6 +64,23 @@ func _ready() -> void:
 					if absf(a.dot(b)) < 0.9995:
 						closed = false
 			_expect(closed, "'%s' closes its loop (first key = last key)" % animation_name)
+	# standing clips: the feet stay planted while the hips shift
+	for clip in IDLE_CLIPS:
+		if not player.has_animation(clip):
+			continue
+		player.play(clip)
+		var length := player.get_animation(clip).length
+		var first := {}
+		var slide := 0.0
+		for i in 12:
+			player.seek(length * float(i) / 12.0, true)
+			await get_tree().process_frame
+			for foot in ["foot_l", "foot_r"]:
+				var p := skeleton.get_bone_global_pose(skeleton.find_bone(foot)).origin
+				if not first.has(foot):
+					first[foot] = p
+				slide = maxf(slide, Vector2(p.x - first[foot].x, p.z - first[foot].z).length())
+		_expect(slide <= MAX_PLANTED_FOOT_SLIDE, "'%s' keeps both feet planted (max slide %.3f m)" % [clip, slide])
 	# the pose really changes the skeleton
 	player.play("crouch_idle")
 	player.seek(0.5, true)
