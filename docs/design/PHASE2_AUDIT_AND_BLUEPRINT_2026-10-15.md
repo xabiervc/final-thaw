@@ -12,6 +12,16 @@ The owner has played Phase 1 and said what is wrong with it. **That feedback is 
 
 What changed in this version: §2 maps every piece of owner feedback to a change; §3 is a new Phase 1 redesign plan; §4 develops Phase 2 as a distinct playable sequence with the presentation options compared; §6 splits the work into essential corrections, Phase 1 design, Phase 2 construction and integrated validation. The valid technical findings of the first version are kept and re-verified.
 
+## 0.2 Immediate implementation gate — 2026-10-16
+
+The next Sonnet execution is deliberately restricted to **A0 baseline reconciliation and A1 localization**, as specified at the top of `prompts/sonnet_phase2_human_escape_handoff.md`. This does not authorize the rest of Group A or any Phase 1/Phase 2 construction.
+
+Important evidence distinction: `PROJECT_STATUS.md` records a historical committed run of 33 suites / 1051 PASS; this audit's Appendix A records 34 suites / 1053 PASS from an audit working tree that included owner-local tests. These counts describe different snapshots and must not be combined or presented as a current run. Sonnet must inspect the actual checkout and rerun the available suite before editing, then rerun it after A1.
+
+A1 is limited to reproducing and correcting the reported English HUD state/resistance label involving `NarrativeText.prompt_condition` and visible state names, with ES/EN regression coverage. The save must remain byte-identical and the circuit/mission contracts unchanged. Manual locale switching is unverified unless actually exercised in Godot.
+
+After A1, stop for owner review of the diff and evidence. No later milestone, protected-contract change, project-setting change, or implementation commit/push is authorized by this gate. The existing phased plan below remains the roadmap, not permission to execute every group in one pass.
+
 ## 0.1 Evidence labels
 
 | Label | Meaning |
