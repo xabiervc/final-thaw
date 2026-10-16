@@ -74,7 +74,7 @@ La instalación se organiza en una espina por nivel y varios ramales de diferent
 9. M-GALLERY ↔ M-LIFT ↔ P3-LIFT.
 10. P3-LIFT ↔ P3-SECURITY ↔ P3-ARCHIVE / P3-CONTROL.
 11. P3-CONTROL ↔ P3-COMMS / P3-RECORDS.
-12. Desde la zona de control, la ruta crítica llega a P0-SEALED-CONNECTION por un recorrido físico que debe definirse de forma coherente en planta y sección; al abrirse, conduce al edificio clandestino activo y al inicio de la siguiente fase. No usar una salida de emergencia genérica como sustituto de esta conexión.
+12. **P0-SEALED-CONNECTION (ubicación por decidir):** la puerta que comunica ambos edificios es el umbral final de la fase. Su planta, cota y recorrido de acceso aún no están fijados; deben decidirse y representarse de forma coherente en planta, sección y grafo antes del greybox. Al abrirse, conduce al edificio clandestino activo. No asumir que está en P+3 ni sustituirla por una salida de emergencia genérica.
 
 Las aristas 5, 8, 9 y 12 son objetivos de diseño y deben verificarse físicamente: no se consideran construidas por aparecer en el grafo.
 
