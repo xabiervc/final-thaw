@@ -30,9 +30,9 @@ This document separates current design direction, actual implementation evidence
 | Technical/workflow contracts | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Protected engineering, testing and evidence requirements |
 | Asset provenance | `docs/art/PROVENANCE.md` | Active source/licence record |
 
-## Selected opening design decisions
+## Existing prototype baselines — as-built until target implementation
 
-These decisions are the current design baseline for the opening. **Selected** means the design direction is chosen; it does not mean the scene has been implemented or runtime-verified.
+The table below records the previously selected prototype baseline and its verification gates. The expanded Phase 1 target documented above supersedes the spatial footprint, floor datums and mission handoff where they conflict. These entries remain useful for understanding current code; they are not the final target geometry.
 
 | Decision | Selected baseline | Remaining gate |
 |---|---|---|
@@ -60,7 +60,7 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 5. For test status, require the exact command and observed result. A test file is not evidence that the test ran; a passing headless test is not a substitute for a manual playtest.
 6. Preserve Phase 0 input actions/remaps, autoloads/public signals, resource paths, JSON/CRC32 save compatibility and Compatibility renderer assumptions unless impact analysis and explicit approval authorize a change.
 7. When a legacy campaign document conflicts with the active prototype brief, the brief wins for prototype scope only. Record the conflict; do not silently declare the whole campaign redesigned.
-8. Separate established story facts from proposals. The opening proposal now defines the causal beat (maintenance queues `SERVICE_OVERRIDE`; opening G's exterior leaf sends the audit and starts Containment) and recommends a facility-automated recovery protocol. The exact recipient/supervision, final recovery-unit identity, suppression motive, Marcus's role, chronology and endings remain open; do not promote proposals to full-game canon without owner approval.
+8. Separate as-built behavior from target direction. In the current runtime, maintenance queues `SERVICE_OVERRIDE` and opening G sends the audit/starts Containment. In the owner-approved target, the P−2 transfer door is the mission handoff and human detection in the second building starts the escape; do not treat the old G event as the target transition after migration. The exact command chain, Marcus's role, chronology and endings remain open; do not promote proposals to full-game canon without owner approval.
 9. Do not invent architectural connections to solve a gameplay beat. The selected Phase 1 → clandestine-building connection is the concealed transfer door in the P−2 dead workshop; it must appear in the P−2 plan, vertical section, spatial graph and progression contract. Do not substitute P+3, the lift, or an emergency exit for this threshold.
 
 ## Required review gates
