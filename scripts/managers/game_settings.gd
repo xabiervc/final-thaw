@@ -93,7 +93,8 @@ static func apply_graphics(env: Environment, sun: DirectionalLight3D) -> void:
 		sun.shadow_enabled = g != "performance"
 		# Without its shadow the moon would light every interior through the roofs: on "performance" it lights only
 		# the outdoors (yard band) and characters.
-		sun.light_cull_mask = 0xFFFFF if g != "performance" else (1 | (1 << 5))
+		# P-2 (lighting band 5, layer 7) is underground: the moon never reaches it, on any preset.
+		sun.light_cull_mask = (0xFFFFF & ~(1 << 6)) if g != "performance" else (1 | (1 << 5))
 
 
 static func subtitles_enabled() -> bool:

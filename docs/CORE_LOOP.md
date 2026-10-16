@@ -1,6 +1,6 @@
 # FINAL THAW — Core Gameplay Loop and Mission Contracts
 
-**Status:** current design direction for the two-mission opening. Mission 1's system puzzle is designed but not integrated; Mission 2 has a movement/chase prototype but has not passed its recorded v2 verification gate. This document is not locked full-game canon.  
+**Status:** current runtime remains the as-built two-mission demo described in `FASE1_PREMIUM_AUDIT.md`; the owner-approved target redesign is not implemented or runtime-verified. The target preserves the Aster puzzle/field-notes loop, adds auxiliary power and a P−2 transfer-key chain, then moves into a human-operated clandestine building before the hybrid first-person escape and parking set piece. This document is not locked full-game canon.  
 **Related authority:** `docs/VISION.md`, `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md`, `docs/LEVEL_STRUCTURE.md`, `docs/design/MISSION1_GHOST_PROTOCOL.md`, `docs/design/FASE1_LOGIC_CONTRACT.md`, `docs/design/MOTION_CHASE_PROTOTYPE.md`.
 
 ## 1. Core loop
@@ -61,13 +61,11 @@ These are design requirements; their presence in code must be separately tested 
 
 ## 5. Phase 1 → Phase 2 continuity
 
-The intended continuous sequence is:
-
-`Solve Aster system → consult restricted record → open exterior leaf of G → audit sent / Containment starts → quiet evasion through F/E and potentially occupied work areas → recovery unit reacquires Elena at a mapped exposed threshold → running interior chase → selected alternative exit → parking entry → parking chase`.
+The current **as-built** sequence remains `Solve Aster system → consult restricted record → open exterior leaf of G → audit sent / Containment starts → quiet evasion → recovery-unit reacquisition → running chase → service yard`. The owner-approved **target** sequence is `collapsed breach → explore abandoned building → solve Aster and consult record; independently restore auxiliary power and find TRANSFER_KEY → open concealed P−2 door in the dead workshop → observe human personnel in the active second building → detection → hybrid first-person escape with route choices/context actions → parking garage → public street`. The door requires Aster record read + PowerRestored + TRANSFER_KEY. The P−2 threshold replaces G as the narrative handoff in the target; G-to-yard and the robotic recovery unit remain as-built behavior until code migration and tests prove the replacement.
 
 The exterior door at G starts Containment, not an immediate uninterrupted sprint; a quiet evasion section precedes the running pursuit. G does not teleport Elena into the parking lot. The current parking prototype's entry checkpoint is test infrastructure only, not the canonical handoff. The integrated route preserves Elena's transform at P2-01, the physical service threshold; P2-CP is a recovery-only checkpoint 1.5 m inside the vestibule. The standalone corridor start must remain usable for mechanics testing.
 
-The design does not yet establish whether the recovery unit is a human, robot or other specific entity beyond the current prototype's recovery-unit presentation. Keep identity and command chain open until the story decision is made.
+For the target redesign, the principal threat in the active second building is human-operated; the current robotic recovery unit is existing as-built behavior and must not be mistaken for the approved target. Human detection, suspicion, communication and chase behavior still require implementation and playtest.
 
 ## 6. Mission 2 narrative progression
 

@@ -1,118 +1,75 @@
-# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v1.1)
+# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v2.1 · transferencia en P−2)
 
-> **Nota v4.0 (2026-10-15, as-built):** Recorrido implementado de la intro a la calle en una sola escena; el bot de ruta lo recorre completo. STAFF-M1 eliminado. Ver [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md) (v4.0).
+**Estado:** contrato de progresión acordado para prototipado; todavía no implementado ni validado en runtime. El runtime construido se describe en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
 
-> **Nota v3.0 (2026-10-15, as-built):** El recorrido completo, incluido el handoff físico al aparcamiento, está implementado y lo recorre el bot de ruta (`tests/test_phase1_playthrough.tscn`). No hay playtest humano. Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
+## 1. Principio de misión
 
-**Estado:** recorrido y estructura de la experiencia revisados según la dirección arquitectónica de edificio completo, puzle distribuido y huida por una salida alternativa. La escena actual aún no demuestra este recorrido: la evasión silenciosa, la transición a carrera, la salida alternativa seleccionada y el handoff al aparcamiento requieren implementación y pruebas. La galería/boca este queda seleccionada como baseline de diseño: X=34, Z=4,5..7,5, Y=−2, con galería 6×3 m; la validación física en escena sigue pendiente. El inicio narrativo y sus beats/diálogos provisionales se especifican en `docs/narrative_complete.md`; no son canon completo aprobado. La respuesta automática de la instalación es la dirección narrativa propuesta; siguen abiertas la supervisión exacta, el destinatario concreto y la identidad final de la unidad.
+La Fase 1 es una investigación espacial dentro de un edificio industrial aparentemente abandonado que sirve de cobertura para una instalación clandestina adyacente. Ambos edificios están conectados por una puerta de transferencia oculta en el muro oriental del taller muerto de P−2. Elena puede descubrirla antes de tener la llave o restaurar la energía, pero solo puede cruzarla cuando TRANSFER_KEY, PowerRestored y el registro Aster consultado estén disponibles. La investigación Aster y el cuaderno de campo conservan su ciclo de observación, hipótesis, prueba y conclusión. La cadena de mantenimiento y transferencia amplía la exploración sin reemplazar las reglas del contrato lógico Aster. El jugador no recibe una lista de controles; observa indicios, formula una hipótesis, prueba una acción y lee el cambio del entorno. Las salas secundarias hacen que el lugar parezca usado y parcialmente desconocido. No todo objeto es una pista, no toda pista es obligatoria y no toda puerta se abre durante esta misión.
 
-**Autoridad:** `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`, `FASE1_SPATIAL_GRAPH.md v1.1`, `FASE1_GREYBOX_SPEC.md v2.1`, `FASE1_FUNCTIONAL_SPEC.md v2.1` y `FASE1_LOGIC_CONTRACT.md`. El contrato lógico del circuito no cambia con este mapa.
+## 2. Cadena crítica
 
-## Experiencia objetivo
+| Paso | Lugar | Acción del jugador | Evidencia / respuesta | Dependencia |
+|---|---|---|---|---|
+| 1 | Brecha de Elena | Entrar por el conducto de servicio | El acceso se derrumba después de entrar y bloquea físicamente el retorno. Es distinto del acceso antiguo al pasillo principal que aparece en el plano. | Ninguna |
+| 2 | Nave P0 | Orientarse y ver el ascensor apagado | Núcleo visible, indicadores sin energía | Paso 1 |
+| 3 | Archivo de turno | Comparar pizarra y tira de presión | Dos indicios convergen en una regla para el código del cajón | Paso 1 |
+| 4 | Despacho | Introducir el código deducido | Cajón se abre con animación y sonido; contiene llave de servicio y puente aislado | Paso 3 |
+| 5 | Exploración P−2 | Localizar subestación y examinar terminales | Puerta cerrada por llave; se ve el hueco del puente tras abrirla | Paso 4 para abrir; antes se puede descubrir la puerta |
+| 6 | Subestación | Usar la llave, insertar el puente y activar el seccionador | Relés, zumbido, luces por circuitos y bombas auxiliares | Paso 4 |
+| 7 | Vestíbulo del ascensor | Solicitar ascensor | Se activa el indicador, se oye el mecanismo y las puertas operan | Paso 6 |
+| 8 | M / P+3 | Subir y completar la investigación Aster existente | Aplicar la secuencia del contrato lógico, estabilizar ARCHIVO y leer el registro restringido; el cuaderno conserva observación → hipótesis → prueba → conclusión | Paso 7 (PowerRestored) |
+| 9 | Taller muerto, P−2 | Investigar la franja limpia, marcas de arrastre y corriente de aire | Inspección revela un panel oculto y una puerta de transferencia bloqueada | Acceso a P−2 |
+| 10 | Taller muerto | Leer la nota de mantenimiento | La nota indica que la llave de transferencia se guardó en el armario seco del almacén tras una fuga | Paso 9, aunque el jugador puede haber explorado el almacén antes |
+| 11 | Almacén de repuestos, P−2 | Buscar el armario seco elevado sobre la marca de humedad | El símbolo del armario coincide con el de la puerta; se obtiene la llave de transferencia | Paso 10 como pista; el armario puede encontrarse antes |
+| 12 | Puerta oculta, P−2 | Usar la llave de transferencia con la alimentación restablecida | Se abre el umbral y se revela el vestíbulo técnico de un segundo edificio activo, con maquinaria, luces de trabajo y señales recientes de operación clandestina | Pasos 6 y 11 + registro Aster consultado; ambas cadenas y la investigación deben completarse |
 
-La misión ocurre en una instalación clandestina de investigación hidrológica/industrial parcialmente abandonada. La persona jugadora investiga el edificio como un sistema: sigue tuberías y canalizaciones, contrasta la documentación con el estado físico, activa mantenimiento, entiende la anomalía eléctrica y decide cómo alimentar el archivo de forma segura. Tras abrir G, la experiencia cambia de investigación a evasión y huida física en dos ritmos. Primero, Elena se mueve en silencio por salas de trabajo donde aún puede haber personal: debe evitar líneas de visión, ruido y atención, sin combate obligatorio. Después, al quedar expuesta en un tramo de servicio legible o ser reacquirida por Containment, la secuencia pasa a una persecución a la carrera. La salida final debe ser distinta del túnel de entrada y conectarse físicamente con el aparcamiento; su ubicación exacta se elige por la calidad del recorrido, no por una coordenada heredada.
+## 3. Pistas y puzle del cajón
 
-## Progresión espacial y de información
+El código debe derivarse de información visible en el entorno, no de una secuencia elegida solo porque resulte cómoda de implementar. La pizarra de turnos indica la secuencia de comprobación B → D → A → C. La tira de presión muestra las últimas cifras estables: A=3, B=0, C=7, D=4. El jugador debe leer las cifras siguiendo el orden de la pizarra y obtiene 0437. Una nota opcional del taller recuerda que debe seguirse el orden de prueba, sin mostrar la secuencia ni el resultado. No se entrega el código en un texto narrativo.
 
-| Beat | Espacio | Qué aprende/hace el jugador | Contrato / condición |
-|---|---|---|---|
-| 1. Entrada | Túnel oeste → A | Entra por una instalación técnica real; identifica protocolo de acceso y ve la nave Aster. | Spawn dentro del túnel; salida oeste no será la ruta final. |
-| 2. Lectura del edificio | A/B/C/P0 | Reconoce el rig central, taller, cuadros y canalizaciones; puede explorar áreas auxiliares sin encontrar llaves arbitrarias. | Los accesos y el perímetro deben tener colisiones coherentes; áreas principales legibles. |
-| 3. Investigar el subsuelo | B → S1 ↓ D1/D2 | Compara el esquema de distribución con el puente físico A→T manipulado. | S1 transitable siempre; suelo continuo en P−1; D1/D2 diferenciados por equipo y señalización. |
-| 4. Restablecer mantenimiento | D2 | Activa mantenimiento, encola `SERVICE_OVERRIDE` como estado de misión separado y ve cómo cambian iluminación, bombas y disponibilidad del elevador. | Mantenimiento no alimenta la protección de recuperación; `SERVICE_OVERRIDE` no altera el modelo eléctrico y solo se envía al abrir G. |
-| 5. Volver a P0 | S1 ↑ → retorno sur/este → galería de servicio | Aprende la topología; rodea el hueco en lugar de cruzarlo. | La ruta existe físicamente y es verificable con cámara/colliders. |
-| 6. Confirmar el sistema | Elevador ↑ M → bombas/observación | Relaciona el estado del edificio con las instalaciones de P−1 y localiza la ruta a control. | Elevador P0↔M; S2 independiente de alimentación. |
-| 7. Resolver el circuito | S2 ↑ E | Contrasta hipótesis, usa diagnóstico y opera aislador/selector/rearme. Puede fallar y recuperarse. | Contrato lógico existente; el escáner revela continuidad A→T, nunca los controles. |
-| 8. Consultar la evidencia | E → F | Consulta el archivo si ARCHIVO está estable. El texto contextualiza la anomalía; no actúa como llave. | Consulta no equivale a extracción ni modifica el guardado persistente en este hito. |
-| 9. Abrir la puerta | F → G | Abre la compuerta exterior de la esclusa G. Si `SERVICE_OVERRIDE` está encolado, el umbral transmite la auditoría, la amenaza entra y Elena retrocede al interior por la puerta hacia F/E; la respuesta del edificio hace perceptible el cambio. | G no teletransporta al exterior. Este acto inicia la huida. |
-| 10. Evasión silenciosa | G → F/E → pasarela → S2/M y espacios de trabajo conectados | Elena se retira evitando al personal presente y los barridos de Containment. Se apoya en cobertura arquitectónica, tiempos de paso y control del ruido. | Ruta legible, zonas de observación, refugios reales y estados de NPC; no combate/takedown obligatorio ni NPC usados como paredes. |
-| 11. Ruptura de sigilo / persecución | Umbral expuesto definido en el grafo → retorno por M/P0 | Un evento espacial comprensible —reacquisición de la unidad, cruce de una zona visible o cierre de una puerta ya anticipada— cambia la evasión a carrera. El jugador lee el cambio y debe reaccionar sin corte de cámara. | El trigger se fija en plano/grafo y se prueba; no usar detección omnisciente ni forzar una muerte. El sigilo anterior debe cambiar realmente la presión o el estado de búsqueda. |
-| 12. Descenso y salida alternativa | M → elevador ↓ P0 → S1 ↓ P−1 → ruta de servicio/evacuación elegida | Elena completa la huida por una circulación de servicio distinta de la entrada; la salida seleccionada es la boca este de P−1 en X=34, Z=4,5..7,5, Y=−2, distinta del túnel oeste. | Conexiones verticales existentes; cualquier nuevo corredor debe aparecer en planta/sección y en el grafo. Salida física, no transición invisible. |
-| 13. Handoff | Exterior de servicio → aparcamiento | Entra en la zona de aparcamiento; la persecución exterior continúa como Fase 2. | La escena existente de parking-chase debe arrancar en el checkpoint de entrada, sin reiniciar el corredor standalone. |
+La solución se considera justa si un jugador puede explicar que combinó el orden B → D → A → C con las cifras finales de la tira. Si se adivina por ensayo, hay que revisar la visibilidad de los datos o el feedback del cajón. No incluir una pantalla de texto que entregue la respuesta.
 
-## Puzle y evidencia distribuida
+## 4. Cadena independiente de transferencia clandestina
 
-- **P0, nave/taller:** la disposición de Aster, los cuadros y las canalizaciones establece el contexto y da orientación. La exploración es útil pero no obliga a leer cada objeto.
-- **P−1, D1/D2:** la anomalía principal es física: el esquema previsto y el puente A→T no coinciden. Mantenimiento permite observar el sistema, pero no resuelve la protección.
-- **M:** las bombas y la iluminación hacen visible el efecto del mantenimiento; la elevación cambia la perspectiva y conecta subsistemas.
-- **P2, E:** el diagnóstico presenta estado actual y último disparo como datos separados. ENSAYO conectado al seleccionar ARCHIVO dispara DEMANDA_SIMULTANEA; aislar y rearmar tras eliminar el fallo permite recuperarse.
-- **F:** consulta solo con ARCHIVO estable. El archivo aporta contexto y no desbloquea por sí solo los controles.
-- **Escáner:** mantener `scan` durante 0,9 s; revela continuidad durante 3 s y tiene 4 s de recarga desde activación. No revela la acción correcta.
+La progresión del umbral no es una extensión de la cadena eléctrica: son dos cadenas paralelas que convergen al final.
 
-La progresión debe funcionar por inferencia ambiental, no por una lista de recados. Las pistas refuerzan el razonamiento, pero los controles siguen operativos sin leer cada una.
+- **Energía:** SERVICE_KEY + INSULATED_BRIDGE → subestación operativa → PowerRestored → luces parciales, bombas auxiliares y ascensor.
+- **Transferencia:** indicios del taller muerto → panel/puerta descubiertos → nota de mantenimiento → armario seco en almacén → TRANSFER_KEY.
+- **Investigación Aster (preservada):** puzle de distribución → hipótesis/confirmación en cuaderno → ARCHIVO estable → consulta del registro restringido.
+- **Convergencia:** TRANSFER_KEY + PowerRestored + RESTRICTED_RECORD_READ → apertura de la puerta oculta de P−2 → vestíbulo técnico del edificio clandestino.
 
-## Evasión y persecución interior
+La llave de servicio no abre la puerta oculta. La llave de transferencia no abre la subestación ni completa el circuito. El puzle Aster y el cuaderno de campo siguen siendo el núcleo de investigación; la cadena de mantenimiento/transferencia se añade sin reescribir sus reglas. El jugador puede investigar estas rutas en distinto orden; no se bloquea la exploración por descubrir una puerta demasiado pronto.
 
-Abrir G con `SERVICE_OVERRIDE` encolado inicia Containment, pero no obliga a correr inmediatamente. Elena retrocede por F/E y atraviesa una sección silenciosa por espacios que pueden seguir ocupados. La carrera empieza en R1, la transición de la galería de servicio al retorno este de P0 (X≈29, Z≈1): Elena sale del elevador existente, la unidad la sigue físicamente y la reacquiere por LOS real. R1 es el punto de diseño por defecto; una detección anterior solo adelanta la carrera si existe LOS real. No implementar una transición directa al aparcamiento al abrir G.
+## 5. Energía, luces y ascensor
 
-Requisitos del segmento interior:
-- La fase silenciosa tiene cobertura física, NPC con percepción/rutinas y rutas de patrulla legibles; evitar al personal es viable sin eliminarlo.
-- La carrera empieza en un umbral espacial concreto, anunciado por arquitectura y señales del edificio; la unidad reacquiere por percepción real. R1 está fijado como objetivo de diseño en P0; deben coordinarse su huella/collider y la línea de visión en planta, sección y grafo.
-- La amenaza tiene un punto de entrada y una línea de persecución explicables por el edificio.
-- O1: estantería caída en F/P2, centro aproximado (8,0; 3,0; −7,0), volumen 1,0 × 1,1 × 0,8 m. La solución es rodearla por el paso visible, con un ancho libre objetivo de 1,2 m.
-- O2: bastidor de tuberías desplazado en M, centro aproximado (18,0; 1,5; −3,0), volumen 2,0 × 0,8 × 1,2 m. La solución es rodearlo sin invadir el acceso a S2 o elevador.
-- O3: bandeja desprendida en la galería P0, centro aproximado (22,5; 0,0; −1,5), volumen 1,2 × 0,8 × 0,6 m. La solución es usar el paso lateral claramente visible, manteniendo acceso a S1.
-- Estas ubicaciones son una primera propuesta de layout; los SVG y el builder deben coincidir antes de construir colliders definitivos. Si el playtest revela una maniobra injusta, corregir plano, geometría y test juntos.
-- Cada obstáculo tiene colisión, ruta de aproximación y recuperación ante fallo; la dificultad no se basa en un collider invisible.
-- La cámara de tercera persona mantiene lectura de bordes, escalones, huecos y perseguidor.
-- La velocidad y el ritmo permiten percibir la arquitectura; el recorrido no puede depender de conocer de memoria la ruta.
-- El retorno por S2/M/elevador/S1 debe ser continuo. El estado del elevador al abrir G debe estar definido y probado; no improvisar una escalera nueva.
-- La galería de evacuación tiene un cambio claro de luz/espacio al salir al exterior, con continuidad visual al aparcamiento.
+El jugador sigue la bandeja de cables desde la maquinaria del ascensor hasta la subestación y encuentra el terminal LIFT AUX con el puente ausente. El puente aislado tiene un conector y una forma que coinciden con ese hueco; otros bornes están cubiertos o no tienen la geometría compatible. El panel debe mostrar la conexión físicamente y el seccionador queda bloqueado hasta insertar el puente. No exigir conocimientos eléctricos reales ni permitir que un clic genérico cambie el estado sin animación. Tras el restablecimiento:
+- los relés hacen clic y el transformador adquiere un zumbido de banda media;
+- varias líneas de luz recorren la instalación;
+- se encienden luces de emergencia y luminarias seleccionadas, pero algunas permanecen rotas;
+- las bombas auxiliares arrancan con vibración visible;
+- el indicador del ascensor cambia y las puertas realizan un ciclo de comprobación.
 
-La lista definitiva de obstáculos y sus estados se cierra en la especificación de greybox y se cubre con pruebas de comportamiento. No añadir combate obligatorio.
+El cambio no debe encender cada luz de golpe ni eliminar toda la oscuridad: el contraste sirve a la legibilidad y a la tensión.
 
-## Fase 2: aparcamiento
+## 6. Descubrimientos opcionales
 
-El aparcamiento incluye contexto legible —acceso de servicio, carriles, plazas, pilares y vehículos inmóviles— y una ruta que recibe al jugador desde la salida exterior finalmente seleccionada. La planta usa coordenadas locales; no obliga a reutilizar la boca este ni el transform provisional. Se reutiliza `scenes/prototypes/phase2_parking_chase.tscn` si sus contratos de checkpoint, percepción y navegación lo permiten. La versión standalone del corredor conserva su punto de inicio original.
+- Sala de espera: objetos abandonados y señal de una evacuación precipitada; sin objeto crítico.
+- Taller de instrumentos: una nota visual opcional que explica por qué hay dos terminales en la subestación.
+- Anexo oscurecido del mezzanine: atmósfera y posible ventaja opcional, sin llave obligatoria.
+- Laboratorio sellado de P+3: anticipación narrativa; no abrirlo en esta misión si requiere una cadena nueva de llaves.
 
-El paquete conceptual del parking incluye planta, sección, overlay de amenaza y overlay de iluminación/hitos en `docs/design/assets/phase2_parking/`; la especificación de arquitectura/rutas/encuentros está en `docs/LEVEL_STRUCTURE.md`. El aparcamiento mantiene coordenadas locales con transform seleccionado de diseño: X_mundo=X_local+28,7 m; Z_mundo=Z_local−15,8 m; Y=−2,0 m. El umbral local (5,3; 21,8) coincide con la boca P−1 (34; 6); el checkpoint de recuperación local (6,8; 21,8) queda en mundo (35,5; 6), sin alterar el handoff inicial en (34; 6), y el egress más allá del muro norte local (42,8; −0,4) en mundo (71,5; −16,2). Verificar orientación, cota, colliders y continuidad en Godot.
+El objetivo es que algunas salas no signifiquen nada para el progreso inmediato. Deben seguir teniendo coherencia ambiental y no parecer un error.
 
-El handoff se acepta solo cuando:
-1. G inicia Containment, pero no salta directamente a la escena de aparcamiento.
-2. La sección de evasión silenciosa tiene NPC/estados, cobertura y percepción verificables.
-3. Un trigger espacial legible permite la transición a la carrera sin teletransporte ni corte de cámara.
-4. Elena atraviesa la ruta interior con el perseguidor activo.
-5. La salida alternativa seleccionada se alcanza sin teletransporte ni conexiones no dibujadas.
-6. El exterior se conecta visualmente y físicamente al aparcamiento.
-7. La escena de parking empieza en el checkpoint de entrada, no al inicio standalone.
-8. La percepción de personal y unidad es coherente con LOS, ruido, cobertura y estado de búsqueda.
-9. No se pierde estado de misión ni se duplica el jugador al cambiar de escena.
+## 7. Puente a Fase 2
 
-## Estado de decisiones
+La transición principal a la siguiente fase se realiza a través de la puerta oculta de P−2, en el muro oriental del taller muerto, que conduce al vestíbulo técnico del edificio donde trabajan clandestinamente los antagonistas. No sustituir este umbral por P+3, el ascensor o una salida de emergencia genérica. La Fase 2 mantiene su propuesta de escape humano/híbrido: descubrir presencia humana, elegir rutas, ser detectada, afrontar obstáculos y persecución, llegar al garaje y salir a la calle. El diseño del aparcamiento existente se conserva como material de partida, pero requiere integración real con el recorrido y prueba de juego.
 
-- **Dirección fijada:** laboratorio completo y explorable en gran parte; puzle integrado en el edificio; G inicia Containment; la huida combina evasión silenciosa por áreas potencialmente ocupadas y una fase de carrera; salida distinta de la entrada y continuidad física con parking.
-- **Contrato existente que se conserva:** circuito, estados iniciales, recuperación reversible, escáner, mantenimiento y elevador P0↔M.
-- **Diseño por cerrar en plano/greybox:** huella final de la galería de evacuación, medidas del recorrido de persecución, posiciones de obstáculos, puertas y estados de seguridad.
-- **Contrato narrativo provisional del opening:** mantenimiento encola `SERVICE_OVERRIDE`; cruzar el umbral exterior de G envía la auditoría y activa Containment. El registro revela que el resultado fue retenido y la recomendación de despliegue suprimida. La implementación, el destinatario/supervisión y la motivación de la supresión siguen sin estar verificados o cerrados.
-- **Narrativa aún abierta:** motivo de la supresión, cadena de mando concreta, identidad final/arte de la unidad, cronología completa, papel de Iris/Selene en esta secuencia y destino posterior. Ver `docs/narrative_complete.md`.
-- **Validación pendiente:** ejecución de todas las escenas, colisiones, cámara, navegación, secuencia de huida, salida física y transición al aparcamiento.
+## 8. Criterios de aceptación
 
-## Orden de trabajo
-
-1. Coordinar plantas y sección con el nuevo grafo; cerrar huellas, anchos, puertas y recorrido de huida.
-2. Actualizar la especificación de greybox con galería de evacuación, salida exterior y obstáculos medibles.
-3. Reconciliar la escena canónica con los planos antes de añadir arte o narrativa.
-4. Definir tests de navegación y estados para puerta G, persecución interior, descenso y salida alternativa.
-5. Integrar con la escena existente del aparcamiento y conservar el inicio standalone.
-6. Ejecutar pruebas unitarias, integración y regresión de Fase 0; realizar playtest manual.
-7. Registrar commit, versión de Godot, renderer, comandos, exit codes, errores, warnings y evidencia visual.
-
-La Fase 1 no se declara terminada hasta que la secuencia completa sea recorrible en runtime y la ruta de huida se comprenda sin conocimiento previo del diseño.
-
-## Owner-approved progression direction (2026-10-15)
-
-This English-language addendum records the owner's current target and supersedes conflicting provisional route assumptions for future implementation. The Spanish plan and its prior measurements remain useful historical design material; this section is not evidence of implementation.
-
-### Phase 1 — investigation
-Keep the central pumping hall as a memorable spatial anchor and connect it to purposeful rooms, vertical routes and landmarks. The building should feel substantially larger than one open room but should not become a maze. Avoid repetitive backtracking unless new evidence, a changed mechanism, an opened shortcut or an optional discovery rewards it. Elena enters through a damaged service breach/culvert that physically collapses behind her.
-
-### Phase 2 — human discovery and escape
-After opening the required gate, Elena cautiously enters a new operational zone, observes people doing meaningful work related to Helix/Aster and discovers information before a human threat detects her. The target is not the current robot-led escape as presently implemented.
-
-Use a hybrid first-person escape: free movement and route decisions combined with short contextual actions and brief looks back that show consequences. Lead through a credible service connection or deliberate continuity-preserving transition into a distinct parking garage, then to a public street where Elena loses the pursuers among pedestrians.
-
-### Future Marcus phases
-Marcus is player-controlled during future beat-'em-up phases. Elena initially needs his protection, seeks cover and cannot reliably defend herself. Over the story she learns limited defensive skills from Marcus and becomes capable of handling basic threats. Later encounters challenge Marcus with more varied and coordinated enemies. This future system is specified conceptually only and remains outside the current Phase 1/2 implementation scope.
-
-### Verification
-Do not mark any of these target decisions implemented until scene/code inspection, automated behavior tests and the required Godot/manual review provide evidence. Preserve Phase 0 contracts and save/input compatibility.
+- El código del cajón se puede deducir de dos indicios y no se entrega en el texto.
+- La llave de servicio abre solo la subestación; el puente resuelve el corte de energía; la llave de transferencia abre solo la puerta oculta. No se puede saltar ninguna dependencia.
+- El jugador puede descubrir la subestación, el ascensor y la puerta oculta antes de tener los objetos, sin softlock.
+- El cambio eléctrico se ve y se oye, y el ascensor queda operativo únicamente después.
+- Dos salas opcionales se pueden explorar sin objeto crítico y al menos una ofrece una recompensa opcional clara.
+- Tres jugadores nuevos pueden describir la deducción del cajón y la causa de la activación del ascensor después de jugar.
+- Todos los criterios de juego requieren prototipo y QA; los documentos no son evidencia de ejecución.

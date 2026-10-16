@@ -14,8 +14,9 @@ const T := preload("res://scripts/game/game_text.gd")
 
 ## Display order (inferences sit right after the observations that support them).
 const ORDER := ["anomaly", "entry_lost", "official_report", "access_plan", "egress_lock", "schematic", "bridge", "workshop_tag",
-	"scan_bridge", "hypothesis", "maintenance_risk", "trip", "test_result", "archive_stable", "record", "conclusion", "containment",
-	"unit", "exit_plan", "parking", "parking_devices"]
+	"scan_bridge", "hypothesis", "maintenance_risk", "shift_order", "pressure_values", "drawer_open", "aux_power", "trip", "test_result",
+	"archive_stable", "hidden_door", "maintenance_note", "transfer_key", "record", "conclusion", "second_building", "transfer_breach",
+	"containment", "unit", "exit_plan", "parking", "parking_devices"]
 
 var _have: Dictionary = {}
 

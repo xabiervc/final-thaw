@@ -23,6 +23,8 @@ const Building = preload("res://scripts/phase1/phase1_building.gd")
 const Builder = preload("res://scripts/phase1/phase1_builder.gd")
 const Parking = preload("res://scripts/phase2/phase2_parking.gd")
 const MissionState = preload("res://scripts/phase1/phase1_mission_state.gd")
+const TransferController = preload("res://scripts/phase1/phase1_transfer_controller.gd")
+const Expansion = preload("res://scripts/phase1/phase1_expansion.gd")
 const UnitScript = preload("res://scripts/phase1/phase1_recovery_unit.gd")
 const FieldNotes = preload("res://scripts/game/field_notes.gd")
 const Cinema = preload("res://scripts/game/cinematic_director.gd")
@@ -57,7 +59,10 @@ const SHUTTER_TIME := 2.4
 const PURSUIT_HOLD := 2.5
 ## Checkpoints: Elena's restore point and the route node the unit restarts from (always well behind her, never
 ## with a fresh line of sight to the restore point).
+## B2 is the checkpoint of the escape that starts in the second building (transfer door); F is the first of the G escape.
+## The indices are named below so the escape logic never uses a bare number.
 const CHECKPOINTS := [
+	{"id": "B2", "pos": Vector3(16.0, -4.0, 12.4), "unit": "b2_vest"},
 	{"id": "F", "pos": Vector3(6.0, 6.0, -6.2), "unit": "gantry_far"},
 	{"id": "M", "pos": Vector3(10.2, 3.0, -5.6), "unit": "f_mid"},
 	{"id": "P0", "pos": Vector3(25.0, 0.0, 0.4), "unit": "lift_m"},
@@ -66,10 +71,20 @@ const CHECKPOINTS := [
 	{"id": "JOIN", "pos": Vector3(70.0, -2.0, 2.4), "unit": "yard_dec"},
 	{"id": "EGRESS", "pos": Vector3(72.95, -2.0, -4.0), "unit": "ya_2"},
 ]
+const CP_B2 := 0
+const CP_F := 1
+const CP_M := 2
+const CP_P0 := 3
+const CP_P1 := 4
+const CP_YARD := 5
+const CP_JOIN := 6
+const CP_EGRESS := 7
 const HINTS := {
 	"enter": ["hint_enter_1", "hint_enter_2"],
 	"explore": ["hint_explore_1", "hint_explore_2", "hint_explore_3"],
 	"lift": ["hint_lift_1", "hint_lift_2"],
+	"aux": ["hint_aux_1", "hint_aux_2", "hint_aux_3"],
+	"transfer": ["hint_transfer_1", "hint_transfer_2", "hint_transfer_3"],
 	"circuit": ["hint_circuit_1", "hint_circuit_2", "hint_circuit_3"],
 	"record": ["hint_record_1"],
 	"leave": ["hint_leave_1"],
@@ -90,6 +105,8 @@ var ending_override: Callable = Callable()
 var materials = FacilityMaterials.new()
 var circuit = CircuitModel.new()
 var mission = MissionState.new()
+## Expanded Phase 1: the drawer/substation chain, the transfer chain, the lift rule and the threshold to the second building.
+var transfer = TransferController.new()
 var notes = FieldNotes.new()
 var building = null
 var parking = null
@@ -156,6 +173,7 @@ func _ready() -> void:
 	_build_scan_parts()
 	_build_actors()
 	_build_audio()
+	transfer.setup(self)
 	entry_done = not (play_intro or entry_sequence)
 	if entry_done:
 		building.collapse_entry(false, self)
@@ -449,7 +467,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_update_interaction_prompt()
 	_update_scanner(delta)
-	if not _hotspot_id.is_empty() and Input.is_action_just_pressed("interact"):
+	if not _hotspot_id.is_empty() and Input.is_action_just_pressed("interact") and not transfer.modal_open():
 		_interact(_hotspot_id)
 	if InputMap.has_action("hint") and Input.is_action_just_pressed("hint"):
 		_show_hint()
@@ -458,7 +476,9 @@ func _physics_process(delta: float) -> void:
 		_collapse_entry()
 	_story_beats()
 	_footsteps(delta)
-	if phase != "investigation":
+	if phase == "investigation":
+		transfer.process(delta)
+	else:
 		_update_escape(delta)
 
 
@@ -475,7 +495,7 @@ func _track_safety(delta: float) -> void:
 	if player.is_on_floor() and _safe_left <= 0.0 and not bool(player.get("is_climbing")):
 		_safe_left = 0.5
 		_safe_point = player.global_position
-	if player.global_position.y < Building.Y_P1 - FALL_MARGIN:
+	if player.global_position.y < Expansion.Y_B2 - FALL_MARGIN:
 		_log("fall_recovered", "%s" % player.global_position)
 		player.global_position = _safe_point + Vector3(0.0, 0.1, 0.0)
 		player.velocity = Vector3.ZERO
@@ -587,7 +607,7 @@ func _hotspots() -> Array:
 		{"id": "egress", "at": Building.EGRESS_PANEL_AT, "verb": "verb_examine", "name": "hs_egress"},
 		{"id": "compressor", "at": Parking.COMPRESSOR_PANEL_AT, "verb": "verb_start", "name": "hs_compressor"},
 		{"id": "dock_panel", "at": Parking.DOCK_PANEL_AT, "verb": "verb_raise", "name": "hs_dock"},
-	]
+	] + transfer.hotspots()
 
 
 func _update_interaction_prompt() -> void:
@@ -619,6 +639,8 @@ func _reachable(at: Vector3) -> bool:
 
 
 func _available(id: String) -> bool:
+	if transfer.owns(id):
+		return transfer.available(id)
 	match id:
 		"lift_deck":
 			var on_deck := absf(player.global_position.x - 26.0) < 1.4 and absf(player.global_position.z + 3.0) < 1.4
@@ -640,6 +662,8 @@ func _available(id: String) -> bool:
 
 func _interact(id: String) -> void:
 	player.call("play_gesture", "interact", 0.7)
+	if transfer.interact(id):
+		return
 	match id:
 		"access_plan":
 			_examine("access_plan", "ex_access_plan_title", "ex_access_plan_body", "info")
@@ -711,7 +735,7 @@ func _examine(id: String, title_key: String, body_key: String, role: String) -> 
 func _toggle_maintenance() -> void:
 	var was: bool = circuit.maintenance_on
 	circuit.set_maintenance(not was)
-	lift.set_powered(circuit.maintenance_on)
+	transfer.update_lift()  # the lift needs the auxiliary supply as well: maintenance alone no longer moves it
 	if mission.on_maintenance(was, circuit.maintenance_on):
 		_log("mission", "SERVICE_OVERRIDE queued")
 		notes.add("maintenance_risk", "event")
@@ -731,7 +755,7 @@ func _toggle_maintenance() -> void:
 	else:
 		_banner(T.t("ban_maint_off_title"), T.t("ban_maint_off_body"), "warn", 4.0)
 	if circuit.maintenance_on and phase == "investigation" and not mission.restricted_record_read:
-		_set_objective(T.t("obj_go_control"))
+		_set_objective(T.t("obj_go_control") if transfer.state.power_restored else T.t("obj_need_aux"))
 	_refresh_state_fixtures()
 	_log("maintenance", "on" if circuit.maintenance_on else "off")
 
@@ -795,7 +819,8 @@ func _consult_archive() -> void:
 	notes.add("record")
 	subtitles.call("show_message", T.t("archive_record"), 13.0)  # a document on screen, not dialogue: always shown
 	building.archive_text.text = T.t("archive_screen_read")
-	_set_objective(T.t("obj_leave_g"))
+	_set_objective(T.t("obj_after_record"))
+	transfer.refresh()
 	_log("archive", "read")
 
 
@@ -804,7 +829,10 @@ func _call_lift(level: String) -> void:
 	_sound("clunk" if ok else "denied")
 	_log("lift_call", "%s:%s" % [level, "accepted" if ok else "refused"])
 	if not ok:
-		_banner(T.t("ban_lift_off_title"), T.t("ban_lift_call_off_body"), "warn", 3.5)
+		if circuit.maintenance_on and not transfer.state.power_restored:
+			_banner(T.t("ban_lift_nopower_title"), T.t("ban_lift_nopower_body"), "warn", 4.5)
+		else:
+			_banner(T.t("ban_lift_off_title"), T.t("ban_lift_call_off_body"), "warn", 3.5)
 
 
 func _toggle_g_inner() -> void:
@@ -854,7 +882,7 @@ func _begin_containment() -> void:
 	_close_r1()
 	building.release_egress(self)
 	lift.departed.connect(_on_lift_departed)
-	_set_checkpoint(0)
+	_set_checkpoint(CP_F)
 	_set_objective(T.t("obj_retreat"))
 	_banner(T.t("ban_containment_title"), T.t("ban_containment_body"), "danger", 4.5)
 	get_tree().create_timer(0.9).timeout.connect(func(): _announce("pa_containment"))
@@ -865,19 +893,56 @@ func _begin_containment() -> void:
 		get_tree().create_timer(UNIT_DELAY).timeout.connect(_spawn_unit)
 
 
-func _spawn_unit() -> void:
+## The staff noticed Elena in the second building (the transfer door's threshold): Containment starts from there. The same
+## machinery as G's audit (alarms, evacuation door, the unit, the yard), minus what belongs to the upper retreat (R1, the
+## toppled shelf, the gantry). The unit comes out of the bay behind her and has to follow her through the dead workshop, the
+## gallery and the stair; the way back is the walkable stair, the south band, S1 and the pit.
+func begin_transfer_containment() -> void:
+	if mission.containment_active:
+		return
+	mission.audit_sent = true
+	mission.containment_active = true
+	_g_outer_open = true
+	phase = "containment"
+	_log("mission", "TRANSFER BREACH · CONTAINMENT")
+	_sound("door")
+	for a in building.alarm_lights:
+		a.visible = true
+	_alarm_loop.play()
+	parking.reader_mouth.text = T.t("reader_active_interior")
+	parking.reader_mouth.modulate = GamePalette.color("danger")
+	building.release_egress(self)
+	lift.departed.connect(_on_lift_departed)
+	_set_checkpoint(CP_B2)
+	_set_objective(T.t("obj_escape_b2"))
+	_banner(T.t("ban_transfer_breach_title"), T.t("ban_transfer_breach_body"), "danger", 5.0)
+	get_tree().create_timer(0.9).timeout.connect(func(): _announce("pa_transfer"))
+	notes.add("transfer_breach", "event")
+	notes.add("exit_plan")
+	music.set_mode("chase")
+	if spawn_unit_enabled:
+		get_tree().create_timer(UNIT_DELAY).timeout.connect(_spawn_transfer_unit)
+
+
+func _spawn_transfer_unit() -> void:
+	_spawn_unit("b2_bay")
+	if unit != null:
+		unit.call("respond", Expansion.VESTIBULE.get_center().x * Vector3.RIGHT + Vector3(0.0, Expansion.Y_B2, Expansion.VESTIBULE.get_center().y))
+
+
+func _spawn_unit(start_node: String = "gantry_far") -> void:
 	unit = UnitScript.new()
 	unit.name = "RecoveryUnit"
 	add_child(unit)
 	unit.lift = lift
 	unit.player = player
 	unit.exposure = parking.exposure_at
-	unit.call("activate", "gantry_far")
+	unit.call("activate", start_node)
 	unit.caught_player.connect(_on_caught)
 	unit.reacquired.connect(_on_reacquired)
 	unit.lost_contact.connect(_on_lost_contact)
 	unit.state_changed.connect(_on_unit_state)
-	_log("unit", "enters from the service tower (gantry)")
+	_log("unit", "enters from the service tower (gantry)" if start_node == "gantry_far" else "enters from the bay at %s" % start_node)
 
 
 func _on_unit_state(s: String) -> void:
@@ -942,21 +1007,21 @@ func _set_checkpoint(i: int) -> void:
 
 func _update_escape(delta: float) -> void:
 	var p := player.global_position
-	if p.y > 2.4 and p.y < 4.0 and checkpoint_index < 1:
-		_set_checkpoint(1)
+	if p.y > 2.4 and p.y < 4.0 and checkpoint_index < CP_M:
+		_set_checkpoint(CP_M)
 		_set_objective(T.t("obj_go_down"))
-	elif p.y > -0.5 and p.y < 1.0 and p.x > 23.0 and p.z > -2.0 and p.z < 1.0 and checkpoint_index < 2:
-		_set_checkpoint(2)
-	elif p.y < -1.5 and p.x < 34.0 and checkpoint_index < 3:
-		_set_checkpoint(3)
+	elif p.y > -0.5 and p.y < 1.0 and p.x > 23.0 and p.z > -2.0 and p.z < 1.0 and checkpoint_index < CP_P0:
+		_set_checkpoint(CP_P0)
+	elif p.y < -1.5 and p.y > -3.0 and p.z < 11.0 and p.x < 34.0 and checkpoint_index < CP_P1:  # the pit and S1 (not the P-2 stair, which is south of z = 11.4)
+		_set_checkpoint(CP_P1)
 		_set_objective(T.t("obj_gallery"))
 	if not in_yard and parking.in_yard(p):
 		_enter_yard()
 	if in_yard:
-		if checkpoint_index < 5 and Vector2(p.x - 70.5, p.z - 1.2).length() < 2.6:
-			_set_checkpoint(5)
-		if checkpoint_index < 6 and p.x > Parking.ENCLOSURE_X + 0.3 and p.z < Parking.BARRIER_Z - 0.6:
-			_set_checkpoint(6)
+		if checkpoint_index < CP_JOIN and Vector2(p.x - 70.5, p.z - 1.2).length() < 2.6:
+			_set_checkpoint(CP_JOIN)
+		if checkpoint_index < CP_EGRESS and p.x > Parking.ENCLOSURE_X + 0.3 and p.z < Parking.BARRIER_Z - 0.6:
+			_set_checkpoint(CP_EGRESS)
 	_maybe_drop_o3(p)
 	_update_r1(delta)
 	_update_devices(delta)
@@ -989,7 +1054,7 @@ func _update_pursuit(delta: float) -> void:
 ## Phase 2 set piece begins: the facility's response is visible across the yard (N2-05).
 func _enter_yard() -> void:
 	in_yard = true
-	_set_checkpoint(4)
+	_set_checkpoint(CP_YARD)
 	_set_objective(T.t("obj_yard"))
 	notes.add("parking")
 	_announce("pa_yard")
@@ -1328,11 +1393,13 @@ func _hint_stage_now() -> String:
 	if phase != "investigation":
 		return "escape"
 	if mission.restricted_record_read:
-		return "leave"
+		return "leave" if transfer.state.transfer_door_open else "transfer"
 	if bool(circuit.outputs()["archive"]):
 		return "record"
 	if circuit.maintenance_on and player.global_position.y > 5.0:
 		return "circuit"
+	if circuit.maintenance_on and not transfer.state.power_restored:
+		return "aux"
 	if notes.has("hypothesis") or notes.has("schematic"):
 		return "lift" if not circuit.maintenance_on else "circuit"
 	return "explore"
@@ -1401,6 +1468,7 @@ func _refresh_state_fixtures() -> void:
 	building.switch_lamp.material_override = building.b.flat(GamePalette.color("ok") if circuit.maintenance_on else GamePalette.color("danger"), 0.4, 0.0, 1.5)
 	for lamp in building.pump_lamps:
 		lamp.material_override = building.b.flat(GamePalette.color("ok") if circuit.maintenance_on else Color(0.2, 0.2, 0.2), 0.4, 0.0, 1.4 if circuit.maintenance_on else 0.0)
+	transfer.refresh()
 
 
 ## The facility's own labels are Spanish (diegetic); other languages show the translation next to them.

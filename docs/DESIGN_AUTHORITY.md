@@ -1,3 +1,5 @@
+> **Rediseño espacial acordado (2026-10-16):** huella conceptual de 48 × 34 m (1.632 m² brutos; 2,32× la referencia de 30 × 23,5 m), cuatro cotas de suelo (P−2, P0, mezzanine parcial M +1,50 y ala superior P+3), nave central de 6–8 m de altura libre y alas superiores que preservan el vacío central. Las cotas son niveles de suelo, no alturas libres. P0 distingue el acceso arquitectónico antiguo al pasillo de la brecha por la que entra Elena, que colapsa físicamente tras su entrada. Se conserva la investigación Aster y el cuaderno de campo; se añade una cadena de mantenimiento (código del cajón, SERVICE_KEY, INSULATED_BRIDGE, subestación y alimentación parcial) y una cadena de transferencia (nota, armario seco, TRANSFER_KEY). La puerta al segundo edificio clandestino queda fijada en P−2, oculta en el muro oriental del taller muerto. El umbral exige investigación Aster completada, TRANSFER_KEY y PowerRestored. La llave de transferencia no sustituye la llave de servicio ni el puente. La sección debe mostrar el vacío de la nave y las alas parciales, sin un forjado de mezzanine atravesando el espacio central. Véanse [FASE1_ARCHITECTURAL_LAYOUT.md](design/FASE1_ARCHITECTURAL_LAYOUT.md), [FASE1_SPATIAL_GRAPH.md](design/FASE1_SPATIAL_GRAPH.md) y [fase1_fase2_mapa_progresion.md](design/fase1_fase2_mapa_progresion.md). Es diseño objetivo, no implementación validada; los contratos de runtime y guardado permanecen protegidos.
+
 # FINAL THAW — Design Authority During Prototype-Led Redesign
 
 > **v4.0 note (2026-10-15, as-built):** Where Phase 1–2 documents disagree with the built game, the as-built record wins, and every affected document carries a pointer to it. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
@@ -13,14 +15,14 @@ This document separates current design direction, actual implementation evidence
 | Working vision | `docs/VISION.md` | Active working vision; full-game canon is not locked |
 | Prototype scope and boundaries | `docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md` | Active brief for the opening prototype |
 | Core gameplay and narrative loop | `docs/CORE_LOOP.md` | Active design contract for the opening; implementation state is separately tracked |
-| Opening level structure and Phase 2 spatial design | `docs/LEVEL_STRUCTURE.md` plus `docs/design/assets/phase2_parking/` | Design authority for route, concept v0.3 plan/section, edge clearances, obstacle register and selected handoff transform; dimensions/colliders require runtime reconciliation |
+| Opening level structure and Phase 2 spatial design | `docs/LEVEL_STRUCTURE.md` plus `docs/design/assets/phase2_parking/` | The existing yard drawings are a measured design reference; the target now enters a human-operated building through P−2 before a hybrid escape to the yard. The current robot-to-yard route is as-built, not proof of the new handoff; dimensions/colliders require runtime reconciliation |
 | Mission 1 puzzle | `docs/design/MISSION1_GHOST_PROTOCOL.md` plus `docs/design/FASE1_LOGIC_CONTRACT.md` | Puzzle design and logic contract; implementation and integration must be evidenced |
-| Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v2.1 | Current spatial intent; plans, graph and scene must remain aligned |
-| Phase 1 plans and section | `docs/design/assets/phase1_architecture/` | Current drawing authority for Phase 1; physical alignment remains pending verification |
-| Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v1.1 | Current target topology; verify footprints and traversability in Godot |
-| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.1 | Target measurements and collision contract, not proof of built geometry |
-| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.1 | Target interactions, puzzle and escape flow; some escape requirements are not implemented |
-| Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v1.1 | Quiet evasion → perceptible reacquisition → running chase → selected exit and physical parking handoff; implementation pending |
+| Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v3.1 | Expanded spatial intent; high central nave, partial mezzanine and P−2 clandestine connection; plans, graph and scene must remain aligned |
+| Phase 1 plans and section | `docs/design/assets/phase1_architecture/` | Drawing authority for the expanded target; section must show the nave void, partial upper wings and P−2 transfer doorway; physical alignment remains pending verification |
+| Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v3.1 | Expanded target topology, including the P−2 transfer door and parallel dependencies; verify footprints and traversability in Godot |
+| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.1 plus the 2026-10-16 expanded-redesign section | Legacy dimensions remain as-built reference; the new 48 × 34 m footprint, vertical section and transfer doorway are target-only until measured and implemented |
+| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.1 plus the 2026-10-16 transfer-chain section | Preserve Aster logic; add auxiliary-power and transfer-key dependencies; runtime implementation remains pending |
+| Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v2.1 | Aster investigation + auxiliary power + P−2 transfer key converge at the clandestine threshold; human discovery/escape and parking continuity still require implementation review |
 | Movement/chase prototype mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus current code | Prototype behavior and known limits; v2 test/playtest status must be recorded |
 | Requirement-to-evidence mapping | `docs/TRACEABILITY_MATRIX.md` | Maps intended behavior to implementation, tests and verification gaps |
 | Implementation status | `PROJECT_STATUS.md`, current scene/script/test state and recorded results | Source of truth for what exists and what was actually verified |
@@ -28,9 +30,9 @@ This document separates current design direction, actual implementation evidence
 | Technical/workflow contracts | `docs/PROJECT_CONTRACT.md`, `docs/QUALITY_GATES.md`, `AGENTS.md` | Protected engineering, testing and evidence requirements |
 | Asset provenance | `docs/art/PROVENANCE.md` | Active source/licence record |
 
-## Selected opening design decisions
+## Existing prototype baselines — as-built until target implementation
 
-These decisions are the current design baseline for the opening. **Selected** means the design direction is chosen; it does not mean the scene has been implemented or runtime-verified.
+The table below records the previously selected prototype baseline and its verification gates. The expanded Phase 1 target documented above supersedes the spatial footprint, floor datums and mission handoff where they conflict. These entries remain useful for understanding current code; they are not the final target geometry.
 
 | Decision | Selected baseline | Remaining gate |
 |---|---|---|
@@ -51,15 +53,15 @@ Relevant legacy sources include `docs/core_gameplay_loop.md`, detailed campaign 
 
 ## Conflict resolution
 
-1. For Phase 1 spatial intent, use `FASE1_ARCHITECTURAL_LAYOUT.md` v2.1, the current plan/section SVGs, `FASE1_SPATIAL_GRAPH.md` v1.1 and `FASE1_GREYBOX_SPEC.md` v2.1. Older references to v1.0/v0.6 are superseded.
+1. For Phase 1 spatial intent, use `FASE1_ARCHITECTURAL_LAYOUT.md` v3.1, the current plan/section SVGs, `FASE1_SPATIAL_GRAPH.md` v3.1 and `FASE1_GREYBOX_SPEC.md` v2.1. The expanded layout is a new target; older built geometry remains the as-built record until the greybox is replaced and verified.
 2. For the opening's player-facing behavior and mission boundaries, use `DESIGN_PIVOT_PROTOTYPE_BRIEF.md`, `CORE_LOOP.md` and `LEVEL_STRUCTURE.md`.
 3. For Phase 1 circuit behavior, `FASE1_LOGIC_CONTRACT.md` remains authoritative unless a specific change is explicitly approved.
 4. For what exists, inspect current code, scenes and tests. Design documentation does not prove implementation.
 5. For test status, require the exact command and observed result. A test file is not evidence that the test ran; a passing headless test is not a substitute for a manual playtest.
 6. Preserve Phase 0 input actions/remaps, autoloads/public signals, resource paths, JSON/CRC32 save compatibility and Compatibility renderer assumptions unless impact analysis and explicit approval authorize a change.
 7. When a legacy campaign document conflicts with the active prototype brief, the brief wins for prototype scope only. Record the conflict; do not silently declare the whole campaign redesigned.
-8. Separate established story facts from proposals. The opening proposal now defines the causal beat (maintenance queues `SERVICE_OVERRIDE`; opening G's exterior leaf sends the audit and starts Containment) and recommends a facility-automated recovery protocol. The exact recipient/supervision, final recovery-unit identity, suppression motive, Marcus's role, chronology and endings remain open; do not promote proposals to full-game canon without owner approval.
-9. Do not invent architectural connections to solve a gameplay beat. All routes must be present in plan, section, spatial graph and acceptance criteria before implementation.
+8. Separate as-built behavior from target direction. In the current runtime, maintenance queues `SERVICE_OVERRIDE` and opening G sends the audit/starts Containment. In the owner-approved target, the P−2 transfer door is the mission handoff and human detection in the second building starts the escape; do not treat the old G event as the target transition after migration. The exact command chain, Marcus's role, chronology and endings remain open; do not promote proposals to full-game canon without owner approval.
+9. Do not invent architectural connections to solve a gameplay beat. The selected Phase 1 → clandestine-building connection is the concealed transfer door in the P−2 dead workshop; it must appear in the P−2 plan, vertical section, spatial graph and progression contract. Do not substitute P+3, the lift, or an emergency exit for this threshold.
 
 ## Required review gates
 

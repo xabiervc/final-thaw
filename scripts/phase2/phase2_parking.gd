@@ -374,7 +374,8 @@ func crossed_exit(p: Vector3) -> bool:
 
 
 func in_yard(p: Vector3) -> bool:
-	return p.x > X0 + 0.6 and p.y < Y + 1.0
+	# P-2 (the second building's vestibule, y = -4) lies under the yard's west end: it is not the yard.
+	return p.x > X0 + 0.6 and p.y < Y + 1.0 and p.y > Y - 1.5
 
 
 # --- helpers -------------------------------------------------------------------------------------------------------

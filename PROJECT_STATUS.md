@@ -1,18 +1,17 @@
 # Project Status — FINAL THAW
 
-## Immediate next milestone — 2026-10-16
+## Immediate next milestone — owner authorization update (2026-10-16)
 
-**Authorized scope for the next Sonnet pass: A0 baseline reconciliation and A1 English HUD localization only.** This is a narrow recovery step before audio, collision/traversal, staff AI, Phase 1 redesign or Phase 2 construction. Stop after A1 and return the diff plus evidence for review.
+**The owner has now explicitly authorized the expanded Phase 1 architectural and progression redesign.** This supersedes the earlier A1-only stop for work performed on the isolated design branch; it does not authorize overwriting the canonical checkout, merging the branch, changing protected project/save contracts, or claiming runtime validation without evidence.
 
-- Re-inspect the actual `feat/godot-vertical-slice` checkout, including all owner-local/untracked work; preserve it.
-- Re-run the full suite and record exact commands, versions and results.
-- Keep the historical committed run (33 suites / 1051 PASS in this status record) distinct from the audit/handoff's 34 suites / 1053 PASS working-tree run. A fresh run is required; do not claim either is the current baseline without executing it.
-- Reproduce and fix the English HUD state/resistance label defect associated with `NarrativeText.prompt_condition` and visible state names, with ES/EN regression coverage.
-- Prove the existing save remains byte-identical and that circuit/mission contracts remain unchanged.
-- Update the existing localization and traceability records with evidence; create no duplicate documents.
-- No code/assets/owner-local work is to be committed or pushed without explicit owner approval. Do not change protected project settings or contracts.
+- Keep `feat/godot-vertical-slice` and the owner's local changes untouched. The redesign branch is `design/expanded-facility-redesign`.
+- Preserve the current Aster circuit contract and field-notes loop. Add the maintenance/auxiliary-power chain and the separate P−2 transfer-key chain without changing Aster's internal state machine.
+- Reconcile the 48 × 34 m target footprint with the actual world coordinates, current east service threshold, Phase 2 yard, route graph, camera and checkpoints before rewriting the builder. No geometry coordinate is considered locked until all affected drawings and code agree.
+- Implement the P−2 floor, stair access independent of the lift, hidden transfer door, clue/key interaction chain, auxiliary-power feedback, partial mezzanine and high central nave as one coordinated change.
+- Add/adjust behavior tests and run the required Godot 4.7.2 suite; inspect the editor debugger and manually play the full route. Runtime implementation is present on the recovered `design/expanded-facility-redesign` worktree. Godot 4.7.2 automated validation completed with 38 suites, 1267 PASS, 0 FAIL, 0 runtime ERROR and 12 warnings (including expected negative-test diagnostics and ObjectDB teardown notices). Human playtest and editor-debugger review remain pending; this branch is not yet integrated into the canonical checkout.
+- Update existing sources of truth; do not create duplicate design documents. Keep as-built evidence separate from target design.
 
-**Gate:** no subsequent milestone starts until the owner reviews the diff, test evidence and unresolved risks.
+**Gate:** no merge into `feat/godot-vertical-slice` until the owner reviews the diff, exact test evidence, manual QA and remaining risks.
 
 ## Current phase
 
@@ -25,7 +24,7 @@ The main menu's "Iniciar demo" opens `scenes/prototypes/phase1_canonical_greybox
 - an ending cinematic (about 37 s, skippable);
 - results, then back to the menu.
 
-The as-built record, its design decisions and the measured performance are in [`docs/design/FASE1_PREMIUM_AUDIT.md`](docs/design/FASE1_PREMIUM_AUDIT.md) (v4.0). Where a v2.1 spec disagrees with it, v4.0 and the scene win.
+The as-built record, its design decisions and measured performance are in [`docs/design/FASE1_PREMIUM_AUDIT.md`](docs/design/FASE1_PREMIUM_AUDIT.md) (v4.0); it remains authoritative for the current runtime. The owner-approved expanded target is specified separately in `FASE1_ARCHITECTURAL_LAYOUT.md` v3.1, `FASE1_SPATIAL_GRAPH.md` v3.1, `FASE1_GREYBOX_SPEC.md` and the progression/functional specs. Target documents do not override as-built evidence or prove implementation.
 
 ## Verified by automated tests
 

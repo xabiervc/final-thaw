@@ -11,6 +11,7 @@ extends RefCounted
 const Builder := preload("res://scripts/phase1/phase1_builder.gd")
 const Parking := preload("res://scripts/phase2/phase2_parking.gd")
 const Art := preload("res://scripts/phase1/phase1_art.gd")
+const Expansion := preload("res://scripts/phase1/phase1_expansion.gd")
 
 const Y_P1 := -2.0
 const Y_P0 := 0.0
@@ -71,6 +72,8 @@ var b = null  # Builder
 var mats = null
 ## Environment art layer (scripts/phase1/phase1_art.gd): what the player sees beyond the layout.
 var art = null
+## The expanded facility (scripts/phase1/phase1_expansion.gd): shift rooms on P0, the stair and the whole of P-2.
+var expansion = null
 
 # Dynamic parts the scene drives.
 var lift_gate_lower: StaticBody3D
@@ -126,6 +129,8 @@ func build() -> void:
 	_gantry()
 	_lift_landings()
 	_column()
+	expansion = Expansion.new(b, mats)
+	expansion.build()
 	_lighting()
 	art = Art.new(b, mats)
 	art.build()
@@ -169,7 +174,7 @@ func _shell() -> void:
 # --- P0: entry, nave, workshop, service gallery, south band --------------------------------------------------
 
 func _p0() -> void:
-	b.slab_with_holes("GroundFloor", Rect2(0.0, -10.0, 30.0, 23.5), [PIT, S1_WELL, SHAFT, BRIDGE_CUT], Y_P0, mats.get_material("st_floor_painted"))
+	b.slab_with_holes("GroundFloor", Rect2(0.0, -10.0, 30.0, 23.5), [PIT, S1_WELL, SHAFT, BRIDGE_CUT] + Expansion.floor_holes(), Y_P0, mats.get_material("st_floor_painted"))
 	# Entry tunnel X -3..0: floor, side walls, ceiling and a closed security gate behind the spawn.
 	b.slab("AccessTunnelFloor", Rect2(-3.0, 4.5, 3.0, 3.0), Y_P0, mats.get_material("st_floor_damaged"))
 	b.wall_z("AccessTunnelSouth", 4.35, -3.3, 0.0, 0.0, 2.65, mats.get_material("st_concrete"))

@@ -60,6 +60,22 @@ const NODES := {
 	"yb_4": Vector3(61.0, -2.0, -6.6),
 	"yb_5": Vector3(66.5, -2.0, -6.0),
 	"yb_6": Vector3(68.2, -2.0, -0.4),
+	# Expanded Phase 1 (scripts/phase1/phase1_expansion.gd): the P-2 route from the second building's bay back to the pit.
+	# Bay -> vestibule -> transfer door -> dead workshop -> cable gallery -> stair to the south band (P0) -> S1.
+	"b2_bay": Vector3(31.2, -4.0, 22.6),
+	"b2_bay_door": Vector3(31.2, -4.0, 19.3),
+	"b2_vest": Vector3(32.2, -4.0, 17.2),
+	"b2_tdoor": Vector3(29.9, -4.0, 17.2),
+	"b2_dead": Vector3(27.4, -4.0, 16.9),
+	"b2_dead_door": Vector3(26.9, -4.0, 13.7),
+	"b2_gal_e": Vector3(26.9, -4.0, 12.4),
+	"b2_gal_w": Vector3(16.0, -4.0, 12.4),
+	"b2_stair_mid": Vector3(11.2, -2.0, 12.4),
+	"b2_top": Vector3(8.0, 0.0, 12.4),
+	"sb_w": Vector3(8.2, 0.0, 10.4),
+	"sb_mid": Vector3(15.0, 0.0, 10.0),
+	"sb_e": Vector3(22.5, 0.0, 10.0),
+	"sb_s1": Vector3(23.2, 0.0, 12.4),
 }
 
 const EDGES := [
@@ -76,6 +92,9 @@ const EDGES := [
 	["ya_4", "join"], ["yard_dec", "yb_1"], ["yb_1", "yb_2"], ["yb_2", "yb_3"], ["yb_3", "yb_4"], ["yb_4", "yb_5"],
 	["yb_5", "yb_6"], ["yb_6", "join"], ["ya_2", "yb_2"], ["join", "bar_s"], ["bar_s", "bar_n"], ["bar_n", "egress"],
 	["egress", "gate_in"],
+	["b2_bay", "b2_bay_door"], ["b2_bay_door", "b2_vest"], ["b2_vest", "b2_tdoor"], ["b2_tdoor", "b2_dead"], ["b2_dead", "b2_dead_door"],
+	["b2_dead_door", "b2_gal_e"], ["b2_gal_e", "b2_gal_w"], ["b2_gal_w", "b2_stair_mid"], ["b2_stair_mid", "b2_top"], ["b2_top", "sb_w"],
+	["sb_w", "sb_mid"], ["sb_mid", "sb_e"], ["sb_e", "sb_s1"], ["sb_s1", "s1_top"],
 ]
 
 ## The Containment sweep: the order in which the protocol searches the building after G opens.
