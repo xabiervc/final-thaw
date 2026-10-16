@@ -1,4 +1,4 @@
-# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v2.0 · misión rediseñada)
+# FINAL THAW — Fases 1 y 2: mapa de progresión verificable (v2.1 · transferencia en P−2)
 
 **Estado:** contrato de progresión acordado para prototipado; todavía no implementado ni validado en runtime. El runtime construido se describe en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
 
