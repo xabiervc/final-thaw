@@ -77,6 +77,6 @@ La secuencia admite exploración fuera de orden: se puede descubrir la subestaci
 - La huella bruta de propuesta es 1.632 m² y la comparación con la huella de referencia de 705 m² queda explícita (2,32×).
 - Todos los niveles incluyen al menos una ruta principal legible y salas opcionales que no son todas contenedores de objetos.
 - El cajón, la llave, el puente, la subestación, la iluminación y el ascensor tienen ubicaciones y dependencias explícitas.
-- Los planos y el grafo espacial no se contradicen.
+- Los planos y el grafo espacial no se contradicen; ambos distinguen el acceso antiguo al pasillo, la brecha colapsada de Elena y la puerta sellada al edificio clandestino. La posición exacta de esta última sigue pendiente y no debe darse por resuelta hasta aparecer coordinada en planta y sección.
 - El greybox se juega antes de producir arte final; se miden tiempos, confusiones, rutas alternativas, retornos y comprensión del puzle.
 - La propuesta no se considera implementada ni validada hasta superar pruebas automáticas de estructura y una sesión de juego real.
