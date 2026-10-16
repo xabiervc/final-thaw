@@ -92,3 +92,14 @@ However, a key written into a `.tres` resource must exist as an exported propert
 ## Verification status
 
 No localization work is considered verified until Godot loads both resources without errors and the ES/EN switch is manually tested in the canonical shelter scene.
+
+
+## LC-004 — English HUD resistance/state label remains Spanish
+
+- **Status:** Open; must be reproduced and fixed in the next bounded implementation milestone.
+- **Reported defect:** the English HUD can display a Spanish resistance/state label because `NarrativeText.prompt_condition` and/or the visible state name is not localized on the affected path.
+- **Evidence boundary:** this is recorded in the Phase 2 audit dated 2026-10-16. Sonnet must inspect the current checkout and reproduce the exact path before editing; do not assume the earlier source path remains unchanged.
+- **Required fix:** use the existing localization architecture and canonical player-facing text source. Do not add a parallel localization mechanism or hard-code translated HUD strings in gameplay code.
+- **Required regression tests:** verify the affected HUD/state output in both Spanish and English, including missing-key/fallback behavior. Demonstrate red-before/green-after where possible; disclose if the pre-fix failure cannot be reproduced.
+- **Required verification:** focused localization tests plus the full suite; manual locale switching in Godot remains unverified until actually performed.
+- **Scope gate:** this is the only localization fix authorized in the immediate A0–A1 milestone. Broader key parity/resource cleanup remains a separate task unless it is strictly necessary for this defect and can be shown not to expand scope.
