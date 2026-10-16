@@ -18,7 +18,7 @@ La instalación se organiza en una espina de circulación por nivel y varios ram
 - **P0-HALL:** nave central de gran altura con columna Aster, maquinaria de bombeo y vistas a la mezzanine; hito visual.
 - **P0-INSTRUMENTS:** taller de instrumentos; contexto opcional y continuidad visual con la investigación Aster.
 - **P0-SAMPLES:** lavado y muestras.
-- **P0-LIFT:** vestíbulo del ascensor; transporte bloqueado hasta PowerRestored.
+- **P0-LIFT:** vestíbulo del ascensor; transporte bloqueado hasta PowerRestored y la condición de mantenimiento del contrato Aster.
 - **P0-STAIR-B2:** conexión vertical accesible entre P0 y P−2; no depende de la alimentación del ascensor.
 
 ### P−2 — Energía, mantenimiento y transferencia
@@ -87,7 +87,7 @@ Las aristas describen topología objetivo. Antes de considerarlas construidas, d
 - **SERVICE_KEY:** se obtiene del cajón de P0-DISPATCH y abre B2-SUBSTATION.
 - **INSULATED_BRIDGE:** se obtiene del mismo cajón y ocupa el terminal vacío del panel.
 - **PowerRestored:** requiere SERVICE_KEY para acceder, INSULATED_BRIDGE colocado correctamente y accionar el seccionador.
-- **LiftPowered:** depende de PowerRestored. Relés, zumbido, luces parciales, bombas auxiliares e indicador del ascensor confirman el cambio.
+- **LiftPowered:** requiere PowerRestored y la condición de mantenimiento ya definida por el contrato Aster. Relés, zumbido, luces parciales, bombas auxiliares e indicador del ascensor confirman la disponibilidad.
 
 ### Cadena B — puerta de transferencia
 
@@ -95,7 +95,7 @@ Las aristas describen topología objetivo. Antes de considerarlas construidas, d
 - **TransferKeyClue:** la nota del taller indica que la llave se guardó en el armario seco del almacén después de una fuga.
 - **TRANSFER_KEY:** se obtiene del armario seco elevado de B2-SPARES; su símbolo coincide con el de la puerta.
 - **AsterInvestigationComplete:** conserva la secuencia del contrato `FASE1_LOGIC_CONTRACT.md` y la nota de campo de observación → hipótesis → prueba → conclusión; incluye consulta del registro restringido.
-- **ClandestineBuildingAccess:** requiere HiddenDoorDiscovered + TRANSFER_KEY + PowerRestored + AsterInvestigationComplete.
+- **ClandestineBuildingAccess:** requiere HiddenDoorDiscovered + TRANSFER_KEY + PowerRestored + AsterInvestigationComplete (incluye RESTRICTED_RECORD_READ).
 
 Las cadenas eléctrica y de transferencia son independientes entre sí; ambas convergen con la investigación Aster existente antes de cruzar la puerta. SERVICE_KEY e INSULATED_BRIDGE no abren la puerta de transferencia; TRANSFER_KEY no abre la subestación ni restaura la energía. La lógica interna de Aster se conserva sin cambios. La llave y la nota pueden encontrarse en cualquier orden de exploración, pero el umbral no puede cruzarse hasta cumplir ambas condiciones.
 
@@ -107,7 +107,7 @@ P0-WAITING, P0-REST, P0-STORAGE, B2-VENT, B2-FLOODED, M-MEETING, M-REST, M-DARK-
 
 - **Prueba estática:** cada nodo y arista crítica tiene un identificador estable y una referencia a la puerta/portal correspondiente.
 - **Reachability:** brecha → P0 → escalera a P−2 → taller muerto → puerta descubierta → armario seco/TRANSFER_KEY; en paralelo, cajón → SERVICE_KEY + INSULATED_BRIDGE → subestación → PowerRestored. Ambas cadenas convergen en B2-TRANSFER-DOOR → B2-CLANDESTINE-VESTIBULE.
-- **Bloqueos:** cajón sin DrawerCode; subestación sin SERVICE_KEY; circuito incompleto sin INSULATED_BRIDGE; ascensor apagado antes de PowerRestored; puerta clandestina cerrada sin TRANSFER_KEY o sin PowerRestored.
+- **Bloqueos:** cajón sin DrawerCode; subestación sin SERVICE_KEY; circuito incompleto sin INSULATED_BRIDGE; ascensor apagado antes de PowerRestored; puerta clandestina cerrada sin TRANSFER_KEY, sin PowerRestored o sin RESTRICTED_RECORD_READ.
 - **No softlock:** la escalera permite volver entre P0 y P−2 sin ascensor; el jugador puede explorar puerta, nota y almacén en distinto orden.
 - **QA manual:** probar al menos dos ramales opcionales y comprobar que se entienden como contenido secundario, no como rutas rotas.
 - **Verificación visual:** validar desde la cámara real que los indicios de la puerta son perceptibles y que el umbral revela una zona activa sin mostrarla por completo antes de abrir.
