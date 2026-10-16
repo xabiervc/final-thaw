@@ -17,11 +17,11 @@ La Fase 1 es una investigación espacial dentro de un edificio industrial aparen
 | 5 | Exploración P−2 | Localizar subestación y examinar terminales | Puerta cerrada por llave; se ve el hueco del puente tras abrirla | Paso 4 para abrir; antes se puede descubrir la puerta |
 | 6 | Subestación | Usar la llave, insertar el puente y activar el seccionador | Relés, zumbido, luces por circuitos y bombas auxiliares | Paso 4 |
 | 7 | Vestíbulo del ascensor | Solicitar ascensor | Se activa el indicador, se oye el mecanismo y las puertas operan | Paso 6 |
-| 8 | M / P+3 (opcional para la transición) | Subir y explorar las alas superiores | Contexto de la instalación y señales de peligro creciente; el ascensor no es un requisito para descubrir el umbral de P−2 | Paso 7 si se decide subir |
+| 8 | M / P+3 | Subir y completar la investigación Aster existente | Aplicar la secuencia del contrato lógico, estabilizar ARCHIVO y leer el registro restringido; el cuaderno conserva observación → hipótesis → prueba → conclusión | Paso 7 (PowerRestored) |
 | 9 | Taller muerto, P−2 | Investigar la franja limpia, marcas de arrastre y corriente de aire | Inspección revela un panel oculto y una puerta de transferencia bloqueada | Acceso a P−2 |
 | 10 | Taller muerto | Leer la nota de mantenimiento | La nota indica que la llave de transferencia se guardó en el armario seco del almacén tras una fuga | Paso 9, aunque el jugador puede haber explorado el almacén antes |
 | 11 | Almacén de repuestos, P−2 | Buscar el armario seco elevado sobre la marca de humedad | El símbolo del armario coincide con el de la puerta; se obtiene la llave de transferencia | Paso 10 como pista; el armario puede encontrarse antes |
-| 12 | Puerta oculta, P−2 | Usar la llave de transferencia con la alimentación restablecida | Se abre el umbral y se revela el vestíbulo técnico de un segundo edificio activo, con maquinaria, luces de trabajo y señales recientes de operación clandestina | Pasos 6 y 11; ambas cadenas deben completarse |
+| 12 | Puerta oculta, P−2 | Usar la llave de transferencia con la alimentación restablecida | Se abre el umbral y se revela el vestíbulo técnico de un segundo edificio activo, con maquinaria, luces de trabajo y señales recientes de operación clandestina | Pasos 6 y 11 + registro Aster consultado; ambas cadenas y la investigación deben completarse |
 
 ## 3. Pistas y puzle del cajón
 
@@ -35,9 +35,10 @@ La progresión del umbral no es una extensión de la cadena eléctrica: son dos 
 
 - **Energía:** SERVICE_KEY + INSULATED_BRIDGE → subestación operativa → PowerRestored → luces parciales, bombas auxiliares y ascensor.
 - **Transferencia:** indicios del taller muerto → panel/puerta descubiertos → nota de mantenimiento → armario seco en almacén → TRANSFER_KEY.
-- **Convergencia:** TRANSFER_KEY + PowerRestored → apertura de la puerta oculta de P−2 → vestíbulo técnico del edificio clandestino.
+- **Investigación Aster (preservada):** puzle de distribución → hipótesis/confirmación en cuaderno → ARCHIVO estable → consulta del registro restringido.
+- **Convergencia:** TRANSFER_KEY + PowerRestored + RESTRICTED_RECORD_READ → apertura de la puerta oculta de P−2 → vestíbulo técnico del edificio clandestino.
 
-La llave de servicio no abre la puerta oculta. La llave de transferencia no abre la subestación ni completa el circuito. El jugador puede investigar estas rutas en distinto orden; no se bloquea la exploración por descubrir una puerta demasiado pronto.
+La llave de servicio no abre la puerta oculta. La llave de transferencia no abre la subestación ni completa el circuito. El puzle Aster y el cuaderno de campo siguen siendo el núcleo de investigación; la cadena de mantenimiento/transferencia se añade sin reescribir sus reglas. El jugador puede investigar estas rutas en distinto orden; no se bloquea la exploración por descubrir una puerta demasiado pronto.
 
 ## 5. Energía, luces y ascensor
 
