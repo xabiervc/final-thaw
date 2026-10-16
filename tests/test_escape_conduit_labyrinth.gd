@@ -30,7 +30,7 @@ func _run() -> void:
 	_expect(scene.get_node_or_null("Elena_EscapePrototype") != null, "Elena player exists")
 	_expect(scene.get_node_or_null("ESC_D01_EndCap") != null and scene.get_node_or_null("ESC_D02_EndCap") != null and scene.get_node_or_null("ESC_D03_EndCap") != null, "all optional dead ends have physical end caps")
 	_expect(scene.get_node_or_null("ESC_FOREST_HIDEOUT_TRIGGER") != null, "forest completion trigger exists")
-	_expect(scene.get_node_or_null("ESC_HATCH_FRAME") != null and scene.get_node_or_null("ESC_SECONDARY_ROAD") != null and scene.get_node_or_null("ESC_FOREST_GROUND") != null, "hatch, road and continuous forest ground exist")
+	_expect(scene.get_node_or_null("ESC_HATCH_FRAME_Post_L") != null and scene.get_node_or_null("ESC_HATCH_FRAME_Post_R") != null and scene.get_node_or_null("ESC_SECONDARY_ROAD") != null and scene.get_node_or_null("ESC_FOREST_GROUND") != null, "hatch, road and continuous forest ground exist")
 	await get_tree().create_timer(0.2).timeout
 	var player = scene.get("player")
 	_expect(player != null and absf(float(player.get("stamina")) - 100.0) < 0.01, "adrenaline prototype restores stamina to 100")
