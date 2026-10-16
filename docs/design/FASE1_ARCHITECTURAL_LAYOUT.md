@@ -62,7 +62,7 @@ Vestíbulo restringido, seguridad/monitorización, archivo restringido, control 
 3. Leer la nota de mantenimiento del taller: después de una fuga, la llave de transferencia se guardó en el armario seco del almacén de repuestos.
 4. Localizar el armario elevado por encima de la marca de humedad y reconocer el símbolo que coincide con el de la puerta.
 5. Obtener la llave de transferencia. El símbolo y el contexto deben ser legibles sin búsqueda de píxeles.
-6. Volver a la puerta oculta y usar la llave de transferencia. La puerta solo completa la apertura cuando la alimentación requerida está restablecida.
+6. Volver a la puerta oculta y usar la llave de transferencia. La puerta solo completa la apertura cuando la alimentación requerida está restablecida y la investigación Aster/consulta del registro restringido está completada.
 7. Cruzar a un vestíbulo técnico del segundo edificio y revelar actividad clandestina real: iluminación de trabajo, maquinaria activa, señales recientes de uso y sonido humano/operativo. Este cruce cierra Fase 1 y abre la transición narrativa a Fase 2.
 
 Las cadenas de mantenimiento y transferencia son independientes entre sí; ambas convergen con la investigación Aster existente en el umbral final. SERVICE_KEY e INSULATED_BRIDGE no abren la puerta de transferencia; TRANSFER_KEY no abre la subestación ni restaura la energía. Se puede descubrir la puerta antes de restaurar la energía o conseguir la llave; no se puede entrar en el segundo edificio hasta completar la investigación Aster, obtener TRANSFER_KEY y restaurar la alimentación. Al menos un descubrimiento opcional debe aportar contexto o ventaja sin bloquear la ruta crítica.
