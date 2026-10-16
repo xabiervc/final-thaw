@@ -58,7 +58,7 @@ La instalación se organiza en una espina por nivel y varios ramales de diferent
 - **P3-SUPERVISOR:** oficina de supervisión.
 - **P3-BRIEFING:** sala de briefing.
 - **P3-RECORDS:** almacén de registros.
-- **P3-EMERGENCY:** salida de emergencia y transición a Fase 2.
+- **P3-EMERGENCY:** salida de emergencia secundaria; no es la transición narrativa principal al edificio clandestino.
 - **P3-LIFT:** vestíbulo del ascensor.
 
 ## 2. Aristas principales
@@ -94,7 +94,7 @@ P0-WAITING, P0-REST, P0-STORAGE, B2-VENT, B2-SPARES, B2-FLOODED, B2-DEAD-WORKSHO
 ## 5. Contratos de validación
 
 - Prueba estática: todos los nodos y aristas críticos tienen un identificador estable y una referencia a la puerta/portal de la escena.
-- Prueba de reachability: entrada → cajón → subestación → energía → ascensor → salida de Fase 2.
+- Prueba de reachability: brecha de Elena → cajón → subestación → energía → ascensor/recorrido habilitado → puerta sellada de conexión → edificio clandestino. La ubicación de esa puerta debe resolverse antes de convertir la prueba en un criterio geométrico ejecutable.
 - Prueba de bloqueo: el cajón no se abre sin DrawerCode; subestación no abre sin SERVICE_KEY; no se restaura energía sin INSULATED_BRIDGE; ascensor no funciona antes de PowerRestored.
 - Prueba de retorno: el jugador puede volver desde P−2 a P0 y desde la galería al núcleo sin softlock.
 - QA manual: explorar al menos dos ramales opcionales; verificar que se entienden como espacios secundarios y no como contenido roto.
