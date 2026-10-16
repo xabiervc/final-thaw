@@ -1,28 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 800" role="img" aria-label="Sección vertical de cuatro cotas de Final Thaw Fase 1">
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7be0b8"/></marker><marker id="lift" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f4c968"/></marker><marker id="escape" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#e9a078"/></marker></defs>
-<style>text{font-family:Inter,Arial,sans-serif;fill:#eaf2f6}.title{font-size:26px;font-weight:750}.sub{font-size:15px;fill:#a9c0cc}.level{font-size:15px;font-weight:750;fill:#7be0b8}.lab{font-size:14px;font-weight:700}.body{font-size:12px;fill:#b6c9d3}.datum{stroke:#829eae;stroke-width:1;opacity:.25}.walk{stroke:#7be0b8;stroke-width:4;fill:none;marker-end:url(#arrow)}.liftpath{stroke:#f4c968;stroke-width:4;fill:none;stroke-dasharray:8 6;marker-end:url(#lift)}</style>
-<rect width="1330" height="800" fill="#0b141d"/><path d="M0 91H1330M0 720H1330" stroke="#324b5a"/>
-<text x="32" y="39" class="title">FINAL THAW · FASE 1</text><text x="32" y="64" class="sub">SECCIÓN VERTICAL · COTAS, RUTA DE HUIDA Y SALIDA ALTERNATIVA</text><text x="32" y="84" class="level">Huida: G → evasión silenciosa F/E/S2/M → elevador/P0 → R1 → carrera → S1/P−1 → salida</text>
-<line x1="100" y1="180" x2="1210" y2="180" class="datum"/><text x="88" y="171" text-anchor="end" class="level">P2  +3,0 m</text><line x1="100" y1="320" x2="1210" y2="320" class="datum"/><text x="88" y="311" text-anchor="end" class="level">M  +1,5 m</text><line x1="100" y1="455" x2="1210" y2="455" class="datum"/><text x="88" y="446" text-anchor="end" class="level">P0  0,0 m</text><line x1="100" y1="605" x2="1210" y2="605" class="datum"/><text x="88" y="596" text-anchor="end" class="level">P−1  −2,0 m</text>
-<rect x="150" y="440" width="890" height="22" fill="#1b303c" stroke="#8aa7b6" stroke-width="2"/>
-<rect x="175" y="402" width="125" height="38" fill="#193943" stroke="#76a0b4"/><text x="237" y="425" text-anchor="middle" class="body">A · Acceso</text>
-<rect x="300" y="390" width="440" height="50" fill="#1a303c" stroke="#76a0b4"/><text x="520" y="411" text-anchor="middle" class="lab">B · Nave de ensayo</text><text x="520" y="429" text-anchor="middle" class="body">Rig y columna Aster</text>
-<rect x="740" y="402" width="145" height="38" fill="#253541" stroke="#76a0b4"/><text x="812" y="425" text-anchor="middle" class="body">C · Taller</text>
-<rect x="360" y="590" width="495" height="37" fill="#1b3440" stroke="#6f97a8" stroke-width="2"/><text x="605" y="613" text-anchor="middle" class="lab">D1 / D2 · Foso y distribución</text>
-<rect x="475" y="320" width="405" height="12" fill="#263640" stroke="#8aa7b6" stroke-width="2"/>
-<rect x="490" y="282" width="110" height="38" fill="#203743" stroke="#76a0b4"/><text x="545" y="304" text-anchor="middle" class="body">Galería</text>
-<rect x="600" y="282" width="255" height="38" fill="#253640" stroke="#76a0b4"/><text x="727" y="305" text-anchor="middle" class="lab">M · Sala de bombas</text>
-<rect x="490" y="180" width="20" height="210" fill="#112630" stroke="#f4c968" stroke-width="2"/><rect x="478" y="195" width="44" height="8" fill="#f4c968"/><rect x="478" y="290" width="44" height="8" fill="#f4c968"/><rect x="478" y="382" width="44" height="8" fill="#7be0b8"/><text x="535" y="255" class="body">Columna Aster</text><text x="535" y="272" class="body">hito visual continuo</text>
-<rect x="170" y="168" width="120" height="12" fill="#3a302f" stroke="#8aa7b6"/><rect x="290" y="168" width="180" height="12" fill="#213943" stroke="#8aa7b6"/><rect x="510" y="168" width="500" height="12" fill="#233541" stroke="#8aa7b6"/>
-<text x="230" y="152" text-anchor="middle" class="lab">G · Esclusa</text><text x="380" y="152" text-anchor="middle" class="lab">F · Archivo</text><text x="760" y="152" text-anchor="middle" class="lab">E · Control / pasarela</text>
-<!-- S1 -->
-<path d="M825 440L805 458L785 477L765 495L745 512L725 530L705 548L685 565L665 588" stroke="#9ab4c2" stroke-width="5" fill="none"/><path d="M820 445L665 585" class="walk"/><text x="835" y="525" class="lab">S1 · Escalera fija</text><text x="835" y="543" class="body">P0 ↔ D · siempre operativa</text>
-<!-- Lift P0 to M only -->
-<rect x="950" y="330" width="68" height="132" fill="#132632" stroke="#76c8e6" stroke-width="2"/><rect x="958" y="324" width="52" height="12" fill="#76c8e6" opacity=".55"/><rect x="958" y="448" width="52" height="12" fill="#76c8e6" opacity=".55"/><path d="M984 450L984 330" class="liftpath"/><text x="1030" y="370" class="lab">Elevador</text><text x="1030" y="388" class="body">P0 ↔ M</text><text x="1030" y="406" class="body">Y=0 ↔ +1,5 m</text>
-<!-- S2 -->
-<path d="M475 320L455 302L435 285L415 267L395 250L375 232L355 213L330 180" stroke="#9ab4c2" stroke-width="5" fill="none"/><path d="M475 320L330 180" class="walk"/><text x="260" y="251" class="lab">S2 · Escalera fija</text><text x="260" y="269" class="body">M ↔ P2 · +1,5 ↔ +3 m</text>
-<!-- collapsed stair -->
-<path d="M195 440L220 420L245 397L270 375" stroke="#e9a17e" stroke-width="4" stroke-dasharray="8 6" fill="none"/><path d="M258 365L282 389M282 365L258 389" stroke="#e9a17e" stroke-width="3"/><text x="105" y="350" class="lab" fill="#e9a17e">P0→P2 dañada</text><text x="105" y="368" class="body">no transitable</text>
-<path d="M235 420L360 420L520 420L790 420L835 390L930 350L730 305L495 305L400 240L620 175L380 175L230 175" class="walk"/>
-<text x="32" y="754" class="sub">Sección de diseño v2.1. Tras G, Elena evade en silencio por F/E y S2/M; la unidad la sigue por el elevador existente y reacquiere en R1/P0, donde comienza la carrera hacia S1/P−1 y una salida alternativa. Cotas, LOS y continuidad pendientes de Godot.</text>
-<polyline points="230,174 330,180 475,320 950,320 984,320 984,450 825,450 665,605 1115,605" fill="none" stroke="#e9a078" stroke-width="4" stroke-dasharray="9 7" marker-end="url(#escape)"/><text x="690" y="585" class="lab" fill="#e9a078">RUTA DE HUIDA</text><text x="1060" y="588" class="body">Salida de servicio</text><text x="535" y="255" class="lab" fill="#7be0b8">EVASIÓN SILENCIOSA</text><circle cx="825" cy="450" r="12" fill="#e9a078" stroke="#0b141d" stroke-width="2"/><text x="825" y="454" text-anchor="middle" class="tiny" font-weight="800" fill="#0b141d">R1</text><text x="850" y="432" class="lab" fill="#e9a078">R1 · REACQUISICIÓN P0</text><text x="850" y="476" class="lab" fill="#e9a078">CARRERA</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 800" role="img" aria-label="Sección vertical conceptual de la instalación ampliada de Final Thaw">
+<rect width="1330" height="800" fill="#f8fafb"/>
+<text x="42" y="48" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#16212a">SECCIÓN VERTICAL · INSTALACIÓN AMPLIADA</text>
+<text x="42" y="76" font-family="Arial,sans-serif" font-size="14" fill="#53616d">Relación conceptual entre P−2, P0, mezzanine y P+3 · no es sección constructiva</text>
+<rect x="100" y="165" width="1125" height="130" fill="#dce8f1" stroke="#53646e"/>
+<rect x="100" y="305" width="1125" height="130" fill="#d9e9e4" stroke="#53646e"/>
+<rect x="100" y="445" width="1125" height="130" fill="#f5e7c7" stroke="#53646e"/>
+<rect x="100" y="585" width="1125" height="130" fill="#e9eff1" stroke="#53646e"/>
+<text x="120" y="190" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">P+3 · CONTROL / ARCHIVO / VESTÍBULO DE ASCENSOR</text>
+<text x="120" y="330" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">M +1,50 · GALERÍA DE OBSERVACIÓN / LABORATORIO</text>
+<text x="120" y="470" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">P0 · ENTRADA / NAVE / DESPACHO DEL CAJÓN</text>
+<text x="120" y="610" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">P−2 · SUBESTACIÓN / BOMBAS / GALERÍA DE CABLES</text>
+<rect x="760" y="160" width="110" height="555" fill="#c7d5db" stroke="#263943" stroke-width="3"/>
+<rect x="775" y="175" width="80" height="525" fill="#f8fafb" stroke="#657780" stroke-width="1.5"/>
+<line x1="815" y1="175" x2="815" y2="700" stroke="#657780" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="815" y="420" transform="rotate(-90 815 420)" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#263943">NÚCLEO CONTINUO DEL ASCENSOR</text>
+<rect x="380" y="480" width="130" height="55" fill="#f4dfcf" stroke="#53646e" stroke-width="2"/>
+<text x="445" y="502" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#1c2b33"><tspan x="445">CAJÓN</tspan><tspan x="445" dy="16">LLAVE + PUENTE</tspan></text>
+<rect x="950" y="625" width="180" height="55" fill="#f4dfcf" stroke="#53646e" stroke-width="2"/>
+<text x="1040" y="647" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#1c2b33"><tspan x="1040">SUBESTACIÓN</tspan><tspan x="1040" dy="16">CONEXIÓN FÍSICA</tspan></text>
+<path d="M510 510 H650 V655 H950" fill="none" stroke="#c87943" stroke-width="4" stroke-dasharray="9 6"/>
+<path d="M1040 625 V510 H815" fill="none" stroke="#287a68" stroke-width="4" stroke-dasharray="9 6"/>
+<text x="560" y="495" font-family="Arial,sans-serif" font-size="12" fill="#9b552d">PUENTE AISLADO</text>
+<text x="885" y="495" font-family="Arial,sans-serif" font-size="12" fill="#287a68">ALIMENTACIÓN DEL ASCENSOR</text>
+<text x="42" y="765" font-family="Arial,sans-serif" font-size="11" fill="#71808a">FINAL THAW · REDISEÑO ESPACIAL PROPUESTO · 2026-10-16 · ALTURAS Y CONEXIONES PENDIENTES DE VALIDACIÓN</text>
+</svg>
