@@ -4,13 +4,13 @@
 
 ## 1. Principio de misión
 
-La Fase 1 es una investigación espacial dentro de una instalación mucho mayor. El jugador no recibe una lista de controles; observa indicios, formula una hipótesis, prueba una acción y lee el cambio del entorno. Las salas secundarias hacen que el lugar parezca usado y parcialmente desconocido. No todo objeto es una pista, no toda pista es obligatoria y no toda puerta se abre durante esta misión.
+La Fase 1 es una investigación espacial dentro de un edificio industrial aparentemente abandonado que sirve de cobertura para una instalación clandestina adyacente. Ambos edificios están conectados por una puerta de seguridad sellada que Elena abrirá al reunir los elementos y restablecer los sistemas necesarios. El jugador no recibe una lista de controles; observa indicios, formula una hipótesis, prueba una acción y lee el cambio del entorno. Las salas secundarias hacen que el lugar parezca usado y parcialmente desconocido. No todo objeto es una pista, no toda pista es obligatoria y no toda puerta se abre durante esta misión.
 
 ## 2. Cadena crítica
 
 | Paso | Lugar | Acción del jugador | Evidencia / respuesta | Dependencia |
 |---|---|---|---|---|
-| 1 | Entrada colapsada | Entrar por el conducto | Derrumbe bloquea el regreso; objetivo de encontrar otra salida | Ninguna |
+| 1 | Brecha de Elena | Entrar por el conducto de servicio | El acceso se derrumba después de entrar y bloquea físicamente el retorno. Es distinto del acceso antiguo al pasillo principal que aparece en el plano. | Ninguna |
 | 2 | Nave P0 | Orientarse y ver el ascensor apagado | Núcleo visible, indicadores sin energía | Paso 1 |
 | 3 | Archivo de turno | Comparar pizarra y tira de presión | Dos indicios convergen en una regla para el código del cajón | Paso 1 |
 | 4 | Despacho | Introducir el código deducido | Cajón se abre con animación y sonido; contiene llave de servicio y puente aislado | Paso 3 |
@@ -18,7 +18,7 @@ La Fase 1 es una investigación espacial dentro de una instalación mucho mayor.
 | 6 | Subestación | Usar la llave, insertar el puente y activar el seccionador | Relés, zumbido, luces por circuitos y bombas auxiliares | Paso 4 |
 | 7 | Vestíbulo del ascensor | Solicitar ascensor | Se activa el indicador, se oye el mecanismo y las puertas operan | Paso 6 |
 | 8 | M / P+3 | Subir y explorar la zona restringida | Contexto de la instalación y señales de peligro creciente | Paso 7 |
-| 9 | Salida de emergencia | Alcanzar el acceso a Fase 2 | La huida se inicia desde un espacio conectado, no desde un corte arbitrario | Paso 8 |
+| 9 | Puerta de conexión sellada | Abrir la puerta entre ambos edificios | Tras completar la cadena de objetos y energía, Elena abre el umbral y descubre que al otro lado hay una instalación activa donde los antagonistas trabajan clandestinamente. Es el cierre de esta fase y la entrada narrativa a la siguiente. | Paso 8 |
 
 ## 3. Pistas y puzle del cajón
 
@@ -48,7 +48,7 @@ El objetivo es que algunas salas no signifiquen nada para el progreso inmediato.
 
 ## 6. Puente a Fase 2
 
-La salida de emergencia de P+3 conduce al tramo de transición previsto para Fase 2. La Fase 2 mantiene su propuesta de escape humano/híbrido: descubrir presencia humana, elegir rutas, ser detectada, afrontar obstáculos y persecución, llegar al garaje y salir a la calle. El diseño del aparcamiento existente se conserva como material de partida, pero requiere integración real con el recorrido y prueba de juego.
+La transición principal a la siguiente fase se realiza a través de la puerta sellada que conecta el edificio aparentemente abandonado con el edificio donde trabajan clandestinamente los antagonistas. No sustituir este umbral por una salida de emergencia genérica. La localización exacta de la puerta y el recorrido hasta ella deben quedar coordinados en planta, sección y grafo antes de implementar el greybox. La Fase 2 mantiene su propuesta de escape humano/híbrido: descubrir presencia humana, elegir rutas, ser detectada, afrontar obstáculos y persecución, llegar al garaje y salir a la calle. El diseño del aparcamiento existente se conserva como material de partida, pero requiere integración real con el recorrido y prueba de juego.
 
 ## 7. Criterios de aceptación
 
