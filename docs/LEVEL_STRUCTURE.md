@@ -1,3 +1,5 @@
+> **Rediseño espacial en curso (2026-10-16):** este contrato técnico no debe interpretarse como obligación de conservar el tamaño, la distribución o el puzle anterior de Fase 1. La dirección propuesta y los nuevos planos están en [FASE1_ARCHITECTURAL_LAYOUT.md](design/FASE1_ARCHITECTURAL_LAYOUT.md). La nueva huella es conceptual y requiere validación de geometría, accesos, colisiones, navegación y guardados antes de implementarse. Los contratos de runtime y de save sí se preservan salvo migración explícitamente aprobada.
+
 # FINAL THAW — Level Structure and Spatial Design Contract
 
 > **v4.0 note (2026-10-15, as-built):** The Phase 2 yard is built (section 10). STAFF-M1 was removed from the quiet section; the recovery unit's suspicion stage replaces it. See [FASE1_PREMIUM_AUDIT.md](design/FASE1_PREMIUM_AUDIT.md) (v4.0).
