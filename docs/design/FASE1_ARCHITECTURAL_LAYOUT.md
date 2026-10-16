@@ -22,7 +22,7 @@ Se conservan cuatro cotas de lectura: P−2 (servicios y energía), P0 (entrada 
 ### P0 — Entrada, investigación y nave
 1. **Entrada colapsada y esclusa:** Elena accede por un conducto; el derrumbe impide volver por el mismo camino.
 2. **Vestíbulo de personal y vestuarios:** espacios ambientales; lockers, prendas y objetos de turno comunican presencia humana.
-3. **Archivo de turno:** pizarra de turnos y tira de presión. Dos indicios independientes permiten deducir el código del cajón sin probar combinaciones arbitrarias.
+3. **Archivo de turno:** la pizarra indica el orden B → D → A → C; la tira registra A=3, B=0, C=7, D=4. Leer las cifras en el orden indicado produce 0437. Los dos indicios se encuentran separados y ninguno muestra la respuesta completa.
 4. **Despacho con cajón cerrado:** el código abre el cajón. Dentro están la **llave de servicio** de la subestación y un **puente aislado** para el embarrado eléctrico.
 5. **Sala de espera, descanso, almacén y limpieza:** ramales secundarios; pueden aportar relato, una ventaja opcional o nada mecánicamente necesario.
 6. **Nave central y columna Aster:** hito visual y punto de orientación. El ascensor se ve, pero está sin alimentación.
@@ -46,7 +46,7 @@ Vestíbulo restringido, seguridad/monitorización, archivo restringido, control 
 
 **Cadena principal propuesta:**
 1. Leer la pizarra de turnos y observar la tira de presión en el archivo de turno.
-2. Deducir el código del cajón a partir de una regla indicada por el propio entorno; no usar un código arbitrario sin pistas.
+2. Deducir el código del cajón: la pizarra ordena las pruebas B → D → A → C; la tira de presión muestra las últimas cifras estables A=3, B=0, C=7, D=4. En ese orden, el código es 0437. No aparece escrito explícitamente en ninguna tarjeta.
 3. Abrir el cajón del despacho y obtener llave de servicio + puente aislado.
 4. Explorar P−2 y localizar la subestación; la puerta requiere la llave.
 5. Observar el hueco en el embarrado y emparejar el puente por forma y señalización.
