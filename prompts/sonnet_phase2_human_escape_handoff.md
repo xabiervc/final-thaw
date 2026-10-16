@@ -4,6 +4,41 @@ You are the implementation agent. This file is self-contained. The evidence behi
 
 Write code, comments, commit messages and reports in English. All player-facing text goes in `data/game_text.json` with `es` and `en`.
 
+
+## Immediate execution gate — 2026-10-16 (takes precedence over the broader plan)
+
+**The next Sonnet run is limited to A0 (baseline reconciliation) and A1 (localization defect). Do not start A2, A3, A4, A5, A6, Group B or Group C in that run.** The broader roadmap below remains the plan for later, separately reviewed milestones; it is not blanket authorization to execute them.
+
+### A0 — Reconcile the actual checkout before editing
+
+1. Report branch, HEAD, working-tree status, tracked modifications, untracked files, and differences from the remote. Preserve all owner work. Never clean, reset, stash, overwrite or delete pre-existing work.
+2. Re-run the full available test suite from the actual checkout. Record exact commands, suite/check counts, failures, script errors, runtime/tool versions and relevant environment. Do not present historical numbers as current results.
+3. Reconcile the historical records: `PROJECT_STATUS.md` records a committed 33-suite / 1051-PASS run, while this audit/handoff records 34 suites / 1053 PASS from a working tree that included owner-local tests. These are different evidence snapshots until a fresh run proves otherwise. Do not silently merge the counts.
+4. Record the current save-file checksum and verify it is unchanged after A1. Do not rewrite the save.
+5. If the baseline fails, document the exact failure and stop before changing code unless the failure is demonstrably unrelated and a safe, isolated A1 investigation can proceed without masking it.
+
+### A1 — Fix only the English HUD localization defect
+
+1. Reproduce the reported defect involving `NarrativeText.prompt_condition` and visible state names. Inspect current code and resources; do not assume the audit description is still accurate.
+2. Follow the existing localization architecture and canonical player-text location. Do not introduce a second localization system or leave new player-facing strings hard-coded.
+3. Add regression coverage that fails before the fix and verifies both ES and EN for the affected HUD/state paths, including missing-key behavior.
+4. Verify the mission state, circuit logic, event ordering and save format are unchanged.
+5. Run focused tests and the full suite again; report actual results and the save checksum comparison.
+6. Update existing status/localization/traceability documents in place if evidence changed. No duplicate docs.
+
+### Hard stop after A1
+
+Return a report and stop. Do not begin another task until the owner has reviewed the diff and evidence and authorized the next milestone. Do not commit or push code, assets, owner-local files or generated captures without explicit approval. This documentation handoff does not grant permission to change protected contracts or project settings.
+
+### A0–A1 acceptance evidence
+
+- Baseline and final suite results are reproducible and compared without conflating historical snapshots.
+- Localization regression test is demonstrated red-before/green-after, or the inability to prove red-before is explicitly disclosed.
+- Full suite has no new failures; any pre-existing failure is identified and not concealed.
+- Save checksum is unchanged; circuit/mission contracts and protected project settings are untouched.
+- Diff is small, reviewable, and contains no unrelated cleanup.
+- Manual locale switching is marked **not verified** unless it was actually exercised in Godot.
+
 ---
 
 ## 1. Operating rules (non-negotiable)
@@ -251,7 +286,7 @@ Where a decision is blank, **stop and ask** with the recommended default listed 
 | D-CANON | Story boundary and the wording of the new lines | Pursuers are Helix security staff; no named person or chain; the only new fact is the FINAL THAW transfer | |
 | D-CAM | When first person starts and ends | Third person to detection, first person to the street, third person in the crowd; C0 decides | |
 | D-CONT | Containment semantics under the human variant | PA and radio; guard patrol after 45 s | |
-| D-COMMIT | Commit the working tree in three commits and push | Yes | |
+| D-COMMIT | Commit/push owner-local working-tree changes | No commit or push without explicit owner approval | |
 | D-LFS | Binary people assets in git | Freeze after approval; consider Git LFS before re-exports | |
 | D-GL | Native OpenGL on Intel Gen9 (`project.godot`) | Ask; needed before a performance claim | |
 | D-PLAY | Three first-time players | The owner supplies them | |
