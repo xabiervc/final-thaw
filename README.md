@@ -59,6 +59,11 @@ The branch also keeps the **motion/chase prototype v2** (`scenes/prototypes/moti
 9. [Asset provenance and licences](docs/art/PROVENANCE.md)
 10. [Asset register (status, replacement work, production prompts)](docs/art/MASTER_ASSET_LIST.md)
 11. [As-built record, Phases 1–2](docs/design/FASE1_PREMIUM_AUDIT.md)
+12. [Expanded Phase 1 architecture and vertical section](docs/design/FASE1_ARCHITECTURAL_LAYOUT.md)
+13. [Phase 1 spatial graph](docs/design/FASE1_SPATIAL_GRAPH.md)
+14. [Phase 1/2 progression map](docs/design/fase1_fase2_mapa_progresion.md)
+15. [Expanded greybox target](docs/design/FASE1_GREYBOX_SPEC.md)
+16. [Expanded functional interactions](docs/design/FASE1_FUNCTIONAL_SPEC.md)
 
 The older 16-phase, dual-protagonist campaign documents are retained as historical design material while the prototype is evaluated. They are not automatically binding requirements for the new prototype.
 
