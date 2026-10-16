@@ -4,7 +4,7 @@
 
 ## 1. Objetivo y escala
 
-La instalación debe sentirse como un complejo industrial clandestino real, no como el mismo nivel con habitaciones añadidas. La huella conceptual pasa de **30 × 23,5 m (705 m² brutos)** a **48 × 34 m (1.632 m² brutos)**: **2,32× la huella anterior**. Es una meta geométrica de diseño, no una afirmación de superficie útil ya construida. La superficie útil real se medirá descontando muros, huecos y áreas inaccesibles al terminar el greybox.
+El edificio que Elena explora debe parecer abandonado: su deterioro y la falta de actividad visible lo convierten en una cobertura idónea para ocultar una instalación clandestina. Está conectado mediante una puerta de seguridad sellada a un segundo edificio donde los antagonistas siguen trabajando. Esa puerta es el umbral narrativo de la fase y solo se abre tras reunir los elementos y restablecer los sistemas necesarios. La instalación debe sentirse como un complejo industrial real, no como el mismo nivel con habitaciones añadidas. La huella conceptual pasa de **30 × 23,5 m (705 m² brutos)** a **48 × 34 m (1.632 m² brutos)**: **2,32× la huella anterior**. Es una meta geométrica de diseño, no una afirmación de superficie útil ya construida. La superficie útil real se medirá descontando muros, huecos y áreas inaccesibles al terminar el greybox.
 
 Se conservan cuatro cotas de lectura: P−2 (servicios y energía), P0 (entrada e investigación), M +1,50 (mezzanine y observación) y P+3 (control y archivo restringido). El núcleo de ascensor se alinea entre plantas. Cada nivel contiene salas principales, salas ambientales y ramales opcionales; no todas las habitaciones contienen una recompensa.
 
@@ -20,12 +20,12 @@ Se conservan cuatro cotas de lectura: P−2 (servicios y energía), P0 (entrada 
 ## 3. Programa por nivel
 
 ### P0 — Entrada, investigación y nave
-1. **Entrada colapsada y esclusa:** Elena accede por un conducto; el derrumbe impide volver por el mismo camino.
+1. **Dos accesos distintos:** (a) el **acceso antiguo al pasillo principal**, una entrada arquitectónica del edificio que no es el punto de inicio de Elena; (b) la **brecha de Elena**, un conducto o acceso de servicio por el que entra al inicio y que se derrumba después. El derrumbe bloquea físicamente su retorno. En los planos deben rotularse «ACCESO AL PASILLO» y «BRECHA DE ELENA — COLAPSADA TRAS ENTRAR» respectivamente.
 2. **Vestíbulo de personal y vestuarios:** espacios ambientales; lockers, prendas y objetos de turno comunican presencia humana.
 3. **Archivo de turno:** la pizarra indica el orden B → D → A → C; la tira registra A=3, B=0, C=7, D=4. Leer las cifras en el orden indicado produce 0437. Los dos indicios se encuentran separados y ninguno muestra la respuesta completa.
 4. **Despacho con cajón cerrado:** el código abre el cajón. Dentro están la **llave de servicio** de la subestación y un **puente aislado** para el embarrado eléctrico.
 5. **Sala de espera, descanso, almacén y limpieza:** ramales secundarios; pueden aportar relato, una ventaja opcional o nada mecánicamente necesario.
-6. **Nave central y columna Aster:** hito visual y punto de orientación. El ascensor se ve, pero está sin alimentación.
+6. **Nave central y columna Aster:** hito visual y punto de orientación. El ascensor se ve, pero está sin alimentación. La puerta de conexión con el segundo edificio debe distinguirse de las puertas ordinarias: es una barrera de seguridad cerrada hasta completar la cadena de investigación, llave, puente y energía.
 7. **Taller de instrumentos y lavado/muestras:** conectan la historia del trabajo con la instalación técnica y contienen indicios opcionales.
 
 ### P−2 — Energía, achique y mantenimiento
