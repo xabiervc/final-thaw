@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1500" viewBox="0 0 2000 1500">
 <defs>
  <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#dce3e7" stroke-width="1"/></pattern>
- <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M0 9L9 0" stroke="#a0a7aa" stroke-width="1.4"/></pattern>
+ 
  <style>
  .h1{font:700 31px sans-serif;fill:#182f3a}.sub{font:16px sans-serif;fill:#52656e}
  .wall{stroke:#303b41;stroke-width:7;fill:none;stroke-linejoin:miter}.room{fill:#eef2f4;stroke:#59666d;stroke-width:3}
@@ -13,7 +13,7 @@
 </defs>
 <rect width="2000" height="1500" fill="#f7f8f5"/><rect width="2000" height="1500" fill="url(#grid)"/>
 <text x="55" y="52" class="h1">FINAL THAW · FASE 1 — PLANTA CONCEPTUAL DE LA HUIDA</text>
-<text x="55" y="82" class="sub">Instalación técnica extensa · circulación por galerías definidas · esquema de diseño, no plano de obra</text>
+<text x="55" y="82" class="sub">Instalación técnica extensa · fondo claro = superficie interior aún sin compartimentar · esquema conceptual pendiente de cierre arquitectónico</text>
 <!-- Site boundary / scale reference -->
 <rect x="120" y="135" width="1350" height="1200" fill="#e4e0d8" stroke="#27353c" stroke-width="12"/>
 <rect x="120" y="135" width="1350" height="1200" fill="url(#hatch)" opacity=".6"/>
@@ -77,12 +77,12 @@
 <circle class="node" cx="795" cy="455" r="12"/><text class="small" x="810" y="435">J2 · galería norte</text>
 <circle class="node" cx="1120" cy="270" r="12"/><text class="small" x="910" y="235">J3 · cruce técnico</text>
 <circle class="node" cx="1400" cy="985" r="12"/><text class="small" x="1190" y="1035">E02 · acceso a conducción</text>
-<text class="tiny" x="145" y="1300">La línea naranja permanece en las galerías. Las puertas de salas se conectan lateralmente y no forman parte de la ruta de escape salvo que se diseñe una entrada explícita.</text>
+<text class="tiny" x="145" y="1300">El fondo claro indica área interior sin compartimentar en este esquema; no debe interpretarse como muro. Esta planta aún necesita cerrar la distribución arquitectónica de esos espacios antes de considerarse definitiva.</text>
 <!-- legend -->
 <rect x="150" y="1370" width="1700" height="90" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
 <line x1="180" y1="1400" x2="240" y2="1400" stroke="#f9e3a1" stroke-width="20"/><line x1="180" y1="1400" x2="240" y2="1400" stroke="#c65b16" stroke-width="3" stroke-dasharray="9 6"/><text class="small" x="255" y="1405">ruta principal por galerías</text>
 <line x1="500" y1="1400" x2="560" y2="1400" stroke="#aab5bb" stroke-width="18"/><text class="small" x="575" y="1405">ruta alternativa</text>
 <rect x="800" y="1388" width="22" height="24" fill="#56636a"/><text class="small" x="835" y="1405">fondo de saco</text>
 <rect x="1070" y="1388" width="22" height="24" fill="#e8def8" stroke="#7858ac"/><text class="small" x="1105" y="1405">rama de personal / Elena</text>
-<text class="tiny" x="180" y="1435">Geometría y dimensiones definitivas deben contrastarse con la escena 3D, la cápsula del jugador y pruebas de recorrido en Godot.</text>
+<text class="tiny" x="180" y="1435">La planta todavía no define todos los muros y puertas del edificio; requiere una revisión arquitectónica completa antes de servir de autoridad para la escena 3D.</text>
 </svg>
