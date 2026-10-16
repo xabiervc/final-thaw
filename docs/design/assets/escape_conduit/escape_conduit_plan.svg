@@ -1,72 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1280" viewBox="0 0 1800 1280">
+<svg xmlns="http://www.w3.org/2000/svg" width="2000" height="1500" viewBox="0 0 2000 1500">
 <defs>
- <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#dce1e5" stroke-width="1"/></pattern>
- <pattern id="wall" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M0 10L10 0" stroke="#737b80" stroke-width="1.5"/></pattern>
+ <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M25 0H0V25" fill="none" stroke="#dce3e7" stroke-width="1"/></pattern>
+ <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M0 9L9 0" stroke="#a0a7aa" stroke-width="1.4"/></pattern>
  <style>
- .title{font:700 30px sans-serif;fill:#182b35}.sub{font:16px sans-serif;fill:#52636b}.room{fill:#edf1f3;stroke:#35434a;stroke-width:4}.roomlabel{font:700 15px sans-serif;fill:#243c46;text-anchor:middle}.small{font:13px sans-serif;fill:#334b55}.tiny{font:12px sans-serif;fill:#334b55}.dim{font:700 13px sans-serif;fill:#344b55}.main{fill:none;stroke:#ffe8a3;stroke-width:30;stroke-linecap:square;stroke-linejoin:round}.center{fill:none;stroke:#d97706;stroke-width:3;stroke-dasharray:11 8;stroke-linecap:round;stroke-linejoin:round}.branch{fill:none;stroke:#9aa4aa;stroke-width:22;stroke-linecap:square;stroke-linejoin:round}.branchline{fill:none;stroke:#66747c;stroke-width:2;stroke-dasharray:6 7}.door{fill:#fff0b3;stroke:#8b6a28;stroke-width:1.5}.node{fill:#fff8dd;stroke:#b7791f;stroke-width:3}.dark{fill:#4b5660;stroke:#303b42;stroke-width:2}.note{font:14px sans-serif;fill:#263f49}
+ .h1{font:700 31px sans-serif;fill:#182f3a}.sub{font:16px sans-serif;fill:#52656e}
+ .wall{stroke:#303b41;stroke-width:7;fill:none;stroke-linejoin:miter}.room{fill:#eef2f4;stroke:#59666d;stroke-width:3}
+ .label{font:700 15px sans-serif;fill:#2c434c;text-anchor:middle}.small{font:13px sans-serif;fill:#344f5a}.tiny{font:12px sans-serif;fill:#344f5a}
+ .corr{fill:#fdf4d7;stroke:#b9a779;stroke-width:2}.route{fill:none;stroke:#f9e3a1;stroke-width:28;stroke-linecap:butt;stroke-linejoin:round}.dash{fill:none;stroke:#c65b16;stroke-width:3.5;stroke-dasharray:12 8;stroke-linecap:round;stroke-linejoin:round}
+ .alt{fill:none;stroke:#aab5bb;stroke-width:18;stroke-linecap:butt;stroke-linejoin:round}.altline{fill:none;stroke:#64757e;stroke-width:2;stroke-dasharray:6 6}
+ .door{stroke:#fff0b7;stroke-width:8}.node{fill:#fff9e7;stroke:#bb741e;stroke-width:4}
  </style>
 </defs>
-<rect width="1800" height="1280" fill="#f7f8f5"/><rect width="1800" height="1280" fill="url(#grid)"/>
-<text x="48" y="52" class="title">FINAL THAW — FASE 1 · HUÍDA POR INSTALACIÓN TÉCNICA</text>
-<text x="48" y="80" class="sub">Planta conceptual revisada · lenguaje de planta industrial existente · dimensiones orientativas, no plano de obra</text>
-<!-- main facility boundary -->
-<rect x="110" y="130" width="1120" height="1000" fill="#e6e3dc" stroke="#28353b" stroke-width="10"/>
-<rect x="110" y="130" width="1120" height="1000" fill="url(#wall)" opacity=".75"/>
-<!-- rooms -->
-<rect class="room" x="150" y="180" width="210" height="145"/><text class="roomlabel" x="255" y="240"><tspan x="255">ARCHIVO</tspan><tspan x="255" dy="19">TÉCNICO</tspan></text>
-<rect class="room" x="150" y="350" width="210" height="170"/><text class="roomlabel" x="255" y="420"><tspan x="255">TALLER</tspan><tspan x="255" dy="19">MECÁNICO</tspan></text>
-<rect class="room" x="150" y="545" width="210" height="185"/><text class="roomlabel" x="255" y="620"><tspan x="255">ALMACÉN DE</tspan><tspan x="255" dy="19">REPUESTOS</tspan></text>
-<rect class="room" x="150" y="755" width="210" height="150"/><text class="roomlabel" x="255" y="815"><tspan x="255">CUARTO DE</tspan><tspan x="255" dy="19">BATERÍAS</tspan></text>
-<rect class="room" x="390" y="180" width="190" height="125"/><text class="roomlabel" x="485" y="235"><tspan x="485">OFICINA</tspan><tspan x="485" dy="19">TÉCNICA</tspan></text>
-<rect class="room" x="390" y="330" width="190" height="175"/><text class="roomlabel" x="485" y="405"><tspan x="485">VESTUARIO DE</tspan><tspan x="485" dy="19">MANTENIMIENTO</tspan></text>
-<rect class="room" x="390" y="530" width="190" height="170"/><text class="roomlabel" x="485" y="600"><tspan x="485">SALA DE</tspan><tspan x="485" dy="19">BOMBAS</tspan></text>
-<rect class="room" x="600" y="180" width="250" height="180"/><text class="roomlabel" x="725" y="260"><tspan x="725">TRANSFORMADORES</tspan><tspan x="725" dy="19">Y CUADROS ELÉCTRICOS</tspan></text>
-<rect class="room" x="870" y="180" width="300" height="145"/><text class="roomlabel" x="1020" y="240"><tspan x="1020">CONTROL DE</tspan><tspan x="1020" dy="19">COMPRESORES</tspan></text>
-<rect class="room" x="870" y="350" width="300" height="150"/><text class="roomlabel" x="1020" y="410"><tspan x="1020">CUARTO DE</tspan><tspan x="1020" dy="19">VÁLVULAS</tspan></text>
-<rect class="room" x="870" y="525" width="300" height="205"/><text class="roomlabel" x="1020" y="615"><tspan x="1020">SALA DE CONTROL</tspan><tspan x="1020" dy="19">DE BOMBEO</tspan></text>
-<rect class="room" x="390" y="725" width="190" height="180"/><text class="roomlabel" x="485" y="800"><tspan x="485">CONTROL DE</tspan><tspan x="485" dy="19">ACCESO</tspan></text>
-<rect class="room" x="600" y="745" width="250" height="160"/><text class="roomlabel" x="725" y="810"><tspan x="725">GALERÍA DE</tspan><tspan x="725" dy="19">SERVICIO</tspan></text>
-<!-- corridor spine and branches, intentionally overlaid on room openings -->
-<path class="main" d="M490 1030 L490 940 L490 850 L490 715 L490 615 L650 615 L650 445 L750 445 L750 390 L750 125 L930 125 L1050 125 L1050 90 L1320 90"/>
-<path class="center" d="M490 1030 L490 940 L490 850 L490 715 L490 615 L650 615 L650 445 L750 445 L750 390 L750 125 L930 125 L1050 125 L1050 90 L1320 90"/>
-<!-- alternate service gallery loop around transformer room -->
-<path class="branch" d="M650 445 L650 380 L590 380 L590 275 L600 275 M750 390 L850 390 L850 445 L650 445"/>
-<path class="branchline" d="M650 445 L650 380 L590 380 L590 275 L600 275 M750 390 L850 390 L850 445 L650 445"/>
-<!-- branches to dead-end pockets -->
-<path class="branch" d="M490 850 L370 850 L370 955 M650 615 L760 615 L810 615 M750 445 L910 445 L910 485"/>
-<path class="branchline" d="M490 850 L370 850 L370 955 M650 615 L760 615 L810 615 M750 445 L910 445 L910 485"/>
-<rect x="345" y="945" width="50" height="20" class="dark"/><text x="330" y="988" class="small">D1 · fondo de mantenimiento</text>
-<rect x="798" y="600" width="22" height="30" class="dark"/><text x="770" y="655" class="small">D2 · nicho ciego</text>
-<rect x="898" y="474" width="24" height="24" class="dark"/><text x="925" y="490" class="small">D3 · pasillo bloqueado</text>
-<!-- escape junction / personnel branch -->
-<circle class="node" cx="490" cy="1030" r="13"/>
-<path d="M490 1030 L640 1030 L760 1030 L900 1030" fill="none" stroke="#b9a2ef" stroke-width="24" stroke-linecap="square"/>
-<path d="M490 1030 L640 1030 L760 1030 L900 1030" fill="none" stroke="#7356ad" stroke-width="2.5" stroke-dasharray="8 7"/>
-<rect x="900" y="970" width="250" height="120" fill="#e5dcf6" stroke="#7356ad" stroke-width="4"/><text class="roomlabel" x="1025" y="1018"><tspan x="1025">ZONA DE PERSONAL</tspan><tspan x="1025" dy="19">ELENA / DESCUBRIMIENTO</tspan></text>
-<text x="510" y="1068" class="dim">J0 · bifurcación narrativa</text><text x="510" y="1088" class="small">derecha: personal · izquierda/continuación: salida clandestina</text>
-<!-- obstacles -->
-<rect x="626" y="590" width="48" height="18" fill="#b45309" stroke="#78350f" stroke-width="2"/><text x="610" y="570" class="small">O1 · tubería 0,55 m</text>
-<rect x="733" y="420" width="34" height="20" fill="#9a6a3a" stroke="#78350f" stroke-width="2"/><text x="775" y="430" class="small">O2 · viga baja</text>
-<!-- tunnel exit -->
-<rect x="1035" y="65" width="30" height="52" fill="#52616a" stroke="#26353d" stroke-width="3"/><text x="1075" y="55" class="dim">BOCA / COMPUERTA</text>
-<path d="M1320 90 L1460 90" stroke="#657681" stroke-width="34"/><path d="M1320 90 L1460 90" stroke="#dce5e8" stroke-width="26"/><text x="1380" y="62" text-anchor="middle" class="dim">CARRETERA SECUNDARIA</text>
-<rect x="1460" y="125" width="300" height="260" rx="12" fill="#dcebdc" stroke="#64836b" stroke-width="3"/>
-<g fill="#75a274" stroke="#54805b" stroke-width="2"><circle cx="1500" cy="165" r="28"/><circle cx="1560" cy="205" r="36"/><circle cx="1630" cy="160" r="31"/><circle cx="1700" cy="220" r="35"/><circle cx="1515" cy="285" r="32"/><circle cx="1600" cy="305" r="28"/><circle cx="1685" cy="310" r="32"/><circle cx="1730" cy="155" r="22"/></g>
-<text x="1610" y="415" class="roomlabel">BOSQUE · REFUGIO FINAL</text><text x="1610" y="438" class="small" text-anchor="middle">ocultarse fuera del campo visual</text>
-<!-- route labels -->
-<text x="510" y="920" class="dim">E01 · acceso desde sótano</text><text x="510" y="895" class="small">puerta de transferencia / personal activo</text>
-<text x="510" y="820" class="dim">E02 · galería de distribución</text><text x="510" y="795" class="small">giro y primer ramal recuperable</text>
-<text x="665" y="590" class="dim">J1 · cruce de bombas</text><text x="670" y="570" class="small">tubería saltables + nicho opcional</text>
-<text x="670" y="425" class="dim">J2 · galería norte</text><text x="670" y="405" class="small">viga baja; lectura por luz y continuidad</text>
-<text x="770" y="165" class="dim">E03 · galería ascendente</text><text x="770" y="185" class="small">conducción seca hacia la ladera</text>
-<text x="930" y="115" class="dim">E04 · aproximación a la boca</text>
-<!-- compass -->
-<path d="M70 180 V120 M60 135 L70 120 L80 135" fill="none" stroke="#253a43" stroke-width="3"/><text x="70" y="205" text-anchor="middle" class="dim">N</text>
+<rect width="2000" height="1500" fill="#f7f8f5"/><rect width="2000" height="1500" fill="url(#grid)"/>
+<text x="55" y="52" class="h1">FINAL THAW · FASE 1 — PLANTA CONCEPTUAL DE LA HUIDA</text>
+<text x="55" y="82" class="sub">Instalación técnica extensa · circulación por galerías definidas · esquema de diseño, no plano de obra</text>
+<!-- Site boundary / scale reference -->
+<rect x="120" y="135" width="1350" height="1200" fill="#e4e0d8" stroke="#27353c" stroke-width="12"/>
+<rect x="120" y="135" width="1350" height="1200" fill="url(#hatch)" opacity=".6"/>
+<!-- corridors as distinct continuous bands -->
+<rect class="corr" x="155" y="950" width="1280" height="70"/>
+<rect class="corr" x="390" y="710" width="70" height="310"/>
+<rect class="corr" x="390" y="690" width="760" height="70"/>
+<rect class="corr" x="760" y="420" width="70" height="340"/>
+<rect class="corr" x="155" y="420" width="675" height="70"/>
+<rect class="corr" x="155" y="235" width="70" height="255"/>
+<rect class="corr" x="155" y="235" width="1000" height="70"/>
+<rect class="corr" x="1085" y="235" width="70" height="300"/>
+<rect class="corr" x="1085" y="465" width="350" height="70"/>
+<rect class="corr" x="1365" y="465" width="70" height="555"/>
+<!-- west/east cross links -->
+<rect class="corr" x="155" y="690" width="305" height="70"/>
+<rect class="corr" x="760" y="950" width="70" height="70"/>
+<!-- rooms are bounded and do not overlap corridor bands -->
+<rect class="room" x="165" y="150" width="190" height="70"/><text class="label" x="260" y="180"><tspan x="260">ARCHIVO</tspan><tspan x="260" dy="18">TÉCNICO</tspan></text>
+<rect class="room" x="250" y="325" width="230" height="80"/><text class="label" x="365" y="358"><tspan x="365">TALLER MECÁNICO</tspan><tspan x="365" dy="18">mantenimiento</tspan></text>
+<rect class="room" x="500" y="325" width="230" height="80"/><text class="label" x="615" y="358"><tspan x="615">ALMACÉN DE</tspan><tspan x="615" dy="18">REPUESTOS</tspan></text>
+<rect class="room" x="250" y="510" width="230" height="150"/><text class="label" x="365" y="570"><tspan x="365">VESTUARIO DE</tspan><tspan x="365" dy="19">MANTENIMIENTO</tspan></text>
+<rect class="room" x="500" y="510" width="230" height="150"/><text class="label" x="615" y="570"><tspan x="615">SALA DE</tspan><tspan x="615" dy="19">COMPRESORES</tspan></text>
+<rect class="room" x="165" y="780" width="190" height="150"/><text class="label" x="260" y="842"><tspan x="260">CUARTO DE</tspan><tspan x="260" dy="19">BATERÍAS</tspan></text>
+<rect class="room" x="480" y="780" width="250" height="150"/><text class="label" x="605" y="842"><tspan x="605">CONTROL</tspan><tspan x="605" dy="19">DE BOMBAS</tspan></text>
+<rect class="room" x="500" y="1035" width="230" height="150"/><text class="label" x="615" y="1095"><tspan x="615">SALA DE</tspan><tspan x="615" dy="19">VÁLVULAS</tspan></text>
+<rect class="room" x="840" y="780" width="250" height="150"/><text class="label" x="965" y="842"><tspan x="965">TRANSFORMADORES</tspan><tspan x="965" dy="19">cuadros eléctricos</tspan></text>
+<rect class="room" x="840" y="1035" width="250" height="150"/><text class="label" x="965" y="1095"><tspan x="965">TALLER DE</tspan><tspan x="965" dy="19">TUBERÍAS</tspan></text>
+<rect class="room" x="850" y="550" width="220" height="110"/><text class="label" x="960" y="592"><tspan x="960">CONTROL DE</tspan><tspan x="960" dy="19">ACCESO TÉCNICO</tspan></text>
+<rect class="room" x="850" y="325" width="210" height="80"/><text class="label" x="955" y="358"><tspan x="955">SALA DE</tspan><tspan x="955" dy="18">GENERADORES</tspan></text>
+<rect class="room" x="1170" y="150" width="260" height="70"/><text class="label" x="1300" y="180"><tspan x="1300">OFICINA TÉCNICA</tspan></text>
+<rect class="room" x="1170" y="560" width="170" height="130"/><text class="label" x="1255" y="612"><tspan x="1255">CUARTO DE</tspan><tspan x="1255" dy="19">VÁLVULAS</tspan></text>
+<rect class="room" x="1170" y="710" width="170" height="220"/><text class="label" x="1255" y="805"><tspan x="1255">DEPÓSITO</tspan><tspan x="1255" dy="19">DE AGUA</tspan></text>
+<!-- Route is centered entirely on corridor bands -->
+<path class="route" d="M195 985 H425 V725 H795 V455 H190 V270 H1120 V500 H1400 V985 H1400 V1110 H1535"/>
+<path class="dash" d="M195 985 H425 V725 H795 V455 H190 V270 H1120 V500 H1400 V985 H1400 V1110 H1535"/>
+<!-- alternate routes connect corridor to corridor or terminate in access pockets -->
+<path class="alt" d="M425 725 H600 V650 M795 455 V355 H720 M1120 500 H1250 V500 H1250 V520 M1400 750 H1300 V750"/>
+<path class="altline" d="M425 725 H600 V650 M795 455 V355 H720 M1120 500 H1250 V500 H1250 V520 M1400 750 H1300 V750"/>
+<rect x="588" y="638" width="24" height="24" fill="#56636a"/><text class="small" x="620" y="650">D1 · fondo de mantenimiento</text>
+<rect x="708" y="343" width="24" height="24" fill="#56636a"/><text class="small" x="740" y="355">D2 · nicho ciego</text>
+<rect x="1238" y="508" width="24" height="24" fill="#56636a"/><text class="small" x="1270" y="525">D3 · galería bloqueada</text>
+<!-- narrative personnel branch separated from escape -->
+<rect x="1515" y="650" width="300" height="170" fill="#e8def8" stroke="#7858ac" stroke-width="4"/>
+<text class="label" x="1665" y="715"><tspan x="1665">ZONA DE PERSONAL</tspan><tspan x="1665" dy="22">ELENA / DESCUBRIMIENTO</tspan></text>
+<path d="M1400 750 H1485 V735 H1515" fill="none" stroke="#b8a4e2" stroke-width="22"/>
+<path d="M1400 750 H1485 V735 H1515" fill="none" stroke="#7858ac" stroke-width="2.5" stroke-dasharray="7 6"/>
+<!-- exit conduit outside facility -->
+<rect x="1465" y="1070" width="120" height="80" fill="#e0e6e8" stroke="#53646d" stroke-width="4"/>
+<path d="M1535 1110 L1635 1110 L1635 1000 L1715 1000" fill="none" stroke="#f9e3a1" stroke-width="28" stroke-linejoin="round"/>
+<path d="M1535 1110 L1635 1110 L1635 1000 L1715 1000" fill="none" stroke="#c65b16" stroke-width="3.5" stroke-dasharray="12 8" stroke-linejoin="round"/>
+<text class="small" x="1520" y="1050">Boca / compuerta</text><text class="small" x="1600" y="1160">Conducción seca ascendente</text>
+<path d="M1715 1000 L1790 1000" stroke="#627782" stroke-width="34"/><path d="M1715 1000 L1790 1000" stroke="#dce6e8" stroke-width="26"/>
+<text class="small" x="1745" y="965" text-anchor="middle">carretera</text>
+<rect x="1665" y="830" width="300" height="120" rx="12" fill="#dcebdc" stroke="#66896b" stroke-width="3"/>
+<g fill="#79a878" stroke="#54815a" stroke-width="2"><circle cx="1700" cy="865" r="22"/><circle cx="1755" cy="890" r="27"/><circle cx="1820" cy="860" r="25"/><circle cx="1890" cy="900" r="27"/><circle cx="1920" cy="850" r="18"/></g>
+<text class="label" x="1815" y="925">BOSQUE · REFUGIO FINAL</text>
+<!-- annotations -->
+<circle class="node" cx="195" cy="985" r="12"/><text class="small" x="210" y="1045">E01 · entrada desde sótano</text>
+<circle class="node" cx="425" cy="725" r="12"/><text class="small" x="440" y="705">J1 · cruce de distribución</text>
+<circle class="node" cx="795" cy="455" r="12"/><text class="small" x="810" y="435">J2 · galería norte</text>
+<circle class="node" cx="1120" cy="270" r="12"/><text class="small" x="910" y="235">J3 · cruce técnico</text>
+<circle class="node" cx="1400" cy="985" r="12"/><text class="small" x="1190" y="1035">E02 · acceso a conducción</text>
+<text class="tiny" x="145" y="1300">La línea naranja permanece en las galerías. Las puertas de salas se conectan lateralmente y no forman parte de la ruta de escape salvo que se diseñe una entrada explícita.</text>
 <!-- legend -->
-<rect x="50" y="1150" width="1700" height="95" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
-<line x1="80" y1="1180" x2="135" y2="1180" stroke="#ffe8a3" stroke-width="20"/><line x1="80" y1="1180" x2="135" y2="1180" stroke="#d97706" stroke-width="2.5" stroke-dasharray="8 6"/><text x="150" y="1185" class="small">ruta principal iluminada de forma continua</text>
-<line x1="480" y1="1180" x2="535" y2="1180" stroke="#9aa4aa" stroke-width="18"/><text x="550" y="1185" class="small">galería secundaria / desvío</text>
-<rect x="825" y="1168" width="18" height="24" fill="#b45309"/><text x="855" y="1185" class="small">obstáculo de traversal</text>
-<rect x="1120" y="1168" width="20" height="24" fill="#e5dcf6" stroke="#7356ad"/><text x="1150" y="1185" class="small">rama narrativa de personal</text>
-<text x="80" y="1220" class="note">Diseño de nivel: las salas explican la función del complejo; los desvíos tienen lógica espacial; las cotas, anchos y colisiones se cerrarán con el greybox 3D y pruebas de movimiento.</text>
+<rect x="150" y="1370" width="1700" height="90" rx="8" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+<line x1="180" y1="1400" x2="240" y2="1400" stroke="#f9e3a1" stroke-width="20"/><line x1="180" y1="1400" x2="240" y2="1400" stroke="#c65b16" stroke-width="3" stroke-dasharray="9 6"/><text class="small" x="255" y="1405">ruta principal por galerías</text>
+<line x1="500" y1="1400" x2="560" y2="1400" stroke="#aab5bb" stroke-width="18"/><text class="small" x="575" y="1405">ruta alternativa</text>
+<rect x="800" y="1388" width="22" height="24" fill="#56636a"/><text class="small" x="835" y="1405">fondo de saco</text>
+<rect x="1070" y="1388" width="22" height="24" fill="#e8def8" stroke="#7858ac"/><text class="small" x="1105" y="1405">rama de personal / Elena</text>
+<text class="tiny" x="180" y="1435">Geometría y dimensiones definitivas deben contrastarse con la escena 3D, la cápsula del jugador y pruebas de recorrido en Godot.</text>
 </svg>
