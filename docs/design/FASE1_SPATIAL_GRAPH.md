@@ -1,100 +1,112 @@
-# FINAL THAW — Fase 1: grafo espacial (v2.0 · rediseño ampliado)
+# FINAL THAW — Fase 1: grafo espacial (v3.1 · conexión clandestina en P−2)
 
-**Estado:** propuesta espacial; requiere reconciliación con Godot. El grafo del nivel construido anteriormente está documentado en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md). Este documento describe el objetivo nuevo, no el estado actual del runtime.
+**Estado:** topología objetivo acordada; aún requiere greybox y reconciliación con Godot. El nivel construido anteriormente está documentado en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md). Este grafo describe el objetivo nuevo, no el runtime actual.
 
 ## 1. Modelo de navegación
 
-La instalación se organiza en una espina por nivel y varios ramales de diferente importancia. La ruta crítica no es una secuencia de habitaciones con objetos obligatorios: el jugador puede descubrir espacios técnicos y el ascensor antes de desbloquearlos. Los ramales secundarios contienen contexto ambiental, oportunidades de observación y, en uno o dos casos, una ventaja opcional.
+La instalación se organiza en una espina de circulación por nivel y varios ramales con distinto peso. La nave central es el hito de orientación. P−2 es accesible por una conexión vertical desde P0; la puerta clandestina no requiere subir a P+3 ni utilizar el ascensor. El jugador puede descubrir espacios, puertas y pistas en distinto orden, pero las dependencias de los objetos se mantienen.
 
-### P0 — Investigación
-- **P0-CORRIDOR-ACCESS:** acceso arquitectónico antiguo al pasillo principal; no es el punto de entrada inicial de Elena. Etiqueta visible: «ACCESO AL PASILLO».
-- **P0-ELENA-BREACH:** brecha o conducto de servicio por el que Elena entra; se colapsa después y bloquea físicamente el retorno. Etiqueta visible: «BRECHA DE ELENA — COLAPSADA TRAS ENTRAR».
-- **P0-SEALED-CONNECTION:** puerta de seguridad que comunica con el segundo edificio, donde los antagonistas trabajan clandestinamente. Permanece cerrada hasta completar la progresión necesaria y es el umbral narrativo entre ambos edificios.
+### P0 — Entrada e investigación
+
+- **P0-CORRIDOR-ACCESS:** acceso arquitectónico antiguo al pasillo principal; separado del inicio de Elena.
+- **P0-ELENA-BREACH:** brecha/alcantarilla de servicio por la que entra Elena; colapsa físicamente tras su entrada y bloquea el retorno.
 - **P0-AIRLOCK:** esclusa y vestíbulo de personal.
 - **P0-LOCKERS:** vestuarios; espacio ambiental.
-- **P0-SHIFT-ARCHIVE:** pizarra de turnos + tira de presión; pista necesaria para deducir el código del cajón.
-- **P0-DISPATCH:** despacho con cajón cerrado; tras resolver la pista entrega SERVICE_KEY y INSULATED_BRIDGE.
-- **P0-WAITING:** sala de espera opcional.
-- **P0-REST:** descanso del personal, opcional.
-- **P0-STORAGE:** almacén secundario, opcional.
-- **P0-HALL:** nave central y columna Aster; hito de orientación, ascensor visible.
-- **P0-INSTRUMENTS:** taller de instrumentos; contexto y posible ventaja opcional.
+- **P0-SHIFT-ARCHIVE:** pizarra de turnos y tira de presión; dos indicios para deducir el código del cajón.
+- **P0-DISPATCH:** despacho con cajón; entrega SERVICE_KEY e INSULATED_BRIDGE al introducir el código deducido.
+- **P0-WAITING / P0-REST / P0-STORAGE:** salas opcionales ambientales.
+- **P0-HALL:** nave central de gran altura con columna Aster, maquinaria de bombeo y vistas a la mezzanine; hito visual.
+- **P0-INSTRUMENTS:** taller de instrumentos; contexto opcional.
 - **P0-SAMPLES:** lavado y muestras.
-- **P0-LIFT:** vestíbulo del ascensor; inaccesible como transporte hasta restablecer energía.
+- **P0-LIFT:** vestíbulo del ascensor; transporte bloqueado hasta PowerRestored.
+- **P0-STAIR-B2:** conexión vertical accesible entre P0 y P−2; no depende de la alimentación del ascensor.
 
-### P−2 — Energía
-- **B2-PUMPS:** cámara de achique y bombas.
+### P−2 — Energía, mantenimiento y transferencia
+
+- **B2-PUMPS:** cámara de achique y bombas principales.
 - **B2-FILTERS:** tratamiento de agua.
 - **B2-BATTERY:** baterías auxiliares.
-- **B2-SUBSTATION:** puerta con llave; punto de conexión eléctrica.
-- **B2-CABLE-GALLERY:** galería de cables.
-- **B2-VENT:** ventilación, opcional.
-- **B2-SPARES:** almacén de repuestos, opcional.
+- **B2-SUBSTATION:** sala eléctrica con puerta cerrada por SERVICE_KEY; terminal para INSULATED_BRIDGE y seccionador.
+- **B2-CABLE-GALLERY:** galería de cables entre sistemas de energía y maquinaria.
+- **B2-VENT:** ventilación; opcional.
+- **B2-SPARES:** almacén de repuestos; contiene un armario seco elevado por encima de la marca de humedad y la TRANSFER_KEY.
 - **B2-SUMP:** foso de mantenimiento.
-- **B2-FLOODED:** cuarto inundado, opcional/de atmósfera.
-- **B2-DEAD-WORKSHOP:** taller muerto, ramal sin recompensa obligatoria.
-- **B2-LIFT-MACHINERY:** maquinaria del ascensor.
-- **B2-LIFT:** núcleo del ascensor.
+- **B2-FLOODED:** cuarto inundado; ambiental/opcional.
+- **B2-DEAD-WORKSHOP:** taller muerto; franja de suelo limpia, marcas de arrastre, corriente de aire en la junta y nota de mantenimiento. La inspección revela el panel oculto.
+- **B2-TRANSFER-DOOR:** puerta de transferencia oculta en el muro oriental de B2-DEAD-WORKSHOP. Está cerrada al descubrirla y requiere TRANSFER_KEY + PowerRestored.
+- **B2-CLANDESTINE-VESTIBULE:** vestíbulo técnico del segundo edificio activo, inmediatamente al otro lado de B2-TRANSFER-DOOR. Es el umbral narrativo hacia Fase 2.
+- **B2-LIFT-MACHINERY / B2-LIFT:** maquinaria y núcleo del ascensor.
 
-### M +1,50 — Observación
-- **M-GALLERY:** pasarela sobre la nave.
+### M +1,50 — Mezzanine parcial
+
+- **M-GALLERY:** pasarela parcial junto a la nave; permite ver el vacío central, no lo cubre.
 - **M-SAMPLE-LAB:** laboratorio de muestras.
 - **M-INSTRUMENTS:** instrumentos de reserva.
 - **M-CALIBRATION:** banco de calibración.
-- **M-MEETING:** sala de reuniones.
-- **M-ARCHIVE:** archivo secundario.
-- **M-UPPER-WORKSHOP:** taller superior.
-- **M-REST:** sala de pausa.
-- **M-DUCTS:** ductos de servicio.
+- **M-MEETING / M-ARCHIVE / M-UPPER-WORKSHOP / M-REST / M-DUCTS:** salas de ala lateral.
 - **M-DARK-ANNEX:** anexo oscurecido, opcional.
-- **M-LIFT:** conexión con el núcleo del ascensor.
+- **M-LIFT:** conexión al núcleo del ascensor.
 
-### P+3 — Control
+### P+3 — Ala superior de control
+
 - **P3-SECURITY:** seguridad y monitorización.
 - **P3-ARCHIVE:** archivo restringido.
 - **P3-CONTROL:** control de instalaciones.
 - **P3-SEALED-LAB:** laboratorio sellado; contexto, no llave obligatoria.
-- **P3-COMMS:** comunicaciones.
-- **P3-SUPERVISOR:** oficina de supervisión.
-- **P3-BRIEFING:** sala de briefing.
-- **P3-RECORDS:** almacén de registros.
-- **P3-EMERGENCY:** salida de emergencia secundaria; no es la transición narrativa principal al edificio clandestino.
+- **P3-COMMS / P3-SUPERVISOR / P3-BRIEFING / P3-RECORDS:** espacios de control y documentación.
+- **P3-EMERGENCY:** salida de emergencia secundaria; nunca es la transición principal al edificio clandestino.
 - **P3-LIFT:** vestíbulo del ascensor.
 
-## 2. Aristas principales
+## 2. Aristas espaciales
 
-1. P0-ELENA-BREACH → P0-AIRLOCK → P0-HALL; P0-CORRIDOR-ACCESS es un acceso separado y no sustituye la brecha de Elena.
+1. P0-ELENA-BREACH → P0-AIRLOCK → P0-HALL. P0-CORRIDOR-ACCESS es un acceso independiente.
 2. P0-HALL ↔ P0-SHIFT-ARCHIVE ↔ P0-DISPATCH.
 3. P0-HALL ↔ P0-INSTRUMENTS ↔ P0-SAMPLES.
-4. P0-HALL ↔ P0-LIFT (ascensor visible, estado sin energía).
-5. P0-HALL → conexión vertical/escalera → B2-BATTERY / B2-PUMPS.
+4. P0-HALL ↔ P0-LIFT.
+5. P0-HALL ↔ P0-STAIR-B2 ↔ B2-CABLE-GALLERY / B2-PUMPS. Esta ruta debe seguir siendo transitable aunque el ascensor esté sin energía.
 6. B2-PUMPS ↔ B2-FILTERS ↔ B2-CABLE-GALLERY ↔ B2-SUBSTATION.
 7. B2-SUBSTATION ↔ B2-LIFT-MACHINERY ↔ B2-LIFT.
-8. P0-HALL ↔ M-GALLERY ↔ M-SAMPLE-LAB / M-CALIBRATION.
-9. M-GALLERY ↔ M-LIFT ↔ P3-LIFT.
-10. P3-LIFT ↔ P3-SECURITY ↔ P3-ARCHIVE / P3-CONTROL.
-11. P3-CONTROL ↔ P3-COMMS / P3-RECORDS.
-12. **P0-SEALED-CONNECTION (ubicación por decidir):** la puerta que comunica ambos edificios es el umbral final de la fase. Su planta, cota y recorrido de acceso aún no están fijados; deben decidirse y representarse de forma coherente en planta, sección y grafo antes del greybox. Al abrirse, conduce al edificio clandestino activo. No asumir que está en P+3 ni sustituirla por una salida de emergencia genérica.
+8. B2-CABLE-GALLERY ↔ B2-SPARES.
+9. B2-CABLE-GALLERY ↔ B2-DEAD-WORKSHOP.
+10. B2-DEAD-WORKSHOP → B2-TRANSFER-DOOR → B2-CLANDESTINE-VESTIBULE. La puerta se descubre desde el taller y comunica con el segundo edificio; no se dibuja como salida de emergencia.
+11. P0-HALL ↔ M-GALLERY ↔ M-SAMPLE-LAB / M-CALIBRATION.
+12. M-GALLERY ↔ M-LIFT ↔ P3-LIFT.
+13. P3-LIFT ↔ P3-SECURITY ↔ P3-ARCHIVE / P3-CONTROL.
+14. P3-CONTROL ↔ P3-COMMS / P3-RECORDS.
 
-Las aristas 5, 8, 9 y 12 son objetivos de diseño y deben verificarse físicamente: no se consideran construidas por aparecer en el grafo.
+Las aristas describen topología objetivo. Antes de considerarlas construidas, deben verificarse los huecos de puerta, anchuras, cotas, alturas, colisiones y navegación en el greybox.
 
-## 3. Dependencias de progresión
+## 3. Pistas y dependencias de progresión
 
-- **DrawerCode:** deducido con dos indicios de P0-SHIFT-ARCHIVE. La pista explica el método; no es un código aleatorio.
-- **SERVICE_KEY:** obtenida al abrir el cajón de P0-DISPATCH; abre P−2-B2-SUBSTATION.
-- **INSULATED_BRIDGE:** obtenida en el mismo cajón; conecta el terminal vacío de la subestación.
-- **PowerRestored:** requiere llave, puente colocado en el terminal correcto y accionamiento del seccionador.
-- **LiftPowered:** depende de PowerRestored. Luces por sectores y sonidos de maquinaria confirman el cambio.
-- **ClandestineBuildingAccess:** requiere completar la cadena de investigación y energía, activar los sistemas necesarios y alcanzar la puerta sellada. La geometría y el recorrido de conexión deben aparecer de forma consistente en planta, sección y grafo.
+### Código del cajón
+
+- **DrawerCode:** la pizarra indica B → D → A → C. La tira de presión muestra A=3, B=0, C=7, D=4. La deducción produce 0437; ninguna tarjeta entrega el código completo.
+
+### Cadena A — restauración eléctrica
+
+- **SERVICE_KEY:** se obtiene del cajón de P0-DISPATCH y abre B2-SUBSTATION.
+- **INSULATED_BRIDGE:** se obtiene del mismo cajón y ocupa el terminal vacío del panel.
+- **PowerRestored:** requiere SERVICE_KEY para acceder, INSULATED_BRIDGE colocado correctamente y accionar el seccionador.
+- **LiftPowered:** depende de PowerRestored. Relés, zumbido, luces parciales, bombas auxiliares e indicador del ascensor confirman el cambio.
+
+### Cadena B — puerta de transferencia
+
+- **HiddenDoorDiscovered:** requiere inspeccionar en B2-DEAD-WORKSHOP la franja limpia, las marcas de arrastre y la corriente de aire; se revela el panel, pero la puerta no se abre.
+- **TransferKeyClue:** la nota del taller indica que la llave se guardó en el armario seco del almacén después de una fuga.
+- **TRANSFER_KEY:** se obtiene del armario seco elevado de B2-SPARES; su símbolo coincide con el de la puerta.
+- **ClandestineBuildingAccess:** requiere HiddenDoorDiscovered + TRANSFER_KEY + PowerRestored.
+
+Las cadenas son independientes hasta la puerta. SERVICE_KEY e INSULATED_BRIDGE no abren la puerta de transferencia; TRANSFER_KEY no abre la subestación ni restaura la energía. La llave y la nota pueden encontrarse en cualquier orden de exploración, pero el umbral no puede cruzarse hasta cumplir ambas condiciones.
 
 ## 4. Espacios opcionales
 
-P0-WAITING, P0-REST, P0-STORAGE, B2-VENT, B2-SPARES, B2-FLOODED, B2-DEAD-WORKSHOP, M-MEETING, M-REST, M-DARK-ANNEX, P3-SEALED-LAB y P3-BRIEFING pueden ser espacios de historia ambiental o exploración. No deben contener objetos de la ruta crítica a menos que se revise explícitamente este grafo. Como mínimo, una ruta opcional debe proporcionar una recompensa comprensible (ventaja, información o atajo) y otra puede terminar sin recompensa funcional.
+P0-WAITING, P0-REST, P0-STORAGE, B2-VENT, B2-FLOODED, M-MEETING, M-REST, M-DARK-ANNEX, P3-SEALED-LAB y P3-BRIEFING son ramales ambientales u opcionales. B2-DEAD-WORKSHOP y B2-SPARES son necesarios para la cadena de transferencia, pero deben leerse como espacios de exploración natural, no como salas de búsqueda de píxeles. Como mínimo, una rama opcional independiente ofrece una ventaja/contexto comprensible y otra puede terminar sin recompensa funcional.
 
 ## 5. Contratos de validación
 
-- Prueba estática: todos los nodos y aristas críticos tienen un identificador estable y una referencia a la puerta/portal de la escena.
-- Prueba de reachability: brecha de Elena → cajón → subestación → energía → ascensor/recorrido habilitado → puerta sellada de conexión → edificio clandestino. La ubicación de esa puerta debe resolverse antes de convertir la prueba en un criterio geométrico ejecutable.
-- Prueba de bloqueo: el cajón no se abre sin DrawerCode; subestación no abre sin SERVICE_KEY; no se restaura energía sin INSULATED_BRIDGE; ascensor no funciona antes de PowerRestored.
-- Prueba de retorno: el jugador puede volver desde P−2 a P0 y desde la galería al núcleo sin softlock.
-- QA manual: explorar al menos dos ramales opcionales; verificar que se entienden como espacios secundarios y no como contenido roto.
+- **Prueba estática:** cada nodo y arista crítica tiene un identificador estable y una referencia a la puerta/portal correspondiente.
+- **Reachability:** brecha → P0 → escalera a P−2 → taller muerto → puerta descubierta → armario seco/TRANSFER_KEY; en paralelo, cajón → SERVICE_KEY + INSULATED_BRIDGE → subestación → PowerRestored. Ambas cadenas convergen en B2-TRANSFER-DOOR → B2-CLANDESTINE-VESTIBULE.
+- **Bloqueos:** cajón sin DrawerCode; subestación sin SERVICE_KEY; circuito incompleto sin INSULATED_BRIDGE; ascensor apagado antes de PowerRestored; puerta clandestina cerrada sin TRANSFER_KEY o sin PowerRestored.
+- **No softlock:** la escalera permite volver entre P0 y P−2 sin ascensor; el jugador puede explorar puerta, nota y almacén en distinto orden.
+- **QA manual:** probar al menos dos ramales opcionales y comprobar que se entienden como contenido secundario, no como rutas rotas.
+- **Verificación visual:** validar desde la cámara real que los indicios de la puerta son perceptibles y que el umbral revela una zona activa sin mostrarla por completo antes de abrir.
