@@ -157,3 +157,56 @@ The measurements and room schedule above document the previous spatial specifica
 - Update plans, sections, graph, dimension schedules and scene geometry together. Confirm all traversals, collision, camera clearance and route continuity in Godot.
 
 These are design requirements, not proof of geometry. Keep the prior measurements as historical references until a reconciled plan is approved and implemented; do not silently change coordinate contracts or protected technical APIs.
+
+
+## Owner-approved escape route redesign (2026-10-16; target only)
+
+The old parking-garage/public-street ending is superseded for the current escape sequence. The new target is a long, intuitive, multi-corridor labyrinth through a huge dry industrial water/service conduit, up a slope and out to a secondary road and forest hideout. Keep the existing lab largely unchanged until functional issues are resolved.
+
+### Orientation language
+
+- Primary egress path: stronger and more continuous light, visible light pools at junctions, and occasional daylight spill farther along.
+- Losing/dead-end branches: darker or broken light continuity, but still physically legible and not designed as arbitrary punishment.
+- Add redundant non-colour-only cues such as painted maintenance marks, directional cable runs, airflow, slope direction and exterior ambience.
+- Design for junctions readable at a glance: reveal enough of each corridor before the player commits.
+- Light is a navigation affordance, not a puzzle answer or absolute guarantee. Critical cues must remain accessible to colour-blind players and players who cannot rely on audio.
+
+### Target escape topology
+
+```text
+SECOND_BUILDING_DISCOVERY
+  -> ESCAPE_FORK
+       right -> PERSONNEL_AREA -> ELENA_DISCOVERY_BEAT
+       left  -> CONDUIT_ENTRY
+                  -> E01_LONG_RUN
+                  -> J01
+                       lit main -> E02_LEFT_TURN
+                       dark side -> D01_DEAD_END (recoverable)
+                  -> J02
+                       lit main -> E03_RIGHT_TURN
+                       dark side -> D02_DEAD_END (recoverable)
+                  -> E04_TRAVERSAL (jump/vault with safe landing)
+                  -> J03
+                       lit main -> E05_REVERSE_TURN
+                       dim side -> optional short pocket, exit visible
+                  -> E06_SLOPING_CONDUIT
+                  -> E07_FINAL_TRAVERSAL
+                  -> HATCH_HILLSIDE
+                  -> SECONDARY_ROAD
+                  -> FOREST_HIDEOUT (escape complete)
+```
+
+The graph is structural intent, not a finished map or final room count. Dimension all corridor lengths, widths, clear headroom and jump envelopes in this existing greybox package. Include enough long stretches and alternating turns to make escape feel earned, while every critical junction stays readable. At least two wrong branches should be less inviting through weaker light continuity; never make the correct route so dark that the visual rule inverts.
+
+### Flow and movement contract
+
+- The adrenaline phase starts after human detection. Keep player movement in first person and stamina at 100% (or use an equivalent guaranteed-sprint rule with tests).
+- Include at least two intentional traversal actions (e.g. jump/vault, duck under low support, step across a drainage break), each with authored approach space, clear contextual prompt, valid collision and safe landing/recovery volumes.
+- The conduit climbs a gradual ramp toward the hillside. End with a physical maintenance hatch/grate or culvert mouth, reveal the secondary road and nearby forest, then end when Elena hides and pursuers pass/search the wrong direction.
+- Do not require Door G, the old robot, parking, or the legacy yard route for this sequence.
+- No teleport to simulate traversal or exterior emergence. Keep fall/failure boundaries visible and avoid unavoidable lethal jumps.
+- Wrong branches are normally recoverable. A wrong turn may cost time or close pursuers, but should give clear feedback and a way to return unless a one-way commitment is explicitly telegraphed.
+
+### Required design evidence
+
+Update the existing plan, section, graph and lighting overlays together. Specify node IDs, corridor clear widths/headroom, segment lengths, turns, elevations, jump/vault envelopes, light-cue hierarchy per junction, dead-end branches, threat accessibility, recovery rules and the final forest volume. Confirm against actual Godot collision/navigation and gameplay camera; plans alone do not prove the route exists or is playable.
