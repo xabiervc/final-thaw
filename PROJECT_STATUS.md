@@ -1,5 +1,19 @@
 # Project Status — FINAL THAW
 
+## Immediate next milestone — 2026-10-16
+
+**Authorized scope for the next Sonnet pass: A0 baseline reconciliation and A1 English HUD localization only.** This is a narrow recovery step before audio, collision/traversal, staff AI, Phase 1 redesign or Phase 2 construction. Stop after A1 and return the diff plus evidence for review.
+
+- Re-inspect the actual `feat/godot-vertical-slice` checkout, including all owner-local/untracked work; preserve it.
+- Re-run the full suite and record exact commands, versions and results.
+- Keep the historical committed run (33 suites / 1051 PASS in this status record) distinct from the audit/handoff's 34 suites / 1053 PASS working-tree run. A fresh run is required; do not claim either is the current baseline without executing it.
+- Reproduce and fix the English HUD state/resistance label defect associated with `NarrativeText.prompt_condition` and visible state names, with ES/EN regression coverage.
+- Prove the existing save remains byte-identical and that circuit/mission contracts remain unchanged.
+- Update the existing localization and traceability records with evidence; create no duplicate documents.
+- No code/assets/owner-local work is to be committed or pushed without explicit owner approval. Do not change protected project settings or contracts.
+
+**Gate:** no subsequent milestone starts until the owner reviews the diff, test evidence and unresolved risks.
+
 ## Current phase
 
 **Playable demo: Phase 1 "The Ghost Protocol" and Phase 2 "Containment", one continuous scene, with intro and ending cinematics. Automated tests and a route bot verify it; it has had no human playtest yet. Performance reaches 60 FPS on the reference GPU only with the "Performance" graphics preset.**
