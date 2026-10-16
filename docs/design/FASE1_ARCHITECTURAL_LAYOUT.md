@@ -4,7 +4,7 @@
 
 ## 1. Objetivo y escala
 
-El edificio que Elena explora debe parecer abandonado: su deterioro y la falta de actividad visible lo convierten en una cobertura idónea para ocultar una instalación clandestina. Está conectado mediante una puerta de seguridad sellada a un segundo edificio donde los antagonistas siguen trabajando. Esa puerta es el umbral narrativo de la fase y solo se abre tras reunir los elementos y restablecer los sistemas necesarios. La instalación debe sentirse como un complejo industrial real, no como el mismo nivel con habitaciones añadidas. La huella conceptual pasa de **30 × 23,5 m (705 m² brutos)** a **48 × 34 m (1.632 m² brutos)**: **2,32× la huella anterior**. Es una meta geométrica de diseño, no una afirmación de superficie útil ya construida. La superficie útil real se medirá descontando muros, huecos y áreas inaccesibles al terminar el greybox.
+El edificio que Elena explora debe parecer abandonado: su deterioro y la falta de actividad visible lo convierten en una cobertura idónea para ocultar una instalación clandestina. Está conectado mediante una puerta de seguridad sellada a un segundo edificio donde los antagonistas siguen trabajando. Esa puerta es el umbral narrativo de la fase y solo se abre tras reunir los elementos y restablecer los sistemas necesarios. La instalación debe sentirse como un complejo industrial real, no como el mismo nivel con habitaciones añadidas. La huella conceptual pasa de **30 × 23,5 m (705 m² brutos)** a **48 × 34 m (1.632 m² brutos)**: **2,32× la huella anterior**. Es una meta geométrica de diseño, no una afirmación de superficie útil ya construida. La investigación Aster y el cuaderno de campo existentes se conservan; la cadena del cajón y la energía es un sistema secundario de mantenimiento, no un reemplazo del puzle Aster. La superficie útil real se medirá descontando muros, huecos y áreas inaccesibles al terminar el greybox.
 
 Se conservan cuatro cotas de suelo: P−2 = −4,00 m (servicios y energía), P0 = ±0,00 m (entrada e investigación), M = +1,50 m (mezzanine parcial de observación) y P+3 = +3,00 m (ala superior de control y archivo). Estas cotas son elevaciones del suelo, no alturas libres. El núcleo del ascensor se alinea entre niveles. La nave central mantiene 6–8 m de altura libre y queda abierta a través de la mezzanine y de la planta superior; M solo ocupa una banda lateral de menor altura y P+3 se concentra en alas laterales, sin forzar un forjado que cruce la nave. Como objetivo preliminar, P−2 tendrá 3,2–3,5 m de altura libre, salas ordinarias de P0 3,5–4,5 m y zonas superiores 3,0–3,5 m, sujetos a reconciliación con espesores estructurales y colisiones.
 
@@ -15,7 +15,7 @@ Se conservan cuatro cotas de suelo: P−2 = −4,00 m (servicios y energía), P0
 - **Conexiones legibles:** una espina de circulación organiza cada planta; puertas laterales, escaleras y el ascensor conectan zonas. Los planos deben mostrar las conexiones y no sugerir accesos que no puedan construirse.
 - **Causa y efecto visibles:** conectar el puente eléctrico debe producir una secuencia audible y visible: relés, zumbido de transformador, luces por sectores y ascensor que recupera servicio. Algunas luminarias permanecen averiadas para conservar tensión.
 - **No convertir la exploración en una búsqueda de píxeles:** los objetos clave se distinguen por silueta, contexto, iluminación y composición; las pistas ambientales opcionales no se confunden con los requisitos de progresión.
-- **No mantener mecánicas por inercia:** la lógica eléctrica anterior solo se conserva si supera la nueva revisión de diseño y comprensión; el rediseño no está obligado a reproducir el circuito antiguo.
+- **Preservar la lógica Aster:** se mantienen las reglas del contrato `FASE1_LOGIC_CONTRACT.md` y el ciclo del cuaderno de campo. La cadena de mantenimiento/energía es independiente y no puede alterar los estados ni las reglas de Aster.
 
 ## 3. Programa por nivel
 
@@ -25,7 +25,7 @@ Se conservan cuatro cotas de suelo: P−2 = −4,00 m (servicios y energía), P0
 3. **Archivo de turno:** la pizarra indica el orden B → D → A → C; la tira registra A=3, B=0, C=7, D=4. Leer las cifras en el orden indicado produce 0437. Los dos indicios se encuentran separados y ninguno muestra la respuesta completa.
 4. **Despacho con cajón cerrado:** el código abre el cajón. Dentro están la **llave de servicio** de la subestación y un **puente aislado** para el embarrado eléctrico.
 5. **Sala de espera, descanso, almacén y limpieza:** ramales secundarios; pueden aportar relato, una ventaja opcional o nada mecánicamente necesario.
-6. **Nave central y columna Aster:** hito visual y punto de orientación. El ascensor se ve, pero está sin alimentación. La puerta de conexión con el segundo edificio debe distinguirse de las puertas ordinarias: es una barrera de seguridad cerrada hasta completar la cadena de investigación, llave, puente y energía.
+6. **Nave central y columna Aster:** hito visual y punto de orientación; se conserva el puzle de distribución y el cuaderno de campo. El ascensor se ve, pero está sin alimentación. La puerta de conexión con el segundo edificio se distingue de las puertas ordinarias y permanece cerrada hasta completar la investigación Aster, obtener TRANSFER_KEY y restaurar la alimentación.
 7. **Taller de instrumentos y lavado/muestras:** conectan la historia del trabajo con la instalación técnica y contienen indicios opcionales.
 
 ### P−2 — Energía, achique, mantenimiento y transferencia clandestina
@@ -54,7 +54,7 @@ Vestíbulo restringido, seguridad/monitorización, archivo restringido, control 
 5. Observar el hueco en el embarrado y emparejar el puente por forma y señalización.
 6. Insertar el puente y activar el seccionador.
 7. Ver y oír el cambio de estado: relés, luces que se encienden por sectores, bombas auxiliares y ascensor activo.
-8. Usar el ascensor para acceder a las alas superiores y obtener contexto; esta subida no sustituye la transición al edificio clandestino.
+8. Usar el ascensor para acceder a las alas superiores y completar el puzle Aster existente: estabilizar ARCHIVO, confirmar la hipótesis y consultar el registro restringido. La cadena eléctrica secundaria no modifica la lógica Aster; esta subida no sustituye la transición al edificio clandestino.
 
 **Cadena B — transferencia clandestina:**
 1. Explorar P−2 y observar en el taller muerto la franja limpia, las marcas de arrastre y la corriente de aire en la junta.
@@ -65,7 +65,7 @@ Vestíbulo restringido, seguridad/monitorización, archivo restringido, control 
 6. Volver a la puerta oculta y usar la llave de transferencia. La puerta solo completa la apertura cuando la alimentación requerida está restablecida.
 7. Cruzar a un vestíbulo técnico del segundo edificio y revelar actividad clandestina real: iluminación de trabajo, maquinaria activa, señales recientes de uso y sonido humano/operativo. Este cruce cierra Fase 1 y abre la transición narrativa a Fase 2.
 
-Las dos cadenas son independientes hasta el umbral final: la llave de servicio y el puente no abren la puerta de transferencia; la llave de transferencia no abre la subestación ni restaura la energía. Se puede descubrir la puerta antes de restaurar la energía o conseguir la llave; no se puede entrar en el segundo edificio hasta cumplir ambas condiciones. Al menos un descubrimiento opcional debe aportar contexto o ventaja sin bloquear la ruta crítica.
+Las cadenas de mantenimiento y transferencia son independientes entre sí; ambas convergen con la investigación Aster existente en el umbral final. SERVICE_KEY e INSULATED_BRIDGE no abren la puerta de transferencia; TRANSFER_KEY no abre la subestación ni restaura la energía. Se puede descubrir la puerta antes de restaurar la energía o conseguir la llave; no se puede entrar en el segundo edificio hasta completar la investigación Aster, obtener TRANSFER_KEY y restaurar la alimentación. Al menos un descubrimiento opcional debe aportar contexto o ventaja sin bloquear la ruta crítica.
 
 ## 5. Reglas para los planos y la futura escena
 
