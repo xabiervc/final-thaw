@@ -22,6 +22,8 @@
 
 Las banderas nuevas son de sesión y no requieren cambios en el esquema de guardado. Antes de implementación se deben añadir pruebas de estados previos, orden de exploración alternativo, interacción repetida, llave equivocada, puente ausente, alimentación parcial y reinicio de misión. La integración no se considera aceptada hasta ejecutar las suites de Godot y probar manualmente el recorrido.
 
+**Límite de lectura:** las secciones heredadas que siguen conservan el contrato Aster y documentan la ruta G→patio del runtime actual. Sus coordenadas P−1/M/P2 y el evento G no son la topología objetivo del rediseño. Para el nuevo greybox se aplican las cotas, nodos y umbral P−2 definidos en los documentos de arquitectura/progresión de arriba; el contrato interno Aster sigue siendo autoridad sin cambios.
+
 ## 1. Objetivo jugable
 
 **As-built:** Elena investiga Aster, consulta el archivo, abre G y escapa por la instalación hasta el patio. **Objetivo rediseñado:** conserva íntegra la investigación Aster y añade una cadena de energía auxiliar y una llave de transferencia. El umbral narrativo pasa a la puerta oculta de P−2; al otro lado, Elena observa a personal humano en una instalación activa antes de ser detectada. La huida híbrida en primera persona conecta después con el aparcamiento y la calle. La secuencia G→patio y la unidad robótica solo describen el runtime actual hasta completar la migración.
