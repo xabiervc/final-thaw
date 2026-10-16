@@ -1,26 +1,58 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 800" role="img" aria-label="Sección vertical conceptual de la instalación ampliada de Final Thaw">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1330 800" role="img" aria-label="Sección vertical conceptual: nave central alta, mezzanine y ala superior parciales, y puerta de transferencia en P−2">
 <rect width="1330" height="800" fill="#f8fafb"/>
-<text x="42" y="48" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#16212a">SECCIÓN VERTICAL · INSTALACIÓN AMPLIADA</text>
-<text x="42" y="76" font-family="Arial,sans-serif" font-size="14" fill="#53616d">Relación conceptual entre P−2, P0, mezzanine y P+3 · no es sección constructiva</text>
-<rect x="100" y="165" width="1125" height="130" fill="#dce8f1" stroke="#53646e"/>
-<rect x="100" y="305" width="1125" height="130" fill="#d9e9e4" stroke="#53646e"/>
-<rect x="100" y="445" width="1125" height="130" fill="#f5e7c7" stroke="#53646e"/>
-<rect x="100" y="585" width="1125" height="130" fill="#e9eff1" stroke="#53646e"/>
-<text x="120" y="190" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">P+3 · CONTROL / ARCHIVO / VESTÍBULO DE ASCENSOR</text>
-<text x="120" y="330" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">M +1,50 · GALERÍA DE OBSERVACIÓN / LABORATORIO</text>
-<text x="120" y="470" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">P0 · ENTRADA / NAVE / DESPACHO DEL CAJÓN</text>
-<text x="120" y="610" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#1c2b33">P−2 · SUBESTACIÓN / BOMBAS / GALERÍA DE CABLES</text>
-<rect x="760" y="160" width="110" height="555" fill="#c7d5db" stroke="#263943" stroke-width="3"/>
-<rect x="775" y="175" width="80" height="525" fill="#f8fafb" stroke="#657780" stroke-width="1.5"/>
-<line x1="815" y1="175" x2="815" y2="700" stroke="#657780" stroke-width="2" stroke-dasharray="7 5"/>
-<text x="815" y="420" transform="rotate(-90 815 420)" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#263943">NÚCLEO CONTINUO DEL ASCENSOR</text>
-<rect x="380" y="480" width="130" height="55" fill="#f4dfcf" stroke="#53646e" stroke-width="2"/>
-<text x="445" y="502" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#1c2b33"><tspan x="445">CAJÓN</tspan><tspan x="445" dy="16">LLAVE + PUENTE</tspan></text>
-<rect x="950" y="625" width="180" height="55" fill="#f4dfcf" stroke="#53646e" stroke-width="2"/>
-<text x="1040" y="647" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#1c2b33"><tspan x="1040">SUBESTACIÓN</tspan><tspan x="1040" dy="16">CONEXIÓN FÍSICA</tspan></text>
-<path d="M510 510 H650 V655 H950" fill="none" stroke="#c87943" stroke-width="4" stroke-dasharray="9 6"/>
-<path d="M1040 625 V510 H815" fill="none" stroke="#287a68" stroke-width="4" stroke-dasharray="9 6"/>
-<text x="560" y="495" font-family="Arial,sans-serif" font-size="12" fill="#9b552d">PUENTE AISLADO</text>
-<text x="885" y="495" font-family="Arial,sans-serif" font-size="12" fill="#287a68">ALIMENTACIÓN DEL ASCENSOR</text>
-<text x="42" y="765" font-family="Arial,sans-serif" font-size="11" fill="#71808a">FINAL THAW · REDISEÑO ESPACIAL PROPUESTO · 2026-10-16 · ALTURAS Y CONEXIONES PENDIENTES DE VALIDACIÓN</text>
+<text x="42" y="48" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#16212a">SECCIÓN VERTICAL · NAVE ALTA Y ALAS PARCIALES</text>
+<text x="42" y="76" font-family="Arial,sans-serif" font-size="14" fill="#53616d">Las cotas son niveles de suelo; las alturas libres se miden por separado.</text>
+<!-- Level bands -->
+<rect x="135" y="185" width="820" height="185" fill="#f5e7c7" fill-opacity=".6" stroke="#d2dce1" stroke-width="1"/>
+<rect x="135" y="370" width="820" height="60" fill="#d9e9e4" fill-opacity=".8" stroke="#53646e" stroke-width="1"/>
+<rect x="135" y="430" width="820" height="70" fill="#dce8f1" fill-opacity=".85" stroke="#53646e" stroke-width="1"/>
+<rect x="135" y="500" width="820" height="160" fill="#e9eff1" stroke="#53646e" stroke-width="1"/>
+<!-- P+3 upper wings, not over nave -->
+<rect x="150" y="175" width="275" height="40" fill="#e3c98d" stroke="#53646e" stroke-width="2"/>
+<rect x="665" y="175" width="275" height="40" fill="#e3c98d" stroke="#53646e" stroke-width="2"/>
+<text x="287" y="201" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">ALA P+3 · CONTROL / ARCHIVO</text>
+<text x="802" y="201" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">ALA P+3 · LAB / SERVICIOS</text>
+<!-- Mezzanine side wings -->
+<rect x="150" y="345" width="275" height="25" fill="#9fc9bb" stroke="#53646e" stroke-width="2"/>
+<rect x="665" y="345" width="275" height="25" fill="#9fc9bb" stroke="#53646e" stroke-width="2"/>
+<text x="287" y="337" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#1c2b33">MEZZANINE PARCIAL M +1,50</text>
+<text x="802" y="337" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#1c2b33">PASARELA / LABORATORIO LATERAL</text>
+<!-- Central void -->
+<rect x="425" y="220" width="240" height="280" fill="#dce8f1" stroke="#263943" stroke-width="2.5"/>
+<text x="545" y="260" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#1c2b33"><tspan x="545">NAVE CENTRAL</tspan><tspan x="545" dy="20">LABORATORIO / BOMBEO</tspan></text>
+<text x="545" y="300" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#53616d">VACÍO CONTINUO</text>
+<line x1="545" y1="320" x2="545" y2="462" stroke="#71808a" stroke-width="2" stroke-dasharray="8 6"/>
+<rect x="460" y="392" width="170" height="48" fill="#e9eff1" stroke="#53646e" stroke-width="1.4"/>
+<text x="545" y="411" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#1c2b33"><tspan x="545">COLUMNA ASTER</tspan><tspan x="545" dy="14">BOMBAS / PASARELAS</tspan></text>
+<!-- Floor datums -->
+<line x1="135" y1="370" x2="955" y2="370" stroke="#263943" stroke-width="3"/>
+<text x="115" y="374" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">+3,00 m · P+3</text>
+<line x1="135" y1="430" x2="955" y2="430" stroke="#263943" stroke-width="3"/>
+<text x="115" y="434" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">+1,50 m · M</text>
+<line x1="135" y1="500" x2="955" y2="500" stroke="#263943" stroke-width="4"/>
+<text x="115" y="504" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">±0,00 m · P0</text>
+<line x1="135" y1="660" x2="955" y2="660" stroke="#263943" stroke-width="4"/>
+<text x="115" y="664" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">−4,00 m · P−2</text>
+<!-- Height dimension -->
+<line x1="400" y1="222" x2="400" y2="496" stroke="#287a68" stroke-width="2"/>
+<line x1="390" y1="222" x2="410" y2="222" stroke="#287a68" stroke-width="2"/>
+<line x1="390" y1="496" x2="410" y2="496" stroke="#287a68" stroke-width="2"/>
+<text x="388" y="355" transform="rotate(-90 388 355)" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#287a68">6–8 m DE ALTURA LIBRE OBJETIVO</text>
+<!-- Basement rooms and transfer -->
+<rect x="150" y="525" width="260" height="120" fill="#dce8f1" stroke="#53646e" stroke-width="1.5"/>
+<text x="280" y="565" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33"><tspan x="280">BOMBAS / SUBESTACIÓN</tspan><tspan x="280" dy="17" font-size="10">SERVICE_KEY + PUENTE</tspan></text>
+<rect x="425" y="525" width="240" height="120" fill="#f2e0dc" stroke="#b6534b" stroke-width="2"/>
+<text x="545" y="563" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#6d302d"><tspan x="545">TALLER MUERTO</tspan><tspan x="545" dy="17" font-size="10">PUERTA OCULTA EN MURO ESTE</tspan></text>
+<rect x="665" y="525" width="275" height="120" fill="#e9eff1" stroke="#53646e" stroke-width="1.5"/>
+<text x="802" y="563" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33"><tspan x="802">ALMACÉN DE REPUESTOS</tspan><tspan x="802" dy="17" font-size="10">ARMARIO SECO / TRANSFER_KEY</tspan></text>
+<path d="M665 585 H990" stroke="#b6534b" stroke-width="5"/>
+<rect x="990" y="535" width="145" height="100" fill="#f4dfcf" stroke="#b6534b" stroke-width="2.5"/>
+<text x="1062" y="570" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#6d302d"><tspan x="1062">VESTÍBULO</tspan><tspan x="1062" dy="15">TÉCNICO</tspan><tspan x="1062" dy="17" font-size="9">SEGUNDO EDIFICIO</tspan></text>
+<path d="M955 585 H990" stroke="#b6534b" stroke-width="5"/>
+<text x="1110" y="515" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#9d413b">PUERTA DE TRANSFERENCIA</text>
+<text x="1110" y="660" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#53616d">La puerta se descubre antes de poder abrirla.</text>
+<!-- datum legend -->
+<text x="985" y="125" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#16212a">CRITERIOS DE SECCIÓN</text>
+<text x="985" y="155" font-family="Arial,sans-serif" font-size="11" fill="#53616d"><tspan x="985">• La nave no recibe forjado</tspan><tspan x="997" dy="16">en M ni en P+3.</tspan><tspan x="985" dy="26">• M y P+3 son alas parciales.</tspan><tspan x="985" dy="26">• P−2 y P0 se separan 4 m</tspan><tspan x="997" dy="16">entre cotas de suelo.</tspan><tspan x="985" dy="26">• Las alturas libres ordinarias</tspan><tspan x="997" dy="16">se verifican en el greybox.</tspan></text>
+<text x="42" y="755" font-family="Arial,sans-serif" font-size="11" fill="#71808a">FINAL THAW · DISEÑO OBJETIVO · 2026-10-16 · COTAS Y ALTURAS A VALIDAR EN GODOT · NO ES PLANO CONSTRUCTIVO</text>
 </svg>
