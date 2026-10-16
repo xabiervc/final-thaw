@@ -7,7 +7,9 @@
 La instalación se organiza en una espina por nivel y varios ramales de diferente importancia. La ruta crítica no es una secuencia de habitaciones con objetos obligatorios: el jugador puede descubrir espacios técnicos y el ascensor antes de desbloquearlos. Los ramales secundarios contienen contexto ambiental, oportunidades de observación y, en uno o dos casos, una ventaja opcional.
 
 ### P0 — Investigación
-- **P0-ENTRY:** entrada por conducto y derrumbe. Salida de retorno bloqueada.
+- **P0-CORRIDOR-ACCESS:** acceso arquitectónico antiguo al pasillo principal; no es el punto de entrada inicial de Elena. Etiqueta visible: «ACCESO AL PASILLO».
+- **P0-ELENA-BREACH:** brecha o conducto de servicio por el que Elena entra; se colapsa después y bloquea físicamente el retorno. Etiqueta visible: «BRECHA DE ELENA — COLAPSADA TRAS ENTRAR».
+- **P0-SEALED-CONNECTION:** puerta de seguridad que comunica con el segundo edificio, donde los antagonistas trabajan clandestinamente. Permanece cerrada hasta completar la progresión necesaria y es el umbral narrativo entre ambos edificios.
 - **P0-AIRLOCK:** esclusa y vestíbulo de personal.
 - **P0-LOCKERS:** vestuarios; espacio ambiental.
 - **P0-SHIFT-ARCHIVE:** pizarra de turnos + tira de presión; pista necesaria para deducir el código del cajón.
@@ -61,7 +63,7 @@ La instalación se organiza en una espina por nivel y varios ramales de diferent
 
 ## 2. Aristas principales
 
-1. P0-ENTRY → P0-AIRLOCK → P0-HALL.
+1. P0-ELENA-BREACH → P0-AIRLOCK → P0-HALL; P0-CORRIDOR-ACCESS es un acceso separado y no sustituye la brecha de Elena.
 2. P0-HALL ↔ P0-SHIFT-ARCHIVE ↔ P0-DISPATCH.
 3. P0-HALL ↔ P0-INSTRUMENTS ↔ P0-SAMPLES.
 4. P0-HALL ↔ P0-LIFT (ascensor visible, estado sin energía).
@@ -72,7 +74,7 @@ La instalación se organiza en una espina por nivel y varios ramales de diferent
 9. M-GALLERY ↔ M-LIFT ↔ P3-LIFT.
 10. P3-LIFT ↔ P3-SECURITY ↔ P3-ARCHIVE / P3-CONTROL.
 11. P3-CONTROL ↔ P3-COMMS / P3-RECORDS.
-12. P3-CONTROL ↔ P3-EMERGENCY → transición a Fase 2.
+12. Desde la zona de control, la ruta crítica llega a P0-SEALED-CONNECTION por un recorrido físico que debe definirse de forma coherente en planta y sección; al abrirse, conduce al edificio clandestino activo y al inicio de la siguiente fase. No usar una salida de emergencia genérica como sustituto de esta conexión.
 
 Las aristas 5, 8, 9 y 12 son objetivos de diseño y deben verificarse físicamente: no se consideran construidas por aparecer en el grafo.
 
@@ -83,7 +85,7 @@ Las aristas 5, 8, 9 y 12 son objetivos de diseño y deben verificarse físicamen
 - **INSULATED_BRIDGE:** obtenida en el mismo cajón; conecta el terminal vacío de la subestación.
 - **PowerRestored:** requiere llave, puente colocado en el terminal correcto y accionamiento del seccionador.
 - **LiftPowered:** depende de PowerRestored. Luces por sectores y sonidos de maquinaria confirman el cambio.
-- **Phase2Access:** requiere ascensor/recorrido superior activo y la salida de emergencia accesible.
+- **ClandestineBuildingAccess:** requiere completar la cadena de investigación y energía, activar los sistemas necesarios y alcanzar la puerta sellada. La geometría y el recorrido de conexión deben aparecer de forma consistente en planta, sección y grafo.
 
 ## 4. Espacios opcionales
 
