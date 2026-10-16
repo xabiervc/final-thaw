@@ -222,7 +222,10 @@ func _build_geometry() -> void:
 	_box("O2_Low_Service_Beam", Vector3(WIDTH - 0.15, 0.25, 0.3), Vector3(-12, 1.445, -54), Color(0.54, 0.31, 0.14))
 	_label("CROUCH UNDER BEAM", Vector3(-12, 2.3, -54), Color(1.0, 0.78, 0.38), 25)
 	# Final approach, maintenance hatch, road and forest.
-	_box("ESC_HATCH_FRAME", Vector3(3.4, 2.5, 0.25), Vector3(-12, 4.75, -88), Color(0.24, 0.29, 0.32))
+	# Three separate frame pieces leave a real traversable opening for the player capsule.
+	_box("ESC_HATCH_FRAME_Post_L", Vector3(0.25, 2.5, 0.25), Vector3(-13.5, 4.75, -88), Color(0.24, 0.29, 0.32))
+	_box("ESC_HATCH_FRAME_Post_R", Vector3(0.25, 2.5, 0.25), Vector3(-10.5, 4.75, -88), Color(0.24, 0.29, 0.32))
+	_box("ESC_HATCH_FRAME_Header", Vector3(3.25, 0.25, 0.25), Vector3(-12, 6.0, -88), Color(0.24, 0.29, 0.32))
 	_box("ESC_SECONDARY_ROAD", Vector3(14, SLAB, 5), Vector3(-5, 3.5 - SLAB * 0.5, -91), Color(0.19, 0.22, 0.24))
 	_box("ESC_FOREST_GROUND", Vector3(16, SLAB, 18), Vector3(-5, 3.5 - SLAB * 0.5, -101), Color(0.15, 0.22, 0.16))
 	for i in 12:
@@ -243,7 +246,7 @@ func _build_geometry() -> void:
 func _build_player() -> void:
 	player = PlayerScript.new()
 	player.name = "Elena_EscapePrototype"
-	player.position = Vector3(0.0, 0.05, 2.0)
+	player.position = Vector3(0.0, 0.05, 0.0)
 	add_child(player)
 	player.set("orbit_yaw", 0.0)
 	player.set("orbit_pitch", 0.0)
