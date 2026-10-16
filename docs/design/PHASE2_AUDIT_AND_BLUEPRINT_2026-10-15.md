@@ -34,18 +34,6 @@ A1 is limited to reproducing and correcting the reported English HUD state/resis
 
 After A1, stop for owner review of the diff and evidence. No later milestone, protected-contract change, project-setting change, or implementation commit/push is authorized by this gate. The existing phased plan below remains the roadmap, not permission to execute every group in one pass.
 
-## 0.1 Evidence labels
-
-| Label | Meaning |
-|---|---|
-| **RAN** | Executed in this audit (command and result in Appendix A) |
-| **SOURCE** | Read in the repository, not executed |
-| **OWNER** | Reported by the owner from playing the game; established input |
-| **PROPOSAL** | A recommendation of this audit; not canon, not approved |
-| **UNVERIFIED** | Needs a person, hardware or a measurement not available here |
-
-Captures and recordings are kept outside the repository in `D:/Projects/evidence/final-thaw/audit_2026-10-15/` and `audit_2026-10-16/`.
-
 
 ---
 
