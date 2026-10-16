@@ -6,6 +6,39 @@
 
 **Estado:** objetivo espacial ampliado. Las huellas base de las plantas existentes se conservan donde son compatibles; la galería de evacuación y la huida interior son nuevas y deben incorporarse a SVG, constructor y tests antes de considerarse construidas. Medidas sujetas a prueba de volumen de jugador/cámara; no reducir anchos para encajar el guion.
 
+## Rediseño arquitectónico acordado — objetivo de greybox (2026-10-16)
+
+Esta sección define el nuevo objetivo espacial y **no describe el edificio construido**. El as-built permanece en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md). No reutilizar las cotas antiguas como si ya fueran compatibles con la nueva distribución.
+
+| Parámetro | Objetivo de diseño | Estado / regla |
+|---|---|---|
+| Huella bruta del complejo principal | 48 × 34 m = 1.632 m² | Objetivo conceptual; no es superficie útil ni huella ya construida |
+| P−2 | Suelo −4,00 m; altura libre objetivo 3,2–3,5 m | Nueva planta de mantenimiento, subestación, almacén, taller muerto y puerta de transferencia |
+| P0 | Suelo ±0,00 m; nave central 6–8 m de altura libre | Mantener el hito Aster y las dos entradas diferenciadas |
+| M | Suelo +1,50 m; mezzanine parcial | Solo alas laterales; no cruzar el vacío de la nave |
+| P+3 | Suelo +3,00 m; ala superior parcial | Control/archivo en bandas laterales; no cerrar la nave con un forjado |
+| Salas ordinarias P0 | 3,5–4,5 m de altura libre objetivo | Ajustar a estructura, cámara y colisión |
+| Salas superiores | 3,0–3,5 m de altura libre objetivo | Ajustar a estructura y altura real de los niveles |
+| Circulación principal | 2,0 m libres como objetivo; mínimo puntual 1,8 m solo con justificación | Medir entre colisiones, no entre bounds visuales |
+| Acceso de Elena | Brecha/alcantarilla colapsable | Bloqueo real mediante geometría y colisión |
+| Acceso antiguo al pasillo | Entrada arquitectónica independiente | No confundir con el spawn de Elena |
+| Puerta clandestina | Muro oriental del taller muerto en P−2 | Oculta al principio; conduce al vestíbulo técnico del segundo edificio |
+| Acceso vertical a P−2 | Escalera transitable independiente del ascensor | El jugador puede explorar el sótano con el ascensor sin energía |
+| Progresión de transferencia | TRANSFER_KEY + PowerRestored + investigación Aster completada | La llave de transferencia no sustituye SERVICE_KEY ni INSULATED_BRIDGE |
+
+### Coordenadas y continuidad con el patio
+
+El constructor existente usa un sistema de coordenadas y una salida de servicio hacia el patio en torno a X=34. La nueva huella no debe desplazarse a ese umbral de forma accidental. Antes de cambiar el constructor, fijar una única transformación mundo/plano que preserve una conexión física continua entre edificio, puerta de transferencia, segundo edificio y ruta posterior hacia el patio. La huella 48 × 34 m es una dimensión bruta de diseño, no una autorización para desplazar el umbral de patio sin actualizar también la ruta, los obstáculos, el grafo de la unidad, las cámaras, los checkpoints y sus tests.
+
+### Contratos espaciales no negociables
+
+- La sección debe mostrar la nave central abierta a través de M y P+3. Las cotas de suelo (−4,00 / ±0,00 / +1,50 / +3,00) no son alturas libres.
+- La puerta de transferencia se descubre mediante una franja de suelo limpia, marcas recientes de arrastre y corriente de aire en la junta; al inspeccionarla se revela un panel, no se abre automáticamente.
+- La nota de mantenimiento del taller muerto dirige al armario seco elevado del almacén de repuestos; el símbolo del armario coincide con el de la puerta.
+- La llave de transferencia es distinta de la llave de servicio y del puente eléctrico.
+- La investigación Aster y el cuaderno de campo existentes se conservan; la nueva cadena de mantenimiento/transferencia se añade sin cambiar el contrato lógico Aster.
+- Los planos conceptuales no prueban colisiones, alturas, navegación, rendimiento ni jugabilidad. Esos criterios requieren constructor, pruebas automáticas y playtest.
+
 ## Convenciones
 
 - Unidades Godot: metros; X este, Z sur, Y vertical; norte arriba en planos.
