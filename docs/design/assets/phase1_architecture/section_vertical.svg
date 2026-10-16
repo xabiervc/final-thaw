@@ -3,18 +3,18 @@
 <text x="42" y="48" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#16212a">SECCIÓN VERTICAL · NAVE ALTA Y ALAS PARCIALES</text>
 <text x="42" y="76" font-family="Arial,sans-serif" font-size="14" fill="#53616d">Las cotas son niveles de suelo; las alturas libres se miden por separado.</text>
 <!-- Envelope / void -->
-<rect x="135" y="220" width="820" height="440" fill="#e9eff1" stroke="#53646e" stroke-width="1.5"/>
+<rect x="135" y="220" width="820" height="430" fill="#e9eff1" stroke="#53646e" stroke-width="1.5"/>
 <rect x="135" y="380" width="820" height="50" fill="#d9e9e4" fill-opacity=".8" stroke="#53646e" stroke-width="1"/>
-<rect x="135" y="430" width="820" height="70" fill="#dce8f1" fill-opacity=".85" stroke="#53646e" stroke-width="1"/>
+<rect x="135" y="430" width="820" height="60" fill="#dce8f1" fill-opacity=".85" stroke="#53646e" stroke-width="1"/>
 <rect x="135" y="490" width="820" height="160" fill="#e9eff1" stroke="#53646e" stroke-width="1"/>
 <!-- Central nave void above P0, roof high -->
-<rect x="425" y="220" width="240" height="280" fill="#dce8f1" stroke="#263943" stroke-width="2.5"/>
+<rect x="425" y="220" width="240" height="270" fill="#dce8f1" stroke="#263943" stroke-width="2.5"/>
 <line x1="425" y1="220" x2="665" y2="220" stroke="#263943" stroke-width="4"/>
 <text x="545" y="250" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#1c2b33"><tspan x="545">NAVE CENTRAL</tspan><tspan x="545" dy="18">LABORATORIO / BOMBEO</tspan></text>
 <text x="545" y="294" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#53616d">VACÍO SIN FORJADOS</text>
 <line x1="545" y1="310" x2="545" y2="462" stroke="#71808a" stroke-width="2" stroke-dasharray="8 6"/>
-<rect x="460" y="392" width="170" height="48" fill="#f5e7c7" stroke="#53646e" stroke-width="1.4"/>
-<text x="545" y="411" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#1c2b33"><tspan x="545">COLUMNA ASTER</tspan><tspan x="545" dy="14">BOMBAS / PASARELAS</tspan></text>
+<rect x="460" y="440" width="170" height="48" fill="#f5e7c7" stroke="#53646e" stroke-width="1.4"/>
+<text x="545" y="458" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#1c2b33"><tspan x="545">COLUMNA ASTER</tspan><tspan x="545" dy="14">BOMBAS / PASARELAS</tspan></text>
 <!-- Upper floors only on side wings -->
 <rect x="150" y="230" width="275" height="140" fill="#f5e7c7" stroke="#53646e" stroke-width="1.5"/>
 <rect x="665" y="230" width="275" height="140" fill="#f5e7c7" stroke="#53646e" stroke-width="1.5"/>
@@ -30,10 +30,10 @@
 <text x="115" y="374" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">+3,00 m · P+3</text>
 <line x1="135" y1="430" x2="955" y2="430" stroke="#263943" stroke-width="3"/>
 <text x="115" y="434" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">+1,50 m · M</text>
-<line x1="135" y1="500" x2="955" y2="500" stroke="#263943" stroke-width="4"/>
-<text x="115" y="504" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">±0,00 m · P0</text>
-<line x1="135" y1="660" x2="955" y2="660" stroke="#263943" stroke-width="4"/>
-<text x="115" y="664" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">−4,00 m · P−2</text>
+<line x1="135" y1="490" x2="955" y2="490" stroke="#263943" stroke-width="4"/>
+<text x="115" y="494" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">±0,00 m · P0</text>
+<line x1="135" y1="650" x2="955" y2="650" stroke="#263943" stroke-width="4"/>
+<text x="115" y="654" text-anchor="end" font-family="Arial,sans-serif" font-size="12" font-weight="700" fill="#1c2b33">−4,00 m · P−2</text>
 <!-- Clear height target -->
 <line x1="400" y1="222" x2="400" y2="486" stroke="#287a68" stroke-width="2"/>
 <line x1="390" y1="222" x2="410" y2="222" stroke="#287a68" stroke-width="2"/>
