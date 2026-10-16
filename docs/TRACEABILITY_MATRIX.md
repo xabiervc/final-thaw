@@ -165,3 +165,19 @@ The next implementation pass is limited to baseline reconciliation and the repor
 | Manual locale switch | Actual Godot run switching ES ↔ EN in the canonical scene | Record observed result; otherwise leave explicitly unverified | Not verified |
 
 **Execution rule:** do not infer current results from this matrix. Update statuses only after recording evidence from the actual checkout. Do not start audio, collision, traversal, AI, art, Phase 1 redesign or Phase 2 construction in the A0–A1 pass. Do not commit/push implementation or owner-local changes without explicit owner approval.
+
+
+## 11. Owner-approved escape labyrinth requirements (2026-10-16; target, not verified)
+
+| Requirement | Target behavior | Required evidence | Initial status |
+|---|---|---|---|
+| Human discovery and fork | Right reaches personnel/story discovery; left begins the escape | State/route test and manual sequence review | Specified; implementation pending |
+| Long dry-conduit escape | Multiple long corridors with alternating left/right turns; not an immediate exit | Dimensioned plan/section/graph aligned with actual scene | Specified; greybox required |
+| Light-guided wayfinding | Egress branches brighter/more continuous; wrong branches darker/broken | Junction sightline review, accessibility review and first-time-player test | Specified; playtest required |
+| Recoverable dead ends | At least two non-egress branches cost time but do not softlock | Graph reachability and manual exploration of each branch | Specified; behavior tests required |
+| Traversal actions | At least two contextual jumps/vaults with adequate approaches and safe landing volumes | Capsule/camera collision tests and hands-on traversal review | Specified; greybox required |
+| Adrenaline stamina | Stamina cannot fall below 100% during the escape | Automated movement/state test under sustained sprint | Specified; code/test required |
+| Hillside/road/forest finish | Rising conduit to physical hatch, secondary road and forest hideout end beat | End-to-end route test and manual narrative/continuity review | Specified; greybox required |
+| No legacy escape dependencies | Door G, old robot and parking route are not dependencies for this sequence | Dependency/reference audit and full escape playthrough | Specified; audit required |
+| Regression boundary | Preserve Phase 0 input/autoload/resource and save contracts; keep Aster logic unchanged | Phase 0 + Aster regression tests; compare save contract; exact test evidence | Protected; verify after changes |
+
