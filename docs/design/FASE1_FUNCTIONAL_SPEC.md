@@ -157,3 +157,18 @@ This addendum records the latest target and does not claim that the current func
 - Full Marcus-led beat-'em-up and Elena companion progression are future scope; this specification should not pull that system into the current Phase 1/2 work.
 
 Acceptance requires updated behavior tests, a full test run on the final integrated commit, and in-engine/manual verification of spatial clarity, pursuit fairness, camera comfort and the complete route.
+
+
+## Owner-approved escape-labyrinth gameplay contract (2026-10-16; not implemented/verified)
+
+The escape target is no longer a direct run to the parking yard. After human discovery in the second active facility, Elena commits left from the personnel fork into a long, branching dry water/service conduit. The route alternates left and right through long corridors, includes at least two contextual jumps/vaults with safe landing space, climbs a slope to a maintenance hatch, emerges beside a secondary road and ends when Elena hides in the forest. Right at the initial fork leads to the personnel area / Elena discovery beat; do not collapse this story fork and escape into an immediate exit.
+
+Navigation contract:
+- Primary route is signalled by brighter, more continuous industrial lighting and visible light pools at approach/junctions; non-egress branches are darker or inconsistently lit.
+- Reinforce light with non-colour-only cues (maintenance paint/chevrons, conduit/cable direction, airflow, slope and exterior ambience). Do not make darkness the only evidence or require colour perception.
+- Include at least two recoverable dead-end branches. Their purpose is to make choices meaningful and cost time, not to punish randomly. From each junction the preferred path should be inferable before commitment.
+- Keep the player in first-person control. Use brief contextual prompts for jump/vault/duck actions and only short, motivated look-backs. Stamina cannot fall below 100% during the adrenaline run.
+- Human pursuers are the primary threat. Door G and the old robot must not be required. Preserve the lab, Aster circuit contract, Phase 0 actions/autoloads/resource paths and save compatibility.
+- End at a road/forest hideout, not the current yard/parking ending. Existing parking set pieces may be kept as legacy assets, but are not part of this escape unless re-approved.
+
+Tests required before acceptance: graph reachability from the left fork to forest; dead-end recoverability; no softlock from all junctions; stamina lock; jump/vault clearance and safe landing; player control/pause/restart; accessibility fallback for lighting cues; no Door G/robot dependency; and full manual playthrough in Godot. This describes a target, not implemented evidence.
