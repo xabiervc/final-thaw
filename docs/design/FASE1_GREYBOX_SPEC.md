@@ -210,3 +210,42 @@ The graph is structural intent, not a finished map or final room count. Dimensio
 ### Required design evidence
 
 Update the existing plan, section, graph and lighting overlays together. Specify node IDs, corridor clear widths/headroom, segment lengths, turns, elevations, jump/vault envelopes, light-cue hierarchy per junction, dead-end branches, threat accessibility, recovery rules and the final forest volume. Confirm against actual Godot collision/navigation and gameplay camera; plans alone do not prove the route exists or is playable.
+
+
+## Escape conduit greybox — dimensioned owner-approved layout (2026-10-16)
+
+The new escape is represented by the plan and section assets below. They are a design target and a standalone prototype, not yet the canonical mission geometry.
+
+- [Top-down escape conduit plan](assets/escape_conduit/escape_conduit_plan.svg)
+- [Longitudinal section](assets/escape_conduit/escape_conduit_section.svg)
+- [Standalone playable greybox scene](../../scenes/prototypes/escape_conduit_labyrinth.tscn)
+- [Greybox builder script](../../scripts/prototypes/escape_conduit_labyrinth.gd)
+- [Structural/ending test scene](../../tests/test_escape_conduit_labyrinth.tscn)
+
+### Dimension schedule
+
+| Element | Target dimension | Acceptance constraint |
+|---|---:|---|
+| Main escape centreline | Approximately 132 m | Several long corridors and alternating turns; never an immediate exit |
+| Main conduit | 3.2 m clear width × 3.6 m clear headroom | Measure between collision surfaces; preserve camera and capsule clearance |
+| Junction clear zone | 5.0 × 5.0 m minimum | Player can read branches before committing; no wall collision at the turn |
+| Optional branch D01 | 10 m | Darker light continuity, physical end cap, return path |
+| Optional branch D02 | 8 m | Darker light continuity, physical end cap, return path |
+| Optional branch D03 | 10 m | Short dark pocket, physical end cap, return path |
+| O1 pipe rack | 0.55 m high × 0.65 m deep | Jumpable, full-width, visible approach and landing area |
+| O2 service beam | 1.32 m nominal underside clearance | Requires crouch; verify capsule clearance in Godot |
+| Rising conduit | 20 m horizontal run; +3.5 m elevation | Approximately 10° slope; walkable with real player physics |
+| Hatch approach | 6 m | Physical hatch frame and collision opening; no teleport |
+| Secondary road | 5 m wide | Continuous floor from hatch to forest ground |
+| Forest completion volume | 12 × 5 × 12 m trigger | Trigger only after entering the forest cover |
+
+The diagram is schematic rather than construction-scale; segment labels and dimensions are the controlling values. Final junction positions must be adjusted together in plan, section, builder and tests if player-capsule or collision validation requires a change.
+
+### Lighting contract
+
+The critical route uses warm, brighter and more continuous practical lighting, with pools visible from the approach to each junction. Side branches use lower-energy and less continuous fixtures. Keep environmental readability high enough that the player can see walls, floor and branch ends. Add redundant cues during visual polish (maintenance chevrons, cable direction, airflow, slope, exterior ambience); do not make colour or sound the only signal.
+
+### Prototype and integration status
+
+The standalone scene is a playable spatial prototype built from real collision boxes, with first-person camera framing, stamina restoration, three optional dead-end branches, a jumpable pipe rack, a crouch-only service beam, a rising conduit, hatch, road and forest completion trigger. It is not yet connected to the canonical mission's transfer-door/staff-detection state machine. Do not replace the canonical scene or claim the escape is accepted until the standalone scene and test are run in Godot, the full route is manually played, and the mission handoff is implemented and regression-tested.
+
