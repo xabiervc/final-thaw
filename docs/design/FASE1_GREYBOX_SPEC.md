@@ -47,7 +47,7 @@ El constructor existente usa un sistema de coordenadas y una salida de servicio 
 - Ancho libre mínimo de circulación normal: 1,8 m; ruta de huida: objetivo ≥2,0 m sin mobiliario ni barandillas invadiendo el paso. Puertas y giros se validan con cápsula y cámara reales.
 - Las plantas son planos de diseño, no prueba de colisión. Los footprints del constructor deben ser trazables a estas medidas.
 
-## Programa por planta
+## Programa por planta heredado v2.1 — referencia del as-built, no del rediseño
 
 ### P−1 · D1/D2 y salida de servicio — Y=−2
 
