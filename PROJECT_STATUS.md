@@ -8,7 +8,7 @@
 - Preserve the current Aster circuit contract and field-notes loop. Add the maintenance/auxiliary-power chain and the separate P−2 transfer-key chain without changing Aster's internal state machine.
 - Reconcile the 48 × 34 m target footprint with the actual world coordinates, current east service threshold, Phase 2 yard, route graph, camera and checkpoints before rewriting the builder. No geometry coordinate is considered locked until all affected drawings and code agree.
 - Implement the P−2 floor, stair access independent of the lift, hidden transfer door, clue/key interaction chain, auxiliary-power feedback, partial mezzanine and high central nave as one coordinated change.
-- Add/adjust behavior tests and run the required Godot 4.7.2 suite; inspect the editor debugger and manually play the full route. The GitHub design branch currently has documentation/design changes only; runtime implementation and validation remain pending.
+- Add/adjust behavior tests and run the required Godot 4.7.2 suite; inspect the editor debugger and manually play the full route. Runtime implementation is present on the recovered `design/expanded-facility-redesign` worktree. Godot 4.7.2 automated validation completed with 38 suites, 1267 PASS, 0 FAIL, 0 runtime ERROR and 12 warnings (including expected negative-test diagnostics and ObjectDB teardown notices). Human playtest and editor-debugger review remain pending; this branch is not yet integrated into the canonical checkout.
 - Update existing sources of truth; do not create duplicate design documents. Keep as-built evidence separate from target design.
 
 **Gate:** no merge into `feat/godot-vertical-slice` until the owner reviews the diff, exact test evidence, manual QA and remaining risks.

@@ -9,6 +9,7 @@ extends Node
 
 const SCENE := "res://scenes/prototypes/phase1_canonical_greybox.tscn"
 const RouteBot := preload("res://tests/support/route_bot.gd")
+const State := preload("res://scripts/phase1/phase1_transfer_state.gd")
 
 var passed := 0
 var failed := 0
@@ -88,7 +89,10 @@ func _investigation() -> bool:
 	_expect(scene.circuit.maintenance_on, "maintenance switch reachable and accepted from the pit floor")
 	_expect(scene.mission.service_override_queued, "maintenance OFF -> ON queued SERVICE_OVERRIDE")
 	_expect(scene.notes.has("maintenance_risk"), "the queued audit is recorded in the notes (cause made explicit)")
-	if not _leg(await bot.walk("D2 -> S1 up -> south band -> east return -> bridge -> service gallery", [Vector3(25, -2, 7.2), Vector3(25, 0, 12.4), Vector3(29, 0, 12.4), Vector3(29, 0, 9.6), Vector3(29, 0.35, 6.0), Vector3(29, 0, 2.7), Vector3(29, 0, 0.0), Vector3(28.2, 0, -1.0)], {"min_y": -2.5})):
+	_expect(not scene.lift.powered, "maintenance alone leaves the lift unpowered: it also needs the auxiliary supply")
+	if not await _power_chain():
+		return false
+	if not _leg(await bot.walk("south band -> east return -> bridge -> service gallery", [Vector3(22.5, 0, 10.0), Vector3(23.2, 0, 12.4), Vector3(29, 0, 12.4), Vector3(29, 0, 9.6), Vector3(29, 0.35, 6.0), Vector3(29, 0, 2.7), Vector3(29, 0, 0.0), Vector3(28.2, 0, -1.0)], {"min_y": -2.5})):
 		return false
 	await bot.interact("lift call P0")
 	await bot.wait(1.0)
@@ -100,6 +104,77 @@ func _investigation() -> bool:
 	if not _leg(await bot.walk("lift -> pump room south lane -> S2 foot", [Vector3(26, 3, -5.6), Vector3(23, 3, -5.4), Vector3(18.5, 3, -5.4), Vector3(12, 3, -5.4), Vector3(8.3, 3, -5.2)], {"min_y": 2.5})):
 		return false
 	return _leg(await bot.walk("S2 up -> walkway -> control E", [Vector3(8.3, 3.0, -3.2), Vector3(13.0, 5.7, -3.2), Vector3(15.5, 6, -4.0), Vector3(17.5, 6, -6.4)], {"min_y": 2.5}))
+
+
+## Presses an action as a real input event (the code lock listens to events, not to polled state) and lets two frames pass.
+func _key(action: String) -> void:
+	var down := InputEventAction.new()
+	down.action = action
+	down.pressed = true
+	Input.parse_input_event(down)
+	await get_tree().physics_frame
+	var up := InputEventAction.new()
+	up.action = action
+	up.pressed = false
+	Input.parse_input_event(up)
+	await get_tree().physics_frame
+
+
+## Dials `code` into the open lock with the same actions a player uses, from whatever state the dials are in.
+func _enter_code(code: String) -> void:
+	var lock = scene.transfer.lock
+	for i in 4:
+		while lock.index != i:
+			await _key("move_right")
+		var target := int(code[i])
+		while lock.digits[i] != target:
+			await _key("move_up" if (target - lock.digits[i] + 10) % 10 <= 5 else "move_down")
+	await _key("interact")
+
+
+## The shift archive's two clues, the dispatch drawer, the stair to P-2 and the substation: the auxiliary supply, walked.
+## Starts on the south band at the top of S1 (Elena has just come up from the pit) and ends back on the south band.
+func _power_chain() -> bool:
+	if not _leg(await bot.walk("S1 up -> south band -> the shift rooms (P0, north-west)", [Vector3(25, -2, 7.2), Vector3(25, 0, 12.4), Vector3(23.2, 0, 12.4), Vector3(22.5, 0, 10.0), Vector3(8.6, 0, 10.0), Vector3(8.6, 0, 0.6), Vector3(6.8, 0, -2.0), Vector3(1.8, 0, -4.3), Vector3(1.8, 0, -6.0), Vector3(1.8, 0, -8.4)], {"min_y": -2.5})):
+		return false
+	await bot.interact("shift board")
+	_expect(scene.notes.has("shift_order"), "the board in the shift archive gives the ORDER of the readings")
+	_expect(not scene.transfer.state.drawer_open and not scene.notes.has("pressure_values"), "the board alone does not give the values")
+	if not _leg(await bot.walk("archive: board -> pressure recorder", [Vector3(1.0, 0, -6.4)], {"min_y": -2.5})):
+		return false
+	await bot.interact("pressure recorder")
+	_expect(scene.notes.has("pressure_values"), "the recorder strip gives the stable VALUES, in no order")
+	if not _leg(await bot.walk("archive -> dispatch office -> drawer", [Vector3(1.8, 0, -5.8), Vector3(1.8, 0, -4.3), Vector3(5.2, 0, -4.3), Vector3(5.2, 0, -6.0), Vector3(5.3, 0, -8.0)], {"min_y": -2.5})):
+		return false
+	await bot.interact("drawer (opens the code lock)")
+	_expect(scene.transfer.modal_open() and not bool(scene.player.get("input_enabled")), "the drawer opens the code lock and freezes Elena")
+	await _enter_code("0000")
+	_expect(not scene.transfer.state.drawer_open and scene.transfer.state.wrong_codes == 1, "a wrong code leaves the drawer shut and counts one attempt")
+	await _enter_code(State.solution())
+	_expect(scene.transfer.state.drawer_open and not scene.transfer.lock.is_open, "the deduced code opens the drawer and closes the lock")
+	_expect(not scene.transfer.state.drawer_emptied, "submitting the code does not also take the items (the same press is not read twice)")
+	_expect(bool(scene.player.get("input_enabled")), "Elena is free again once the lock closes")
+	await bot.wait(0.8)
+	await bot.interact("drawer (take the items)")
+	_expect(scene.transfer.state.has_item(State.SERVICE_KEY) and scene.transfer.state.has_item(State.INSULATED_BRIDGE), "the open drawer gives the service key and the insulated bridge")
+	_expect(not scene.transfer.state.has_item(State.TRANSFER_KEY), "the drawer does not hold the transfer key")
+	if not _leg(await bot.walk("dispatch -> nave -> the stair down to P-2 (no power needed)", [Vector3(5.3, 0, -6.0), Vector3(5.2, 0, -4.3), Vector3(6.8, 0, -2.0), Vector3(8.6, 0, 0.6), Vector3(8.6, 0, 10.0), Vector3(7.6, 0, 10.8), Vector3(7.6, 0, 12.2), Vector3(9.2, -0.45, 12.4), Vector3(11.2, -2, 12.4), Vector3(14.8, -4, 12.4), Vector3(22.0, -4, 12.4)], {"min_y": -4.6})):
+		return false
+	_expect(not scene.lift.powered, "P-2 is reached on foot while the lift is still dead")
+	await bot.interact("substation door")
+	_expect(scene.transfer.state.substation_unlocked, "the service key opens the substation door")
+	if not _leg(await bot.walk("gallery -> substation -> LIFT AUX terminal", [Vector3(22.0, -4, 14.2), Vector3(21.6, -4, 18.6)], {"min_y": -4.6})):
+		return false
+	await bot.interact("LIFT AUX terminal (fit the bridge)")
+	_expect(scene.transfer.state.bridge_inserted and not scene.transfer.state.power_restored, "the bridge fits the terminal; power is not restored yet")
+	if not _leg(await bot.walk("terminal -> disconnector", [Vector3(23.1, -4, 17.5)], {"min_y": -4.6})):
+		return false
+	await bot.interact("disconnector")
+	_expect(scene.transfer.state.power_restored, "the disconnector restores the auxiliary supply")
+	await bot.wait(1.0)
+	_expect(scene.lift.powered, "with maintenance ON the lift now has both supplies")
+	_expect(not scene.mission.restricted_record_read and not scene.circuit.protection_available == false and str(scene.circuit.last_trip) in ["", "<null>"], "the auxiliary supply changed nothing in the Aster circuit or the record")
+	return _leg(await bot.walk("substation -> gallery -> stair up -> south band", [Vector3(22.0, -4, 14.2), Vector3(22.0, -4, 12.4), Vector3(14.8, -4, 12.4), Vector3(11.2, -2, 12.4), Vector3(8.4, -0.1, 12.4), Vector3(7.6, 0, 12.0), Vector3(7.6, 0, 10.6), Vector3(8.6, 0, 10.0), Vector3(22.5, 0, 10.0)], {"min_y": -4.6}))
 
 
 func _control_room() -> bool:

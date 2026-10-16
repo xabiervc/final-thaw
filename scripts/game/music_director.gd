@@ -27,16 +27,29 @@ func _ready() -> void:
 	for key in LAYERS:
 		var p := AudioStreamPlayer.new()
 		p.bus = "Music"
-		p.stream = load(LAYERS[key])  # forward loop set in the .import settings
+		# The director owns these streams; don't leave them retained in the global resource cache after shutdown.
+		p.stream = ResourceLoader.load(LAYERS[key], "", ResourceLoader.CACHE_MODE_IGNORE)
 		p.volume_db = SILENT_DB
 		add_child(p)
 		_players[key] = p
 		_levels[key] = 0.0
 	_release = AudioStreamPlayer.new()
 	_release.bus = "Music"
-	_release.stream = load(RELEASE)
+	_release.stream = ResourceLoader.load(RELEASE, "", ResourceLoader.CACHE_MODE_IGNORE)
 	_release.volume_db = -4.0
 	add_child(_release)
+
+
+func _exit_tree() -> void:
+	for value in _players.values():
+		var player := value as AudioStreamPlayer
+		player.stop()
+		player.stream = null
+	_players.clear()
+	_levels.clear()
+	if is_instance_valid(_release):
+		_release.stop()
+		_release.stream = null
 
 
 func set_mode(new_mode: String) -> void:

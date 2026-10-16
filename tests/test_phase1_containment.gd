@@ -62,7 +62,7 @@ func _run() -> void:
 	_expect(not scene.has_node("StaffM1"), "STAFF-M1 is no longer part of the game")
 	# --- G opens -----------------------------------------------------------------------------------------------------
 	scene.circuit.set_maintenance(true)
-	scene.lift.set_powered(true)
+	scene.transfer.complete_power_chain_for_test()  # the lift runs on maintenance AND the auxiliary supply
 	scene.mission.on_maintenance(false, true)
 	scene.mission.on_record_read()
 	_place(Vector3(1.0, 6.05, -7.5))

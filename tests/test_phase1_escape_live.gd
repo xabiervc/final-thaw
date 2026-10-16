@@ -49,7 +49,7 @@ func _run() -> void:
 	bot.before_step = func(): scene.player.set("orbit_yaw", 0.0)
 	# Investigation state as a player would leave it: maintenance on, archive read, Elena inside G.
 	scene.circuit.set_maintenance(true)
-	scene.lift.set_powered(true)
+	scene.transfer.complete_power_chain_for_test()  # the lift runs on maintenance AND the auxiliary supply
 	scene.mission.on_maintenance(false, true)
 	scene.mission.on_record_read()
 	scene.lift.call_to("upper")

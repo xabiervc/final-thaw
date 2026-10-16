@@ -94,7 +94,7 @@ func _run() -> void:
 
 	# Vertical circulation contracts.
 	_expect(is_equal_approx(scene.lift.lower_y, 0.0) and is_equal_approx(scene.lift.upper_y, 3.0), "the lift links P0 and M only")
-	_expect(not scene.lift.powered, "the lift starts unpowered (maintenance OFF)")
+	_expect(not scene.lift.powered, "the lift starts unpowered (maintenance OFF, no auxiliary supply)")
 
 	# Spawn and actors.
 	_expect(scene.player.global_position.x < 0.0 and absf(scene.player.global_position.z - 6.0) < 0.01, "Elena starts inside the west entry tunnel")
@@ -108,9 +108,17 @@ func _run() -> void:
 	scene.call("_open_g_outer")
 	_expect(not scene.mission.containment_active and scene.phase == "investigation", "G before the record (and without a queued audit) starts nothing")
 	scene.call("_toggle_maintenance")
-	_expect(scene.mission.service_override_queued and scene.lift.powered, "maintenance ON powers the lift and queues SERVICE_OVERRIDE")
+	_expect(scene.mission.service_override_queued and not scene.lift.powered, "maintenance ON queues SERVICE_OVERRIDE but alone does not power the lift (the auxiliary supply is missing)")
+	# The auxiliary supply through the real handlers of the drawer, the substation and the disconnector.
+	var transfer = scene.transfer
+	transfer.call("_on_code", "0437")
+	transfer.interact("drawer")
+	transfer.interact("substation_door")
+	transfer.interact("terminal")
+	transfer.interact("disconnector")
+	_expect(transfer.state.power_restored and scene.lift.powered, "maintenance ON plus the restored auxiliary supply powers the lift")
 	scene.call("_toggle_maintenance")
-	_expect(scene.mission.service_override_queued and not scene.lift.powered, "maintenance OFF keeps the queued audit (no duplicate, no loss)")
+	_expect(scene.mission.service_override_queued and not scene.lift.powered and transfer.state.power_restored, "maintenance OFF keeps the queued audit (no duplicate, no loss) and cuts the lift; the auxiliary supply stays restored")
 	_expect(scene.circuit.outputs()["archive"] == false, "maintenance never powers the archive (independent branch)")
 
 	# Texts never give the answer.

@@ -580,8 +580,8 @@
 		"en": "The lift panel is dead."
 	},
 	"ban_lift_call_off_body": {
-		"es": "El panel de llamada no responde. Depende del circuito de mantenimiento.",
-		"en": "The call panel doesn't respond. It depends on the maintenance circuit."
+		"es": "El panel de llamada no responde. Depende del circuito de mantenimiento del foso y de la alimentación auxiliar.",
+		"en": "The call panel does not respond. It depends on the pit's maintenance circuit and the auxiliary supply."
 	},
 	"ban_diagnostic_title": {
 		"es": "Terminal de diagnóstico",
@@ -592,16 +592,16 @@
 		"en": "Maintenance on"
 	},
 	"ban_maint_on_body": {
-		"es": "Luces de servicio, bombas y elevador con alimentación. El sistema registra una orden de servicio: se auditará en la próxima apertura de la esclusa exterior G.",
-		"en": "Service lights, pumps and lift powered. The system logs a service order: it will be audited the next time airlock G's outer hatch opens."
+		"es": "Luces de servicio y bombas con alimentación de mantenimiento. El elevador solo responde si además hay alimentación auxiliar. El sistema registra una orden de servicio: se auditará en la próxima apertura de la esclusa exterior G.",
+		"en": "Service lights and pumps on maintenance power. The lift only responds if the auxiliary supply is on as well. The system logs a service order: it will be audited the next time airlock G's outer hatch opens."
 	},
 	"ban_maint_off_title": {
 		"es": "Mantenimiento apagado",
 		"en": "Maintenance off"
 	},
 	"ban_maint_off_body": {
-		"es": "Luces de servicio, bombas y elevador sin alimentación. La orden de servicio ya está registrada.",
-		"en": "Service lights, pumps and lift unpowered. The service order is already logged."
+		"es": "Luces de servicio, bombas y elevador sin alimentación de mantenimiento. La orden de servicio ya está registrada.",
+		"en": "Service lights, pumps and lift without maintenance power. The service order is already logged."
 	},
 	"ban_selector_title": {
 		"es": "Selector en {target}",
@@ -832,8 +832,8 @@
 		"en": "The schematic says TRIAL and ARCHIVE are independent branches. Are they, down in the pit?"
 	},
 	"hint_lift_1": {
-		"es": "Para subir a control (P2) necesitas el elevador, y el elevador depende de otro circuito del foso.",
-		"en": "To get up to control (P2) you need the lift, and the lift depends on another circuit in the pit."
+		"es": "Para subir a control (P2) necesitas el elevador, y el elevador depende de otro circuito del foso y de una alimentación auxiliar.",
+		"en": "To get up to control (P2) you need the lift, and the lift depends on another circuit in the pit and on an auxiliary supply."
 	},
 	"hint_lift_2": {
 		"es": "El esquema del foso dice qué alimenta al elevador.",
@@ -1222,5 +1222,449 @@
 	"ex_egress_body": {
 		"es": "Electroimán activo. Placa: «Desbloqueo automático con alarma de evacuación». Por el cristal armado se ve el patio de servicio.",
 		"en": "Maglock engaged. Plate: \"Automatic release on evacuation alarm\". Through the wired glass: the service yard."
+	},
+	"verb_enter_code": {
+		"es": "Introducir código",
+		"en": "Enter code"
+	},
+	"verb_take": {
+		"es": "Coger",
+		"en": "Take"
+	},
+	"verb_unlock": {
+		"es": "Abrir con la llave",
+		"en": "Unlock with the key"
+	},
+	"verb_insert": {
+		"es": "Colocar el puente",
+		"en": "Fit the bridge"
+	},
+	"hs_shift_board": {
+		"es": "Pizarra de turnos",
+		"en": "Shift board"
+	},
+	"hs_pressure_strip": {
+		"es": "Registrador de presión",
+		"en": "Pressure recorder"
+	},
+	"hs_dispatch_note": {
+		"es": "Recordatorio del despacho",
+		"en": "Dispatch reminder"
+	},
+	"hs_drawer": {
+		"es": "Cajón con cerradura de código",
+		"en": "Drawer with a code lock"
+	},
+	"hs_substation_door": {
+		"es": "Puerta de la subestación",
+		"en": "Substation door"
+	},
+	"hs_terminal": {
+		"es": "Borne LIFT AUX",
+		"en": "LIFT AUX terminal"
+	},
+	"hs_disconnector": {
+		"es": "Seccionador principal auxiliar",
+		"en": "Auxiliary main disconnector"
+	},
+	"hs_aux_pump": {
+		"es": "Bomba auxiliar 2",
+		"en": "Auxiliary pump 2"
+	},
+	"hs_wet_locker": {
+		"es": "Taquillas anegadas",
+		"en": "Flooded lockers"
+	},
+	"hs_dry_cabinet": {
+		"es": "Armario seco",
+		"en": "Dry cabinet"
+	},
+	"hs_wall_seam": {
+		"es": "Junta del muro este",
+		"en": "East wall joint"
+	},
+	"hs_maintenance_note": {
+		"es": "Nota de mantenimiento",
+		"en": "Maintenance note"
+	},
+	"hs_transfer_door": {
+		"es": "Puerta de transferencia",
+		"en": "Transfer door"
+	},
+	"hs_bay_window": {
+		"es": "Cristal sobre el muelle",
+		"en": "Window onto the bay"
+	},
+	"ex_shift_board_title": {
+		"es": "Pizarra de turnos",
+		"en": "Shift board"
+	},
+	"ex_shift_board_body": {
+		"es": "«Comprobación de presiones, turno 3. Orden de lectura: B, D, A, C. Anotar siempre en este orden.» Solo el orden: ningún valor.",
+		"en": "\"Pressure check, shift 3. Reading order: B, D, A, C. Always record in this order.\" Only the order: no values."
+	},
+	"ex_pressure_strip_title": {
+		"es": "Registrador de presión",
+		"en": "Pressure recorder"
+	},
+	"ex_pressure_strip_body": {
+		"es": "La tira impresa da la última lectura estable de cada punto: A 3 · B 0 · C 7 · D 4. No dice en qué orden se tomaron.",
+		"en": "The printed strip gives the last stable reading of each point: A 3 · B 0 · C 7 · D 4. It does not say in which order they were taken."
+	},
+	"ex_dispatch_note_title": {
+		"es": "Recordatorio",
+		"en": "Reminder"
+	},
+	"ex_dispatch_note_body": {
+		"es": "«Las lecturas se anotan en el orden de la pizarra del archivo.» Alguien lo dejó pegado junto al cajón.",
+		"en": "\"Readings are recorded in the order on the archive's board.\" Someone left it pinned next to the drawer."
+	},
+	"ex_aux_pump_title": {
+		"es": "Bomba auxiliar 2",
+		"en": "Auxiliary pump 2"
+	},
+	"ex_aux_pump_body": {
+		"es": "Etiqueta: «Línea de achique · fuera de servicio». Su arranque cuelga del cuadro auxiliar de la subestación.",
+		"en": "Tag: \"Drainage line · out of service\". Its start depends on the auxiliary switchgear in the substation."
+	},
+	"ex_wet_locker_title": {
+		"es": "Taquillas anegadas",
+		"en": "Flooded lockers"
+	},
+	"ex_wet_locker_body": {
+		"es": "Selladas por el óxido; dentro solo hay barro seco. La marca del agua llega hasta aquí: 14/03.",
+		"en": "Rusted shut; inside there is only dried mud. The tide mark reaches this high: 14/03."
+	},
+	"ex_terminal_title": {
+		"es": "Borne LIFT AUX",
+		"en": "LIFT AUX terminal"
+	},
+	"ex_terminal_body": {
+		"es": "Dos abrazaderas de cobre con un hueco entre ellas y el contorno de una pieza rotulado en la placa. Los otros bornes están cubiertos con placas: no tienen esa forma.",
+		"en": "Two copper clamps with a gap between them and the outline of a part marked on the plate. The other terminals are covered with plates: they do not have that shape."
+	},
+	"ex_terminal_nobridge": {
+		"es": "No llevas ninguna pieza que encaje.",
+		"en": "You are not carrying anything that fits."
+	},
+	"ex_cabinet_done_body": {
+		"es": "Ya has cogido la llave. Dentro solo queda gel desecante.",
+		"en": "You already took the key. Only desiccant gel is left inside."
+	},
+	"ex_seam_title": {
+		"es": "Algo no encaja en este muro",
+		"en": "Something is wrong with this wall"
+	},
+	"ex_seam_body": {
+		"es": "El suelo está limpio justo hasta aquí, hay marcas de arrastre y el aire sale por la junta. Detrás del panel hay una puerta de seguridad con un símbolo grabado: un anillo cruzado por una barra.",
+		"en": "The floor is clean right up to here, there are drag marks and air comes out of the joint. Behind the panel there is a security door with an engraved symbol: a ring crossed by a bar."
+	},
+	"ex_maint_note_title": {
+		"es": "Nota de mantenimiento",
+		"en": "Maintenance note"
+	},
+	"ex_maint_note_body": {
+		"es": "«14/03. Tras la fuga, la llave de transferencia se guardó en el armario seco del almacén de repuestos. Mismo símbolo que la puerta.»",
+		"en": "\"14/03. After the leak, the transfer key was stored in the dry cabinet in the spares store. Same symbol as the door.\""
+	},
+	"ex_window_title": {
+		"es": "Muelle de carga",
+		"en": "Loading bay"
+	},
+	"ex_window_body": {
+		"es": "Tras el cristal hay una nave iluminada: personal de Helix embalando cajas Aster «LOTE A-7 → ESTACIÓN FINAL THAW». El edificio abandonado era solo la fachada.",
+		"en": "Behind the glass is a lit hall: Helix staff crating Aster cases \"LOT A-7 → FINAL THAW STATION\". The abandoned building was only the facade."
+	},
+	"ban_drawer_wrong_title": {
+		"es": "Código incorrecto",
+		"en": "Wrong code"
+	},
+	"ban_drawer_wrong_body": {
+		"es": "La cerradura no cede. Son cuatro cifras.",
+		"en": "The lock does not give. It takes four digits."
+	},
+	"ban_drawer_open_title": {
+		"es": "Cajón abierto",
+		"en": "Drawer open"
+	},
+	"ban_drawer_open_body": {
+		"es": "Dentro hay una llave de servicio con etiqueta roja y un puente aislado naranja con dos bloques negros.",
+		"en": "Inside there is a service key with a red tag and an orange insulated bridge with two black blocks."
+	},
+	"ban_drawer_take_title": {
+		"es": "Has cogido dos objetos",
+		"en": "You took two items"
+	},
+	"ban_drawer_take_body": {
+		"es": "Llave de servicio y puente aislado.",
+		"en": "Service key and insulated bridge."
+	},
+	"ban_drawer_empty_body": {
+		"es": "El cajón está vacío.",
+		"en": "The drawer is empty."
+	},
+	"ban_sub_locked_title": {
+		"es": "Subestación cerrada",
+		"en": "Substation locked"
+	},
+	"ban_sub_locked_body": {
+		"es": "La cerradura es de llave de servicio. No llevas ninguna.",
+		"en": "The lock takes a service key. You are not carrying one."
+	},
+	"ban_sub_open_title": {
+		"es": "Subestación abierta",
+		"en": "Substation open"
+	},
+	"ban_sub_open_body": {
+		"es": "La llave de servicio gira y la puerta cede. El cuadro auxiliar queda a la vista.",
+		"en": "The service key turns and the door gives. The auxiliary switchgear is in view."
+	},
+	"ban_bridge_ok_title": {
+		"es": "Puente colocado",
+		"en": "Bridge fitted"
+	},
+	"ban_bridge_ok_body": {
+		"es": "Encaja entre las abrazaderas del borne LIFT AUX. El seccionador sigue abierto: todavía no se mueve nada.",
+		"en": "It fits between the clamps of the LIFT AUX terminal. The disconnector is still open: nothing moves yet."
+	},
+	"ban_disc_blocked_title": {
+		"es": "Seccionador bloqueado",
+		"en": "Disconnector blocked"
+	},
+	"ban_disc_blocked_body": {
+		"es": "La palanca no baja: el circuito del borne LIFT AUX está abierto.",
+		"en": "The lever will not go down: the LIFT AUX terminal circuit is open."
+	},
+	"ban_power_title": {
+		"es": "Alimentación auxiliar restablecida",
+		"en": "Auxiliary power restored"
+	},
+	"ban_power_body": {
+		"es": "Los relés chasquean, el transformador zumba y las luces del sótano se encienden por sectores; algunas siguen muertas. Algo vibra en la sala de baterías y el indicador del elevador ha cambiado.",
+		"en": "Relays click, the transformer hums and the basement lights come on by sectors; some stay dead. Something vibrates in the battery room and the lift indicator has changed."
+	},
+	"ban_power_lift_maint": {
+		"es": "El elevador aún necesita el circuito de mantenimiento del foso.",
+		"en": "The lift still needs the pit's maintenance circuit."
+	},
+	"ban_cabinet_title": {
+		"es": "Armario seco",
+		"en": "Dry cabinet"
+	},
+	"ban_cabinet_body": {
+		"es": "El símbolo de la puerta —un anillo cruzado por una barra— es el de la puerta del taller. Dentro hay una llave con la misma etiqueta: la llave de transferencia.",
+		"en": "The symbol on the door, a ring crossed by a bar, is the one on the workshop door. Inside is a key with the same tag: the transfer key."
+	},
+	"ban_door_open_title": {
+		"es": "Puerta de transferencia abierta",
+		"en": "Transfer door open"
+	},
+	"ban_door_open_body": {
+		"es": "El cerrojo cede. Al otro lado hay luz de trabajo, ruido de maquinaria y voces: el segundo edificio está en marcha.",
+		"en": "The bolt gives. Beyond it there is work lighting, machinery noise and voices: the second building is running."
+	},
+	"ban_door_locked_title": {
+		"es": "Puerta de transferencia cerrada",
+		"en": "Transfer door locked"
+	},
+	"ban_door_locked_body": {
+		"es": "{list}\nLa cerradura lleva grabado el símbolo del anillo con barra.",
+		"en": "{list}\nThe lock carries the engraved ring-and-bar symbol."
+	},
+	"door_item_key": {
+		"es": "Llave de transferencia",
+		"en": "Transfer key"
+	},
+	"door_item_power": {
+		"es": "Alimentación auxiliar",
+		"en": "Auxiliary power"
+	},
+	"door_item_record": {
+		"es": "Autorización del registro restringido",
+		"en": "Authorization from the restricted record"
+	},
+	"door_state_ok": {
+		"es": "OK",
+		"en": "OK"
+	},
+	"door_state_missing": {
+		"es": "FALTA",
+		"en": "MISSING"
+	},
+	"reader_body": {
+		"es": "LECTOR DE ACCESO\nLLAVE: {key}\nTENSIÓN: {power}\nAUTORIZ.: {record}",
+		"en": "ACCESS READER\nKEY: {key}\nPOWER: {power}\nAUTH.: {record}"
+	},
+	"reader_ok": {
+		"es": "OK",
+		"en": "OK"
+	},
+	"reader_missing": {
+		"es": "--",
+		"en": "--"
+	},
+	"ban_lift_nopower_title": {
+		"es": "Elevador sin alimentación auxiliar",
+		"en": "Lift without auxiliary power"
+	},
+	"ban_lift_nopower_body": {
+		"es": "El panel está apagado: el mantenimiento no basta, falta la alimentación auxiliar.",
+		"en": "The panel is dark: maintenance is not enough, the auxiliary supply is missing."
+	},
+	"code_title": {
+		"es": "CERRADURA DEL CAJÓN",
+		"en": "DRAWER LOCK"
+	},
+	"code_help": {
+		"es": "{left} / {right}: cifra · {up} / {down}: valor · {interact}: probar · {pause}: cancelar",
+		"en": "{left} / {right}: digit · {up} / {down}: value · {interact}: try · {pause}: cancel"
+	},
+	"code_digit": {
+		"es": "Cifra {i} de 4: {v}",
+		"en": "Digit {i} of 4: {v}"
+	},
+	"obj_need_aux": {
+		"es": "El mantenimiento no basta para el elevador: falta la alimentación auxiliar. Busca cómo restablecerla",
+		"en": "Maintenance is not enough for the lift: the auxiliary supply is missing. Find how to restore it"
+	},
+	"obj_aux_restored": {
+		"es": "Alimentación auxiliar restablecida. El elevador aún depende del circuito de mantenimiento del foso",
+		"en": "Auxiliary power restored. The lift still depends on the pit's maintenance circuit"
+	},
+	"obj_after_record": {
+		"es": "Tienes la prueba: el material va a otro sitio. Averigua cómo se llega hasta él",
+		"en": "You have the proof: the material goes somewhere else. Find out how to get there"
+	},
+	"obj_escape_b2": {
+		"es": "¡Te han oído! Vuelve por la galería, sube a P0 y sal por la galería de descarga del foso",
+		"en": "They heard you! Go back along the gallery, up to P0 and out through the pit's discharge gallery"
+	},
+	"note_shift_order_title": {
+		"es": "Orden de lectura",
+		"en": "Reading order"
+	},
+	"note_shift_order_body": {
+		"es": "La pizarra del archivo de turno fija el orden en que se leen las presiones: B, D, A, C. No trae valores.",
+		"en": "The shift archive's board sets the order in which pressures are read: B, D, A, C. It carries no values."
+	},
+	"note_pressure_values_title": {
+		"es": "Lecturas estables",
+		"en": "Stable readings"
+	},
+	"note_pressure_values_body": {
+		"es": "El registrador del archivo de turno guarda la última lectura estable de cada punto: A 3, B 0, C 7, D 4. Sin orden.",
+		"en": "The shift archive's recorder keeps the last stable reading of each point: A 3, B 0, C 7, D 4. No order."
+	},
+	"note_drawer_open_title": {
+		"es": "Cajón del despacho",
+		"en": "Dispatch drawer"
+	},
+	"note_drawer_open_body": {
+		"es": "Se abrió combinando el orden de la pizarra con las lecturas del registrador. Dentro: una llave de servicio y un puente aislado.",
+		"en": "It opened by combining the board's order with the recorder's readings. Inside: a service key and an insulated bridge."
+	},
+	"note_aux_power_title": {
+		"es": "Alimentación auxiliar",
+		"en": "Auxiliary power"
+	},
+	"note_aux_power_body": {
+		"es": "Con el puente en el borne LIFT AUX y el seccionador cerrado hay luz en parte del sótano, trabajan las bombas auxiliares y el elevador puede recibir corriente.",
+		"en": "With the bridge in the LIFT AUX terminal and the disconnector closed there is light in part of the basement, the auxiliary pumps run and the lift can receive power."
+	},
+	"note_hidden_door_title": {
+		"es": "Puerta oculta",
+		"en": "Concealed door"
+	},
+	"note_hidden_door_body": {
+		"es": "En el taller 2 de P−2 hay una puerta de seguridad tras un panel: suelo limpio hasta ella, marcas de arrastre y aire por la junta. Lleva un anillo cruzado por una barra.",
+		"en": "In workshop 2 on P−2 a security door sits behind a panel: clean floor up to it, drag marks and air through the joint. It carries a ring crossed by a bar."
+	},
+	"note_transfer_key_title": {
+		"es": "Llave de transferencia",
+		"en": "Transfer key"
+	},
+	"note_transfer_key_body": {
+		"es": "Estaba en el armario seco del almacén de repuestos, con el mismo símbolo que la puerta.",
+		"en": "It was in the dry cabinet in the spares store, with the same symbol as the door."
+	},
+	"note_second_building_title": {
+		"es": "El segundo edificio",
+		"en": "The second building"
+	},
+	"note_second_building_body": {
+		"es": "El edificio abandonado es una fachada: detrás de la puerta de transferencia trabaja personal de Helix empaquetando muestras Aster para la ESTACIÓN FINAL THAW.",
+		"en": "The abandoned building is a facade: behind the transfer door Helix staff are crating Aster samples for FINAL THAW STATION."
+	},
+	"line_staff_1": {
+		"es": "Voz: «…el lote A-7 sale esta noche. Que nadie toque el sector H hasta entonces.»",
+		"en": "Voice: \"…lot A-7 leaves tonight. Nobody touches sector H until then.\""
+	},
+	"line_staff_2": {
+		"es": "Voz: «¿Has oído la puerta de transferencia?»",
+		"en": "Voice: \"Did you hear the transfer door?\""
+	},
+	"line_staff_3": {
+		"es": "Voz: «¡Hay alguien en el vestíbulo! ¡Avisad a seguridad!»",
+		"en": "Voice: \"Someone is in the vestibule! Call security!\""
+	},
+	"pa_transfer": {
+		"es": "Intrusión en el sector H. Se despliega la unidad de recuperación.",
+		"en": "Intrusion in sector H. Recovery unit deployed."
+	},
+	"hint_aux_1": {
+		"es": "El elevador necesita dos cosas: el circuito de mantenimiento del foso y una alimentación auxiliar que sigue cortada.",
+		"en": "The lift needs two things: the pit's maintenance circuit and an auxiliary supply that is still cut."
+	},
+	"hint_aux_2": {
+		"es": "Una subestación auxiliar pide llave y una pieza; las dos estarán donde el personal guardaba sus cosas de turno.",
+		"en": "An auxiliary substation needs a key and a part; both will be where the staff kept their shift things."
+	},
+	"hint_aux_3": {
+		"es": "El cajón del despacho tiene una cerradura de cuatro cifras. El orden de las lecturas y sus valores están en dos sitios distintos del archivo de turno.",
+		"en": "The dispatch drawer has a four-digit lock. The order of the readings and their values are in two different places in the shift archive."
+	},
+	"hint_transfer_1": {
+		"es": "Has leído el registro: el material va a otro sitio. En los sótanos hay un taller en desuso por el que el aire se mueve donde no debería.",
+		"en": "You have read the record: the material goes elsewhere. In the basement an unused workshop has air moving where it should not."
+	},
+	"hint_transfer_2": {
+		"es": "Hay una nota de mantenimiento sobre una llave que se guardó tras una fuga. Busca un lugar donde la humedad no llegara.",
+		"en": "A maintenance note mentions a key that was stored after a leak. Look for somewhere the damp did not reach."
+	},
+	"hint_transfer_3": {
+		"es": "La puerta de transferencia pide tres cosas: la llave, tensión y la autorización del registro. Comprueba cuál te falta.",
+		"en": "The transfer door wants three things: the key, power and the record's authorization. Check which one you lack."
+	},
+	"verb_use": {
+		"es": "Usar",
+		"en": "Use"
+	},
+	"obj_observe": {
+		"es": "Estás en el segundo edificio. Mira qué hay tras el cristal antes de que te oigan",
+		"en": "You are in the second building. Look at what is behind the glass before they hear you"
+	},
+	"note_maintenance_note_title": {
+		"es": "Nota del taller 2",
+		"en": "Workshop 2 note"
+	},
+	"note_maintenance_note_body": {
+		"es": "«Tras la fuga, la llave de transferencia se guardó en el armario seco del almacén de repuestos. Mismo símbolo que la puerta.»",
+		"en": "\"After the leak, the transfer key was stored in the dry cabinet in the spares store. Same symbol as the door.\""
+	},
+	"note_transfer_breach_title": {
+		"es": "Brecha en el sector H",
+		"en": "Breach in sector H"
+	},
+	"note_transfer_breach_body": {
+		"es": "Me han oído en el segundo edificio y han soltado la unidad de recuperación por el muelle. Vuelvo por el taller y la galería, subo a P0 y salgo por el foso.",
+		"en": "They heard me in the second building and released the recovery unit from the bay. Back through the workshop and the gallery, up to P0 and out through the pit."
+	},
+	"ban_transfer_breach_title": {
+		"es": "¡Te han oído!",
+		"en": "They heard you!"
+	},
+	"ban_transfer_breach_body": {
+		"es": "Una puerta del muelle se abre a tu espalda y suena la alarma del sector H. Algo viene por el vestíbulo.",
+		"en": "A bay door opens behind you and sector H's alarm sounds. Something is coming through the vestibule."
 	}
 }
