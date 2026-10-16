@@ -249,3 +249,16 @@ The critical route uses warm, brighter and more continuous practical lighting, w
 
 The standalone scene is a playable spatial prototype built from real collision boxes, with first-person camera framing, stamina restoration, three optional dead-end branches, a jumpable pipe rack, a crouch-only service beam, a rising conduit, hatch, road and forest completion trigger. It is not yet connected to the canonical mission's transfer-door/staff-detection state machine. Do not replace the canonical scene or claim the escape is accepted until the standalone scene and test are run in Godot, the full route is manually played, and the mission handoff is implemented and regression-tested.
 
+
+
+## Huida industrial revisada — referencia de planta (2026-10-16)
+
+La planta conceptual de [escape_conduit_plan.svg](assets/escape_conduit/escape_conduit_plan.svg) sustituye el esquema lineal anterior como referencia espacial de diseño. La huida debe atravesar una instalación técnica verosímil: archivo, taller, almacén, baterías, bombas, transformadores, compresores y válvulas, conectados por galerías de servicio. Estas salas son una propuesta de organización espacial, no dependencias narrativas obligatorias ni geometría ya construida.
+
+- La ruta principal es una línea de circulación continua, legible por la luz y por señales funcionales; no debe depender solo del color.
+- Los ramales secundarios deben tener una razón espacial (mantenimiento, equipo, distribución). Algunos terminan en fondos de saco recuperables; otros pueden volver a conectar con la galería. Evitar pasillos aleatorios y callejones que parezcan salidas legítimas sin ofrecer pistas.
+- La bifurcación de personal/Elena es una rama narrativa distinta de la salida clandestina. No reintroducir la dependencia de Puerta G ni del robot en esta huida.
+- La ruta culmina en una conducción seca ascendente, una boca física, una carretera secundaria y un refugio en el bosque. La sección [escape_conduit_section.svg](assets/escape_conduit/escape_conduit_section.svg) sigue definiendo la relación vertical de la conducción y la salida.
+- La planta es conceptual y no está a escala de obra. Antes de dar por cerrada la geometría, reconciliar cada corredor y sala con el builder y la escena 3D; probar cápsula, cámara, colisiones, visibilidad, saltos, agacharse y regreso desde ramales. El diagrama por sí solo no valida la jugabilidad ni reemplaza las pruebas de Godot.
+
+La escena de prototipo existente sigue siendo un greybox independiente; este cambio actualiza la dirección del plano, no afirma que la instalación completa esté ya construida o integrada en la misión canónica.
