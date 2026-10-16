@@ -36,8 +36,10 @@ func _run() -> void:
 	_expect(player != null and absf(float(player.get("stamina")) - 100.0) < 0.01, "adrenaline prototype restores stamina to 100")
 	if player != null and player.get("arm") != null:
 		_expect(float(player.arm.spring_length) < 0.1, "first-person camera remains close to eye point")
-	scene.call("_on_forest_entered", player)
-	_expect(bool(scene.get("complete")), "reaching the forest ends the escape")
+	player.global_position = scene.get_node("ESC_FOREST_HIDEOUT_TRIGGER").global_position
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	_expect(bool(scene.get("complete")), "entering the forest trigger ends the escape")
 	_expect(not bool(player.get("input_enabled")), "player input stops after the forest ending")
 	print("Escape conduit greybox: %d passed, %d failed" % [passed, failed])
 	get_tree().quit(1 if failed > 0 else 0)
