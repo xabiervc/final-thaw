@@ -12,6 +12,18 @@ The owner has played Phase 1 and said what is wrong with it. **That feedback is 
 
 What changed in this version: §2 maps every piece of owner feedback to a change; §3 is a new Phase 1 redesign plan; §4 develops Phase 2 as a distinct playable sequence with the presentation options compared; §6 splits the work into essential corrections, Phase 1 design, Phase 2 construction and integrated validation. The valid technical findings of the first version are kept and re-verified.
 
+## 0.1 Evidence labels
+
+| Label | Meaning |
+|---|---|
+| **RAN** | Executed in this audit (command and result in Appendix A) |
+| **SOURCE** | Read in the repository, not executed |
+| **OWNER** | Reported by the owner from playing the game; established input |
+| **PROPOSAL** | A recommendation of this audit; not canon, not approved |
+| **UNVERIFIED** | Needs a person, hardware or a measurement not available here |
+
+Captures and recordings are kept outside the repository in `D:/Projects/evidence/final-thaw/audit_2026-10-15/` and `audit_2026-10-16/`.
+
 ## 0.2 Immediate implementation gate — 2026-10-16
 
 The next Sonnet execution is deliberately restricted to **A0 baseline reconciliation and A1 localization**, as specified at the top of `prompts/sonnet_phase2_human_escape_handoff.md`. This does not authorize the rest of Group A or any Phase 1/Phase 2 construction.
@@ -33,6 +45,7 @@ After A1, stop for owner review of the diff and evidence. No later milestone, pr
 | **UNVERIFIED** | Needs a person, hardware or a measurement not available here |
 
 Captures and recordings are kept outside the repository in `D:/Projects/evidence/final-thaw/audit_2026-10-15/` and `audit_2026-10-16/`.
+
 
 ---
 
