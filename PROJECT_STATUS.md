@@ -24,7 +24,7 @@ The main menu's "Iniciar demo" opens `scenes/prototypes/phase1_canonical_greybox
 - an ending cinematic (about 37 s, skippable);
 - results, then back to the menu.
 
-The as-built record, its design decisions and the measured performance are in [`docs/design/FASE1_PREMIUM_AUDIT.md`](docs/design/FASE1_PREMIUM_AUDIT.md) (v4.0). Where a v2.1 spec disagrees with it, v4.0 and the scene win.
+The as-built record, its design decisions and measured performance are in [`docs/design/FASE1_PREMIUM_AUDIT.md`](docs/design/FASE1_PREMIUM_AUDIT.md) (v4.0); it remains authoritative for the current runtime. The owner-approved expanded target is specified separately in `FASE1_ARCHITECTURAL_LAYOUT.md` v3.1, `FASE1_SPATIAL_GRAPH.md` v3.1, `FASE1_GREYBOX_SPEC.md` and the progression/functional specs. Target documents do not override as-built evidence or prove implementation.
 
 ## Verified by automated tests
 
