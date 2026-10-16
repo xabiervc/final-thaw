@@ -10,7 +10,7 @@
 <rect x="90" y="145" width="720" height="510" fill="url(#grid)" stroke="#17242c" stroke-width="5"/>
 <!-- Main circulation spine -->
 <rect x="105" y="360" width="690" height="70" fill="#e6edf0" stroke="#596b76" stroke-width="1.5"/>
-<text x="450" y="399" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#465762">ESPINA PRINCIPAL DE CIRCULACIÓN · 4 m</text>
+<text x="450" y="399" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#465762">ESPINA PRINCIPAL DE CIRCULACIÓN · 4 m</text><rect x="360" y="368" width="70" height="54" fill="#f8fafb" stroke="#53646e" stroke-width="1.5"/><path d="M368 414 h54 M368 406 h46 M368 398 h38 M368 390 h30 M368 382 h22" stroke="#53646e" stroke-width="2"/><text x="395" y="435" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="700" fill="#53616d">A P0</text>
 <!-- North rooms -->
 <rect x="105" y="160" width="105" height="190" fill="#dce8f1" stroke="#53646e" stroke-width="1.4"/>
 <text x="157" y="245" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" fill="#1c2b33"><tspan x="157">CÁMARA DE</tspan><tspan x="157" dy="16">ACHIQUE</tspan><tspan x="157" dy="20" font-size="10">BOMBAS</tspan></text>
