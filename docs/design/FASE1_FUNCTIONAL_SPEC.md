@@ -7,6 +7,21 @@
 **Estado:** contrato funcional revisado para el diseño de edificio completo, puzle distribuido y huida interior. Las nuevas fases de persecución y salida alternativa aún no están implementadas ni validadas en Godot. No se afirma aceptación de runtime.  
 **Autoridad:** arquitectura espacial en `FASE1_ARCHITECTURAL_LAYOUT.md v2.1`; grafo en `FASE1_SPATIAL_GRAPH.md v1.1`; huellas y colisiones en `FASE1_GREYBOX_SPEC.md v2.1`; progresión en `fase1_fase2_mapa_progresion.md v1.1`; contrato eléctrico en `FASE1_LOGIC_CONTRACT.md`.
 
+**Actualización de diseño acordada (2026-10-16):** el objetivo espacial nuevo está en `FASE1_ARCHITECTURAL_LAYOUT.md v3.1`, `FASE1_SPATIAL_GRAPH.md v3.1`, `FASE1_GREYBOX_SPEC.md` (bloque de rediseño) y `fase1_fase2_mapa_progresion.md v2.1`. Se conserva íntegro el puzle Aster/field-notes; la siguiente cadena es adicional y todavía no está implementada.
+
+## Nueva cadena funcional: energía auxiliar y puerta de transferencia (objetivo, no as-built)
+
+1. **Código del cajón:** la pizarra de turnos define B → D → A → C. La tira de presión muestra A=3, B=0, C=7, D=4; el jugador deduce 0437. Ningún texto entrega el código completo.
+2. **Contenido del cajón:** SERVICE_KEY + INSULATED_BRIDGE. Son dos objetos distintos y no se consumen al inspeccionar.
+3. **Subestación de P−2:** SERVICE_KEY abre la puerta. El panel presenta un terminal vacío con silueta/señalización compatible con INSULATED_BRIDGE.
+4. **PowerRestored:** requiere llave válida, puente colocado en el terminal correcto y seccionador activado. La respuesta visible/audible incluye relés, zumbido, luces parciales, bombas auxiliares y alimentación disponible para el ascensor. La lógica Aster no se modifica: el estado de mantenimiento Aster sigue controlando su propia plataforma/luces; el ascensor solo queda operativo cuando existe alimentación auxiliar y la condición de mantenimiento requerida por el contrato existente está activa.
+5. **Descubrimiento de puerta:** en el taller muerto de P−2, la franja limpia, marcas de arrastre y corriente de aire conducen a inspeccionar el panel. Se revela la puerta oculta, pero no se abre.
+6. **Pista y llave de transferencia:** una nota de mantenimiento remite al armario seco elevado del almacén de repuestos. El símbolo del armario coincide con el de la puerta. Se obtiene TRANSFER_KEY; no es SERVICE_KEY.
+7. **Aster preservado:** la secuencia de `FASE1_LOGIC_CONTRACT.md`, la hipótesis del cuaderno de campo y la consulta del registro restringido se mantienen como requisitos narrativos. La nueva cadena no debe cambiar los estados, salidas, historial o reglas del modelo Aster.
+8. **Apertura del umbral:** la puerta requiere HiddenDoorDiscovered + TRANSFER_KEY + PowerRestored + RESTRICTED_RECORD_READ. La apertura revela el vestíbulo técnico del segundo edificio activo. No se puede sustituir por la salida de emergencia ni por una transición en P+3.
+
+Las banderas nuevas son de sesión y no requieren cambios en el esquema de guardado. Antes de implementación se deben añadir pruebas de estados previos, orden de exploración alternativo, interacción repetida, llave equivocada, puente ausente, alimentación parcial y reinicio de misión. La integración no se considera aceptada hasta ejecutar las suites de Godot y probar manualmente el recorrido.
+
 ## 1. Objetivo jugable
 
 Elena investiga una anomalía física en una instalación clandestina de investigación hidrológica/industrial, entiende la distribución eléctrica, activa mantenimiento, configura el circuito de forma segura y consulta el archivo. Después abre G y escapa en dos ritmos: evasión silenciosa por áreas que pueden seguir ocupadas y una persecución a la carrera tras una reacquisición espacialmente legible. La salida alternativa se conecta físicamente con el aparcamiento de Fase 2.
