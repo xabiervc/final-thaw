@@ -136,3 +136,17 @@ These requirements are now part of the active design target. They are not eviden
 | Future Marcus/Elena progression | Elena starts dependent, learns limited defense from Marcus and later handles basic threats; Marcus encounters become more demanding | Future combat-system behavior tests and staged playtest | Design contract only; out of current slice scope |
 
 Keep existing historical test results attached to the commits on which they were executed. Do not retroactively treat them as coverage for this redesign. A requirement is accepted only when the relevant implementation, test execution and any required hands-on review are recorded.
+
+
+## 10. Immediate execution gate — A0–A1 (2026-10-16)
+
+The next implementation pass is limited to baseline reconciliation and the reported English HUD localization defect. This gate is intentionally narrower than the Phase 1/2 redesign rows above.
+
+| Requirement | Required evidence | Acceptance condition | Status before fresh run |
+|---|---|---|---|
+| A0 — Reproducible baseline | Actual branch/HEAD/worktree report; exact test commands and results; tool/runtime versions; save checksum | Historical 33-suite/1051-PASS committed results and 34-suite/1053-PASS working-tree results are kept as separate snapshots until a fresh run reconciles them | Needs re-run |
+| A1 — Localized HUD state | Reproduction of `NarrativeText.prompt_condition` / visible state label; ES/EN regression test; focused and full-suite results | No Spanish state label in English HUD; no circuit, mission-event or save-format regression | Open |
+| Save compatibility | Before/after checksum and inspection of save-writing paths touched | Existing save remains byte-identical; no schema or migration change | Needs verification |
+| Manual locale switch | Actual Godot run switching ES ↔ EN in the canonical scene | Record observed result; otherwise leave explicitly unverified | Not verified |
+
+**Execution rule:** do not infer current results from this matrix. Update statuses only after recording evidence from the actual checkout. Do not start audio, collision, traversal, AI, art, Phase 1 redesign or Phase 2 construction in the A0–A1 pass. Do not commit/push implementation or owner-local changes without explicit owner approval.
