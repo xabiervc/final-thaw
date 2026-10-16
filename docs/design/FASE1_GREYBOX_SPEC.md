@@ -262,3 +262,10 @@ La planta conceptual de [escape_conduit_plan.svg](assets/escape_conduit/escape_c
 - La planta es conceptual y no está a escala de obra. Antes de dar por cerrada la geometría, reconciliar cada corredor y sala con el builder y la escena 3D; probar cápsula, cámara, colisiones, visibilidad, saltos, agacharse y regreso desde ramales. El diagrama por sí solo no valida la jugabilidad ni reemplaza las pruebas de Godot.
 
 La escena de prototipo existente sigue siendo un greybox independiente; este cambio actualiza la dirección del plano, no afirma que la instalación completa esté ya construida o integrada en la misión canónica.
+
+
+### Corrección de planta: circulación arquitectónica coherente (2026-10-16)
+
+La planta de escape se ha rehecho en `docs/design/assets/escape_conduit/escape_conduit_plan.svg`. La versión anterior queda sustituida: la ruta principal se dibuja sobre bandas de circulación explícitas, no atravesando las huellas de las salas. Las dependencias técnicas se organizan en bloques adyacentes a las galerías, con cruces definidos, desvíos laterales y fondos de saco señalados. La salida exterior se conecta desde el corredor oriental con la boca de la conducción, carretera y refugio forestal. La rama de personal/Elena queda representada como conexión narrativa lateral independiente.
+
+La planta es una base de layout, todavía esquemática y no a escala de obra. Antes de integrar la geometría en el greybox hay que revisar dimensiones, puertas, continuidad exacta de colisiones y ruta caminable; el SVG no prueba por sí solo la escena 3D ni la jugabilidad. No se declara ninguna validación de Godot en esta actualización.
