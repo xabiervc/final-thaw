@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="1800" height="1400" viewBox="0 0 1800 1400"><title>GODOT · ESTADOS, EVENTOS Y RECUPERACIÓN</title><desc>FINAL THAW. Reconstrucción vectorial editable. Propuesta de diseño, no plano constructivo.</desc>
+<rect width="1800" height="1400" fill="#faf9f5"/>
+<text x="45" y="48" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="bold" text-anchor="start" fill="#172838">FINAL THAW</text>
+<text x="45" y="82" font-family="DejaVu Sans,Arial,sans-serif" font-size="22" font-weight="bold" text-anchor="start" fill="#172838">GODOT · ESTADOS, EVENTOS Y RECUPERACIÓN</text>
+<text x="45" y="110" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#526677">Diseño propuesto: progreso de misión y respuesta de personajes coordinados, sin depender de un único fotograma.</text>
+<rect x="45" y="155" width="1710" height="70" fill="#ffffff" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="183" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">INITIAL_ENCOUNTER</text>
+<text x="410" y="178" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Elena llega a N1.</text>
+<text x="980" y="178" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Tres trabajadores; alarma apagada; ruta izquierda.</text>
+<rect x="45" y="232" width="1710" height="70" fill="#edf2f4" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="260" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">SHELF_INTERACTION</text>
+<text x="410" y="255" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Elena alcanza la estantería e interactúa.</text>
+<text x="980" y="255" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Caída física; T1 tropieza, T2/T3 saltan; inserto de cámara.</text>
+<rect x="45" y="309" width="1710" height="70" fill="#ffffff" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="337" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">WORKER_RECOVERY</text>
+<text x="410" y="332" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Termina la caída de T1.</text>
+<text x="980" y="332" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">T1 se levanta y navega al pulsador; no activa por temporizador solo.</text>
+<rect x="45" y="386" width="1710" height="70" fill="#edf2f4" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="414" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">ALARM_ACTIVE</text>
+<text x="410" y="409" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">T1 alcanza y acciona el pulsador.</text>
+<text x="980" y="409" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Evento único; alarma audible; seguridad recibe aviso.</text>
+<rect x="45" y="463" width="1710" height="70" fill="#ffffff" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="491" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">CABINET_INTERACTION</text>
+<text x="410" y="486" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Elena alcanza el armario e interactúa.</text>
+<text x="980" y="486" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Mueble bloquea físicamente a T2/T3; retorno de cámara.</text>
+<rect x="45" y="540" width="1710" height="70" fill="#edf2f4" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="568" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">SECURITY_ARRIVAL</text>
+<text x="410" y="563" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Respuesta a alarma y recorrido de G1/G2 completado.</text>
+<text x="980" y="563" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Ambos ocupan el encuentro; sin spawns instantáneos visibles.</text>
+<rect x="45" y="617" width="1710" height="70" fill="#ffffff" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="645" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">EXTINGUISHER_INTERACTION</text>
+<text x="410" y="640" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Elena recoge y usa el extintor ante G1/G2.</text>
+<text x="980" y="640" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Descarga → nube → pérdida temporal de visión → golpes.</text>
+<rect x="45" y="694" width="1710" height="70" fill="#edf2f4" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="722" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">SECURITY_DISABLED</text>
+<text x="410" y="717" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Termina la acción y se confirman sus consecuencias.</text>
+<text x="980" y="717" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">G1/G2 incapacitados para perseguir; paso despejado.</text>
+<rect x="45" y="771" width="1710" height="70" fill="#ffffff" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="799" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">ESCAPE_RUN</text>
+<text x="410" y="794" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Paso libre hacia D y A2.</text>
+<text x="980" y="794" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Control de movimiento, continuidad física y menor presión.</text>
+<rect x="45" y="848" width="1710" height="70" fill="#edf2f4" stroke="#d0d9de" stroke-width="1" />
+<text x="60" y="876" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="bold" text-anchor="start" fill="#172838">ESCAPE_COMPLETE</text>
+<text x="410" y="871" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Elena alcanza A3 y el exterior.</text>
+<text x="980" y="871" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">Concluir salida y ocultación; fin de la secuencia.</text>
+<text x="45" y="970" font-family="DejaVu Sans,Arial,sans-serif" font-size="19" font-weight="bold" text-anchor="start" fill="#172838">DOS PROCESOS EN PARALELO, NO UNA CADENA RÍGIDA</text>
+<text x="45" y="1000" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#172838">Elena puede seguir corriendo mientras T1 se recupera. WORKER_RECOVERY y la respuesta de guardias deben convivir con el progreso de ruta; no congelar a Elena para</text>
+<text x="45" y="1023" font-family="DejaVu Sans,Arial,sans-serif" font-size="15" font-weight="normal" text-anchor="start" fill="#172838">esperar una transición global. La llegada de seguridad depende de ALARM_ACTIVE y de un trayecto/tiempo de respuesta, no solo de cruzar un trigger.</text>
+<text x="45" y="1100" font-family="DejaVu Sans,Arial,sans-serif" font-size="19" font-weight="bold" text-anchor="start" fill="#172838">FALLOS QUE HAY QUE CUBRIR</text>
+<text x="60" y="1130" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">• Sin interacción: aviso legible, posibilidad de reaproximarse y fallo/reintento justo si la alcanzan; no ejecutar el objeto a distancia.</text>
+<text x="60" y="1158" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">• Abandono del área o animación interrumpida: evento idempotente, colisiones y control restaurados, objeto en un estado consistente.</text>
+<text x="60" y="1186" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">• NPC atascado: detectar el bloqueo y recuperar su navegación de forma segura; nunca fingir que T1 pulsó si no llegó al pulsador.</text>
+<text x="60" y="1214" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">• Guardias retrasados / jugador rápido o lento: validar tiempos y rutas; no teletransportarlos ni cambiar la causalidad para cuadrar el guion.</text>
+<text x="60" y="1242" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">• Cada transición confirma estado y resultado; no depende de que cámara y NPC coincidan en una posición exacta durante un único fotograma.</text>
+<text x="45" y="1370" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#526677">DISEÑO DE VIDEOJUEGO · Cotas objetivo · No validado en Godot · Sin cambios en el repositorio</text>
+<text x="1755" y="1370" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" font-weight="normal" text-anchor="end" fill="#526677">3/4 · Rev. V1 · 17-10-2026</text>
+</svg>
