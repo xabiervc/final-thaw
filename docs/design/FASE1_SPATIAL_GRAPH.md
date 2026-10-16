@@ -133,3 +133,14 @@ The following graph extends the existing topology beyond B2-CLANDESTINE-VESTIBUL
 Main graph edges should be serially readable without making the whole level a single straight corridor. Lighting and redundant environmental cues distinguish forward progress. Branches may have optional narrative texture but must not contain mandatory items that silently block egress. Every wrong branch must have a defined return, clear terminal signal or explicitly telegraphed irreversible consequence; default to recoverable.
 
 The graph is a design target. Before construction, dimension every corridor and node in the existing greybox plan: clear width/headroom, segment length, corner visibility, elevation, jump clearance/landing, lighting hierarchy, pursuer route, camera envelope and failure recovery. Test graph reachability and play the complete route in Godot.
+
+
+### Escape graph implementation references (2026-10-16)
+
+- Dimensioned schematic: [escape_conduit_plan.svg](assets/escape_conduit/escape_conduit_plan.svg)
+- Longitudinal elevation: [escape_conduit_section.svg](assets/escape_conduit/escape_conduit_section.svg)
+- Standalone greybox: [escape_conduit_labyrinth.tscn](../../scenes/prototypes/escape_conduit_labyrinth.tscn)
+- Structural smoke test: [test_escape_conduit_labyrinth.tscn](../../tests/test_escape_conduit_labyrinth.tscn)
+
+The SVG labels, segment dimensions and node names are design contracts; they must be reconciled against the actual 3D builder. The standalone scene currently demonstrates the conduit geometry and forest end trigger independently. The canonical transfer-door/staff-detection handoff remains an integration task.
+

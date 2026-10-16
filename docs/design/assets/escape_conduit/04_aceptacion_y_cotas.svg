@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="1800" height="1400" viewBox="0 0 1800 1400"><title>CRITERIOS DE ACEPTACIÓN Y CONTROL DE COTAS</title><desc>FINAL THAW. Reconstrucción vectorial editable. Propuesta de diseño, no plano constructivo.</desc>
+<rect width="1800" height="1400" fill="#faf9f5"/>
+<text x="45" y="48" font-family="DejaVu Sans,Arial,sans-serif" font-size="34" font-weight="bold" text-anchor="start" fill="#172838">FINAL THAW</text>
+<text x="45" y="82" font-family="DejaVu Sans,Arial,sans-serif" font-size="22" font-weight="bold" text-anchor="start" fill="#172838">CRITERIOS DE ACEPTACIÓN Y CONTROL DE COTAS</text>
+<text x="45" y="110" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#526677">Lista de revisión completa. Todo se marca pendiente: esta entrega contiene diseño vectorial, no ejecución del juego.</text>
+<rect x="48" y="145" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="158" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">01. El encuentro de N1 ocurre con la alarma apagada; los tres personajes iniciales son trabajadores, no guardias.</text>
+<rect x="48" y="174" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="187" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">02. Elena gira a la izquierda; el corredor superior de N1 no es una ruta de huida válida.</text>
+<rect x="48" y="203" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="216" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">03. La estantería presenta aviso de interacción, cae físicamente y hace tropezar a T1; T2 y T3 saltan y continúan.</text>
+<rect x="48" y="232" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="245" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">04. La caída NO activa la alarma automáticamente, ni mediante sensor, ni como simple efecto del trigger de la estantería.</text>
+<rect x="48" y="261" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="274" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">05. T1 se levanta y llega al pulsador; la acción humana, fuera de plano, es la causa verificable de la alarma.</text>
+<rect x="48" y="290" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="303" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">06. La alarma se oye con retraso perceptible y antes de la intervención de G1/G2; respuesta con tiempo creíble.</text>
+<rect x="48" y="319" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="332" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">07. El armario presenta aviso, cae y bloquea a T2/T3 sin huecos laterales; Elena gana una ventaja considerable.</text>
+<rect x="48" y="348" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="361" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">08. G1 y G2 son dos personajes distintos de T1/T2/T3 y llegan como consecuencia de ALARM_ACTIVE.</text>
+<rect x="48" y="377" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="390" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">09. El extintor se recoge y utiliza mediante interacción: nube y pérdida temporal de visión antes de los golpes.</text>
+<rect x="48" y="406" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="419" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">10. Los dos guardias quedan neutralizados para la persecución y Elena puede continuar por D hacia A2.</text>
+<rect x="48" y="435" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="448" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">11. La cámara principal es primera persona; cada inserto muestra la consecuencia y vuelve sin perder posición ni orientación.</text>
+<rect x="48" y="464" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="477" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">12. La secuencia sigue siendo una huida jugable: movimiento entre interacciones, insertos breves y control restaurado.</text>
+<rect x="48" y="493" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="506" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">13. La ruta naranja es la única conexión de escape: sin pasos por muros, bloques restringidos, fondos de saco o perímetro.</text>
+<rect x="48" y="522" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="535" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">14. El recorrido se completa físicamente hasta A2/A3, carretera secundaria y ocultación en el bosque.</text>
+<rect x="48" y="551" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="564" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">15. No interacción, salida de trigger, animación interrumpida y NPC atascado tienen recuperación o fallo justo, sin softlocks.</text>
+<rect x="48" y="580" width="13" height="13" fill="white" stroke="#6a7d8b" stroke-width="1" />
+<text x="76" y="593" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="normal" text-anchor="start" fill="#172838">16. Longitud y duración se miden en Godot; los 220–260 m y 2–4 min son objetivos, no pruebas de jugabilidad.</text>
+<text x="45" y="765" font-family="DejaVu Sans,Arial,sans-serif" font-size="19" font-weight="bold" text-anchor="start" fill="#172838">DISCREPANCIAS DE LA REFERENCIA Y RESOLUCIÓN EXPLÍCITA</text>
+<text x="48" y="798" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#172838">Cotas y pendiente</text>
+<text x="265" y="798" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">Se conserva S/N1 = 0 m; N6 = −2 m; A3 = +8 m. A2 salva +10 m. A +10° requiere 56,7 m de proyección y 57,6 m inclinados. No confundir grados con porcentaje:</text>
+<text x="265" y="816" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">equivalencia calculada 17,6 %.</text>
+<text x="48" y="847" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#172838">Sección original</text>
+<text x="265" y="847" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">El rótulo original de ~80 m para A2 no coincide con +10 m a +10°. Esta versión dimensiona A2 en 57,6 m inclinados y NO la presenta como 80 m. El perfil es</text>
+<text x="265" y="865" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">esquemático, no a escala vertical.</text>
+<text x="48" y="896" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#172838">Nodos y numeración</text>
+<text x="265" y="896" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">N1 encuentro; N2 cruce hidráulico; N3 cruce eléctrico no utilizable; N4 cruce superior; N5 bifurcación; N6 acceso a conducción. N4/N5 pasan a −2 m para evitar</text>
+<text x="265" y="914" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">un desnivel omitido. A2/A3 son hitos de salida; salas con IDs de sector únicos.</text>
+<text x="48" y="945" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#172838">Áreas</text>
+<text x="265" y="945" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">Envolvente objetivo 150 × 110 m = 16.500 m², sin sumar la conducción exterior. Las áreas originales B 4.800, D 4.500, C 3.800 y A 3.400 m² se conservan como</text>
+<text x="265" y="963" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">referencias históricas, no como medidas de esta nueva división.</text>
+<text x="48" y="994" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#172838">Anchuras y alturas</text>
+<text x="265" y="994" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">Objetivos de referencia: principales 3,5–4,5 m; secundarios 2,2–3,0 m; pasajes técnicos 1,8–2,5 m; altura libre 2,8–4,5 m. El eje de huida se dibuja a 3,5 m.</text>
+<text x="265" y="1012" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">Puertas, dobles puertas, escaleras, rampas y pozos deben comprobarse en construcción.</text>
+<text x="48" y="1043" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" font-weight="bold" text-anchor="start" fill="#172838">Alcance y validación</text>
+<text x="265" y="1043" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">La violencia con extintor se conserva tal como la solicita el propietario; esta lámina no aprueba ni modifica contratos del repo. No se ha ejecutado Godot,</text>
+<text x="265" y="1061" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" font-weight="normal" text-anchor="start" fill="#172838">validado la IA, escuchado audio ni probado la cámara. Sin commits ni push.</text>
+<text x="45" y="1370" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" font-weight="normal" text-anchor="start" fill="#526677">DISEÑO DE VIDEOJUEGO · Cotas objetivo · No validado en Godot · Sin cambios en el repositorio</text>
+<text x="1755" y="1370" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" font-weight="normal" text-anchor="end" fill="#526677">4/4 · Rev. V1 · 17-10-2026</text>
+</svg>

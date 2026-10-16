@@ -92,3 +92,11 @@ Las cadenas de mantenimiento y transferencia son independientes entre sí; ambas
 - Planta P−2, sección, grafo y progresión sitúan la conexión clandestina en el muro oriental del taller muerto y describen el mismo recorrido. La puerta no se ubica en P+3 ni en una salida de emergencia.
 - El greybox se juega antes de producir arte final; se miden tiempos, confusiones, rutas alternativas, retornos y comprensión del puzle.
 - La propuesta no se considera implementada ni validada hasta superar pruebas automáticas de estructura y una sesión de juego real.
+
+
+## Escape architecture amendment — conduit labyrinth to forest (2026-10-16)
+
+The active escape destination for this sequence is the dry industrial water/service conduit, not the legacy parking yard. The plan and section are in [escape_conduit_plan.svg](assets/escape_conduit/escape_conduit_plan.svg) and [escape_conduit_section.svg](assets/escape_conduit/escape_conduit_section.svg). The route has an approximately 132 m centreline, 3.2 m clear width, 3.6 m clear headroom, several long alternating corridors, three dark recoverable side branches, two traversal beats, a 20 m rising conduit (+3.5 m), a physical hatch, a 5 m secondary road and a forest hideout.
+
+This amendment does not change the current laboratory footprint, Aster circuit logic, save contracts, input/autoloads or resource paths. The existing parking-yard scene and art remain historical/deferred assets rather than dependencies for this escape. The standalone greybox is at [escape_conduit_labyrinth.tscn](../../scenes/prototypes/escape_conduit_labyrinth.tscn); it is not yet integrated with the canonical mission transition and is not yet runtime-verified.
+

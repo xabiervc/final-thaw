@@ -1,0 +1,65 @@
+{
+  "units": "metres",
+  "status": "design_only_not_playtested",
+  "authority": {
+    "primary": "Owner-provided full annotated PNG map (must be committed to this branch before geometry implementation)",
+    "secondary": "Editable SVG and this JSON are proposals, not an exact survey"
+  },
+  "route_contract": [
+    "S",
+    "N1",
+    "west_through_sector_B",
+    "shelf_interaction_blue_X",
+    "cabinet_interaction_purple_X",
+    "extinguisher_interaction_green_X",
+    "sector_D_service_galleries",
+    "A2_dry_service_conduit",
+    "A3_exit",
+    "secondary_road",
+    "forest_concealment"
+  ],
+  "forbidden_route": [
+    "upper_corridor_from_N1",
+    "blocked_red_dashed_branches",
+    "restricted_rooms",
+    "dead_ends",
+    "walls"
+  ],
+  "actors": {
+    "workers": {
+      "T1": "Trips on the fallen shelf, recovers, physically reaches alarm button P and presses it off-screen. This action alone activates the alarm.",
+      "T2": "Jumps over shelf, continues pursuit, is blocked by cabinet.",
+      "T3": "Jumps over shelf, continues pursuit, is blocked by cabinet."
+    },
+    "security": {
+      "G1": "Arrives after alarm activation with credible response time; blinded by extinguisher before being struck.",
+      "G2": "Arrives after alarm activation with credible response time; blinded by extinguisher before being struck."
+    }
+  },
+  "interactions": {
+    "blue_X": "Topple shelf; T1 falls, T2/T3 jump it. No automatic alarm.",
+    "purple_X": "Topple cabinet and physically block T2/T3 with no bypass.",
+    "green_X": "Pick up and discharge extinguisher; blind G1/G2 temporarily, then strike them."
+  },
+  "camera": {
+    "primary": "first_person",
+    "inserts": ["shelf_fall", "cabinet_blockage", "extinguisher_result"],
+    "return_contract": "Return to the same physical player position and orientation; no teleport or involuntary turn."
+  },
+  "targets": {
+    "N1_to_A3_route_m": [220, 260],
+    "playable_duration_minutes": [2, 4],
+    "A2_start_elevation_m": -2,
+    "A3_elevation_m": 8,
+    "A2_slope_degrees": 10,
+    "A2_horizontal_m_at_10_degrees": 56.7128,
+    "A2_surface_m_at_10_degrees": 57.5877
+  },
+  "validation": {
+    "godot_runtime": "pending",
+    "manual_playtest": "pending",
+    "route_length_measured_in_godot": false,
+    "npc_navigation_verified": false,
+    "camera_transitions_verified": false
+  }
+}
