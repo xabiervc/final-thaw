@@ -68,7 +68,7 @@ La instalación se organiza en una espina de circulación por nivel y varios ram
 7. B2-SUBSTATION ↔ B2-LIFT-MACHINERY ↔ B2-LIFT.
 8. B2-CABLE-GALLERY ↔ B2-SPARES.
 9. B2-CABLE-GALLERY ↔ B2-DEAD-WORKSHOP.
-10. B2-DEAD-WORKSHOP → B2-TRANSFER-DOOR → B2-CLANDESTINE-VESTIBULE. La puerta se descubre desde el taller y comunica con el segundo edificio; no se dibuja como salida de emergencia.
+10. B2-DEAD-WORKSHOP → B2-TRANSFER-DOOR → B2-CLANDESTINE-VESTIBULE. La puerta se descubre desde el taller y comunica con el segundo edificio; solo permite el cruce con TRANSFER_KEY, PowerRestored y RESTRICTED_RECORD_READ. No se dibuja como salida de emergencia.
 11. P0-HALL ↔ M-GALLERY ↔ M-SAMPLE-LAB / M-CALIBRATION.
 12. M-GALLERY ↔ M-LIFT ↔ P3-LIFT.
 13. P3-LIFT ↔ P3-SECURITY ↔ P3-ARCHIVE / P3-CONTROL.
