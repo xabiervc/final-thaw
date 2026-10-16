@@ -111,3 +111,25 @@ P0-WAITING, P0-REST, P0-STORAGE, B2-VENT, B2-FLOODED, M-MEETING, M-REST, M-DARK-
 - **No softlock:** la escalera permite volver entre P0 y P−2 sin ascensor; el jugador puede explorar puerta, nota y almacén en distinto orden.
 - **QA manual:** probar al menos dos ramales opcionales y comprobar que se entienden como contenido secundario, no como rutas rotas.
 - **Verificación visual:** validar desde la cámara real que los indicios de la puerta son perceptibles y que el umbral revela una zona activa sin mostrarla por completo antes de abrir.
+
+
+## Owner-approved escape labyrinth (2026-10-16; new target graph, not runtime evidence)
+
+The following graph extends the existing topology beyond B2-CLANDESTINE-VESTIBULE. Keep the existing identifiers above for the lab and transfer dependency chain. This new sequence supersedes the previous parking-yard/public-street destination for the active escape target.
+
+- **S2-DISCOVERY:** personnel are visibly operating on Helix/Aster; the discovery beat must show meaningful information before the alarm.
+- **S2-FORK:** right branch enters S2-PERSONNEL / Elena's discovery beat; left branch commits to ESC-CONDUIT-ENTRY.
+- **ESC-CONDUIT-ENTRY:** very large drained water/service conduit, plausibly industrial and currently dry.
+- **ESC-E01:** first long corridor establishes scale and lighting grammar.
+- **ESC-J01:** junction with clearly visible approaches. Main egress branch has stronger continuous light; **ESC-D01** is a dimmer, recoverable dead end.
+- **ESC-J02:** alternating left/right continuation. Main route leads through **ESC-E02**; **ESC-D02** is a second dimmer, recoverable dead end.
+- **ESC-J03 / ESC-E03:** another direction change and traversal beat.
+- **ESC-TRAVERSAL-01 / 02:** at least two authored jump/vault/duck actions, each with clearance, contextual prompt, landing zone and retry/recovery definition.
+- **ESC-SLOPE:** gradual rising conduit ramp to the hillside.
+- **ESC-HATCH:** physical maintenance hatch/grate/culvert mouth, no teleport.
+- **ESC-ROAD:** secondary road by the forest.
+- **ESC-FOREST-HIDEOUT:** Elena hides, pursuers pass/search incorrectly, and the phase completes.
+
+Main graph edges should be serially readable without making the whole level a single straight corridor. Lighting and redundant environmental cues distinguish forward progress. Branches may have optional narrative texture but must not contain mandatory items that silently block egress. Every wrong branch must have a defined return, clear terminal signal or explicitly telegraphed irreversible consequence; default to recoverable.
+
+The graph is a design target. Before construction, dimension every corridor and node in the existing greybox plan: clear width/headroom, segment length, corner visibility, elevation, jump clearance/landing, lighting hierarchy, pursuer route, camera envelope and failure recovery. Test graph reachability and play the complete route in Godot.
