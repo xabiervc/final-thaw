@@ -129,3 +129,14 @@ The following decisions supersede earlier provisional assumptions where they con
 
 ### Product-level principle
 Final Thaw may combine exploration, investigation, stealth, escape and beat-'em-up action, but each mode must serve a clear emotional and narrative purpose. Variety must not make the game feel like unrelated mini-games. The current production priority is to consolidate the illustrated visual identity and the Phase 1/2 experience.
+
+
+## Owner-approved escape labyrinth (2026-10-16; active target, not implemented proof)
+
+This decision supersedes the earlier parking-garage/public-street destination for the active escape sequence. Keep the current laboratory and Aster investigation mostly unchanged until functional issues are resolved. From the active human-operated second facility, the fork's right branch leads to the personnel area / Elena story-discovery beat; the left branch begins the escape.
+
+The escape is a long, multi-corridor labyrinth through a huge drained industrial water/service conduit, with several alternating left/right turns, long corridors, at least two contextual jump/vault traversal beats, a rising slope, physical hillside hatch, secondary road and forest hideout. It should feel substantial without becoming an arbitrary maze: primary egress corridors use stronger and more continuous light; losing branches have weaker/broken light continuity. Junctions reveal enough geometry before commitment, and light is supported by maintenance markings, cable/conduit direction, airflow, slope and external ambience. Do not make essential navigation depend only on colour or audio. Dead ends should generally be recoverable, provide clear feedback, and cost time rather than cause arbitrary death.
+
+During this adrenaline sequence, keep first-person movement active and stamina at 100% or provide an equivalent tested no-depletion rule. Use context prompts for jumps/vaults/ducking and only brief motivated camera look-backs. Human pursuers are the principal threat. Door G, the old robot and the legacy parking route are not dependencies for this sequence. Retain those assets/docs as historical or deferred references where useful rather than deleting them wholesale.
+
+The existing spatial plan, section, graph, greybox spec and lighting overlays must remain mutually consistent, be dimensioned, and match the actual Godot geometry before acceptance. This is a target design only, not evidence of implementation or runtime verification.
