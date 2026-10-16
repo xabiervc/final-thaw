@@ -397,3 +397,16 @@ Do not fold the full beat-'em-up into this level-design scope. Future Marcus-led
 
 ### 7.6 Art and verification gate
 Use the owner's Marcus concept and illustrated laboratory reference to guide the art language: illustrated 3D, painterly materials, controlled edge definition, strong silhouettes and readable cinematic lighting. Before expanding production, validate one playable section in Godot from the gameplay camera. Reconcile layout drawings, collision, navigation, camera, scene transitions and the actual implementation; concept art or static renders do not prove a playable route.
+
+
+## Owner-approved escape labyrinth: dry conduit to forest (2026-10-16; target only)
+
+This replaces the immediate escape destination of the older parking-garage design for this sequence. The laboratory remains largely unchanged until functional correctness is established. After Elena observes the human-operated facility and is discovered, a fork leads right to the personnel/story area and left into the escape.
+
+The escape route is a long, multi-corridor labyrinth inside a huge drained industrial water/service conduit. It must alternate direction through several long passages and include authored jumps/vaults, a gradual uphill section, a physical maintenance hatch or culvert mouth, a secondary road and a forest hiding place. The forest hideout is the end of the phase. No mandatory fight follows.
+
+**Lighting is the principal diegetic wayfinding language:** the intended egress line uses stronger, more continuous light and repeated light pools visible from junction approaches; wrong branches are darker or have broken light continuity. Use redundant maintenance markings, conduit/cable direction, airflow, slope and outside ambience to avoid a colour-only or audio-only puzzle. The correct route must be inferable before commitment; wrong routes can cost time but should be recoverable and clearly communicate that they terminate.
+
+The route is first-person with continuous player control, contextual traversal prompts and brief motivated glances back. Stamina is held at 100% (or an equivalent tested unlimited-sprint contract) during the adrenaline escape. Human pursuers are the principal threat; Door G, the legacy robot and the parking route are not dependencies. Keep legacy yard documentation/assets as explicitly historical/deferred rather than deleting them prematurely.
+
+The existing plan, section, spatial graph and greybox spec must be updated together with dimensions, IDs, widths/headroom, turns, elevations, jump/vault envelopes, light cues, dead-end branches, threat accessibility, recovery behavior and the forest completion trigger. Design acceptance requires automated reachability/softlock/stamina/collision checks and a manually played end-to-end escape. The target is not evidence of implementation.
