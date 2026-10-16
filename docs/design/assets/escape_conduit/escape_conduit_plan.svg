@@ -48,8 +48,8 @@
 <rect class="room" x="1170" y="560" width="170" height="130"/><text class="label" x="1255" y="612"><tspan x="1255">CUARTO DE</tspan><tspan x="1255" dy="19">VÁLVULAS</tspan></text>
 <rect class="room" x="1170" y="710" width="170" height="220"/><text class="label" x="1255" y="805"><tspan x="1255">DEPÓSITO</tspan><tspan x="1255" dy="19">DE AGUA</tspan></text>
 <!-- Route is centered entirely on corridor bands -->
-<path class="route" d="M195 985 H425 V725 H795 V455 H190 V270 H1120 V500 H1400 V985 H1400 V1110 H1535"/>
-<path class="dash" d="M195 985 H425 V725 H795 V455 H190 V270 H1120 V500 H1400 V985 H1400 V1110 H1535"/>
+<path class="route" d="M195 985 H425 V725 H795 V455 H190 V270 H1120 V500 H1400 V985 H1535 V1110"/>
+<path class="dash" d="M195 985 H425 V725 H795 V455 H190 V270 H1120 V500 H1400 V985 H1535 V1110"/>
 <!-- alternate routes connect corridor to corridor or terminate in access pockets -->
 <path class="alt" d="M425 725 H600 V650 M795 455 V355 H720 M1120 500 H1250 V500 H1250 V520 M1400 750 H1300 V750"/>
 <path class="altline" d="M425 725 H600 V650 M795 455 V355 H720 M1120 500 H1250 V500 H1250 V520 M1400 750 H1300 V750"/>
@@ -62,7 +62,7 @@
 <path d="M1400 750 H1485 V735 H1515" fill="none" stroke="#b8a4e2" stroke-width="22"/>
 <path d="M1400 750 H1485 V735 H1515" fill="none" stroke="#7858ac" stroke-width="2.5" stroke-dasharray="7 6"/>
 <!-- exit conduit outside facility -->
-<rect x="1465" y="1070" width="120" height="80" fill="#e0e6e8" stroke="#53646d" stroke-width="4"/>
+<rect x="1462" y="965" width="18" height="40" fill="#e4e0d8"/><rect x="1465" y="1070" width="120" height="80" fill="#e0e6e8" stroke="#53646d" stroke-width="4"/>
 <path d="M1535 1110 L1635 1110 L1635 1000 L1715 1000" fill="none" stroke="#f9e3a1" stroke-width="28" stroke-linejoin="round"/>
 <path d="M1535 1110 L1635 1110 L1635 1000 L1715 1000" fill="none" stroke="#c65b16" stroke-width="3.5" stroke-dasharray="12 8" stroke-linejoin="round"/>
 <text class="small" x="1520" y="1050">Boca / compuerta</text><text class="small" x="1600" y="1160">Conducción seca ascendente</text>
