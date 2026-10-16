@@ -6,7 +6,7 @@
 <rect width="1330" height="800" fill="#f8fafb"/>
 <text x="42" y="48" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#16212a">PLANTA P−2 · ENERGÍA, MANTENIMIENTO Y TRANSFERENCIA</text>
 <text x="42" y="76" font-family="Arial,sans-serif" font-size="14" fill="#53616d">Puerta oculta en el taller muerto · llave de transferencia separada de la cadena eléctrica.</text>
-<text x="90" y="118" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#24333c">P−2 · COTA −4,00 · HUella conceptual 48 × 34 m · ALTURAS LIBRES PENDIENTES DE GREYBOX</text>
+<text x="90" y="118" font-family="Arial,sans-serif" font-size="15" font-weight="700" fill="#24333c">P−2 · COTA −4,00 · HUELLA conceptual 48 × 34 m · ALTURAS LIBRES PENDIENTES DE GREYBOX</text>
 <rect x="90" y="145" width="720" height="510" fill="url(#grid)" stroke="#17242c" stroke-width="5"/>
 <!-- Main circulation spine -->
 <rect x="105" y="360" width="690" height="70" fill="#e6edf0" stroke="#596b76" stroke-width="1.5"/>
