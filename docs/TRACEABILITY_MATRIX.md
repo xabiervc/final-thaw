@@ -23,6 +23,21 @@
 
 **Verification warning:** structure/helper checks are not proof of a good playable experience. The v2 prototype test and current runtime status must be confirmed from actual results before any row is marked passing.
 
+## Target traceability — expanded Phase 1 (design only; not implemented)
+
+| Requirement | Design authority | Planned implementation boundary | Required evidence |
+|---|---|---|---|
+| Preserve Aster circuit and field-notes loop | `FASE1_LOGIC_CONTRACT.md`, `MISSION1_GHOST_PROTOCOL.md` | Keep circuit model and existing observation → hypothesis → test → conclusion behavior unchanged while relocating spatial anchors | Existing circuit regressions plus end-to-end Aster playthrough |
+| Expanded footprint and high nave | `FASE1_GREYBOX_SPEC.md`, plan/section SVGs | Rebuild room slabs/walls, partial M/P+3 wings, 6–8 m clear central nave, stairs and collision envelopes | Structural scene checks, measured section, camera/collision playtest |
+| Two independent P0 entries | `FASE1_ARCHITECTURAL_LAYOUT.md`, `plan_p0.svg` | Separate old corridor entrance from Elena's collapsible breach; collapse must block real geometry | Entry/collapse test and manual return attempt |
+| Drawer-code chain | Progression map | Shift order B→D→A→C plus pressure values A=3, B=0, C=7, D=4 yields 0437; drawer returns SERVICE_KEY and INSULATED_BRIDGE | Positive/negative code tests; localization; repeated interaction |
+| Auxiliary power | Greybox/functional specs | SERVICE_KEY opens substation; bridge placement + switch restores partial power; Aster logic stays isolated | Missing-key, missing-bridge, wrong-terminal, power-on feedback, lift gating |
+| Concealed transfer door | P−2 plan, section, spatial graph | Environmental clues reveal door; note directs to raised dry cabinet; TRANSFER_KEY opens only this door | Door-discovery test, key identity test, clue readability playtest |
+| Final threshold | Progression map | TRANSFER_KEY + PowerRestored + restricted Aster record required; opening reveals active second building | State-matrix tests, out-of-order exploration, no softlock |
+| Human discovery and escape | `LEVEL_STRUCTURE.md`, `CORE_LOOP.md` | Integrate human-operated restricted zone and hybrid first-person escape before the existing parking set piece | AI perception tests, movement tests, manual playtest and continuity review |
+
+These rows describe target requirements only. They must not be marked passing until code, scenes and tests exist and the required evidence is recorded.
+
 ## 2. Mission 1 — investigation and story evidence (designed; integration pending)
 
 | Design intent | Planned mechanic | Player-facing evidence | Acceptance |
