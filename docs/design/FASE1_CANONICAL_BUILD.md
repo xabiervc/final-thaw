@@ -76,3 +76,10 @@ La reconstrucción anterior contiene túnel oeste, perímetro/salas P0, hueco D1
 - Registrar commit exacto, versión Godot, renderer, resolución, comandos, exit codes, resultados y evidencia visual.
 
 La documentación ya no considera G→H una salida exterior directa. El código debe alcanzar este contrato antes de cerrar la preparación de Fase 1.
+
+## Owner-approved escape conduit amendment (2026-10-16)
+
+This amendment supersedes the earlier parking-yard destination as the target for the active escape sequence. The new plan and longitudinal section are [escape_conduit_plan.svg](assets/escape_conduit/escape_conduit_plan.svg) and [escape_conduit_section.svg](assets/escape_conduit/escape_conduit_section.svg). A standalone greybox prototype is available at [scenes/prototypes/escape_conduit_labyrinth.tscn](../../scenes/prototypes/escape_conduit_labyrinth.tscn), implemented by [scripts/prototypes/escape_conduit_labyrinth.gd](../../scripts/prototypes/escape_conduit_labyrinth.gd), with a smoke-test scene at [tests/test_escape_conduit_labyrinth.tscn](../../tests/test_escape_conduit_labyrinth.tscn).
+
+The prototype is deliberately separate from phase1_canonical_greybox.tscn: the canonical scene still owns the old escape/yard sequence. Do not call the mission complete and do not delete the legacy yard. Next engineering gate: run the new scene and test under Godot 4.7.2, fix parse/physics issues, manually play every junction and traversal, then integrate the transfer-door detection handoff and forest ending while preserving Aster, Phase 0, save, autoload and resource-path contracts. The integration must be tested end-to-end before merging this branch.
+
