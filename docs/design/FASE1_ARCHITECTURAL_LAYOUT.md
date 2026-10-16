@@ -1,12 +1,12 @@
 # FINAL THAW — Arquitectura espacial de Fase 1 (v3.0 · rediseño ampliado)
 
-**Estado:** propuesta de diseño solicitada por el propietario; no implementada ni aprobada como geometría final. Sustituye como dirección de trabajo la restricción anterior de conservar la huella y el puzle casi intactos. El estado construido anterior se documenta en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md); no se debe confundir este diseño con el as-built.
+**Estado:** dirección de diseño acordada; aún no implementada ni validada como geometría jugable. La geometría construida anterior se documenta en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md); no confundir este objetivo con el as-built. La conexión clandestina se fija en P−2, en el taller muerto, y la sección vertical se coordina para preservar la nave central de gran altura.
 
 ## 1. Objetivo y escala
 
 El edificio que Elena explora debe parecer abandonado: su deterioro y la falta de actividad visible lo convierten en una cobertura idónea para ocultar una instalación clandestina. Está conectado mediante una puerta de seguridad sellada a un segundo edificio donde los antagonistas siguen trabajando. Esa puerta es el umbral narrativo de la fase y solo se abre tras reunir los elementos y restablecer los sistemas necesarios. La instalación debe sentirse como un complejo industrial real, no como el mismo nivel con habitaciones añadidas. La huella conceptual pasa de **30 × 23,5 m (705 m² brutos)** a **48 × 34 m (1.632 m² brutos)**: **2,32× la huella anterior**. Es una meta geométrica de diseño, no una afirmación de superficie útil ya construida. La superficie útil real se medirá descontando muros, huecos y áreas inaccesibles al terminar el greybox.
 
-Se conservan cuatro cotas de lectura: P−2 (servicios y energía), P0 (entrada e investigación), M +1,50 (mezzanine y observación) y P+3 (control y archivo restringido). El núcleo de ascensor se alinea entre plantas. Cada nivel contiene salas principales, salas ambientales y ramales opcionales; no todas las habitaciones contienen una recompensa.
+Se conservan cuatro cotas de suelo: P−2 = −4,00 m (servicios y energía), P0 = ±0,00 m (entrada e investigación), M = +1,50 m (mezzanine parcial de observación) y P+3 = +3,00 m (ala superior de control y archivo). Estas cotas son elevaciones del suelo, no alturas libres. El núcleo del ascensor se alinea entre niveles. La nave central mantiene 6–8 m de altura libre y queda abierta a través de la mezzanine y de la planta superior; M solo ocupa una banda lateral de menor altura y P+3 se concentra en alas laterales, sin forzar un forjado que cruce la nave. Como objetivo preliminar, P−2 tendrá 3,2–3,5 m de altura libre, salas ordinarias de P0 3,5–4,5 m y zonas superiores 3,0–3,5 m, sujetos a reconciliación con espesores estructurales y colisiones.
 
 ## 2. Principios espaciales
 
@@ -28,13 +28,15 @@ Se conservan cuatro cotas de lectura: P−2 (servicios y energía), P0 (entrada 
 6. **Nave central y columna Aster:** hito visual y punto de orientación. El ascensor se ve, pero está sin alimentación. La puerta de conexión con el segundo edificio debe distinguirse de las puertas ordinarias: es una barrera de seguridad cerrada hasta completar la cadena de investigación, llave, puente y energía.
 7. **Taller de instrumentos y lavado/muestras:** conectan la historia del trabajo con la instalación técnica y contienen indicios opcionales.
 
-### P−2 — Energía, achique y mantenimiento
+### P−2 — Energía, achique, mantenimiento y transferencia clandestina
 1. Cámara de achique, filtros de agua y bombas principales.
 2. Baterías auxiliares y galería de cables.
-3. Subestación cerrada con llave de servicio; panel con dos terminales claramente identificables y un puente ausente.
-4. Maquinaria del ascensor y un foso de mantenimiento con visibilidad controlada.
-5. Almacén de repuestos, cuarto inundado, ventilación y taller muerto como espacios secundarios.
-6. Al usar la llave, colocar el puente en el punto correcto y accionar el seccionador, vuelve la alimentación parcial. La solución no debe requerir conocimientos eléctricos reales: la señalización y las formas de los conectores comunican el emparejamiento.
+3. Subestación cerrada con la **llave de servicio**; panel con dos terminales claramente identificables y un puente ausente.
+4. Maquinaria del ascensor y foso de mantenimiento con visibilidad controlada.
+5. Almacén de repuestos, cuarto inundado y ventilación como espacios secundarios. El almacén contiene un **armario seco** elevado por encima de la marca de humedad; guarda la llave de transferencia, con el mismo símbolo que la puerta oculta.
+6. **Taller muerto:** ramal ambiental donde una franja de suelo anormalmente limpia, marcas recientes de arrastre y una corriente de aire en la junta del muro llevan a inspeccionar un panel oculto. El panel revela una puerta de transferencia, pero no la abre. Una nota de mantenimiento explica que, tras una fuga, la llave de transferencia se guardó en el armario seco del almacén de repuestos.
+7. La puerta de transferencia ocupa el muro oriental del taller muerto y conduce directamente a un corto vestíbulo técnico del segundo edificio activo. El umbral permanece bloqueado hasta usar la **llave de transferencia** y restaurar la alimentación necesaria. No se coloca en P+3 ni se sustituye por una salida de emergencia.
+8. La llave de transferencia es un objeto distinto de la llave de servicio y del puente aislado. La llave de servicio + puente + seccionador restauran energía parcial; la llave de transferencia abre el umbral narrativo. La exploración y el hallazgo de ambas cadenas pueden ocurrir en distinto orden.
 
 ### M +1,50 — Mezzanine y observación
 Galería sobre la nave, laboratorio de muestras, instrumentos de reserva, banco de calibración, sala de reuniones, archivo secundario, taller superior, sala de pausa, ductos de servicio y anexo oscurecido. La galería sirve para leer el espacio desde arriba y orientar al jugador. Las barandillas, caídas y rutas de retorno deben validarse con el controlador real.
@@ -42,9 +44,9 @@ Galería sobre la nave, laboratorio de muestras, instrumentos de reserva, banco 
 ### P+3 — Control y archivo restringido
 Vestíbulo restringido, seguridad/monitorización, archivo restringido, control de instalaciones, laboratorio sellado, comunicaciones, supervisión, briefing, almacén de registros, pasillo de servicio, salida de emergencia y vestíbulo del ascensor. Los archivos aportan contexto y anticipación; no se añadirá otra cadena de llaves obligatoria por defecto.
 
-## 4. Puzle de investigación y energía
+## 4. Puzle de investigación, energía y puerta de transferencia
 
-**Cadena principal propuesta:**
+**Cadena A — energía:**
 1. Leer la pizarra de turnos y observar la tira de presión en el archivo de turno.
 2. Deducir el código del cajón: la pizarra ordena las pruebas B → D → A → C; la tira de presión muestra las últimas cifras estables A=3, B=0, C=7, D=4. En ese orden, el código es 0437. No aparece escrito explícitamente en ninguna tarjeta.
 3. Abrir el cajón del despacho y obtener llave de servicio + puente aislado.
@@ -52,9 +54,18 @@ Vestíbulo restringido, seguridad/monitorización, archivo restringido, control 
 5. Observar el hueco en el embarrado y emparejar el puente por forma y señalización.
 6. Insertar el puente y activar el seccionador.
 7. Ver y oír el cambio de estado: relés, luces que se encienden por sectores, bombas auxiliares y ascensor activo.
-8. Usar el ascensor para avanzar a la siguiente parte de la misión.
+8. Usar el ascensor para acceder a las alas superiores y obtener contexto; esta subida no sustituye la transición al edificio clandestino.
 
-La secuencia admite exploración fuera de orden: se puede descubrir la subestación o el ascensor antes de conseguir el objeto. El juego debe comunicar por qué todavía no se pueden utilizar. Al menos un descubrimiento opcional debe proporcionar una ventaja o contexto, sin bloquear la ruta crítica.
+**Cadena B — transferencia clandestina:**
+1. Explorar P−2 y observar en el taller muerto la franja limpia, las marcas de arrastre y la corriente de aire en la junta.
+2. Inspeccionar la anomalía para descubrir el panel y la puerta oculta. La puerta permanece cerrada y no ofrece una interacción de apertura sin la llave.
+3. Leer la nota de mantenimiento del taller: después de una fuga, la llave de transferencia se guardó en el armario seco del almacén de repuestos.
+4. Localizar el armario elevado por encima de la marca de humedad y reconocer el símbolo que coincide con el de la puerta.
+5. Obtener la llave de transferencia. El símbolo y el contexto deben ser legibles sin búsqueda de píxeles.
+6. Volver a la puerta oculta y usar la llave de transferencia. La puerta solo completa la apertura cuando la alimentación requerida está restablecida.
+7. Cruzar a un vestíbulo técnico del segundo edificio y revelar actividad clandestina real: iluminación de trabajo, maquinaria activa, señales recientes de uso y sonido humano/operativo. Este cruce cierra Fase 1 y abre la transición narrativa a Fase 2.
+
+Las dos cadenas son independientes hasta el umbral final: la llave de servicio y el puente no abren la puerta de transferencia; la llave de transferencia no abre la subestación ni restaura la energía. Se puede descubrir la puerta antes de restaurar la energía o conseguir la llave; no se puede entrar en el segundo edificio hasta cumplir ambas condiciones. Al menos un descubrimiento opcional debe aportar contexto o ventaja sin bloquear la ruta crítica.
 
 ## 5. Reglas para los planos y la futura escena
 
@@ -74,9 +85,10 @@ La secuencia admite exploración fuera de orden: se puede descubrir la subestaci
 
 ## 7. Criterios de aceptación del diseño
 
-- La huella bruta de propuesta es 1.632 m² y la comparación con la huella de referencia de 705 m² queda explícita (2,32×).
-- Todos los niveles incluyen al menos una ruta principal legible y salas opcionales que no son todas contenedores de objetos.
-- El cajón, la llave, el puente, la subestación, la iluminación y el ascensor tienen ubicaciones y dependencias explícitas.
-- Los planos y el grafo espacial no se contradicen; ambos distinguen el acceso antiguo al pasillo, la brecha colapsada de Elena y la puerta sellada al edificio clandestino. La posición exacta de esta última sigue pendiente y no debe darse por resuelta hasta aparecer coordinada en planta y sección.
+- La huella bruta conceptual es 1.632 m² y la comparación con la referencia de 705 m² queda explícita (2,32×).
+- La sección representa la nave central de 6–8 m de altura libre, la mezzanine parcial y las alas superiores sin forjados que crucen el vacío de la nave; las cotas de suelo no se confunden con las alturas libres.
+- Todos los niveles incluyen una ruta principal legible y salas opcionales que no son todas contenedores de objetos.
+- Cajón, llave de servicio, puente, subestación, alimentación parcial, ascensor, nota de mantenimiento, armario seco, llave de transferencia y puerta oculta tienen ubicaciones y dependencias explícitas.
+- Planta P−2, sección, grafo y progresión sitúan la conexión clandestina en el muro oriental del taller muerto y describen el mismo recorrido. La puerta no se ubica en P+3 ni en una salida de emergencia.
 - El greybox se juega antes de producir arte final; se miden tiempos, confusiones, rutas alternativas, retornos y comprensión del puzle.
 - La propuesta no se considera implementada ni validada hasta superar pruebas automáticas de estructura y una sesión de juego real.
