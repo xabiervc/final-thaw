@@ -24,7 +24,7 @@ Las banderas nuevas son de sesión y no requieren cambios en el esquema de guard
 
 ## 1. Objetivo jugable
 
-Elena investiga una anomalía física en una instalación clandestina de investigación hidrológica/industrial, entiende la distribución eléctrica, activa mantenimiento, configura el circuito de forma segura y consulta el archivo. Después abre G y escapa en dos ritmos: evasión silenciosa por áreas que pueden seguir ocupadas y una persecución a la carrera tras una reacquisición espacialmente legible. La salida alternativa se conecta físicamente con el aparcamiento de Fase 2.
+**As-built:** Elena investiga Aster, consulta el archivo, abre G y escapa por la instalación hasta el patio. **Objetivo rediseñado:** conserva íntegra la investigación Aster y añade una cadena de energía auxiliar y una llave de transferencia. El umbral narrativo pasa a la puerta oculta de P−2; al otro lado, Elena observa a personal humano en una instalación activa antes de ser detectada. La huida híbrida en primera persona conecta después con el aparcamiento y la calle. La secuencia G→patio y la unidad robótica solo describen el runtime actual hasta completar la migración.
 
 La misión debe sentirse como explorar un lugar funcional. Las pistas se distribuyen entre la nave, el taller, el nivel de achique, la sala de bombas, control y archivo. No se exige inspeccionar todos los objetos; no hay llaves arbitrarias ni coleccionables obligatorios. La máquina de ensayo nunca arranca.
 
