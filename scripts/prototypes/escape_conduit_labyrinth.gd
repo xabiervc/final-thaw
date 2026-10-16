@@ -40,6 +40,7 @@ func _process(delta: float) -> void:
 	if not complete:
 		# Running, jumping and vault practice are intentionally not gated by fatigue here.
 		call_deferred("_restore_stamina")
+		call_deferred("_force_first_person_camera")
 
 func _physics_process(_delta: float) -> void:
 	if player != null and not complete:
@@ -223,6 +224,7 @@ func _build_geometry() -> void:
 	# Final approach, maintenance hatch, road and forest.
 	_box("ESC_HATCH_FRAME", Vector3(3.4, 2.5, 0.25), Vector3(-12, 4.75, -88), Color(0.24, 0.29, 0.32))
 	_box("ESC_SECONDARY_ROAD", Vector3(14, SLAB, 5), Vector3(-5, 3.5 - SLAB * 0.5, -91), Color(0.19, 0.22, 0.24))
+	_box("ESC_FOREST_GROUND", Vector3(16, SLAB, 18), Vector3(-5, 3.5 - SLAB * 0.5, -101), Color(0.15, 0.22, 0.16))
 	for i in 12:
 		var x := -13.0 + float(i % 6) * 3.0
 		var z := -96.0 - float(i / 6) * 5.0
@@ -302,3 +304,15 @@ func _restore_stamina() -> void:
 	if player.get("condition") != null:
 		player.condition.stamina = 100.0
 	player.set("stamina", 100.0)
+
+
+func _force_first_person_camera() -> void:
+	if player == null or not is_instance_valid(player) or complete:
+		return
+	if player.get("arm") != null:
+		player.arm.spring_length = 0.05
+		player.arm.position.x = 0.0
+	if player.get("pivot") != null:
+		player.pivot.position.y = 1.58
+	if player.get("view") != null:
+		player.view.fov = 78.0
