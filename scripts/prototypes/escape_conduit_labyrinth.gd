@@ -12,7 +12,7 @@ const WALL := 0.25
 const MAIN_LIGHT := Color(1.0, 0.78, 0.38)
 const DEAD_LIGHT := Color(0.32, 0.39, 0.48)
 
-var player: CharacterBody3D
+var player
 var hud: Label
 var complete := false
 var elapsed := 0.0
@@ -25,6 +25,11 @@ func _ready() -> void:
 	_build_hud()
 	_build_forest_trigger()
 	print("[escape_labyrinth] greybox loaded; main route ~132 m; stamina lock active")
+
+func _exit_tree() -> void:
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	if get_tree() != null:
+		get_tree().paused = false
 
 func _process(delta: float) -> void:
 	if player == null:
@@ -194,11 +199,17 @@ func _build_geometry() -> void:
 	_segment(Vector3(0, 0, -18), Vector3(10, 0, -18), WIDTH, HEIGHT, false, "ESC_D01")
 	_segment(Vector3(-14, 0, -32), Vector3(-22, 0, -32), WIDTH, HEIGHT, false, "ESC_D02")
 	_segment(Vector3(-28, 0, -46), Vector3(-38, 0, -46), WIDTH, HEIGHT, false, "ESC_D03")
+	# Real end caps keep the optional branches recoverable instead of letting the player walk off the floor.
+	_box("ESC_D01_EndCap", Vector3(WALL, HEIGHT, WIDTH), Vector3(10.0, HEIGHT * 0.5, -18.0), Color(0.31, 0.35, 0.38))
+	_box("ESC_D02_EndCap", Vector3(WALL, HEIGHT, WIDTH), Vector3(-22.0, HEIGHT * 0.5, -32.0), Color(0.31, 0.35, 0.38))
+	_box("ESC_D03_EndCap", Vector3(WALL, HEIGHT, WIDTH), Vector3(-38.0, HEIGHT * 0.5, -46.0), Color(0.31, 0.35, 0.38))
 	# Personnel branch at the original fork, intentionally distinct from the escape conduit.
 	_segment(Vector3(0, 0, 0), Vector3(12, 0, 0), WIDTH, HEIGHT, true, "ESC_PERSONNEL_BRANCH")
 	_box("Personnel_Room_Floor", Vector3(10, SLAB, 8), Vector3(17, -SLAB * 0.5, 0), Color(0.23, 0.27, 0.30))
 	_box("Personnel_Room_Ceiling", Vector3(10, SLAB, 8), Vector3(17, HEIGHT + SLAB * 0.5, 0), Color(0.31, 0.35, 0.38))
 	_box("Personnel_Room_Wall", Vector3(0.25, HEIGHT, 8), Vector3(22, HEIGHT * 0.5, 0), Color(0.31, 0.35, 0.38))
+	_box("Personnel_Room_SideWall", Vector3(10, HEIGHT, 0.25), Vector3(17, HEIGHT * 0.5, -4), Color(0.31, 0.35, 0.38))
+	_box("Personnel_Room_SideWall", Vector3(10, HEIGHT, 0.25), Vector3(17, HEIGHT * 0.5, 4), Color(0.31, 0.35, 0.38))
 	_label("PERSONNEL AREA / ELENA DISCOVERY", Vector3(17, 2.3, -2.0), Color(0.77, 0.68, 1.0), 28)
 	_label("DEAD END — RETURN TO THE FORK", Vector3(9.0, 2.3, -16.0), Color(0.65, 0.69, 0.75), 24)
 	_label("DARKER BRANCH — NO EGRESS", Vector3(-20, 2.3, -30), Color(0.65, 0.69, 0.75), 24)
