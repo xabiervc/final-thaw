@@ -1,4 +1,4 @@
-# FINAL THAW — Arquitectura espacial de Fase 1 (v3.0 · rediseño ampliado)
+# FINAL THAW — Arquitectura espacial de Fase 1 (v3.1 · nave alta y puerta de transferencia)
 
 **Estado:** dirección de diseño acordada; aún no implementada ni validada como geometría jugable. La geometría construida anterior se documenta en [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md); no confundir este objetivo con el as-built. La conexión clandestina se fija en P−2, en el taller muerto, y la sección vertical se coordina para preservar la nave central de gran altura.
 
