@@ -22,13 +22,13 @@ La Fase 1 es una investigación espacial dentro de una instalación mucho mayor.
 
 ## 3. Pistas y puzle del cajón
 
-El código debe derivarse de información visible en el entorno, no de una secuencia elegida solo porque resulte cómoda de implementar. La pizarra muestra el orden de comprobación de las bombas; la tira de presión registra el valor estable de la prueba. El jugador usa la regla que aparece en la propia pizarra para convertir la lectura en el código. La pista no muestra el código final explícitamente.
+El código debe derivarse de información visible en el entorno, no de una secuencia elegida solo porque resulte cómoda de implementar. La pizarra de turnos indica la secuencia de comprobación B → D → A → C. La tira de presión muestra las últimas cifras estables: A=3, B=0, C=7, D=4. El jugador debe leer las cifras siguiendo el orden de la pizarra y obtiene 0437. Una nota opcional del taller recuerda que debe seguirse el orden de prueba, sin mostrar la secuencia ni el resultado. No se entrega el código en un texto narrativo.
 
-La solución se considera justa si un jugador puede explicar qué dos datos combinó. Si en el playtest se adivina por ensayo, el puzle necesita revisión. No incluir una pantalla de texto que entregue la respuesta.
+La solución se considera justa si un jugador puede explicar que combinó el orden B → D → A → C con las cifras finales de la tira. Si se adivina por ensayo, hay que revisar la visibilidad de los datos o el feedback del cajón. No incluir una pantalla de texto que entregue la respuesta.
 
 ## 4. Energía, luces y ascensor
 
-El puente aislado se reconoce por su forma y por las etiquetas físicas de los dos terminales. El panel debe tener un hueco real y legible; la acción correcta conecta el circuito visualmente. No usar una interacción genérica que cambie el estado sin animación. Tras el restablecimiento:
+El jugador sigue la bandeja de cables desde la maquinaria del ascensor hasta la subestación y encuentra el terminal LIFT AUX con el puente ausente. El puente aislado tiene un conector y una forma que coinciden con ese hueco; otros bornes están cubiertos o no tienen la geometría compatible. El panel debe mostrar la conexión físicamente y el seccionador queda bloqueado hasta insertar el puente. No exigir conocimientos eléctricos reales ni permitir que un clic genérico cambie el estado sin animación. Tras el restablecimiento:
 - los relés hacen clic y el transformador adquiere un zumbido de banda media;
 - varias líneas de luz recorren la instalación;
 - se encienden luces de emergencia y luminarias seleccionadas, pero algunas permanecen rotas;
