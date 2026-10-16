@@ -20,9 +20,9 @@ This document separates current design direction, actual implementation evidence
 | Phase 1 architecture/program | `docs/design/FASE1_ARCHITECTURAL_LAYOUT.md` v3.1 | Expanded spatial intent; high central nave, partial mezzanine and P−2 clandestine connection; plans, graph and scene must remain aligned |
 | Phase 1 plans and section | `docs/design/assets/phase1_architecture/` | Drawing authority for the expanded target; section must show the nave void, partial upper wings and P−2 transfer doorway; physical alignment remains pending verification |
 | Phase 1 spatial graph | `docs/design/FASE1_SPATIAL_GRAPH.md` v3.1 | Expanded target topology, including the P−2 transfer door and parallel dependencies; verify footprints and traversability in Godot |
-| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.1 | Target measurements and collision contract, not proof of built geometry |
-| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.1 | Target interactions, puzzle and escape flow; some escape requirements are not implemented |
-| Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v1.1 | Quiet evasion → perceptible reacquisition → running chase → selected exit and physical parking handoff; implementation pending |
+| Phase 1 greybox dimensions/collisions | `docs/design/FASE1_GREYBOX_SPEC.md` v2.1 plus the 2026-10-16 expanded-redesign section | Legacy dimensions remain as-built reference; the new 48 × 34 m footprint, vertical section and transfer doorway are target-only until measured and implemented |
+| Phase 1 functional experience | `docs/design/FASE1_FUNCTIONAL_SPEC.md` v2.1 plus the 2026-10-16 transfer-chain section | Preserve Aster logic; add auxiliary-power and transfer-key dependencies; runtime implementation remains pending |
+| Phase 1/2 progression | `docs/design/fase1_fase2_mapa_progresion.md` v2.1 | Aster investigation + auxiliary power + P−2 transfer key converge at the clandestine threshold; human discovery/escape and parking continuity still require implementation review |
 | Movement/chase prototype mechanics | `docs/design/MOTION_CHASE_PROTOTYPE.md` plus current code | Prototype behavior and known limits; v2 test/playtest status must be recorded |
 | Requirement-to-evidence mapping | `docs/TRACEABILITY_MATRIX.md` | Maps intended behavior to implementation, tests and verification gaps |
 | Implementation status | `PROJECT_STATUS.md`, current scene/script/test state and recorded results | Source of truth for what exists and what was actually verified |
