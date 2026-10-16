@@ -39,10 +39,10 @@ El constructor existente usa un sistema de coordenadas y una salida de servicio 
 - La investigación Aster y el cuaderno de campo existentes se conservan; la nueva cadena de mantenimiento/transferencia se añade sin cambiar el contrato lógico Aster.
 - Los planos conceptuales no prueban colisiones, alturas, navegación, rendimiento ni jugabilidad. Esos criterios requieren constructor, pruebas automáticas y playtest.
 
-## Convenciones
+## Convenciones heredadas v2.1 — referencia del as-built, no del rediseño
 
 - Unidades Godot: metros; X este, Z sur, Y vertical; norte arriba en planos.
-- P0 = Y 0; P−1 = Y −2; M = Y +1,5; P2 = Y +3.
+- P0 = Y 0; P−1 = Y −2; M = Y +1,5; P2 = Y +3. Estas convenciones pertenecen a la especificación heredada; para el objetivo ampliado se aplican exclusivamente las cotas definidas en el bloque de rediseño anterior.
 - Altura libre mínima de rutas principales: 2,2 m; objetivo en zonas de persecución: 2,5 m cuando la estructura lo permita.
 - Ancho libre mínimo de circulación normal: 1,8 m; ruta de huida: objetivo ≥2,0 m sin mobiliario ni barandillas invadiendo el paso. Puertas y giros se validan con cápsula y cámara reales.
 - Las plantas son planos de diseño, no prueba de colisión. Los footprints del constructor deben ser trazables a estas medidas.
