@@ -187,6 +187,8 @@ func _label(text: String, pos: Vector3, color: Color = Color(0.92, 0.94, 0.95), 
 
 func _build_geometry() -> void:
 	# Start at the decision fork. North is forward; the right-hand branch is the personnel story area.
+	_box("ESC_FORK_Floor", Vector3(WIDTH, SLAB, WIDTH), Vector3(0, -SLAB * 0.5, 0), Color(0.23, 0.27, 0.30))
+	_box("ESC_FORK_Ceiling", Vector3(WIDTH, SLAB, WIDTH), Vector3(0, HEIGHT + SLAB * 0.5, 0), Color(0.31, 0.35, 0.38))
 	_segment(Vector3(0, 0, 0), Vector3(0, 0, -18), WIDTH, HEIGHT, true, "ESC_E01")
 	_segment(Vector3(0, 0, -18), Vector3(-14, 0, -18), WIDTH, HEIGHT, true, "ESC_E02_LEFT")
 	_segment(Vector3(-14, 0, -18), Vector3(-14, 0, -32), WIDTH, HEIGHT, true, "ESC_E03_RIGHT")
