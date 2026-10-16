@@ -2,6 +2,8 @@
 
 > **v4.0 note (2026-10-15, as-built):** The investigation now runs through field notes (observation → hypothesis → test → conclusion). G's outer hatch is only operated after the record is read; reading the record never triggers Containment. See [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md) (v4.0).
 
+> **Owner-approved target redesign (2026-10-16; not implemented):** preserve the Aster circuit and field-notes logic below, but replace G → immediate Containment as the target mission handoff. The target handoff is the concealed transfer door in P−2 after Aster record read, PowerRestored and TRANSFER_KEY. Elena enters the active second building, observes human personnel, and only then can detection start the hybrid first-person escape. G/service-audit behavior remains the as-built runtime contract until the target is implemented and verified.
+
 > **Nota v3.0 (2026-10-15, as-built):** Selector, aislador y rearme están en E (P2), no en D1/D2, según la spec funcional y el contrato lógico (C6). Fuente de verdad del as-built y de las contradicciones resueltas: [FASE1_PREMIUM_AUDIT.md](FASE1_PREMIUM_AUDIT.md).
 
 **Status:** current design contract for the investigation/puzzle portion of Phase 1. The circuit behavior is governed by `FASE1_LOGIC_CONTRACT.md`; the building-wide spatial sequence is governed by `FASE1_ARCHITECTURAL_LAYOUT.md`, `FASE1_SPATIAL_GRAPH.md`, `FASE1_GREYBOX_SPEC.md` and `fase1_fase2_mapa_progresion.md`. Not implemented or playtested as a complete sequence; not final full-game canon.
@@ -17,7 +19,7 @@ The required player inference is:
 2. The trial feed must be isolated before selecting ARCHIVO.
 3. A protection trip is recoverable; it is a consequence, not a game-over.
 4. A stable archive reveals the suppressed result.
-5. Opening the exterior leaf of G after the maintenance event is queued transmits the audit and starts Containment; consulting the record alone does not trigger the chase.
+5. In the current as-built, opening the exterior leaf of G after the maintenance event is queued transmits the audit and starts Containment; consulting the record alone does not trigger the chase. In the owner-approved target redesign, this is retained only as historical as-built behavior: the new phase handoff occurs at the P−2 transfer door after the Aster record and transfer/power conditions are satisfied.
 
 ## Spatial distribution of clues
 
@@ -47,7 +49,7 @@ The required player inference is:
 5. Inspect the diagnostic: destination is ARCHIVO, fault is absent, protection remains tripped only if it was tripped earlier.
 6. Rearm protection. The archive becomes stable; the terminal can be consulted.
 7. Read the restricted record. The working Spanish terminal copy is: **“ENSAYO ASTER — RESULTADO RETENIDO. RECOMENDACIÓN DE DESPLIEGUE: SUPRIMIDA.”** English localization is not locked and must preserve the same limited inference.
-8. Return to G. Opening its exterior leaf transmits the queued service audit once and starts Containment.
+8. **As-built only:** return to G; opening its exterior leaf transmits the queued service audit once and starts Containment. **Target redesign:** complete the separate maintenance/transfer chain and cross the concealed P−2 door; human discovery precedes detection and escape.
 
 ### Recoverable error path
 
