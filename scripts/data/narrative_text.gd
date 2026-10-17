@@ -9,6 +9,20 @@ Helix asegura que el último ensayo de Aster, el protocolo para estabilizar el c
 @export var menu_start_button: String = "Iniciar Demo"
 @export var menu_options_button: String = "Opciones"
 @export var menu_credits_button: String = "Créditos"
+@export var menu_escape_button: String = "Escape de la instalación"
+
+## Conduit escape
+@export_group("Conduit Escape")
+@export var escape_prompt_shelf: String = "E / F — Derribar estantería"
+@export var escape_prompt_cabinet: String = "E / F — Volcar armario"
+@export var escape_prompt_extinguisher: String = "E / F — Recoger extintor"
+@export var escape_prompt_extinguisher_use: String = "E / F — Descargar el extintor"
+@export var escape_prompt_return_first_person: String = "Volver a primera persona"
+@export var escape_controls_hint: String = "Mover: WASD · Mirar: ratón · Interactuar: E/F · Golpear: J/K · Correr: Mayús · Saltar: Espacio"
+@export var escape_alarm_inactive: String = "ALARMA · INACTIVA"
+@export var escape_alarm_active: String = "ALARMA · ACTIVA"
+@export var escape_objective_reach_forest: String = "Alcanza el bosque y ocúltate."
+@export var escape_complete_message: String = "Elena alcanza el bosque y se oculta temporalmente."
 
 ## Visual equivalents of audio cues (accessibility)
 @export_group("Sound cues")

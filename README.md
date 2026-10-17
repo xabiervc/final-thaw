@@ -46,6 +46,8 @@ Options are saved with the game settings and survive restarts.
 
 The branch also keeps the **motion/chase prototype v2** (`scenes/prototypes/motion_chase_prototype.tscn`, [spec](docs/design/MOTION_CHASE_PROTOTYPE.md)), a mechanics test bed that is no longer connected to the demo. It also keeps the earlier Flooded Shelter 2.5D and Elena test-room experiments, available for comparison and reusable components.
 
+The **Conduit Escape** menu button opens a separate route prototype (`scenes/prototypes/escape_conduit_labyrinth.tscn`). Its headless test covers the shelf/cabinet interactions, T1's alarm-button route, the extinguisher/strike sequence, and forest completion gate. It is not connected to the canonical mission handoff and has not had a manual playtest; see [Project Status](PROJECT_STATUS.md) for test evidence and remaining limitations.
+
 ## Current design documents
 
 1. [Working vision](docs/VISION.md)

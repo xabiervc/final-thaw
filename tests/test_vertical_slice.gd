@@ -109,6 +109,7 @@ func _check_menu_text_contract() -> void:
 	_expect(not NarrativeTextManager.get_shelter_previous_state().is_empty(), "Menu previous-state fallback exists")
 	_expect(not NarrativeTextManager.get_menu_options_button().is_empty(), "Menu options fallback exists")
 	_expect(not NarrativeTextManager.get_menu_credits_button().is_empty(), "Menu credits fallback exists")
+	_expect(not NarrativeTextManager.get_menu_escape_button().is_empty(), "Conduit escape entry fallback exists")
 	_expect(not NarrativeTextManager.get_options_text_scale().is_empty(), "Options text-scale fallback exists")
 	_expect(not NarrativeTextManager.get_options_back_button().is_empty(), "Options back fallback exists")
 	_expect(not NarrativeTextManager.get_credits_title().is_empty(), "Credits title fallback exists")

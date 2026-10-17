@@ -1,0 +1,614 @@
+{
+ "civ_f1": {
+  "clips": {
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.181
+   },
+   "walk_casual": {
+    "frames": 38,
+    "loop": true,
+    "source": "CMU 91_31 frames 300-450",
+    "speed": 0.978
+   }
+  },
+  "height": 1.574,
+  "role": "civilian",
+  "triangles": 6997
+ },
+ "civ_f2": {
+  "clips": {
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.003
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.074
+   },
+   "walk_casual": {
+    "frames": 38,
+    "loop": true,
+    "source": "CMU 91_31 frames 300-450",
+    "speed": 0.89
+   }
+  },
+  "height": 1.433,
+  "role": "civilian",
+  "triangles": 6996
+ },
+ "civ_f3": {
+  "clips": {
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.236
+   },
+   "walk_casual": {
+    "frames": 38,
+    "loop": true,
+    "source": "CMU 91_31 frames 300-450",
+    "speed": 1.024
+   }
+  },
+  "height": 1.632,
+  "role": "civilian",
+  "triangles": 6997
+ },
+ "civ_m1": {
+  "clips": {
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.229
+   },
+   "walk_casual": {
+    "frames": 38,
+    "loop": true,
+    "source": "CMU 91_31 frames 300-450",
+    "speed": 1.017
+   }
+  },
+  "height": 1.599,
+  "role": "civilian",
+  "triangles": 6996
+ },
+ "civ_m2": {
+  "clips": {
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.337
+   },
+   "walk_casual": {
+    "frames": 38,
+    "loop": true,
+    "source": "CMU 91_31 frames 300-450",
+    "speed": 1.108
+   }
+  },
+  "height": 1.715,
+  "role": "civilian",
+  "triangles": 6996
+ },
+ "civ_m3": {
+  "clips": {
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.364
+   },
+   "walk_casual": {
+    "frames": 38,
+    "loop": true,
+    "source": "CMU 91_31 frames 300-450",
+    "speed": 1.13
+   }
+  },
+  "height": 1.741,
+  "role": "civilian",
+  "triangles": 6997
+ },
+ "civ_m4": {
+  "clips": {
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.287
+   },
+   "walk_casual": {
+    "frames": 38,
+    "loop": true,
+    "source": "CMU 91_31 frames 300-450",
+    "speed": 1.065
+   }
+  },
+  "height": 1.663,
+  "role": "civilian",
+  "triangles": 6994
+ },
+ "helix_guard_a": {
+  "clips": {
+   "alert": {
+    "frames": 14,
+    "loop": false,
+    "source": "CMU 77_09 frames 214-268",
+    "speed": 0.0
+   },
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "point": {
+    "frames": 20,
+    "loop": false,
+    "source": "CMU 77_02 frames 452-530 + point layer",
+    "speed": 0.0
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "run": {
+    "frames": 23,
+    "loop": true,
+    "source": "CMU 35_22 frames 36-126",
+    "speed": 3.919
+   },
+   "search": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + search layer",
+    "speed": 0.0
+   },
+   "sprint": {
+    "frames": 22,
+    "loop": true,
+    "source": "CMU 143_01 frames 4-88",
+    "speed": 7.886
+   },
+   "stop": {
+    "frames": 18,
+    "loop": false,
+    "source": "CMU 143_02 frames 80-150",
+    "speed": 0.0
+   },
+   "turn_left": {
+    "frames": 38,
+    "loop": false,
+    "source": "CMU 69_16 frames 450-600",
+    "speed": 0.0
+   },
+   "turn_right": {
+    "frames": 33,
+    "loop": false,
+    "source": "CMU 69_18 frames 330-460",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.403
+   },
+   "work": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + work layer",
+    "speed": 0.0
+   }
+  },
+  "height": 1.787,
+  "role": "staff",
+  "triangles": 13998
+ },
+ "helix_guard_b": {
+  "clips": {
+   "alert": {
+    "frames": 14,
+    "loop": false,
+    "source": "CMU 77_09 frames 214-268",
+    "speed": 0.0
+   },
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "point": {
+    "frames": 20,
+    "loop": false,
+    "source": "CMU 77_02 frames 452-530 + point layer",
+    "speed": 0.0
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "run": {
+    "frames": 23,
+    "loop": true,
+    "source": "CMU 35_22 frames 36-126",
+    "speed": 3.788
+   },
+   "search": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + search layer",
+    "speed": 0.0
+   },
+   "sprint": {
+    "frames": 22,
+    "loop": true,
+    "source": "CMU 143_01 frames 4-88",
+    "speed": 7.622
+   },
+   "stop": {
+    "frames": 18,
+    "loop": false,
+    "source": "CMU 143_02 frames 80-150",
+    "speed": 0.0
+   },
+   "turn_left": {
+    "frames": 38,
+    "loop": false,
+    "source": "CMU 69_16 frames 450-600",
+    "speed": 0.0
+   },
+   "turn_right": {
+    "frames": 33,
+    "loop": false,
+    "source": "CMU 69_18 frames 330-460",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.356
+   },
+   "work": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + work layer",
+    "speed": 0.0
+   }
+  },
+  "height": 1.731,
+  "role": "staff",
+  "triangles": 13994
+ },
+ "helix_supervisor": {
+  "clips": {
+   "alert": {
+    "frames": 14,
+    "loop": false,
+    "source": "CMU 77_09 frames 214-268",
+    "speed": 0.0
+   },
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "point": {
+    "frames": 20,
+    "loop": false,
+    "source": "CMU 77_02 frames 452-530 + point layer",
+    "speed": 0.0
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "run": {
+    "frames": 23,
+    "loop": true,
+    "source": "CMU 35_22 frames 36-126",
+    "speed": 3.297
+   },
+   "search": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + search layer",
+    "speed": 0.0
+   },
+   "sprint": {
+    "frames": 22,
+    "loop": true,
+    "source": "CMU 143_01 frames 4-88",
+    "speed": 6.635
+   },
+   "stop": {
+    "frames": 18,
+    "loop": false,
+    "source": "CMU 143_02 frames 80-150",
+    "speed": 0.0
+   },
+   "turn_left": {
+    "frames": 38,
+    "loop": false,
+    "source": "CMU 69_16 frames 450-600",
+    "speed": 0.0
+   },
+   "turn_right": {
+    "frames": 33,
+    "loop": false,
+    "source": "CMU 69_18 frames 330-460",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.18
+   },
+   "work": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + work layer",
+    "speed": 0.0
+   }
+  },
+  "height": 1.567,
+  "role": "staff",
+  "triangles": 13994
+ },
+ "helix_tech_a": {
+  "clips": {
+   "alert": {
+    "frames": 14,
+    "loop": false,
+    "source": "CMU 77_09 frames 214-268",
+    "speed": 0.0
+   },
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.004
+   },
+   "point": {
+    "frames": 20,
+    "loop": false,
+    "source": "CMU 77_02 frames 452-530 + point layer",
+    "speed": 0.0
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "run": {
+    "frames": 23,
+    "loop": true,
+    "source": "CMU 35_22 frames 36-126",
+    "speed": 3.705
+   },
+   "search": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + search layer",
+    "speed": 0.0
+   },
+   "sprint": {
+    "frames": 22,
+    "loop": true,
+    "source": "CMU 143_01 frames 4-88",
+    "speed": 7.455
+   },
+   "stop": {
+    "frames": 18,
+    "loop": false,
+    "source": "CMU 143_02 frames 80-150",
+    "speed": 0.0
+   },
+   "turn_left": {
+    "frames": 38,
+    "loop": false,
+    "source": "CMU 69_16 frames 450-600",
+    "speed": 0.0
+   },
+   "turn_right": {
+    "frames": 33,
+    "loop": false,
+    "source": "CMU 69_18 frames 330-460",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.326
+   },
+   "work": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + work layer",
+    "speed": 0.0
+   }
+  },
+  "height": 1.701,
+  "role": "staff",
+  "triangles": 13996
+ },
+ "helix_tech_b": {
+  "clips": {
+   "alert": {
+    "frames": 14,
+    "loop": false,
+    "source": "CMU 77_09 frames 214-268",
+    "speed": 0.0
+   },
+   "idle": {
+    "frames": 104,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-866",
+    "speed": 0.003
+   },
+   "point": {
+    "frames": 20,
+    "loop": false,
+    "source": "CMU 77_02 frames 452-530 + point layer",
+    "speed": 0.0
+   },
+   "radio": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + radio layer",
+    "speed": 0.0
+   },
+   "run": {
+    "frames": 23,
+    "loop": true,
+    "source": "CMU 35_22 frames 36-126",
+    "speed": 3.071
+   },
+   "search": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + search layer",
+    "speed": 0.0
+   },
+   "sprint": {
+    "frames": 22,
+    "loop": true,
+    "source": "CMU 143_01 frames 4-88",
+    "speed": 6.181
+   },
+   "stop": {
+    "frames": 18,
+    "loop": false,
+    "source": "CMU 143_02 frames 80-150",
+    "speed": 0.0
+   },
+   "turn_left": {
+    "frames": 38,
+    "loop": false,
+    "source": "CMU 69_16 frames 450-600",
+    "speed": 0.0
+   },
+   "turn_right": {
+    "frames": 33,
+    "loop": false,
+    "source": "CMU 69_18 frames 330-460",
+    "speed": 0.0
+   },
+   "walk": {
+    "frames": 34,
+    "loop": true,
+    "source": "CMU 35_01 frames 36-170",
+    "speed": 1.099
+   },
+   "work": {
+    "frames": 101,
+    "loop": true,
+    "source": "CMU 77_02 frames 452-852 + work layer",
+    "speed": 0.0
+   }
+  },
+  "height": 1.474,
+  "role": "staff",
+  "triangles": 13995
+ }
+}

@@ -155,21 +155,27 @@ The owner has approved a substantial refinement of the current vertical-slice di
 The current code and test evidence above describe the previous robot-led, one-scene escape prototype. They must remain clearly distinguished from this approved target until the replacement is committed, the full test suite is rerun and the relevant route is reviewed in Godot. No new runtime, visual or performance verification is claimed by this documentation update.
 
 
-## Escape conduit labyrinth — prototype status (2026-10-16)
+## Escape conduit labyrinth — prototype status (2026-10-17)
 
-A separate, playable-intent greybox prototype has been added on branch feat/escape-conduit-labyrinth:
+A separate conduit escape prototype is available from the main menu:
 - plan: docs/design/assets/escape_conduit/escape_conduit_plan.svg
 - section: docs/design/assets/escape_conduit/escape_conduit_section.svg
 - scene: scenes/prototypes/escape_conduit_labyrinth.tscn
 - builder: scripts/prototypes/escape_conduit_labyrinth.gd
-- smoke test: tests/test_escape_conduit_labyrinth.tscn
+- integration test: tests/test_escape_conduit_labyrinth.tscn
+- mission state test: tests/test_escape_mission_state.tscn
 
-The target is a roughly 132 m dry conduit labyrinth with a 3.2 m clear width, 3.6 m headroom, alternating turns, three recoverable dark side branches, a jumpable pipe rack, crouch-only beam, 20 m uphill conduit, physical hatch, road and forest trigger. The prototype includes first-person camera framing and a stamina-restoration rule.
+The builder loads the approved route JSON and implements the N1 worker encounter, shelf and cabinet interactions, T1's physical alarm-button route, guard response, extinguisher pickup/discharge, guard strikes, and the forest completion gate. The current route builder reports approximately 270.1 m from S to A3; this replaces the earlier ~132 m greybox target. The player currently uses the shared exploration camera mode, not the first-person framing described in the design target.
 
-Not verified: no Godot runtime/test command has been run in this environment. The prototype is not yet connected to the canonical transfer-door/staff-detection flow; the canonical scene still contains the older escape/yard sequence. Do not claim implementation acceptance until Godot 4.7.2 parse/runtime tests, smoke tests, manual end-to-end playthrough and canonical mission integration/regression tests have passed.
+Automated evidence recorded 2026-10-17 on Godot 4.7.2.stable.official.ed1daf0bf, Windows, worktree based on revision 699cfc6653a9ceb8c7eeffb0bd7c028a740dddbd (uncommitted changes):
+- `godot --headless --verbose --path . --quit-after 2400 res://tests/test_escape_conduit_labyrinth.tscn`: exit 0, 27 PASS, 0 FAIL; no runtime or teardown warnings in the final run.
+- `godot --headless --path . res://tests/test_escape_mission_state.tscn`: exit 0, 38 PASS, 0 FAIL.
+- `godot --headless --path . --quit-after 900 res://tests/test_phase_0.tscn`: exit 0, 7 PASS, 0 FAIL. The corrupt-save warning is expected from the negative CRC32 test.
+
+These automated checks do not establish manual playability. The integration test simulates guard-arrival callbacks and places guards near Elena to check strike rules; it does not verify their full physical response route, camera feel, or visuals. The prototype remains separate from the canonical transfer-door/staff-detection flow, and the canonical scene still contains the older escape/yard sequence. Manual end-to-end playtest, first-person camera work, route/drawing reconciliation, and canonical mission integration/regression remain outstanding.
 
 
 
 ### Escape plan refinement — industrial layout reference (2026-10-16)
 
-The existing escape plan SVG has been redrawn to use the owner's industrial-floor-plan reference: purpose-specific technical rooms connected by service galleries, a readable main route, plausible secondary branches and recoverable dead ends, a personnel/story branch, then a dry rising conduit to the physical hatch, secondary road and forest refuge. The updated source is `docs/design/assets/escape_conduit/escape_conduit_plan.svg`; the existing greybox spec has been amended in place. This is a design-plan refinement only: the 3D prototype and canonical mission have not been rebuilt or runtime-verified against this new spatial plan. Do not claim the revised layout is playable until scene geometry, collisions, route readability and Godot tests are reconciled and checked.
+The existing escape plan SVG has been redrawn to use the owner's industrial-floor-plan reference: purpose-specific technical rooms connected by service galleries, a readable main route, plausible secondary branches and recoverable dead ends, a personnel/story branch, then a dry rising conduit to the physical hatch, secondary road and forest refuge. The updated source is `docs/design/assets/escape_conduit/escape_conduit_plan.svg`; the existing greybox spec has been amended in place. The standalone builder now loads the route JSON and the automated evidence above covers its mission interactions and exit gate. Full alignment with the drawings, all collision clearances, route readability, and manual Godot playtesting have not been verified.

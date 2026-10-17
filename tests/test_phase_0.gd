@@ -52,7 +52,11 @@ func _run() -> void:
 	var menu = load("res://scenes/ui/main_menu.tscn").instantiate()
 	add_child(menu)
 	await get_tree().process_frame
-	check("09 MainMenu tiene 5 botones", get_tree().get_nodes_in_group("menu_button").size() == 5)
+	var escape_button: Node = menu.get_node_or_null("CenterContainer/Panel/MarginContainer/VBoxContainer/SecondaryRow/EscapeButton")
+	check(
+		"09 MainMenu tiene 6 botones e incluye el acceso al escape",
+		get_tree().get_nodes_in_group("menu_button").size() == 6 and escape_button is Button
+	)
 	menu.queue_free()
 	await get_tree().process_frame
 

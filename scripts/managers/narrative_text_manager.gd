@@ -64,6 +64,9 @@ static func get_menu_options_button() -> String:
 static func get_menu_credits_button() -> String:
 	return _text("menu_credits_button", "Credits")
 
+static func get_menu_escape_button() -> String:
+	return _text("menu_escape_button", "Conduit Escape")
+
 static func get_hud_oxygen_label(value: float) -> String:
 	return _text("hud_oxygen_label", "Oxygen: %d%%") % int(value)
 

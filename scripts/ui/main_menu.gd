@@ -4,6 +4,7 @@ class_name MainMenu
 ## "Start" opens the canonical Phase 1 (docs/DESIGN_PIVOT_PROTOTYPE_BRIEF.md). The earlier test-room chain
 ## (scenes/levels/elena_test_room_art.tscn -> abandoned lab) is kept and can be restored here.
 const LEVEL_PATH := "res://scenes/prototypes/phase1_canonical_greybox.tscn"
+const ESCAPE_PATH := "res://scenes/prototypes/escape_conduit_labyrinth.tscn"
 const OPTIONS_PATH := "res://scenes/ui/options_menu.tscn"
 const CREDITS_PATH := "res://scenes/ui/credits.tscn"
 const BOX := "CenterContainer/Panel/MarginContainer/VBoxContainer"
@@ -57,6 +58,15 @@ func _create_secondary_buttons() -> void:
 	credits_button.add_to_group("menu_button")
 	credits_button.pressed.connect(_on_credits_pressed)
 	row.add_child(credits_button)
+
+	var escape_button := Button.new()
+	escape_button.name = "EscapeButton"
+	escape_button.text = NarrativeTextManager.get_menu_escape_button()
+	escape_button.custom_minimum_size = Vector2(210, 42)
+	escape_button.add_theme_font_size_override("font_size", int(16.0 * clampf(GameManager.font_scale, 0.75, 2.0)))
+	escape_button.add_to_group("menu_button")
+	escape_button.pressed.connect(_on_escape_pressed)
+	row.add_child(escape_button)
 
 	start_button.add_to_group("menu_button")
 	lang_es_button.add_to_group("menu_button")
@@ -129,10 +139,13 @@ func _refresh_context() -> void:
 func _refresh_secondary_buttons() -> void:
 	var options_button := get_node_or_null(BOX + "/SecondaryRow/OptionsButton") as Button
 	var credits_button := get_node_or_null(BOX + "/SecondaryRow/CreditsButton") as Button
+	var escape_button := get_node_or_null(BOX + "/SecondaryRow/EscapeButton") as Button
 	if options_button != null:
 		options_button.text = _options_text()
 	if credits_button != null:
 		credits_button.text = _credits_text()
+	if escape_button != null:
+		escape_button.text = NarrativeTextManager.get_menu_escape_button()
 
 func _on_lang_es_pressed() -> void:
 	_apply_language("es")
@@ -148,3 +161,6 @@ func _on_options_pressed() -> void:
 
 func _on_credits_pressed() -> void:
 	get_tree().change_scene_to_file(CREDITS_PATH)
+
+func _on_escape_pressed() -> void:
+	get_tree().change_scene_to_file(ESCAPE_PATH)
